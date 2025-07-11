@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTRA PRO DASHBOARD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-color: #4361ee;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* ======== PRO SIDEBAR ======== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark-bg);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 5px 10px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 30px;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        .menu-item span {
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .menu-item.active {
+            background: rgba(67, 97, 238, 0.15);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .menu-item.active i {
+            color: #fff;
+        }
+
+        .menu-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 15px 25px;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ======== MAIN CONTENT (100% INDEPENDENT) ======== */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            min-height: 100vh;
+            background-color: var(--light-bg);
+            transition: margin-left 0.4s ease;
+        }
+
+        /* ======== TOP NAVBAR ======== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            width: 400px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px 10px;
+            font-size: 0.95rem;
+        }
+
+        .search-bar i {
+            color: #7f8c8d;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .user-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .user-info p {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-bell .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: bold;
+        }
+
+        /* ======== DASHBOARD CARDS ======== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(to right, var(--primary-color), #3a0ca3);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .card-text {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), #4cc9f0);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        /* ======== RECENT ACTIVITY ======== */
+        .activity-list {
+            margin-top: 40px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        /* ======== TOGGLE BUTTON (MOBILE) ======== */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1100;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* ======== DARK MODE TOGGLE ======== */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--dark-bg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg) scale(1.1);
+        }
+
+        /* ======== RESPONSIVE DESIGN ======== */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-bar {
+                width: 250px;
+            }
+
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                width: 180px;
+            }
+        }
+
+        /* ======== DARK MODE ======== */
+        body.dark-mode {
+            --light-bg: #121212;
+            --text-dark: #f8f9fa;
+            --text-light: #212529;
+            background: #121212;
+        }
+
+        body.dark-mode .main-content {
+            background: #121212;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .search-bar {
+            background: #1e1e1e;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .card-title,
+        body.dark-mode .section-title,
+        body.dark-mode .activity-title,
+        body.dark-mode .user-info h4 {
+            color: #f8f9fa;
+        }
+
+        body.dark-mode .search-bar input,
+        body.dark-mode .card-text,
+        body.dark-mode .activity-time,
+        body.dark-mode .progress-info,
+        body.dark-mode .user-info p {
+            color: #b0b0b0;
+        }
+    </style>
+</head>
+<body>
+    <!-- ======== PRO SIDEBAR ======== -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://ui-avatars.com/api/?name=Pro+Coder&background=random" alt="Profile">
+            <h2>DevConsole Pro</h2>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-item active">
+                <i class="fas fa-rocket"></i>
+                <span>Dashboard</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-code"></i>
+                <span>Projects</span>
+                <span class="badge">5</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-chart-network"></i>
+                <span>Analytics</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-database"></i>
+                <span>Database</span>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <div class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-terminal"></i>
+                <span>Console</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Security</span>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <div class="menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <p>v4.2.0 | &copy; 2023 DevConsole</p>
+        </div>
+    </div>
+    
+    <!-- ======== MAIN CONTENT ======== -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search projects, files...">
+            </div>
+            
+            <div class="user-profile">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Code+Master&background=random" alt="User">
+                <div class="user-info">
+                    <h4>Code Master</h4>
+                    <p>Admin</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Cards -->
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Project Quantum</h3>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">Next.js Frontend</div>
+                    <div class="card-text">
+                        Building a modern dashboard with React hooks and Context API.
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 85%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span>85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>API Gateway</h3>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">Node.js Backend</div>
+                    <div class="card-text">
+                        RESTful API development with Express and MongoDB.
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 70%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span>70%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>Mobile App</h3>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">React Native</div>
+                    <div class="card-text">
+                        Cross-platform mobile application development.
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 45%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span>45%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity Section -->
+        <div class="activity-list">
+            <h3 class="section-title">Recent Activity</h3>
+            
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-code-commit"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Pushed new commits to Project Quantum</div>
+                    <div class="activity-time">10 minutes ago</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Fixed authentication bug in API</div>
+                    <div class="activity-time">1 hour ago</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Deployed new version to production</div>
+                    <div class="activity-time">3 hours ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Toggle Button -->
+    <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <script>
+        // Mobile Sidebar Toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Active Menu Item
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                menuItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Dark Mode Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Simulate progress animation
+        document.querySelectorAll('.progress').forEach(progress => {
+            const targetWidth = progress.style.width;
+            progress.style.width = '0';
+            setTimeout(() => {
+                progress.style.width = targetWidth;
+            }, 300);
+        });
+
+        // Cool hover effect for cards
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>
