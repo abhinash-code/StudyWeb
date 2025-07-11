@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Social Channels | Professional Links</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, #00000070 90%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .main-heading {
+            font-size: 4rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff8a00, #e52e71, #22c1c3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 3px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-heading::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #ff8a00, #e52e71);
+            border-radius: 2px;
+        }
+
+        .sub-heading {
+            font-size: 1.3rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+
+        .card-title h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #ff8a00, #ffc107);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-item {
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .link-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .link-item a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .link-item a:hover {
+            color: #ffc107;
+        }
+
+        .link-item i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .link-item .platform {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 50px auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .contact-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #22c1c3, #3a7bd5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background: #22c1c3;
+            border-radius: 2px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+        }
+
+        .contact-item i {
+            font-size: 1.8rem;
+            color: #4dabf7;
+        }
+
+        .contact-item .placeholder {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 2.8rem;
+            }
+            
+            .card-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-details {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .contact-item {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-heading">My Social Channels</h1>
+            <p class="sub-heading">Connect with me across platforms. Find my content, updates, and contact information below.</p>
+        </header>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fab fa-youtube" style="color: #FF0000;"></i>
+                    <h2>YouTube Channels</h2>
+                </div>
+                <ul class="link-list">
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                            <span class="platform">Main Channel</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                            <span class="platform">Gaming Channel</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                            <span class="platform">Vlog Channel</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                            <span class="platform">Tutorial Channel</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <i class="fab fa-instagram" style="color: #E1306C;"></i>
+                    <h2>Instagram Profiles</h2>
+                </div>
+                <ul class="link-list">
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span class="platform">Personal Profile</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span class="platform">Photography Page</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span class="platform">Business Profile</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span class="platform">Art Portfolio</span>
+                            <span class="placeholder">  </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="contact-info">
+            <h2 class="contact-title">Get In Touch</h2>
+            <div class="contact-details">
+                <!-- Phone Number - Click to Call -->
+                <a href="tel:+917870109958" class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <div>Phone Number</div>
+                        <div class="placeholder">+91 7870109958</div>
+                    </div>
+                </a>
+                
+                <!-- Email Address - Click to Email -->
+                <a href="mailto:kumarjhaabhinash68@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <div>Email Address</div>
+                        <div class="placeholder">kumarjhaabhinash68@gmail.com</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 My Social Channels | All Rights Reserved</p>
+            <p>Designed with ❤️</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Simple animation enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 * index);
+            });
+            
+            // Highlight contact items on hover
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.querySelector('i').style.color = '#ffc107';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.querySelector('i').style.color = '#4dabf7';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

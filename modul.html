@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Chapters | Modern Design</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .table-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        thead th {
+            padding: 25px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        thead th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        .physics-header {
+            background: linear-gradient(to right, #8e2de2, #4a00e0);
+        }
+        
+        .physics-header::after {
+            background: linear-gradient(to right, #8e2de2, #4a00e0);
+        }
+        
+        .chemistry-header {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+        }
+        
+        .chemistry-header::after {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+        }
+        
+        .maths-header {
+            background: linear-gradient(to right, #f46b45, #eea849);
+        }
+        
+        .maths-header::after {
+            background: linear-gradient(to right, #f46b45, #eea849);
+        }
+        
+        .biology-header {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+        
+        .biology-header::after {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+        
+        tbody tr:nth-child(odd) {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        tbody td {
+            padding: 18px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .chapter-link {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 12px 5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .chapter-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .chapter-link:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .chapter-link:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .physics-link:hover {
+            background: linear-gradient(to right, rgba(142, 45, 226, 0.3), rgba(74, 0, 224, 0.3));
+        }
+        
+        .chemistry-link:hover {
+            background: linear-gradient(to right, rgba(0, 114, 255, 0.3), rgba(0, 198, 255, 0.3));
+        }
+        
+        .maths-link:hover {
+            background: linear-gradient(to right, rgba(244, 107, 69, 0.3), rgba(238, 168, 73, 0.3));
+        }
+        
+        .biology-link:hover {
+            background: linear-gradient(to right, rgba(17, 153, 142, 0.3), rgba(56, 239, 125, 0.3));
+        }
+        
+        .subject-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 850px) {
+            header h1 {
+                font-size: 2.8rem;
+            }
+            
+            thead th {
+                padding: 18px 10px;
+                font-size: 1.3rem;
+            }
+            
+            tbody td {
+                padding: 15px 8px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            header h1 {
+                font-size: 2.3rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            thead th {
+                padding: 15px 5px;
+                font-size: 1.1rem;
+            }
+            
+            .subject-icon {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Here is Your moduls</h1>
+            <p>Access Moduls for Physics, Chemistry, Mathematics, and Biology. Click on any chapter to view its content.</p>
+        </header>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="physics-header">
+                            <i class="fas fa-atom subject-icon"></i>
+                            Physics
+                        </th>
+                        <th class="chemistry-header">
+                            <i class="fas fa-flask subject-icon"></i>
+                            Chemistry
+                        </th>
+                        <th class="maths-header">
+                            <i class="fas fa-calculator subject-icon"></i>
+                            Mathematics
+                        </th>
+                        <th class="biology-header">
+                            <i class="fas fa-dna subject-icon"></i>
+                            Biology
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="Module_Physics_Chapter-1.pdf" target="_blank" class="chapter-link physics-link">Chapter 1</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 1</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 1</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 2</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 2</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 2</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 3</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 3</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 3</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 4</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 4</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 4</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 5</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 5</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 5</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 6</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 6</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 6</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 7</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 7</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 7</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 8</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 8</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 8</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 9</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 9</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 9</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 9</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="chapter-link physics-link">Chapter 10</a></td>
+                        <td><a href="#" class="chapter-link chemistry-link">Chapter 10</a></td>
+                        <td><a href="#" class="chapter-link maths-link">Chapter 10</a></td>
+                        <td><a href="#" class="chapter-link biology-link">Chapter 10</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>Designed with modern CSS techniques | Each chapter link can be updated with your specific URLs</p>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle animation to table rows on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                setTimeout(() => {
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateY(20px)';
+                    row.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        row.style.opacity = '1';
+                        row.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
