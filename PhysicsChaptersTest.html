@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 30px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .table-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 700px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            padding: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .chapter-cell {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .link-cell {
+            text-align: center;
+        }
+        
+        .link-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #00b09b, #00b09b);
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            th {
+                font-size: 1.2rem;
+            }
+            
+            td {
+                padding: 12px 15px;
+            }
+            
+            .link-btn {
+                padding: 8px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Chapter Links</h1>
+        <p>Access all chapters from the table below. Each "Click Here" button can be linked to specific content pages.</p>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="chapter-cell">Chapter 1</td>
+                    <td class="link-cell"><a href="PhysicsTest.html" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 2</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 3</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 4</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 5</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 6</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 7</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 8</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 9</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+                <tr>
+                    <td class="chapter-cell">Chapter 10</td>
+                    <td class="link-cell"><a href="#" class="link-btn">Click Here</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <p>You can easily update the links by modifying the href attributes</p>
+    </div>
+</body>
+</html>
