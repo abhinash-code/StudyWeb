@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .intro-text {
+            padding: 30px;
+            background: #f8f9ff;
+            border-bottom: 1px solid #e8ecf4;
+        }
+
+        .intro-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: center;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8ecf4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-row .form-group.small {
+            flex: 0 0 80px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8ecf4;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-item label {
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+
+        .birthdate-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .birthdate-group select {
+            flex: 1;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e8ecf4;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .intro-text,
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row .form-group {
+                min-width: auto;
+            }
+
+            .birthdate-group {
+                flex-direction: column;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .next-btn {
+                width: 100%;
+                padding: 18px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            select {
+                padding: 14px 16px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>COLLEGE ADMISSIONS FORM</h1>
+            <p>Enter your admission information below</p>
+        </div>
+
+        <div class="intro-text">
+            <p>Welcome to our admissions process. Please complete all required fields accurately. This information will be used to process your application and contact you regarding your admission status.</p>
+        </div>
+
+        <div class="form-container">
+            <form id="admissionForm" novalidate>
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2 class="section-title">Personal Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="required">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required aria-describedby="firstName-error">
+                            <div class="error" id="firstName-error"></div>
+                        </div>
+                        <div class="form-group small">
+                            <label for="middleInitial">Middle Initial</label>
+                            <input type="text" id="middleInitial" name="middleInitial" maxlength="1" placeholder="M">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="required">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required aria-describedby="lastName-error">
+                            <div class="error" id="lastName-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Birth Date</label>
+                        <div class="birthdate-group">
+                            <select id="birthMonth" name="birthMonth" required aria-describedby="birthdate-error">
+                                <option value="">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <select id="birthDay" name="birthDay" required>
+                                <option value="">Day</option>
+                            </select>
+                            <select id="birthYear" name="birthYear" required>
+                                <option value="">Year</option>
+                            </select>
+                        </div>
+                        <div class="error" id="birthdate-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Gender</label>
+                        <div class="radio-group" role="radiogroup" aria-describedby="gender-error">
+                            <div class="radio-item">
+                                <input type="radio" id="male" name="gender" value="male" required>
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="female" name="gender" value="female" required>
+                                <label for="female">Female</label>
+                            </div>
+                        </div>
+                        <div class="error" id="gender-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country" class="required">Country of Citizenship</label>
+                        <select id="country" name="country" required aria-describedby="country-error">
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="JP">Japan</option>
+                            <option value="IN">India</option>
+                            <option value="CN">China</option>
+                            <option value="BR">Brazil</option>
+                            <option value="MX">Mexico</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <div class="error" id="country-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required aria-describedby="phone-error">
+                            <div class="error" id="phone-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="required">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required aria-describedby="email-error">
+                            <div class="error" id="email-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mailing Address -->
+                <div class="form-section">
+                    <h2 class="section-title">Mailing Address</h2>
+                    
+                    <div class="form-group">
+                        <label for="streetAddress" class="required">Street Address</label>
+                        <input type="text" id="streetAddress" name="streetAddress" placeholder="123 Main Street" required aria-describedby="streetAddress-error">
+                        <div class="error" id="streetAddress-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="streetAddress2">Street Address Line 2</label>
+                        <input type="text" id="streetAddress2" name="streetAddress2" placeholder="Apartment, suite, etc. (optional)">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city" class="required">City</label>
+                            <input type="text" id="city" name="city" required aria-describedby="city-error">
+                            <div class="error" id="city-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="state" class="required">State/Province</label>
+                            <input type="text" id="state" name="state" required aria-describedby="state-error">
+                            <div class="error" id="state-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode" class="required">Postal/Zip Code</label>
+                            <input type="text" id="zipCode" name="zipCode" required aria-describedby="zipCode-error">
+                            <div class="error" id="zipCode-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="form-section">
+                    <h2 class="section-title">Emergency Contact</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyFirstName" class="required">First Name</label>
+                            <input type="text" id="emergencyFirstName" name="emergencyFirstName" required aria-describedby="emergencyFirstName-error">
+                            <div class="error" id="emergencyFirstName-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyLastName" class="required">Last Name</label>
+                            <input type="text" id="emergencyLastName" name="emergencyLastName" required aria-describedby="emergencyLastName-error">
+                            <div class="error" id="emergencyLastName-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="relationship" class="required">Relationship</label>
+                        <input type="text" id="relationship" name="relationship" placeholder="Parent, Guardian, Spouse, etc." required aria-describedby="relationship-error">
+                        <div class="error" id="relationship-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyEmail" class="required">Email Address</label>
+                            <input type="email" id="emergencyEmail" name="emergencyEmail" required aria-describedby="emergencyEmail-error">
+                            <div class="error" id="emergencyEmail-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyPhone" class="required">Phone Number</label>
+                            <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="(123) 456-7890" required aria-describedby="emergencyPhone-error">
+                            <div class="error" id="emergencyPhone-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Languages -->
+                <div class="form-section">
+                    <h2 class="section-title">Additional Information</h2>
+                    
+                    <div class="form-group">
+                        <label class="required">Do you speak any languages other than English?</label>
+                        <div class="radio-group" role="radiogroup" aria-describedby="languages-error">
+                            <div class="radio-item">
+                                <input type="radio" id="languagesYes" name="otherLanguages" value="yes" required>
+                                <label for="languagesYes">Yes</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="languagesNo" name="otherLanguages" value="no" required>
+                                <label for="languagesNo">No</label>
+                            </div>
+                        </div>
+                        <div class="error" id="languages-error"></div>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" class="next-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBirthDays();
+            initializeBirthYears();
+            initializePhoneMask();
+            initializeFormValidation();
+        });
+
+        // Populate birth day dropdown
+        function initializeBirthDays() {
+            const daySelect = document.getElementById('birthDay');
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i.toString().padStart(2, '0');
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+        }
+
+        // Populate birth year dropdown
+        function initializeBirthYears() {
+            const yearSelect = document.getElementById('birthYear');
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear; i >= currentYear - 100; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        // Phone number formatting
+        function initializePhoneMask() {
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 6) {
+                        value = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
+                    } else if (value.length >= 3) {
+                        value = `(${value.slice(0,3)}) ${value.slice(3)}`;
+                    }
+                    e.target.value = value;
+                });
+            });
+        }
+
+        // Form validation
+        function initializeFormValidation() {
+            const form = document.getElementById('admissionForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Clear previous errors
+                clearErrors();
+                
+                // Validate required text fields
+                const requiredFields = [
+                    'firstName', 'lastName', 'streetAddress', 'city', 'state', 'zipCode',
+                    'emergencyFirstName', 'emergencyLastName', 'relationship'
+                ];
+                
+                requiredFields.forEach(fieldName => {
+                    const field = document.getElementById(fieldName);
+                    if (!field.value.trim()) {
+                        showError(fieldName, 'This field is required.');
+                        isValid = false;
+                    }
+                });
+                
+                // Validate birthdate
+                const birthMonth = document.getElementById('birthMonth').value;
+                const birthDay = document.getElementById('birthDay').value;
+                const birthYear = document.getElementById('birthYear').value;
+                
+                if (!birthMonth || !birthDay || !birthYear) {
+                    showError('birthdate', 'Please select a complete birth date.');
+                    isValid = false;
+                }
+                
+                // Validate gender
+                const gender = document.querySelector('input[name="gender"]:checked');
+                if (!gender) {
+                    showError('gender', 'Please select your gender.');
+                    isValid = false;
+                }
+                
+                // Validate country
+                const country = document.getElementById('country').value;
+                if (!country) {
+                    showError('country', 'Please select your country of citizenship.');
+                    isValid = false;
+                }
+                
+                // Validate phone numbers
+                const phone = document.getElementById('phone').value;
+                const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+                if (!phone) {
+                    showError('phone', 'Phone number is required.');
+                    isValid = false;
+                } else if (!phoneRegex.test(phone)) {
+                    showError('phone', 'Please enter a valid phone number in format (123) 456-7890.');
+                    isValid = false;
+                }
+                
+                const emergencyPhone = document.getElementById('emergencyPhone').value;
+                if (!emergencyPhone) {
+                    showError('emergencyPhone', 'Emergency contact phone is required.');
+                    isValid = false;
+                } else if (!phoneRegex.test(emergencyPhone)) {
+                    showError('emergencyPhone', 'Please enter a valid phone number in format (123) 456-7890.');
+                    isValid = false;
+                }
+                
+                // Validate email addresses
+                const email = document.getElementById('email').value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email) {
+                    showError('email', 'Email address is required.');
+                    isValid = false;
+                } else if (!emailRegex.test(email)) {
+                    showError('email', 'Please enter a valid email address.');
+                    isValid = false;
+                }
+                
+                const emergencyEmail = document.getElementById('emergencyEmail').value;
+                if (!emergencyEmail) {
+                    showError('emergencyEmail', 'Emergency contact email is required.');
+                    isValid = false;
+                } else if (!emailRegex.test(emergencyEmail)) {
+                    showError('emergencyEmail', 'Please enter a valid email address.');
+                    isValid = false;
+                }
+                
+                // Validate other languages
+                const otherLanguages = document.querySelector('input[name="otherLanguages"]:checked');
+                if (!otherLanguages) {
+                    showError('languages', 'Please select an option.');
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Form is valid - you can submit to server here
+                    alert('Form submitted successfully! This would normally be sent to your server.');
+                    console.log('Form data:', new FormData(form));
+                } else {
+                    // Scroll to first error
+                    const firstError = document.querySelector('.input-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                }
+            });
+        }
+        
+        function showError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const errorElement = document.getElementById(fieldName + '-error');
+            
+            if (field) {
+                field.classList.add('input-error');
+            }
+            
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error');
+            const inputElements = document.querySelectorAll('.input-error');
+            
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+                element.textContent = '';
+            });
+            
+            inputElements.forEach(element => {
+                element.classList.remove('input-error');
+            });
+        }
+    </script>
+</body>
+</html>
