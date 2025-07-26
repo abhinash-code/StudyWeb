@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 Online Test</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1f4037, #99f2c8);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px #000;
+    }
+
+    #quiz-container, #result-container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    #timer {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #ffeb3b;
+      font-weight: bold;
+    }
+
+    .question {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .options button {
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .options button:hover {
+      background-color: #512da8;
+    }
+
+    .selected {
+      background-color: #ffeb3b !important;
+      color: #000 !important;
+    }
+
+    #start-btn, #next-btn, #submit-btn {
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+    }
+
+    #start-btn:hover, #next-btn:hover, #submit-btn:hover {
+      background-color: #0b7dda;
+    }
+
+    #result-container h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    #result-container p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔥 Online Test</h1>
+  <button id="start-btn">🚀 Start Test</button>
+
+  <div id="quiz-container" style="display: none;">
+    <div id="timer">Time Remaining: <span id="time">30:00</span></div>
+    <div class="question" id="question-text"></div>
+    <div class="options" id="options"></div>
+    <button id="next-btn">Next ➡️</button>
+    <button id="submit-btn" style="display: none;">✅ Submit</button>
+  </div>
+
+  <div id="result-container" style="display: none;">
+    <h2>📊 Result</h2>
+    <p>Your Score: <span id="score"></span> / <span id="total"></span></p>
+    <p>Percentage: <span id="percent"></span>%</p>
+  </div>
+
+  <script>
+    const questions = [
+  {
+    text: "There is a current of 40 ampere in a wire of 10 –6 m 2 area of cross-section. If the number of free electron per m 3 is 10 29, then the drift velocity will be",
+    choices: ["1.25 × 10^3 m/s", "2.50 × 10^–3 m/s", "25.0 × 10^–3 m/s", "250 × 10^–3 m/s"],
+    answer: 1
+  },
+  {
+    text: "Every atom has one free electron in copper. If 1.1 ampere current is flowing in the wire of copper having 1 mm diameter, then the drift velocity (approx.) will be (Density of copper = 9 × 10^3 kg m^–3 and atomic weight = 63g)",
+    choices: ["0.3 mm/s", "0.1 mm/s", "0.2 mm/s", "0.2 cm/s"],
+    answer: 1
+  },
+  {
+    text: "Drift velocity, v d, varies with the intensity of electric field E, as",
+    choices: ["v d ∝ E", "1 / v d ∝ E", "v d ∝ E°", "v d ∝ E^2"],
+    answer: 0
+  },
+  {
+    text: "A certain wire has a resistance R. The resistance of another wire identical with the first except having twice the diameter is",
+    choices: ["2 R", "0.25 R", "4 R", "0.5 R"],
+    answer: 1
+  },
+  {
+    text: "A metallic block has no potential difference applied across it, then the root mean velocity of free electrons is (T = absolute temperature of the block)",
+    choices: ["Proportional to T", "Proportional to √T", "Zero", "Finite but independent of temperature"],
+    answer: 1
+  },
+  {
+    text: "In the figure a carbon resistor has bands of different colours on its body as mentioned in the figure. The value of the resistance is",
+    choices: ["2.2 kΩ ± 5%", "3.3 kΩ ± 10%", "5.6 kΩ ± 5%", "9.1 kΩ ± 10%"],
+    answer: 3
+  },
+  {
+    text: "A wire of cross-sectional area A, length L1, resistivity σ1 and temperature coefficient of resistivity α1 is connected to a second wire of length L2, resistivity σ2, temperature coefficient of resistivity α2 and the same area A, so that both wires carry same current. Total resistance R is independent of temperature for small temperature change if (thermal expansion effect is negligible)",
+    choices: ["α1 = – α2", "σ1 L1 α1 + σ2 L2 α2 = 0", "L1 α1 + L2 α2 = 0", "None of these"],
+    answer: 1
+  },
+  {
+    text: "A uniform wire of resistance R is uniformly compressed along its length, until its radius becomes n times the original radius. New resistance of the wire becomes",
+    choices: ["R / n^4", "R / n^2", "R / n", "nR"],
+    answer: 0
+  },
+  {
+    text: "There are eight resistors of equal resistance R. Four groups of these are formed such that each group has two resistors connected in parallel. These groups are connected in series. The total resistance of the system will be",
+    choices: ["R / 2", "2 R", "4 R", "8 R"],
+    answer: 1
+  },
+  {
+    text: "Equivalent resistance between A and B will be",
+    choices: ["2 Ω", "18 Ω", "6 Ω", "3.6 Ω"],
+    answer: 3
+  },
+  {
+    text: "The effective resistance between the points A and B in the figure is",
+    choices: ["5 Ω", "2 Ω", "3 Ω", "4 Ω"],
+    answer: 1
+  },
+  {
+    text: "The equivalent resistance of the arrangement of resistances shown in adjoining figure between the points A and B is",
+    choices: ["6 Ω", "8 Ω", "16 Ω", "24 Ω"],
+    answer: 1
+  },
+  {
+    text: "Three equal resistances each of value R are joined as shown in the figure. The equivalent resistance between M and N is",
+    choices: ["R", "2 R", "R / 2", "R / 3"],
+    answer: 2
+  },
+  {
+    text: "For what value of R the net resistance of the circuit will be 18 Ω?",
+    choices: ["8 Ω", "10 Ω", "16 Ω", "24 Ω"],
+    answer: 2
+  },
+  {
+    text: "Two wires of equal diameters, of resistivities ρ1 and ρ2 and lengths l1 and l2, respectively, are joined in series. The equivalent resistivity of the combination is",
+    choices: ["(ρ1 l1 + ρ2 l2) / (l1 + l2)", "(ρ1 l2 + ρ2 l1) / (l1 - l2)", "(ρ1 l2 + ρ2 l1) / (l1 + l2)", "(ρ1 l1 - ρ2 l2) / (l1 - l2)"],
+    answer: 0
+  },
+  {
+    text: "A circuit consists of a battery, a resistor R and two light bulbs A and B as shown. If the filament in light bulb A burns out, then which of the following is true for light bulb B?",
+    choices: ["It is turned off", "Its brightness does not change", "It gets dimmer", "It gets brighter"],
+    answer: 3
+  },
+  {
+    text: "Power generated across a uniform wire connected across a supply is H. If the wire is cut into n equal parts and all the parts are connected in parallel across the same supply, the total power generated in the circuit is",
+    choices: ["H / n^2", "n^2 H", "nH", "H / n"],
+    answer: 1
+  },
+  {
+    text: "Three 60 W light bulbs are mistakenly wired in series and connected to a 120 V power supply. Assume the light bulbs are rated for single connection to 120 V. With the mistaken connection, the power dissipated by each bulb is",
+    choices: ["6.7 W", "13.3 W", "20 W", "40 W"],
+    answer: 0
+  },
+  {
+    text: "In the circuit shown in figure the rate of heat produced in the 5 Ω resistor due to a current flowing in it is 10 calories per second. The rate of heat produced in the 4 Ω resistor is",
+    choices: ["1 cal s^–1", "2 cal s^–1", "3 cal s^–1", "4 cal s^–1"],
+    answer: 1
+  },
+  {
+    text: "The charge flowing through a resistance R varies with time t as Q = at – bt^2. The total heat produced in R from t = 0 to the time when value of Q again becomes zero is",
+    choices: ["a^3 R / (6 b)", "a^3 R / (3 b)", "a^3 R / (2 b)", "a^3 R / b"],
+    answer: 1
+  },
+  {
+    text: "A 100 W bulb B1, and two 60 W bulbs B2 and B3, are connected to a 250 V source, as shown in the figure. If W1, W2 and W3 are the output powers of the bulbs B1, B2 and B3, respectively. Then,",
+    choices: ["W1 > W2 = W3", "W1 > W2 > W3", "W1 < W2 = W3", "W1 < W2 < W3"],
+    answer: 3
+  },
+  {
+    text: "If a cell produces the same amount of heat in two resistors R1 and R2 in the same time separately, the internal resistance of the cell is",
+    choices: ["(R1 + R2) / 2", "√(R1 R2)", "(R1 + R2) / 2", "(R1 – R2) / 2"],
+    answer: 1
+  },
+  {
+    text: "Two heater wires of equal length are first connected in series and then in parallel. The ratio of heat produced in two cases will be",
+    choices: ["1 : 2", "1 : 4", "2 : 1", "4 : 1"],
+    answer: 1
+  },
+  {
+    text: "The effective wattage of 60 W, 220 V and 40 W, 220 V lamps connected in series with a 220 V power supply is equal to",
+    choices: ["24 W", "20 W", "100 W", "80 W"],
+    answer: 0
+  },
+  {
+    text: "A heater boils a certain quantity of water in time t1. Another heater boils the same quantity of water in time t2. If both heaters are connected in series, the combination will boil the same quantity of water in time",
+    choices: ["(t1 + t2) / 2", "(t1 + t2)", "(t1 t2) / (t1 + t2)", "√(t1 t2)"],
+    answer: 1
+  },
+  {
+    text: "The voltage across a bulb is decreased by 2%. Assuming that the resistance of the filament remains unchanged, the power of the bulb will",
+    choices: ["Decrease by 2%", "Increase by 2%", "Decrease by 4%", "Increase by 4%"],
+    answer: 2
+  },
+  {
+    text: "A 500 W heating unit is designed to operate on a 115 volt line. If the line voltage drops to 110 volt, the percentage drop in heat output will be",
+    choices: ["10.20%", "4.1%", "8.5 %", "7.6%"],
+    answer: 2
+  },
+  {
+    text: "The potential difference between points A and B of adjoining figure is",
+    choices: ["2/3 V", "8/9 V", "4/3 V", "2V"],
+    answer: 2
+  },
+  {
+    text: "The reading of the ammeter in figure shown is",
+    choices: ["1/8 A", "3/4 A", "1/2 A", "2 A"],
+    answer: 1
+  },
+  {
+    text: "In the circuit shown, the point ‘B’ is earthed. The potential at the point ‘A’ is",
+    choices: ["14 V", "24 V", "26 V", "50 V"],
+    answer: 1
+  },
+  {
+    text: "The current between B and D in the given figure is",
+    choices: ["1 A", "2 A", "Zero", "0.5 A"],
+    answer: 2
+  },
+  {
+    text: "In circuit shown below, the resistances are given in ohms and the battery is assumed ideal with emf equal to 3 volt. The voltage across the resistance R4 is",
+    choices: ["0.4 V", "0.6 V", "1.2 V", "1.5 V"],
+    answer: 0
+  },
+  {
+    text: "Current in 3 Ω resistance is",
+    choices: ["1 A", "1/7 A", "5/7 A", "15/7 A"],
+    answer: 2
+  },
+  {
+    text: "In the adjoining circuit, the battery E1 has an emf of 12 volt and zero internal resistance while the battery E is ideal and has an emf of 2 volt. If the galvanometer G reads zero, then the value of the resistance X in ohm is",
+    choices: ["10", "100", "500", "200"],
+    answer: 1
+  },
+  {
+    text: "The internal resistances of two cells shown are 0.1 Ω and 0.3 Ω. If R = 0.2 Ω, the potential difference across the cell(s)",
+    choices: ["B will be zero", "A will be zero", "A and B will be 2 V", "A will be > 2 V and across the cell B will be < 2 V"],
+    answer: 0
+  },
+  {
+    text: "Two batteries of emf 4 V and 8 V with internal resistances 1 Ω and 2 Ω are connected in a circuit with a resistance of 9 Ω as shown in figure. The current and potential difference between the points P and Q are",
+    choices: ["1/3 A and 3 V", "1/6 A and 4 V", "1/9 A and 9 V", "1/2 A and 12 V"],
+    answer: 0
+  },
+  {
+    text: "The figure below shows currents in a part of an electric circuit. The current i is",
+    choices: ["1.7 amp", "3.7 amp", "1.3 amp", "1 amp"],
+    answer: 0
+  },
+  {
+    text: "In the circuit shown in figure, the current through",
+    choices: ["the 3 Ω resistor is 0.50 A", "the 3 Ω resistor is 0.25 A", "the 4 Ω resistor is 0.50 A", "the 4 Ω resistor is 0.25 A"],
+    answer: 3
+  },
+  {
+    text: "In the circuit shown, A and V are ideal ammeter and voltmeter respectively. Reading of the voltmeter will be",
+    choices: ["2 V", "1 V", "0.5 V", "Zero"],
+    answer: 3
+  },
+  {
+    text: "Two batteries, one of emf 18 volt and internal resistance 2 Ω and the other of emf 12 volt and internal resistance 1 Ω, are connected as shown. The ideal voltmeter V will record a reading of",
+    choices: ["15 volt", "30 volt", "14 volt", "18 volt"],
+    answer: 2
+  },
+  {
+    text: "A 2 volt battery, a 15 Ω resistor and a potentiometer of wire length 100 cm, all are connected in series. If the resistance of potentiometer wire is 5 Ω, then the potential gradient of the potentiometer wire is",
+    choices: ["0.005 V/cm", "0.05 V/cm", "0.02 V/cm", "0.2 V/cm"],
+    answer: 0
+  },
+  {
+    text: "An ammeter of 5 ohm resistance can read upto 5 mA. If it is to be used to read 100 volts, how much resistance is to be connected in series",
+    choices: ["19.9995 Ω", "199.995 Ω", "1999.95 Ω", "19995 Ω"],
+    answer: 3
+  },
+  {
+    text: "AB is a wire of uniform resistance. The galvanometer G shows no current when the length AC = 20 cm and CB = 80 cm. The resistance R is equal to",
+    choices: ["2 Ω", "8 Ω", "20 Ω", "40 Ω"],
+    answer: 2
+  },
+  {
+    text: "Figure shows a meter bridge. Wire AC has uniform cross-section. The length of wire AC is 100 cm. X is a standard resistor of 4 Ω and Y is a coil. When Y is immersed in melting ice the null point is at 40 cm from point A. When the coil Y is heated to 100°C, a 78 Ω resistor has to be connected in parallel with Y in order to keep the bridge balanced at the same point. Temperature coefficient of resistance of the coil is",
+    choices: ["6.3 × 10^–4 K^–1", "4.3 × 10^–4 K^–1", "8.3 × 10^–4 K^–1", "2.3 × 10^–4 K^–1"],
+    answer: 2
+  },
+  {
+    text: "The circuit shown here is used to compare the emf of two cells E1 and E2 (E1 > E2). The null point is at C when the galvanometer is connected to E1. When the galvanometer is connected to E2, the null point will be",
+    choices: ["To the left of C", "To the right of C", "At C itself", "Nowhere on AB"],
+    answer: 0
+  },
+  {
+    text: "In the circuit shown, the meter bridge is in its balanced state. The meter bridge wire has a resistance 0.1 Ω /cm. The value of unknown resistance X and the current drawn from the battery of negligible resistance is",
+    choices: ["6 Ω, 5 A", "10 Ω, 0.1 A", "4 Ω, 1.0 A", "12 Ω, 0.5 A"],
+    answer: 2
+  },
+  {
+    text: "What is the reading of voltmeter in the following figure?",
+    choices: ["3 V", "2 V", "5 V", "4 V"],
+    answer: 3
+  },
+  {
+    text: "A galvanometer has a resistance of 20 Ω and reads full-scale when 0.2 V is applied across it. To convert it into a 10 A ammeter, the galvanometer coil should have a",
+    choices: ["0.01 Ω resistor connected across it in parallel", "0.02 Ω resistor connected across it in parallel", "200 Ω resistor connected in series with it", "2000 Ω resistor connected in series with it"],
+    answer: 1
+  },
+  {
+    text: "In the arrangement shown in figure when the switch S2 is open, the galvanometer shows no deflection for l = L /2. When the switch S2 is closed, the galvanometer shows no deflection for l = 5 L /12. The internal resistance (r) of 6 V cell and the emf E of the other battery are respectively",
+    choices: ["3 Ω, 8 V", "2 Ω, 12 V", "2 Ω, 24 V", "3 Ω, 12 V"],
+    answer: 1
+  },
+  {
+    text: "A capacitor C = 100 μF is connected to three resistors each of resistance 1 kΩ and a battery of emf 9 V. The switch S has been closed for long time so as to charge the capacitor. When switch S is opened, the capacitor discharges with time constant",
+    choices: ["33 ms", "5 ms", "3.3 ms", "50 ms"],
+    answer: 3
+  },
+  {
+    text: "For the circuit shown here, the potential difference between points A and B is (at steady state)",
+    choices: ["2.5 V", "7.5 V", "10 V", "Zero"],
+    answer: 0
+  },
+  {
+    text: "In the given circuit, with steady current the potential drop across the capacitor must be",
+    choices: ["V", "V / 2", "V / 3", "2V / 3"],
+    answer: 2
+  },
+  {
+    text: "In the circuit shown, the cell is ideal, with emf = 15 V. Each resistance is of 3 Ω. The potential difference across the capacitor in steady state is",
+    choices: ["Zero", "9V", "12V", "15V"],
+    answer: 2
+  },
+  {
+    text: "In the circuit shown the time constant of the circuit is",
+    choices: ["5/3 RC", "5/2 RC", "7/4 RC", "7/3 RC"],
+    answer: 2
+  },
+  {
+    text: "In the RC circuit shown in the figure, the total energy of 3.6 × 10^–3 J is dissipated in the 10 Ω resistor after the switch S is closed for a long time. The initial charge on the capacitor wire",
+    choices: ["60 μC", "120 μC", "60√2 μC", "60/√2 μC"],
+    answer: 1
+  },
+  {
+    text: "A capacitor of capacitance C begins to charge (at t = 0) by an ideal battery through a resistor of resistance R. The time after which potential difference across resistor becomes n times that across the capacitor is",
+    choices: ["RC ln((n+1)/n)", "RC ln(n/(n+1))", "RC ln((n-1)/n)", "RC ln(1 + n)"],
+    answer: 0
+  },
+  {
+    text: "In the circuit shown, the switch was initially in position 1 for a long time. Then it is shifted from position 1 to 2 at t = 0. The graph between charge on capacitor C and time t is",
+    choices: ["(a) graph", "(b) graph", "(c) graph", "(d) graph"],
+    answer: 1 // Assuming (b) is the correct graph based on typical RC discharge
+  },
+  {
+    text: "In the presence of an applied electric field (E) in a metallic conductor",
+    choices: ["The electrons move in the direction of E", "The electrons move in a direction opposite to E", "The electrons may move in any direction randomly, but slowly drift in the direction of E", "The electrons move randomly but slowly drift in a direction opposite to E"],
+    answer: 3
+  },
+  {
+    text: "A current (I) flows through a uniform wire of diameter (d) when the mean drift velocity is v. The same current will flow through a wire of diameter d /2 made of the same material if the mean drift velocity of the electrons is",
+    choices: ["v / 4", "v / 2", "4 v", "2 v"],
+    answer: 2
+  },
+  {
+    text: "A steady current is passing through a linear conductor of non-uniform cross-section. The current density in the conductor is",
+    choices: ["Independent of area of cross-section", "Directly proportional to area of cross-section", "Inversely proportional to area of cross-section", "Inversely proportional to the square root of area of cross-section"],
+    answer: 2
+  },
+  {
+    text: "The resistance of a wire is 20 Ω. The wire is stretched to three times its length. Then the resistance will now be",
+    choices: ["6.67 Ω", "60 Ω", "120 Ω", "180 Ω"],
+    answer: 3
+  },
+  {
+    text: "A conductor with rectangular cross section has dimensions (a × 2a × 4a) as shown in figure. Resistance across AB is x, across CD is y and across EF is z. Then",
+    choices: ["x = y = z", "x > y > z", "y > z > x", "x > z > y"],
+    answer: 3
+  },
+  {
+    text: "In a wire of cross-sectional radius r, free electrons travel with drift velocity v when a current I flows through the wire. What is the current in another wire of half the radius and of the same material when the drift velocity is 2 v?",
+    choices: ["2 I", "I", "I / 2", "I / 4"],
+    answer: 2
+  },
+  {
+    text: "A wire has a non-uniform cross-section as shown in figure. A steady current flows through it. The drift speed of electrons at points P and Q is vP and vQ.",
+    choices: ["vP = vQ", "vP < vQ", "vP > vQ", "Data insufficient"],
+    answer: 2
+  },
+  {
+    text: "Two coils connected in series have resistances 600 Ω and 300 Ω at 20°C and temperature coefficient of resistivity 0.001 K^–1 and 0.004 K^–1 respectively. The resistance of the combination at temperature 50°C is",
+    choices: ["426 Ω", "954 Ω", "1806 Ω", "214 Ω"],
+    answer: 1
+  },
+  {
+    text: "Two coils connected in series have resistances 600 Ω and 300 Ω at 20°C and temperature coefficient of resistivity 0.001 K^–1 and 0.004 K^–1 respectively. The effective temperature coefficient of resistivity of the combination is",
+    choices: ["1/1000 K^–1", "1/250 K^–1", "1/500 K^–1", "3/1000 K^–1"],
+    answer: 2
+  },
+  {
+    text: "The current in a metallic conductor is plotted against voltage at two different temperatures T1 and T2. Which of the following is correct?",
+    choices: ["T1 > T2", "T1 < T2", "T1 = T2", "None of these"],
+    answer: 1
+  },
+  {
+    text: "The equivalent resistance between points A and B is",
+    choices: ["65/2 Ω", "45/2 Ω", "5/2 Ω", "91/2 Ω"],
+    answer: 1
+  },
+  {
+    text: "The current i in the circuit of figure is",
+    choices: ["1/45 A", "1/15 A", "1/10 A", "1/5 A"],
+    answer: 2
+  },
+  {
+    text: "In the given circuit the current flowing through the resistance of 20 ohms is 0.3 ampere while the ammeter reads 0.8 ampere. What is the value of R1?",
+    choices: ["30 ohms", "40 ohms", "50 ohms", "60 ohms"],
+    answer: 3
+  },
+  {
+    text: "The current through the ammeter shown in figure is 1 A. If each of the 4 Ω resistor is replaced by 2 Ω resistor, the current in circuit will become",
+    choices: ["10/9 A", "5/4 A", "9/8 A", "5/8 A"],
+    answer: 0
+  },
+  {
+    text: "Two non-ideal batteries are connected in parallel with like terminals joined together. Consider the following statements: (A) The equivalent emf is smaller than either of the two emfs. (B) The equivalent internal resistance is smaller than either of the two internal resistances.",
+    choices: ["Both (A) and (B) are correct", "(A) is correct and (B) is wrong", "(B) is correct but (A) is wrong", "Both (A) and (B) are wrong"],
+    answer: 2
+  },
+  {
+    text: "The same mass of copper is drawn into two wires A and B of radii r and 2r respectively. They are connected in series, and electric current is passed. The ratio of the heat produced in A and B is",
+    choices: ["2 : 1", "4 : 1", "8 : 1", "16 : 1"],
+    answer: 3
+  },
+  {
+    text: "24 identical cells, each of internal resistance 0.5 Ω, are arranged in a parallel combination of n rows, each row containing m cells in series. The combination is connected across a resistor of 3 Ω. In order to send maximum current through the resistor, we should have",
+    choices: ["m = 12, n = 2", "m = 8, n = 3", "m = 2, n = 12", "m = 3, n = 8"],
+    answer: 0
+  },
+  {
+    text: "If internal resistance of a cell is proportional to current drawn from the cell. Then the best representation of terminal potential difference of a cell with current drawn from the cell will be",
+    choices: ["(a) graph", "(b) graph", "(c) graph", "(d) graph"],
+    answer: 3 // Assuming (d) is the correct graph based on typical V-I characteristics with proportional internal resistance
+  },
+  {
+    text: "A storage battery is connected to a charger for charging with a voltage of 12.5 volts. The internal resistance of the storage battery is 1 Ω. When the charging current is 0.5 A, the emf of the storage battery is",
+    choices: ["13 Volts", "12.5 Volts", "12 Volts", "1.5 Volts"],
+    answer: 2
+  },
+  {
+    text: "In the network shown the potential difference between A and B is (R = r1 = r2 = r3 = 1 Ω, E1 = 3 V, E2 = 2 V, E3 = 1 V)",
+    choices: ["1 V", "2 V", "3 V", "4 V"],
+    answer: 1
+  },
+  {
+    text: "In following figure a part of circuit in steady state is shown. If energy stored in the capacitor is x × 10^–4 J, then find value of x?",
+    choices: ["5", "6", "7", "8"],
+    answer: 3
+  },
+  {
+    text: "In the box shown current i enters at H and leaves at C. If i_AB = i_DC = 2/3, i_HA = i_GF = i_HE = i/6, choose the branch in which current is zero.",
+    choices: ["BG", "FC", "ED", "None of these"],
+    answer: 1
+  },
+  {
+    text: "If X, Y and Z in figure are identical lamps, which of the following changes in the brightness of the lamps occur when switch S is closed?",
+    choices: ["X stays the same, Y decreases", "X increases, Y decreases", "X increases, Y stays the same", "X decreases, Y increases"],
+    answer: 1
+  },
+  {
+    text: "In a balanced wheatstone bridge, current in the galvanometer is zero. It remains zero when: 1. battery emf is increased 2. all resistances are increased by 10 ohms 3. all resistances are made five times 4. the battery and the galvanometer are interchanged",
+    choices: ["Only 1 is correct", "1, 2 and 3 are correct", "1, 3 and 4 are correct", "1 and 3 are correct"],
+    answer: 2
+  },
+  {
+    text: "If the reading of ammeter A3 in figure is 0.75 A. Neglecting the resistance of the ammeters, the reading of ammeter A2 will be",
+    choices: ["1.5 A", "3 A", "4.5 A", "6 A"],
+    answer: 1
+  },
+  {
+    text: "The meter-bridge wire AB shown in figure is 50 cm long. When AD = 30 cm, no deflection occurs in the galvanometer. Find R.",
+    choices: ["1 Ω", "2 Ω", "3 Ω", "4 Ω"],
+    answer: 3
+  },
+  {
+    text: "If an ammeter is to be used in place of a voltmeter then we must connect with the ammeter",
+    choices: ["a low resistance in parallel", "a high resistance in parallel", "a high resistance in series", "a low resistance in series"],
+    answer: 2
+  },
+  {
+    text: "A milliammeter of range 10 mA and resistance 9 Ω is joined in a circuit as shown. The metre gives full-scale deflection for current I when A and B are used as its terminals, i.e., current enters at A and leaves at B (C is left isolated). The value of I is",
+    choices: ["100 mA", "900 mA", "1 A", "1.1 A"],
+    answer: 2
+  },
+  {
+    text: "In the figure shown for given values of R1 and R2 the balance point for jockey is at 40 cm from A. When R2 is shunted by a resistance of 10 Ω, balance shifts to 50 cm. R1 and R2 are (AB = 1 m)",
+    choices: ["10 Ω, 5/3 Ω", "20 Ω, 30 Ω", "10 Ω, 15 Ω", "5 Ω, 15/2 Ω"],
+    answer: 0
+  },
+  {
+    text: "The figure shows a metre-bridge circuit, with AB = 100 cm, X = 12 Ω and R = 18 Ω and the jockey J in the position of balance. If R is now made 8 Ω, through what distance will J have to be moved to obtain balance?",
+    choices: ["10 cm", "20 cm", "30 cm", "40 cm"],
+    answer: 1
+  },
+  {
+    text: "A 6V battery of negligible internal resistance is connected across a uniform wire of length 1m. The positive terminal of another battery of emf 4 V and internal resistance 1 Ω is joined to the point A as shown in figure. The ammeter shows zero deflection when the jockey touches the wire at the point C. Then AC is equal to",
+    choices: ["2/3 m", "1/3 m", "3/5 m", "1/2 m"],
+    answer: 0
+  },
+  {
+    text: "A potentiometer wire has length 10 m and resistance 10 Ω. It is connected to a battery of emf 11 volt and internal resistance 1 Ω, then the potential gradient of the wire is",
+    choices: ["10 V/m", "1 V/m", "0.1 V/m", "None of these"],
+    answer: 1
+  },
+  {
+    text: "The length of a potentiometer wire is l. A cell of emf E is balanced at a length l /3 from the positive end of the wire. If the length of the wire is increased by l /2. At what distance will the same cell give a balance point?",
+    choices: ["2/3 l", "l / 2", "l / 6", "l"],
+    answer: 1
+  },
+  {
+    text: "A battery of emf ε0 = 12 V is connected across a 4 m long uniform wire having resistance 4 Ω /m. The cells of small emfs ε1 = 2 V and ε2 = 4 V having internal resistance 2 Ω and 6 Ω respectively, are connected as shown in the figure. If galvanometer shows no deflection at the point N, the distance of point N from the point A is equal to",
+    choices: ["1/6 m", "1/3 m", "125 cm", "150 cm"],
+    answer: 2
+  },
+  {
+    text: "In the given potentiometer circuit length of the wire AB is 3 m and resistance is R = 4.5 Ω. The length AC for no deflection in galvanometer is",
+    choices: ["2 m", "1.8 m", "dependent on r1", "None of these"],
+    answer: 3
+  },
+  {
+    text: "In the circuit shown in figure",
+    choices: ["In steady state, there is no current in the 100 Ω resistor", "In steady state, the current in 100 Ω resistor is 0.08 A", "In steady state, there is no current in the 50 Ω resistor", "In steady state, the current in 50 Ω resistor is 0.04 A"],
+    answer: 1
+  },
+  {
+    text: "An uncharged capacitor and a resistor of large resistance are connected in series to a battery of electromotive force 4.5 V. The voltage across the capacitor is 3 V one minute after closing the circuit. What will the voltage across the capacitor be 2 minutes after closing the circuit?",
+    choices: ["6 V", "4.5 V", "3.5 V", "4V"],
+    answer: 3
+  },
+  {
+    text: "All the edges of a block in cuboidal shape with parallel faces are unequal. Its longest edge is twice its shortest edge. The ratio of the maximum to minimum resistance between parallel faces is: (a > b > c)",
+    choices: ["2", "4", "8", "Indeterminate unless the length of the third edge is specified."],
+    answer: 1
+  },
+  {
+    text: "Two wires of same dimension but resistivities ρ1 and ρ2 are connected in series. The equivalent resistivity of the combination is -",
+    choices: ["ρ1 + ρ2", "(ρ1 + ρ2) / 2", "ρ1 ρ2", "2(ρ1 + ρ2)"],
+    answer: 1
+  },
+  {
+    text: "12 cells each having the same emf are connected in series and are kept in a closed box. Some of the cells are wrongly connected. This battery is connected in series with an ammeter and two cells identical with each other and identical with the previous cells. The current is 3 A when the external cells aid this battery and is 2 A when the cells oppose the battery. How many cells in the battery are wrongly connected?",
+    choices: ["One", "Two", "Three", "None"],
+    answer: 0
+  },
+  {
+    text: "In a metre bridge experiment, null point is obtained at 20 cm from one end of the wire when resistance X is balanced against another resistance Y. If X < Y, then where will be the new position of the null point from the same end, if one decides to balance a resistance of 4 X against Y?",
+    choices: ["50 cm", "80 cm", "40 cm", "70 cm"],
+    answer: 0
+  },
+  {
+    text: "The potential difference between points A and B is:",
+    choices: ["20/7 V", "40/7 V", "10/7 V", "zero"],
+    answer: 3
+  },
+  {
+    text: "In an ammeter 0.2% of main current passes through the galvanometer. If resistance of galvanometer is G, the resistance of ammeter will be:",
+    choices: ["G / 499", "499/500 G", "G / 500", "500/499 G"],
+    answer: 2
+  },
+  {
+    text: "A battery consists of a variable number ‘n’ of identical cells (having internal resistance ‘r’ each) which are connected in series. The terminals of the battery are short - circuited and the current I is measured. Which of the graphs shows the correct relationship between I and n?",
+    choices: ["(a) graph", "(b) graph", "(c) graph", "(d) graph"],
+    answer: 0 // Assuming (a) is the correct graph based on I = nE / (nr) = E/r (constant)
+  },
+  {
+    text: "Sixteen resistors each of resistance 16Ω are connected in the circuit as shown. The net resistance between AB is",
+    choices: ["1Ω", "2 Ω", "3 Ω", "4 Ω"],
+    answer: 2
+  },
+  {
+    text: "Find equivalent capacitance between X and Y",
+    choices: ["3.6 μF", "6 μF", "1.5 μF", "9 μF"],
+    answer: 0
+  },
+  {
+    text: "Each resistor shown in figure is an infinite network of resistance 1Ω. The effective resistance between points A and B is",
+    choices: ["Less than 1 Ω", "1 Ω", "More than 1 Ω but less than 3 Ω", "3 Ω"],
+    answer: 2
+  },
+  {
+    text: "The equivalent resistance between points A and B in the given network is:",
+    choices: ["65Ω", "20Ω", "5Ω", "2Ω"],
+    answer: 2
+  },
+  {
+    text: "In Fig., given C1 = 3 μF, C2 = 5 μF, C3 = 9 μF and C4 = 13 μF. What is the potential difference between points A and B?",
+    choices: ["13 V", "9 V", "0 V", "11 V"],
+    answer: 0
+  },
+  {
+    text: "A battery of 6V is connected to the circuit as shown below. The current I drawn from the battery is:",
+    choices: ["1A", "2A", "6/11 A", "4/3 A"],
+    answer: 0
+  },
+  {
+    text: "A Copper (Cu) rod of length and cross - sectional area 3mm^2 is joined with a similar Aluminium (Al) rod as shown in figure. Find the resistance of the combination between the ends A and B. (Take Resistivity of Copper = 1.7×10^−8 Ωm Resistivity of Aluminium =2.6 × 10^−8 Ωm)",
+    choices: ["2.170 mΩ", "1.420 mΩ", "0.0858 mΩ", "0.858 mΩ"],
+    answer: 3
+  },
+  {
+    text: "In the given figure, a battery of emf is connected across a conductor PQ of length '7' and different area of cross - sections having radii r1 and r2 (r2 < r1). Choose the correct option as one moves from P to Q:",
+    choices: ["Drift velocity of electron increases.", "Electric field decreases.", "Electron current decreases.", "All of these"],
+    answer: 0
+  },
+  {
+    text: "An electric bulb of 500 watt at 100 volt is used in a circuit having a 200 V supply. Calculate the resistance R to be connected in series with the bulb so that the power delivered by the bulb is 500 W.",
+    choices: ["20 Ω", "30 Ω", "5 Ω", "10 Ω"],
+    answer: 0
+  },
+  {
+    text: "In the given figure, the emf of the cell is 2.2 V and if internal resistance is 0.6Ω. Calculate the power dissipated in the whole circuit :",
+    choices: ["1.32 W", "0.65 W", "2.2 W", "4.4 W"],
+    answer: 2
+  },
+  {
+    text: "In the given circuit, it is observed that the current I is independent of the value of the resistance R6. Then, the resistance values must satisfy.",
+    choices: ["R1 R2 R5 = R3 R4 R6", "1/R5 + 1/R6 = 1/R1 + 1/R2 + 1/R3 + 1/R4", "R1 R4 = R2 R3", "R1 R3 = R2 R4"],
+    answer: 2
+  },
+  {
+    text: "Figure shows three resistor configurations R1, R2 and R3 connected to 3V battery. If the power dissipated by the configuration R1, R2 and R3 is P1, P2 and P3 respectively, then",
+    choices: ["P1 > P2 > P3", "P1 > P3 > P2", "P2 > P1 > P3", "P3 > P2 > P1"],
+    answer: 2
+  },
+  {
+    text: "To verify Ohm's law, a student is provided with a test resistor RT, a high resistance R1, a small resistance R2, two identical galvanometers G1 and G2, and a variable voltage source V. The correct circuit to carry out the experiment is:",
+    choices: ["(a) circuit", "(b) circuit", "(c) circuit", "(d) circuit"],
+    answer: 2 // Assuming (c) is the correct circuit for Ohm's law verification
+  },
+  {
+    text: "In an aluminum (Al) bar of square cross section, a square hole is drilled and is filled with iron (Fe) as shown in the figure. The electrical resistivities of Al and Fe are 2.7 × 10^–8 Ω m and 1.0 × 10^–7 Ω m, respectively. The electrical resistance between the two faces P and Q of the composite bar is",
+    choices: ["2475/64 μΩ", "1875/64 μΩ", "1875/49 μΩ", "2475/132 μΩ"],
+    answer: 1
+  }
+];
+
+    let current = 0;
+    let score = 0;
+    let timeLeft = 30 * 60;
+    let timerInterval;
+    let selectedIdx = null;
+
+    const startBtn = document.getElementById("start-btn");
+    const quizContainer = document.getElementById("quiz-container");
+    const questionText = document.getElementById("question-text");
+    const optionsDiv = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-btn");
+    const timerEl = document.getElementById("time");
+    const resultContainer = document.getElementById("result-container");
+    const scoreEl = document.getElementById("score");
+    const totalEl = document.getElementById("total");
+    const percentEl = document.getElementById("percent");
+
+    startBtn.addEventListener("click", startTest);
+    nextBtn.addEventListener("click", () => selectAnswer(false));
+    submitBtn.addEventListener("click", () => selectAnswer(true));
+
+    function startTest() {
+      startBtn.style.display = "none";
+      quizContainer.style.display = "block";
+      totalEl.textContent = questions.length;
+      showQuestion();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerEl.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endTest();
+      }
+      timeLeft--;
+    }
+
+    function showQuestion() {
+      selectedIdx = null;
+      const q = questions[current];
+      questionText.textContent = `Question ${current + 1}: ${q.text}`;
+      optionsDiv.innerHTML = "";
+      q.choices.forEach((choice, idx) => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.addEventListener("click", () => selectOption(idx, btn));
+        optionsDiv.appendChild(btn);
+      });
+      nextBtn.disabled = true;
+      if (current === questions.length - 1) {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "inline-block";
+      } else {
+        nextBtn.style.display = "inline-block";
+        submitBtn.style.display = "none";
+      }
+    }
+
+    function selectOption(index, btn) {
+      selectedIdx = index;
+      document.querySelectorAll(".options button").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      nextBtn.disabled = false;
+      submitBtn.disabled = false;
+    }
+
+    function selectAnswer(isSubmit) {
+      if (selectedIdx !== null && selectedIdx === questions[current].answer) {
+        score++;
+      }
+      if (isSubmit || current === questions.length - 1) {
+        endTest();
+      } else {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function endTest() {
+      clearInterval(timerInterval);
+      quizContainer.style.display = "none";
+      resultContainer.style.display = "block";
+      scoreEl.textContent = score;
+      percentEl.textContent = ((score / questions.length) * 100).toFixed(2);
+    }
+  </script>
+</body>
+</html>
