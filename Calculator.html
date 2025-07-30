@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #181818;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .calculator {
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 15px;
+            background: #222;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .calculator form input {
+            border: 0;
+            outline: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            box-shadow: -5px -5px 12px rgba(255, 255, 255, 0.1),
+                        5px 5px 12px rgba(0, 0, 0, 0.2);
+            background: #333;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            margin: 10px;
+            transition: 0.2s ease;
+        }
+
+        .calculator form input:hover {
+            background: #444;
+        }
+
+        form .display {
+            display: flex;
+            justify-content: flex-end;
+            margin: 20px 0;
+        }
+      #display {
+       padding: 10px 12px; 
+       }
+
+        form .display input {
+            text-align: right;
+            flex: 1;
+            font-size: 2rem;
+            box-shadow: none;
+            background: #000;
+        }
+
+        form input.equal {
+            width: 140px;
+            background: #0f0;
+            color: #000;
+        }
+
+        .copy-info {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <form>
+            <div class="display">
+                <input type="text" name="display" id="display">
+            </div>
+            <div>
+                <input type="button" value="AC" onclick="clearDisplay()">
+                <input type="button" value="DE" onclick="deleteLast()">
+                <input type="button" value="." onclick="appendToDisplay('.')">
+                <input type="button" value="/" onclick="appendToDisplay('/')">
+            </div>
+            <div>
+                <input type="button" value="7" onclick="appendToDisplay('7')">
+                <input type="button" value="8" onclick="appendToDisplay('8')">
+                <input type="button" value="9" onclick="appendToDisplay('9')">
+                <input type="button" value="*" onclick="appendToDisplay('*')">
+            </div>
+            <div>
+                <input type="button" value="4" onclick="appendToDisplay('4')">
+                <input type="button" value="5" onclick="appendToDisplay('5')">
+                <input type="button" value="6" onclick="appendToDisplay('6')">
+                <input type="button" value="-" onclick="appendToDisplay('-')">
+            </div>
+            <div>
+                <input type="button" value="1" onclick="appendToDisplay('1')">
+                <input type="button" value="2" onclick="appendToDisplay('2')">
+                <input type="button" value="3" onclick="appendToDisplay('3')">
+                <input type="button" value="+" onclick="appendToDisplay('+')">
+            </div>
+            <div>
+                <input type="button" value="00" onclick="appendToDisplay('00')">
+                <input type="button" value="0" onclick="appendToDisplay('0')">
+                <input type="button" value="=" class="equal" onclick="calculate()">
+            </div>
+        </form>
+        <div class="copy-info" id="copy-info"></div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const copyInfo = document.getElementById('copy-info');
+
+        function appendToDisplay(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+            copyInfo.textContent = '';
+        }
+
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                let result = eval(display.value);
+                display.value = result;
+                showCopyMessage(result);
+            } catch {
+                display.value = 'Error';
+            }
+        }
+
+        function showCopyMessage(result) {
+            copyInfo.textContent = 'Result: ' + result + ' (Click to Copy)';
+            copyInfo.style.cursor = 'pointer';
+            copyInfo.onclick = () => {
+                try {
+                    navigator.clipboard.writeText(result);
+                    copyInfo.textContent = 'Copied to clipboard!';
+                } catch (e) {
+                    alert('Clipboard permission denied in this browser. Copy manually.');
+                }
+            };
+        }
+    </script>
+</body>
+</html>
