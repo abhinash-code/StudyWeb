@@ -2048,4 +2048,24 @@ body {
       color: #ffffff;
       text-shadow: 0 0 10px #00ffe1, 0 0 20px #0088ff;
     }
- 
+      @media (max-width: 600px) {
+  .main-container {
+    width: 100%;
+    padding: 8px;
+    flex-direction: column;
+  }
+  .feature-cards {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  /* Aur bhi sections ke liye adjust karein */
+}
+.glass-card {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+body {
+  overflow-x: hidden;
+}
+
