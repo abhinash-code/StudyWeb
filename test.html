@@ -1,77 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Page</title>
-    <style>
-       body{
-      background: #3F5EFB;
-background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1)
- 85%);
-       }
-       h2 {
-        margin-left: 30%;
-        color: black;
-        font-size: 35px;
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        text-shadow: 5px 5px 5px rgb(160, 154, 154);
-}
-       table{
-        background-color: #17256d;
-        border-radius: 1rem;
-        border-color: black;
-        margin-left: 37%;
-        width: 300px;
-        height: 300px;
-       }
-     table tr {
-        align-items: center;
-        text-align: center;
-     }
-     #text {
-        color: whitesmoke;
-        font-size: 20px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: 700;
-        text-shadow: 2px 2px 2px rgb(165, 160, 160);
-     }
-     #link a {
-        color: rgb(3, 3, 3);
-        font-size: 16px;
-        text-decoration: none;
-        font-family:Arial, Helvetica, sans-serif;
-        font-weight: 700;
-        text-shadow: 2px 2px 2px rgb(59, 55, 55);
-        cursor: pointer;
-        transition: all 0.50s;
-         }
-      #link a:hover {
-       color: red;
-       transform: scale(1.1s);
-       
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Take a Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    </style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 85%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #ffffffee;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .subject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .subject-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #17256d;
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .subject-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .subject-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .subject-link a {
+      text-decoration: none;
+      background: #fff;
+      color: #17256d;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .subject-link a:hover {
+      background: #ff4b5c;
+      color: #fff;
+    }
+
+    @media (max-width: 500px) {
+      .subject-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
     <h2>In which subject would you like to take the test?</h2>
-    <table cellpadding="20px" cellspacing="2px" border="2">
-        <tr>
-            <td id="text">Physics</td>
-            <td id="link"><a href="PhysicsChaptersTest.html">Click here</a></td>
-        </tr>
-        <tr>
-            <td id="text">Chemistry</td>
-            <td id="link"><a href="ChemistryChaptersTest.html">Click here</a></td>
-        </tr>
-        <tr>
-            <td id="text">Mathematics</td>
-            <td id="link"><a href="MathsChaptersTest.html">Click here</a></td>
-        </tr>
-        <tr>
-            <td id="text">Biology</td>
-            <td id="link"><a href="BiologyChaptersTest.html">Click here</a></td>
-        </tr>
-    </table>
+    <div class="subject-list">
+      <div class="subject-item">
+        <div class="subject-name">Physics</div>
+        <div class="subject-link"><a href="PhysicsChaptersTest.html">Take Test</a></div>
+      </div>
+      <div class="subject-item">
+        <div class="subject-name">Chemistry</div>
+        <div class="subject-link"><a href="ChemistryChaptersTest.html">Take Test</a></div>
+      </div>
+      <div class="subject-item">
+        <div class="subject-name">Mathematics</div>
+        <div class="subject-link"><a href="MathsChaptersTest.html">Take Test</a></div>
+      </div>
+      <div class="subject-item">
+        <div class="subject-name">Biology</div>
+        <div class="subject-link"><a href="BiologyChaptersTest.html">Take Test</a></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
