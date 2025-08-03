@@ -2068,4 +2068,8 @@ body {
 body {
   overflow-x: hidden;
 }
+.navbar { display: none !important; }
+.fab-container { display: none !important; }
+.search-results, .notification { display: none !important; }
+
 
