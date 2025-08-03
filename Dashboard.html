@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyWeb - Unlock Knowledge</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">StudyWeb</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#materials" class="nav-link">Materials</a></li>
+                <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+                <li><a href="#tech" class="nav-link">Technology</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <canvas id="particleCanvas" class="particle-canvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-card glassmorphism">
+                <h1 class="hero-title gradient-text">Unlock Knowledge</h1>
+                <p class="hero-subtitle">Experience the future of learning with AI-powered study tools and personalized educational content.</p>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search for courses, notes, or topics..." id="heroSearch">
+                    <button class="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="50000">0</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="100000">0</span>
+                        <span class="stat-label">Study Materials</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="98">0</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Powerful Features</h2>
+                <p class="section-subtitle">Discover our comprehensive suite of learning tools designed to accelerate your educational journey.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glassmorphism tilt-card" data-tilt>
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">Smart Notes</h3>
+                    <p class="feature-description">AI-powered note-taking system with intelligent organization</p>
+                    <div class="feature-stats">10,000+ Notes</div>
+                    <div class="feature-border"></div>
+                </div>
+                <div class="feature-card glassmorphism tilt-card" data-tilt>
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Learning Objectives</h3>
+                    <p class="feature-description">Personalized learning paths tailored to your goals</p>
+                    <div class="feature-stats">2,500+ Objectives</div>
+                    <div class="feature-border"></div>
+                </div>
+                <div class="feature-card glassmorphism tilt-card" data-tilt>
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Online Tests</h3>
+                    <p class="feature-description">Comprehensive testing platform with instant feedback</p>
+                    <div class="feature-stats">5,000+ Tests</div>
+                    <div class="feature-border"></div>
+                </div>
+                <div class="feature-card glassmorphism tilt-card" data-tilt>
+                    <div class="feature-icon">💎</div>
+                    <h3 class="feature-title">Study Resources</h3>
+                    <p class="feature-description">Curated collection of premium educational materials</p>
+                    <div class="feature-stats">15,000+ Resources</div>
+                    <div class="feature-border"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section id="materials" class="materials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Study Materials</h2>
+                <p class="section-subtitle">Browse our extensive collection of educational content across various disciplines.</p>
+            </div>
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="all">All Categories</button>
+                <button class="tab-btn" data-category="cs">Computer Science</button>
+                <button class="tab-btn" data-category="math">Mathematics</button>
+                <button class="tab-btn" data-category="physics">Physics</button>
+                <button class="tab-btn" data-category="chemistry">Chemistry</button>
+                <button class="tab-btn" data-category="biology">Biology</button>
+                <div class="tab-indicator"></div>
+            </div>
+            <div class="materials-grid">
+                <div class="material-card glassmorphism" data-category="cs">
+                    <div class="material-type">Notes</div>
+                    <h3 class="material-title">Data Structures & Algorithms</h3>
+                    <p class="material-description">Comprehensive guide to DSA concepts with practical examples.</p>
+                    <div class="material-stats">
+                        <span>1,250 resources</span>
+                        <div class="rating">⭐ 4.9</div>
+                    </div>
+                </div>
+                <div class="material-card glassmorphism" data-category="math">
+                    <div class="material-type">Tests</div>
+                    <h3 class="material-title">Calculus Mastery</h3>
+                    <p class="material-description">Advanced calculus problems with step-by-step solutions.</p>
+                    <div class="material-stats">
+                        <span>980 resources</span>
+                        <div class="rating">⭐ 4.8</div>
+                    </div>
+                    <div class="progress-ring">
+                        <svg width="50" height="50">
+                            <circle cx="25" cy="25" r="20" fill="none" stroke="var(--color-border)" stroke-width="3"></circle>
+                            <circle cx="25" cy="25" r="20" fill="none" stroke="var(--color-primary)" stroke-width="3" stroke-dasharray="125.6" stroke-dashoffset="31.4"></circle>
+                        </svg>
+                        <span class="progress-text">75%</span>
+                    </div>
+                </div>
+                <div class="material-card glassmorphism" data-category="physics">
+                    <div class="material-type">Objectives</div>
+                    <h3 class="material-title">Quantum Physics</h3>
+                    <p class="material-description">Explore the fascinating world of quantum mechanics.</p>
+                    <div class="material-stats">
+                        <span>756 resources</span>
+                        <div class="rating">⭐ 4.7</div>
+                    </div>
+                    <div class="checklist">
+                        <div class="checklist-item completed">✓ Wave-Particle Duality</div>
+                        <div class="checklist-item completed">✓ Uncertainty Principle</div>
+                        <div class="checklist-item">○ Quantum Entanglement</div>
+                    </div>
+                </div>
+                <div class="material-card glassmorphism" data-category="chemistry">
+                    <div class="material-type">Resources</div>
+                    <h3 class="material-title">Organic Chemistry</h3>
+                    <p class="material-description">Master organic reactions and mechanisms.</p>
+                    <div class="material-stats">
+                        <span>643 resources</span>
+                        <div class="rating">⭐ 4.6</div>
+                    </div>
+                </div>
+                <div class="material-card glassmorphism" data-category="biology">
+                    <div class="material-type">Notes</div>
+                    <h3 class="material-title">Molecular Biology</h3>
+                    <p class="material-description">Deep dive into cellular processes and genetics.</p>
+                    <div class="material-stats">
+                        <span>532 resources</span>
+                        <div class="rating">⭐ 4.8</div>
+                    </div>
+                </div>
+                <div class="material-card glassmorphism" data-category="cs">
+                    <div class="material-type">Tests</div>
+                    <h3 class="material-title">Machine Learning</h3>
+                    <p class="material-description">AI and ML concepts with hands-on projects.</p>
+                    <div class="material-stats">
+                        <span>876 resources</span>
+                        <div class="rating">⭐ 4.9</div>
+                    </div>
+                </div>
+            </div>
+            <button class="load-more-btn shimmer-btn">Load More Materials</button>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Student Success Stories</h2>
+                <p class="section-subtitle">Hear from students who transformed their learning experience with StudyWeb.</p>
+            </div>
+            <div class="testimonial-carousel">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-card glassmorphism active">
+                        <div class="testimonial-header">
+                            <div class="student-avatar">👩‍💻</div>
+                            <div class="student-info">
+                                <h4 class="student-name">Sarah Johnson</h4>
+                                <p class="student-role">Computer Science Student</p>
+                            </div>
+                            <div class="rating-stars">
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"StudyWeb transformed my learning experience. The AI-powered notes and personalized objectives helped me ace my algorithms course!"</p>
+                    </div>
+                    <div class="testimonial-card glassmorphism">
+                        <div class="testimonial-header">
+                            <div class="student-avatar">👨‍🎓</div>
+                            <div class="student-info">
+                                <h4 class="student-name">Michael Chen</h4>
+                                <p class="student-role">Engineering Graduate</p>
+                            </div>
+                            <div class="rating-stars">
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"The online testing platform is incredible. Real-time feedback and detailed analytics helped me identify my weak areas instantly."</p>
+                    </div>
+                    <div class="testimonial-card glassmorphism">
+                        <div class="testimonial-header">
+                            <div class="student-avatar">👩‍⚕️</div>
+                            <div class="student-info">
+                                <h4 class="student-name">Emma Williams</h4>
+                                <p class="student-role">Medical Student</p>
+                            </div>
+                            <div class="rating-stars">
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                                <span class="star filled">⭐</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"The study resources are top-notch. Having everything organized in one place saved me hours of research time every week."</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev" id="prevBtn">‹</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                    <button class="carousel-btn next" id="nextBtn">›</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack Section -->
+    <section id="tech" class="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Powered by Modern Technology</h2>
+                <p class="section-subtitle">Built with cutting-edge technologies to ensure the best learning experience.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item" data-tech="react">
+                    <div class="tech-logo">⚛️</div>
+                    <h3 class="tech-name">React</h3>
+                    <div class="progress-circle" data-progress="95">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="9.42"></circle>
+                        </svg>
+                        <span class="progress-text">95%</span>
+                    </div>
+                </div>
+                <div class="tech-item" data-tech="python">
+                    <div class="tech-logo">🐍</div>
+                    <h3 class="tech-name">Python</h3>
+                    <div class="progress-circle" data-progress="90">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="18.84"></circle>
+                        </svg>
+                        <span class="progress-text">90%</span>
+                    </div>
+                </div>
+                <div class="tech-item" data-tech="node">
+                    <div class="tech-logo">💚</div>
+                    <h3 class="tech-name">Node.js</h3>
+                    <div class="progress-circle" data-progress="88">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="22.61"></circle>
+                        </svg>
+                        <span class="progress-text">88%</span>
+                    </div>
+                </div>
+                <div class="tech-item" data-tech="ai">
+                    <div class="tech-logo">🤖</div>
+                    <h3 class="tech-name">AI/ML</h3>
+                    <div class="progress-circle" data-progress="85">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="28.26"></circle>
+                        </svg>
+                        <span class="progress-text">85%</span>
+                    </div>
+                </div>
+                <div class="tech-item" data-tech="cloud">
+                    <div class="tech-logo">☁️</div>
+                    <h3 class="tech-name">Cloud</h3>
+                    <div class="progress-circle" data-progress="92">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="15.07"></circle>
+                        </svg>
+                        <span class="progress-text">92%</span>
+                    </div>
+                </div>
+                <div class="tech-item" data-tech="security">
+                    <div class="tech-logo">🔒</div>
+                    <h3 class="tech-name">Security</h3>
+                    <div class="progress-circle" data-progress="87">
+                        <svg width="80" height="80">
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-border)" stroke-width="4"></circle>
+                            <circle cx="40" cy="40" r="30" fill="none" stroke="var(--color-primary)" stroke-width="4" stroke-dasharray="188.4" stroke-dashoffset="24.49"></circle>
+                        </svg>
+                        <span class="progress-text">87%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content glassmorphism">
+                <h2 class="cta-title gradient-text">Ready to Transform Your Learning?</h2>
+                <p class="cta-subtitle">Join thousands of students who are already experiencing the future of education.</p>
+                <div class="cta-buttons">
+                    <button class="btn-gradient magnetic-btn" id="getStartedBtn">
+                        <span>Get Started Free</span>
+                        <div class="shine-overlay"></div>
+                    </button>
+                    <button class="btn-outline">Watch Demo</button>
+                </div>
+                <div class="newsletter-signup">
+                    <div class="input-group">
+                        <input type="email" class="newsletter-input" placeholder=" " id="newsletterEmail">
+                        <label for="newsletterEmail" class="floating-label">Enter your email</label>
+                        <button class="newsletter-btn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="wave-separator">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,120 L0,60 Q300,0 600,60 T1200,60 L1200,120 Z" fill="var(--color-surface)"></path>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">StudyWeb</h3>
+                    <p class="footer-description">Empowering students worldwide with intelligent learning solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link glassmorphism" target="_blank">📘</a>
+                        <a href="#" class="social-link glassmorphism" target="_blank">🐦</a>
+                        <a href="#" class="social-link glassmorphism" target="_blank">💼</a>
+                        <a href="#" class="social-link glassmorphism" target="_blank">📷</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Features</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Smart Notes</a></li>
+                        <li><a href="#" class="footer-link">Learning Objectives</a></li>
+                        <li><a href="#" class="footer-link">Online Tests</a></li>
+                        <li><a href="#" class="footer-link">Study Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">About Us</a></li>
+                        <li><a href="#" class="footer-link">Careers</a></li>
+                        <li><a href="#" class="footer-link">Press</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li><a href="#" class="footer-link">API Docs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StudyWeb. All rights reserved.</p>
+                <p>Made with ❤️ for students worldwide</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab glassmorphism" id="fab" aria-label="Quick Actions">
+            <span class="fab-icon">⚡</span>
+        </button>
+        <div class="fab-tooltip">Quick Actions</div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
