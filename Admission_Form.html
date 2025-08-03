@@ -266,9 +266,80 @@
                 font-size: 16px; /* Prevents zoom on iOS */
             }
         }
+        .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: fixed; 
+      top: 0;
+      left: 0;
+      margin-top: 10px;
+      margin-left: 10px;
+      z-index: 1000;
+
+    }
+
+    .logo-circle {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at center, #00ffe1, #0051ff);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
+      animation: rotateCircle 2s linear infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-circle:hover {
+      transform: scale(1.15) rotate(20deg);
+      box-shadow: 0 0 30px #00ffe1, 0 0 50px #0088ff;
+      border-color: #ffffff55;
+    }
+
+    @keyframes rotateCircle {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .logo-circle span {
+      color: white;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 12px #00ffe1, 0 0 5px #0088ff;
+      pointer-events: none;
+    }
+
+    .logo-text {
+      color: #00ffe1;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logo-text:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px #00ffe1, 0 0 20px #0088ff;
+    }
     </style>
 </head>
 <body>
+    <div class="logo-container">
+    <div class="logo-circle">
+      <span>SW</span>
+    </div>
+    <div class="logo-text">StudyWeb</div>
+  </div>
     <div class="container">
         <div class="header">
             <h1>COLLEGE ADMISSIONS FORM</h1>
@@ -667,3 +738,4 @@
     </script>
 </body>
 </html>
+
