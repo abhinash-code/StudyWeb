@@ -1,63 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objective Page</title>
-    <style>
-        body{
-            background-color: rgb(58, 55, 12);
-        }
-        table {
-            text-align: center;
-            margin-left: 30%;
-            margin-top: 10%;
-            background: #EEAECA;
-     background: radial-gradient(circle, rgba(238, 174, 202, 1)
- 0%, rgba(181, 182, 222, 1) 65%,
- rgba(173, 183, 225, 1) 75%,
-  rgba(148, 187, 233, 1) 100%);
-           box-shadow: 10px 10px 10px grey;
-           border-radius: 1rem;
-        }
-        table a {
-            text-decoration: none;
-            color: red;
-        }
-        table tr td {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: blue;
-            text-shadow: 2px 2px 2px grey;
-            text-shadow: 2px 2px 2px grey;
-        }
-        h1 {
-            font-size: 40px;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            text-shadow: 5px 5px 5px rgb(100, 89, 89);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Your Subject</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #2b5876, #4e4376);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Heading */
+    .container h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Grid */
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Card */
+    .card {
+      background: #ffffffdd;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Subject Name */
+    .card__title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #3a3a3a;
+    }
+
+    /* Button */
+    .card__link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #4e4376;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .card__link:hover {
+      background: #2b5876;
+    }
+
+    @media (max-width: 400px) {
+      .container h1 {
+        font-size: 2rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-   <h1>Chosse Your Subject:</h1>
-   <table border="1" cellpadding="20px" cellspacing="2px">
-    <tr>
-        <td>Physics</td>
-        <td><a href="Physics_Objective.html">Click here</a></td>
-    </tr>
-    <tr>
-        <td>Chemistry</td>
-        <td><a href="">Click here</a></td>
-    </tr>
-    <tr>
-        <td>Mathamatics</td>
-        <td><a href="">Click here</a></td>
-    </tr>
-    <tr>
-        <td>Biology</td>
-        <td><a href="">Click here</a></td>
-    </tr>
-   </table>
+  <div class="container">
+    <h1>Choose Your Subject</h1>
+    <div class="subjects">
+      <div class="card">
+        <div class="card__title">Physics</div>
+        <a class="card__link" href="Physics_Objective.html">Go to Physics</a>
+      </div>
+      <div class="card">
+        <div class="card__title">Chemistry</div>
+        <a class="card__link" href="Chemistry_Objective.html">Go to Chemistry</a>
+      </div>
+      <div class="card">
+        <div class="card__title">Mathematics</div>
+        <a class="card__link" href="Mathematics_Objective.html">Go to Mathematics</a>
+      </div>
+      <div class="card">
+        <div class="card__title">Biology</div>
+        <a class="card__link" href="Biology_Objective.html">Go to Biology</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
