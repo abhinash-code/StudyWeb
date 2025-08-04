@@ -2,189 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Choose Your Subject</title>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose Subject</title>
   <style>
-    /* Reset & Base */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
     body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #2b5876, #4e4376);
-      color: #333;
-      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #232526, #414345);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
-    }
-
-    /* Container */
-    .container {
-      max-width: 800px;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* Heading */
-    .container h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
+      height: 100vh;
       color: #fff;
-      margin-bottom: 1.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Grid */
-    .subjects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
     }
 
-    /* Card */
-    .card {
-      background: #ffffffdd;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    .subject-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      width: 450px;
+      max-width: 90%;
     }
 
-    /* Subject Name */
-    .card__title {
-      font-size: 1.25rem;
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    .row:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .subject {
+      font-size: 1.3rem;
       font-weight: 600;
-      margin-bottom: 1rem;
-      color: #3a3a3a;
+      color: #00d0ff;
     }
 
-    /* Button */
-    .card__link {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background: #4e4376;
-      color: #fff;
+    .link a {
       text-decoration: none;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-    .card__link:hover {
-      background: #2b5876;
+      color: #ff5252;
+      font-weight: bold;
+      transition: color 0.3s;
     }
 
-    @media (max-width: 400px) {
-      .container h1 {
+    .link a:hover {
+      color: #fff200;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
         font-size: 2rem;
       }
-      .card {
-        padding: 1rem;
+
+      .subject-box {
+        width: 95%;
       }
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: fixed; 
-      top: 0;
-      left: 0;
-      margin-top: 10px;
-      margin-left: 10px;
-      z-index: 1000;
 
-    }
-
-    .logo-circle {
-      width: 80px;
-      height: 80px;
-      background: radial-gradient(circle at center, #00ffe1, #0051ff);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
-      animation: rotateCircle 2s linear infinite;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 3px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .logo-circle:hover {
-      transform: scale(1.15) rotate(20deg);
-      box-shadow: 0 0 30px #00ffe1, 0 0 50px #0088ff;
-      border-color: #ffffff55;
-    }
-
-    @keyframes rotateCircle {
-      0% {
-        transform: rotate(0deg);
+      .row {
+        padding: 15px 20px;
       }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .logo-circle span {
-      color: white;
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 12px #00ffe1, 0 0 5px #0088ff;
-      pointer-events: none;
-    }
-
-    .logo-text {
-      color: #00ffe1;
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .logo-text:hover {
-      color: #ffffff;
-      text-shadow: 0 0 10px #00ffe1, 0 0 20px #0088ff;
     }
   </style>
 </head>
 <body>
-  <div class="logo-container">
-    <div class="logo-circle">
-      <span>SW</span>
+  <h1>Choose Your Subject</h1>
+  <div class="subject-box">
+    <div class="row">
+      <div class="subject">Physics</div>
+      <div class="link"><a href="Physics_Objective.html">Click here</a></div>
     </div>
-    <div class="logo-text">StudyWeb</div>
-  </div>
-  <div class="container">
-    <h1>Choose Your Subject</h1>
-    <div class="subjects">
-      <div class="card">
-        <div class="card__title">Physics</div>
-        <a class="card__link" href="Physics_Objective.html">Go to Physics</a>
-      </div>
-      <div class="card">
-        <div class="card__title">Chemistry</div>
-        <a class="card__link" href="Chemistry_Objective.html">Go to Chemistry</a>
-      </div>
-      <div class="card">
-        <div class="card__title">Mathematics</div>
-        <a class="card__link" href="Mathematics_Objective.html">Go to Mathematics</a>
-      </div>
-      <div class="card">
-        <div class="card__title">Biology</div>
-        <a class="card__link" href="Biology_Objective.html">Go to Biology</a>
-      </div>
+    <div class="row">
+      <div class="subject">Chemistry</div>
+      <div class="link"><a href="chemistry_Objective.html">Click here</a></div>
+    </div>
+    <div class="row">
+      <div class="subject">Mathematics</div>
+      <div class="link"><a href="Maths_Objecitve.html">Click here</a></div>
+    </div>
+    <div class="row">
+      <div class="subject">Biology</div>
+      <div class="link"><a href="Biology_Objective.html">Click here</a></div>
     </div>
   </div>
 </body>
 </html>
-
