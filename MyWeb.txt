@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Word Web</title>
+  <style>
+    #headline{
+      background-color: rgb(126, 169, 206);
+      
+  }
+  .head1 ul li button {
+    background-color: yellow;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background-color;
+  }
+  .head1 ul li button:hover {
+    background-color: rgb(243, 243, 124);
+  }
+  #headline h1 {
+      color: rgb(170, 16, 16);
+      font-family: Impact;
+      gap: 5px;
+      margin-left: 35%;
+      text-spacing-trim: 2px;
+      animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0% {color: red;}
+    25% {color: yellow;}
+    50%{color: blue;}
+    75% {color: green;}
+    100% {color: rgb(231, 238, 236);}
+    
+  }
+  .head1{
+      background-color: #3e3f3c00;
+      margin-left: 50%;
+  }
+  .head1 a {
+      float: left;
+      margin-right: 40px;
+      margin-left: 10px;
+      text-align: center;
+      justify-content: center;
+      text-decoration: none;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 20px;
+      color: rgb(237, 245, 244);
+      cursor: pointer;
+      transition: background-color;
+  }
+  .head1 a:hover {
+      background-color: rgb(0, 0, 0);
+  }
+  
+  body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    
+    
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* शुरू में छिपा हुआ */
+    width: 250px;
+    height: 100%;
+    background-color: #070303;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+    box-sizing: border-box;
+}
+
+.sidebar.active {
+    left: 0; /* सक्रिय होने पर दिखाई देगा */
+}
+
+.toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: #555;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+}
+
+.toggle-btn span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #555;
+}
+
+.content {
+    margin-top: 4rem;
+    margin-left: 20rem;
+    font-family:monospace;
+    text-shadow:rgb(59, 59, 59) ;
+    box-shadow: #070303;
+    font-size: 30px;
+}
+
+
+#end {
+  margin-top: 1000px;
+}
+.content button {
+  color: #fff;
+  background-color: #cfc866;
+  padding: 15px 30px;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: padding 0.50s;
+}
+.content button:hover {
+  background-color: #b6b909;
+  padding: 16px 31px;
+  transform: scale(1.1s);
+}
+#description fieldset  {
+  margin-top: 25rem;
+  margin-left: 10rem;
+  border: none;
+  color: white;
+  border-radius: 2rem;
+  background-color: #26263d;
+  text-align: center;
+  width: 900px;
+  box-shadow: lightgrey;
+  cursor: pointer;
+  transition: background-color;
+  
+}
+.content p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  outline: white;
+  font-weight: bold;
+  text-spacing-trim: 2px;
+  text-shadow: 6px 6px 6px rgb(43, 42, 42);
+}
+#description fieldset:hover {
+  background-color: #0f12a5;
+  transform: scale(1.1s);
+}
+#Name h3 {
+ 
+  position: absolute;
+  animation: moveText 5s linear infinite; 
+  color: #eff3f5;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  text-shadow: 5px 5px 5px black;
+  font-weight: bold;
+}
+@keyframes moveText {
+  0% { transform: translateX(0px); }
+  50% { transform: translateX(1000px);}
+  100% {transform: translateX(0px);}
+}
+#channelBtn{
+  background-color: #070303;
+  color: white;
+  border: none;
+  font-size: 17px;
+  
+}
+  </style>
+</head>
+<body background="space.jpg">
+  <div id="headline"> 
+  <h1><b>WELCOME TO MY WORK PAGE</b></h1><hr color="blue"></div>
+  <div class="head1">
+    <ul type="none">
+      <li><a href="download.html">My Work shop</a></li>
+      <li><a href="">Downloads</a></li>
+      <li><a href="new.html">Learn more</a></li>
+      <li><a href="">About me</a></li>
+    </ul>
+  </div><br><hr><br>
+  <div class="sidebar">
+    <div class="toggle-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <ul>
+        <li><a href="#">notification</a></li>
+        <li><a href="#"><button onclick="newPage()" id="channelBtn">channel links</button></a></li>
+        <li><a href="My photos.html">See Photos</a></li>
+        <li><a href="#">See Videos</a></li>
+    </ul>
+</div>
+<div id="Name"><h3><b>ABHINASH KUMAR JHA😎</b></h3></div>
+<div class="content">
+  <h1>Come And Grow With Us🤝</h1>
+  <p>Your future is in Your Hand</p>
+  <button onclick="go()">Visit↪</button>
+</div>
+<div id="description">
+  <fieldset>
+    <legend><b>description</b></legend>
+    <p><b>This work page is created to showcase the work I have done.<br>
+      It includes various projects I have done and information about them.<br>
+      My goal is to showcase my skills and experience to you,<br>
+       and give you a good idea of ​the quality of my work.<br>
+       I am a dedicated and experienced web developer with a passion<br>
+        for designing and developing websites and web applications.<br>
+        I am always eager to learn new technologies and trends,<br>
+         and I am committed to achieving excellence in my work.</b>
+    </p>
+  </fieldset>
+</div>
+<div id="end"><b>THE END</b></div>
+
+<script>
+  const toggleBtn = document.querySelector('.toggle-btn');
+  const sidebar = document.querySelector('.sidebar');
+
+  toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+  });
+  
+</script>
+<script>
+  function go() {
+    window.location.href="welcome.html";
+  }
+</script>
+<script> 
+  function newPage() {
+    const HelloWindow = window.open();
+    HelloWindow.document.write(`
+    <htmL>
+      <head>
+        <title>Channel Links</title>
+        <style>
+          table a {
+          text-decoration:none;
+          color:red;
+          }
+          div {
+          
+          margin-left:30%;
+          margin-top:150px;
+          }
+          table {
+          background-color:lightgrey;
+          border:2px solid black;
+          
+          }
+          table th {
+          font-family:Arial;
+          color:blue;
+          }
+          h2 {
+          font-family:impact;
+          color:green;
+          font-size:30px;
+          }
+          .Channel h2{
+          font-family:Arial;
+          color:red;
+          font-size:30px;
+          }
+          .Channel a{
+          text-decoration:none;
+          color:grenn;
+          }
+          h1 {
+          color:red;
+          font-size:50px;
+          font-family:impact;
+          }
+          .Channel p {
+          font-size:20px;
+          color:blue;
+          }
+
+        </style>
+      </head>
+      <body>
+        <h1>Here is Your Channel Links</h1><hr>
+        <h2><b>Youtube channels</b></h2>
+        <div>
+          <table cellpadding="40px" border="1" cellspacing="2px">
+            <tr>
+              <th>My first Youtube channel link</th>
+              <td><a href="https://youtube.com/@abhinashkumar-s4f?si=NMP8h0QKHGbS05uz">Click here</a></td>
+            </tr>
+            <tr>
+              <th>My second Youtube Channel link</th>
+              <td><a href="https://youtube.com/@comedyflicks-q9c?si=gO2nMC2fa36GIQgS">Click here</a></td>
+            </tr>
+            <tr>
+              <th>My Third Youtube channel link</th>
+            <td><a href="https://youtube.com/@missneha-d5m?si=eQaHX0TKy5ExAamn">Click here</a></td>
+            </tr>
+          </table>
+        </div>
+          <br><br>
+          <div class="Channel">
+          <h2><b>Instagram Channel</b></h2>
+          <p><a href="https://www.instagram.com/legend.abhinash_999?igsh=dWhyZ2cycWozdTIy">Click here</a></p>
+          <br><br>
+          <h2><b>Contact Numbers</b></h2>
+          <p><b>7870109958</b></p>
+          <p><b>9709702010</b></p>
+          <p><b>9304609614</b></p>
+          </div>  
+        </body>
+        </html>
+
+    `);
+    HelloWindow.document.close();
+  }
+</script>
+
+
+  
+</body>
+</html>
