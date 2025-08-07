@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology Notes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #004d40, #1de9b6);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      color: #a7ffeb;
+      text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      animation: slideUp 1.3s ease-out;
+    }
+
+    th, td {
+      padding: 18px;
+      text-align: center;
+      font-size: 1.2rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    tr:hover {
+      background-color: rgba(167, 255, 235, 0.2);
+      transform: scale(1.01);
+    }
+
+    td a {
+      text-decoration: none;
+      color: #00e676;
+      font-weight: bold;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    td a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px #69f0ae;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(120px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      td, th {
+        padding: 15px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Here is Your Biology Notes</h1>
+  <table>
+    <tr>
+      <td>Chapter 1</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 2</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 3</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 4</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 5</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 6</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 7</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 8</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 9</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 10</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+  </table>
+</body>
+</html>

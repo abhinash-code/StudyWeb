@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Your Subject</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e3f0ff 0%, #f7faff 80%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            padding: 36px 42px;
+            border-radius: 18px;
+            box-shadow: 0 6px 36px 0 rgba(44, 62, 80, 0.13);
+            max-width: 510px;
+            width: 97%;
+            margin: 40px 0;
+            animation: fadein 0.7s;
+        }
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h1 {
+            color: #15396b;
+            letter-spacing: 1.6px;
+            margin-bottom: 28px;
+            font-weight: 700;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f7fafd;
+            border-radius: 13px;
+            box-shadow: 0 1px 7px #cfd8dc2b;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 16px 10px;
+            text-align: left;
+            font-size: 1.09em;
+        }
+        th {
+            background-color: #e3eafc;
+            color: #204385;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        tr {
+            transition: background 0.18s;
+        }
+        tr:hover {
+            background: #e2eeff;
+        }
+        td {
+            color: #22293b;
+            font-weight: 500;
+        }
+        .link-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #1976d2 30%, #41acf7 100%);
+            color: #fff;
+            padding: 9px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 2px 6px #aac6fa2b;
+            transition: background 0.19s, box-shadow 0.19s;
+        }
+        .link-btn:hover {
+            background: linear-gradient(90deg, #1565c0, #1976d2);
+            box-shadow: 0 6px 16px #92b2f529;
+            text-decoration: underline;
+        }
+        @media (max-width:600px) {
+            .container { padding: 12px 2px; }
+            table, th, td { font-size: 0.96em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Subject</h1>
+        <table>
+            <tr>
+                <th>Subject Name</th>
+                <th>Link</th>
+            </tr>
+            <tr>
+                <td>Physics</td>
+                <td><a class="link-btn" href="PhysicsNotes.html">Click Here</a></td>
+            </tr>
+            <tr>
+                <td>Chemistry</td>
+                <td><a class="link-btn" href="ChemistryNotes.html">Click Here</a></td>
+            </tr>
+            <tr>
+                <td>Maths</td>
+                <td><a class="link-btn" href="MathsNotes.html">Click Here</a></td>
+            </tr>
+            <tr>
+                <td>Biology</td>
+                <td><a class="link-btn" href="BiologyNotes.html">Click Here</a></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

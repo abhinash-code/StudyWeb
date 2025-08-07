@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Notes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      color: #00bcd4;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      animation: slideUp 1.5s ease-out;
+    }
+
+    th, td {
+      padding: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    tr:hover {
+      background-color: rgba(0, 188, 212, 0.15);
+      transform: scale(1.01);
+    }
+
+    td a {
+      text-decoration: none;
+      color: #ff5722;
+      font-weight: bold;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    td a:hover {
+      color: #ffe082;
+      text-shadow: 0 0 8px #ffe082;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(100px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      td, th {
+        padding: 15px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Here is Your Chemistry Notes</h1>
+  <table>
+    <tr>
+      <td>Chapter 1</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 2</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 3</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 4</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 5</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 6</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 7</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 8</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 9</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+    <tr>
+      <td>Chapter 10</td>
+      <td><a href="#">Click here</a></td>
+    </tr>
+  </table>
+</body>
+</html>
