@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Choose formula type</title>
+  <style>
+    :root{
+      --bg-1:#0f1724;
+      --bg-2:#0b1220;
+      --card:#0f1726;
+      --accent:#7c3aed;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:32px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent),
+                  linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:#e6eef6;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .wrap{
+      width:100%; max-width:720px; border-radius:14px; padding:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    header{display:flex; align-items:flex-start; gap:16px; margin-bottom:18px}
+    .logo{
+      width:56px; height:56px; border-radius:10px; display:grid; place-items:center;
+      background:linear-gradient(135deg,var(--accent), #06b6d4);
+      box-shadow: 0 6px 18px rgba(124,58,237,0.18);
+      font-weight:700; font-size:18px; color:white;
+    }
+    h1{font-size:1.6rem; margin:0; line-height:1.05}
+    p.lead{margin:6px 0 0; color:var(--muted); font-size:0.95rem}
+
+    .card{margin-top:14px; border-radius:12px; overflow:hidden; background:var(--card); border:1px solid rgba(255,255,255,0.03)}
+    table{width:100%; border-collapse:collapse}
+    td{padding:20px 22px; vertical-align:middle}
+    td.type{font-weight:600; font-size:1.05rem; color:#eef2ff}
+    td.action{text-align:right}
+
+    a.btn{
+      display:inline-flex; gap:10px; align-items:center; justify-content:center;
+      padding:10px 16px; border-radius:10px; text-decoration:none; font-weight:700;
+      background: linear-gradient(90deg, rgba(124,58,237,0.18), rgba(6,182,212,0.08));
+      color:var(--accent); border:1px solid rgba(124,58,237,0.18);
+      transition: transform .18s ease, box-shadow .18s ease, color .18s ease;
+    }
+    a.btn:hover{ transform:translateY(-4px); box-shadow:0 8px 30px rgba(12,18,40,0.6); color:#fff}
+
+    tr.border-top td{border-top:1px solid rgba(255,255,255,0.03)}
+
+    .meta{font-size:0.86rem; color:var(--muted)}
+
+    @media (max-width:520px){
+      .wrap{padding:18px}
+      td{padding:14px}
+      .logo{width:48px;height:48px}
+      h1{font-size:1.2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header>
+      <div class="logo">Fx</div>
+      <div>
+        <h1>Choose formula type</h1>
+        <p class="lead">Select the kind of formula you want — links are editable later. Clean UI, dev-friendly markup.</p>
+      </div>
+    </header>
+
+    <div class="card" aria-hidden="false">
+      <table>
+        <tbody>
+          <tr>
+            <td class="type">Solved Formula</td>
+            <td class="action"><a class="btn" href="PhysicsFormulaChapter-3.pdf" title="Add link for Solved Formula">Click here ↗</a></td>
+          </tr>
+          <tr class="border-top">
+            <td class="type">Direct Formula</td>
+            <td class="action"><a class="btn" href="physicsChapter-3 formulas.pdf" title="Add link for Direct Formula">Click here ↗</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
