@@ -118,8 +118,8 @@
                         <button class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all" onclick="ShowPage()">
                             Hire Me
                         </button>
-                        <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-all">
-                            Download CV
+                        <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-all"onclick = "SeePage()">
+                            See Projects
                         </button>
                     </div>
                 </div>
@@ -261,7 +261,7 @@
     <!-- Projects Section -->
     <section id="projects" class="py-20 bg-white">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">My Projects</h2>
+            <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Additional Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="project-card bg-white rounded-xl shadow-lg overflow-hidden">
                     <img src="MyWebsiteImage1.JPG" alt="Modern e-commerce website homepage with clean design, product grid layout, and shopping cart interface" class="w-full h-48 object-cover" />
@@ -571,7 +571,11 @@
             window.location.href= "Hire-me.html";
         }
     </script>
+    function SeePage() {
+    window.location.href = "MainProjects.html";
+    }
 </body>
 </html>
+
 
 
