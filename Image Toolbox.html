@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image Toolbox — Mini Squoosh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f1724;--card:#071022;--muted:#94a3b8;--accent:#06b6d4;--glass:rgba(255,255,255,0.03);--success:#10b981}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#041124,#071026);color:#e6eef8}
+    .wrap{max-width:1200px;margin:18px auto;padding:16px}
+    header{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:800;color:#022;}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:16px;margin-top:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* left: canvases */
+    .preview-area{display:flex;gap:12px;flex-direction:column}
+    .canv-row{display:flex;gap:12px}
+    .canvas-card{flex:1;display:flex;flex-direction:column;gap:8px}
+    .canvas-card h3{margin:0;font-size:13px}
+    canvas{width:100%;height:360px;border-radius:8px;background:#fff;display:block}
+
+    /* right: controls */
+    .controls{display:flex;flex-direction:column;gap:10px}
+    .drop{border:2px dashed rgba(255,255,255,0.04);padding:14px;border-radius:10px;text-align:center;color:var(--muted)}
+    .row{display:flex;gap:8px;align-items:center}
+    label{font-size:13px;color:var(--muted);min-width:110px}
+    input[type=range]{flex:1}
+    select,input[type=number]{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px;border-radius:8px}
+    button.primary{background:linear-gradient(90deg,#06b6d4,#3b82f6);color:#021220;border:0;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px;border-radius:8px}
+    .meta{font-size:13px;color:var(--muted)}
+    .sizes{display:flex;gap:8px;flex-wrap:wrap}
+    .sizes button{padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
+
+    .footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+
+    /* crop overlay */
+    .overlay{position:relative}
+    .crop-rect{position:absolute;border:2px dashed rgba(255,255,255,0.6);pointer-events:none}
+
+    /* responsive */
+    @media(max-width:1000px){ .grid{grid-template-columns:1fr;}.canvas-card canvas{height:260px} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">IT</div>
+      <div>
+        <h1>Image Toolbox — Mini Squoosh</h1>
+        <p class="lead">Browser-based image optimizer & editor. Resize, compress (WebP/JPEG/PNG), simple crop, rotate, filters — sab kuch frontend me.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <div class="card preview-area">
+          <div class="canv-row">
+            <div class="canvas-card card">
+              <h3>Before</h3>
+              <div class="overlay" id="beforeWrap">
+                <canvas id="beforeCanvas"></canvas>
+                <div id="beforeCrop" class="crop-rect" style="display:none"></div>
+              </div>
+              <div class="meta" id="beforeMeta">No image loaded</div>
+            </div>
+
+            <div class="canvas-card card">
+              <h3>After (Output)</h3>
+              <div class="overlay" id="afterWrap">
+                <canvas id="afterCanvas"></canvas>
+                <div id="afterCrop" class="crop-rect" style="display:none"></div>
+              </div>
+              <div class="meta" id="afterMeta">Nothing yet</div>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <div class="drop" id="dropZone">Drag & drop image here or <button class="ghost" id="pickBtn">Choose file</button></div>
+            <input id="fileInput" type="file" accept="image/*" style="display:none" />
+            <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+              <button class="ghost" id="resetBtn">Reset</button>
+              <button class="primary" id="applyBtn">Apply & Preview</button>
+              <button class="primary" id="downloadBtn">Download</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card controls">
+          <div class="row"><label>Format</label><select id="formatSel"><option value="image/webp">WebP</option><option value="image/jpeg">JPEG</option><option value="image/png">PNG</option></select></div>
+          <div class="row"><label>Quality</label><input id="quality" type="range" min="0.1" max="1" step="0.01" value="0.8"/></div>
+          <div class="row"><label>Resize</label><input id="width" type="number" placeholder="Width px"/></div>
+          <div class="row"><label>Maintain aspect</label><input id="keepAspect" type="checkbox" checked/></div>
+          <div class="row"><label>Rotate</label>
+            <div style="display:flex;gap:6px"><button class="ghost" data-rot="-90">⟲</button><button class="ghost" data-rot="90">⟳</button></div>
+          </div>
+
+          <div style="border-top:1px dashed rgba(255,255,255,0.03);padding-top:8px">
+            <div class="row"><label>Filters</label></div>
+            <div class="row"><label>Brightness</label><input id="brightness" type="range" min="0" max="2" step="0.01" value="1"/></div>
+            <div class="row"><label>Contrast</label><input id="contrast" type="range" min="0" max="2" step="0.01" value="1"/></div>
+            <div class="row"><label>Saturation</label><input id="saturation" type="range" min="0" max="2" step="0.01" value="1"/></div>
+            <div class="row"><label>Grayscale</label><input id="grayscale" type="range" min="0" max="1" step="0.01" value="0"/></div>
+          </div>
+
+          <div style="border-top:1px dashed rgba(255,255,255,0.03);padding-top:8px">
+            <div class="row"><label>Crop</label><select id="aspect"><option value="free">Free</option><option value="1:1">1:1</option><option value="16:9">16:9</option><option value="4:3">4:3</option></select></div>
+            <div class="row"><label></label><div class="sizes"><button data-size="640">640w</button><button data-size="1024">1024w</button><button data-size="1280">1280w</button></div></div>
+          </div>
+
+          <div style="border-top:1px dashed rgba(255,255,255,0.03);padding-top:8px">
+            <div class="row"><label>Info</label><div style="font-size:13px;color:var(--muted)"><span id="origSize">—</span> → <span id="outSize">—</span></div></div>
+            <div class="footer"><small class="meta">Preview uses canvas export; downloaded file will match output format & quality.</small></div>
+          </div>
+
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Image Toolbox — frontend only. Professional-ish feature set: resize, compress, rotate, filters, crop, download.
+    const dropZone = document.getElementById('dropZone');
+    const pickBtn = document.getElementById('pickBtn');
+    const fileInput = document.getElementById('fileInput');
+    const beforeCanvas = document.getElementById('beforeCanvas');
+    const afterCanvas = document.getElementById('afterCanvas');
+    const beforeMeta = document.getElementById('beforeMeta');
+    const afterMeta = document.getElementById('afterMeta');
+    const formatSel = document.getElementById('formatSel');
+    const qualityEl = document.getElementById('quality');
+    const widthEl = document.getElementById('width');
+    const keepAspect = document.getElementById('keepAspect');
+    const applyBtn = document.getElementById('applyBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const origSizeEl = document.getElementById('origSize');
+    const outSizeEl = document.getElementById('outSize');
+    const rotateBtns = document.querySelectorAll('[data-rot]');
+
+    const brightness = document.getElementById('brightness');
+    const contrast = document.getElementById('contrast');
+    const saturation = document.getElementById('saturation');
+    const grayscale = document.getElementById('grayscale');
+    const aspectSel = document.getElementById('aspect');
+
+    const beforeCtx = beforeCanvas.getContext('2d');
+    const afterCtx = afterCanvas.getContext('2d');
+
+    let imgBitmap = null; // original image bitmap
+    let currentRotation = 0;
+    let cropRect = null; // {x,y,w,h} in canvas coords
+
+    // helpers
+    function humanSize(n){ if(!n) return '—'; const kb = n/1024; if(kb<1024) return kb.toFixed(1)+' KB'; return (kb/1024).toFixed(2)+' MB'; }
+
+    async function loadFile(file){
+      if(!file) return;
+      const url = URL.createObjectURL(file);
+      const img = await createImageBitmap(file);
+      imgBitmap = img;
+      currentRotation = 0; cropRect = null;
+      drawBefore();
+      origSizeEl.textContent = humanSize(file.size);
+    }
+
+    function setCanvasSizeFromBitmap(canvas, bmp, maxWidth){
+      // set canvas size respecting devicePixelRatio for crispness
+      const ratio = window.devicePixelRatio || 1;
+      const scale = maxWidth ? Math.min(1, maxWidth / bmp.width) : 1;
+      canvas.width = Math.round(bmp.width * scale * ratio);
+      canvas.height = Math.round(bmp.height * scale * ratio);
+      canvas.style.width = Math.round(bmp.width * scale) + 'px';
+      canvas.style.height = Math.round(bmp.height * scale) + 'px';
+      return scale;
+    }
+
+    function drawBefore(){
+      if(!imgBitmap) return;
+      const maxW = 900; // limit preview width
+      const scale = setCanvasSizeFromBitmap(beforeCanvas, imgBitmap, maxW);
+      // reset transforms
+      beforeCtx.setTransform(1,0,0,1,0,0);
+      beforeCtx.clearRect(0,0,beforeCanvas.width,beforeCanvas.height);
+      // draw bitmap scaled for device pixel ratio
+      const ratio = window.devicePixelRatio || 1;
+      beforeCtx.imageSmoothingQuality = 'high';
+      beforeCtx.drawImage(imgBitmap, 0, 0, imgBitmap.width * ratio * scale, imgBitmap.height * ratio * scale);
+      beforeMeta.textContent = `${imgBitmap.width} × ${imgBitmap.height} — preview scale ${Math.round(scale*100)}%`;
+      // reset after
+      drawAfterPreview();
+    }
+
+    function getFilterString(){
+      const b = Number(brightness.value);
+      const c = Number(contrast.value);
+      const s = Number(saturation.value);
+      const g = Number(grayscale.value);
+      // CSS filter-like string
+      return `brightness(${b}) contrast(${c}) saturate(${s}) grayscale(${g})`;
+    }
+
+    function applyTransformAndDraw(outputCanvas, opts={}){
+      if(!imgBitmap) return Promise.resolve();
+      const fmt = formatSel.value;
+      const q = Number(qualityEl.value);
+      // compute target width
+      const targetW = opts.width || (keepAspect.checked ? imgBitmap.width : Number(widthEl.value) || imgBitmap.width);
+      const aspect = imgBitmap.width ? imgBitmap.width / imgBitmap.height : 1;
+      const targetH = Math.round(targetW / aspect);
+      // account for devicePixelRatio
+      const ratio = window.devicePixelRatio || 1;
+      outputCanvas.width = Math.round(targetW * ratio);
+      outputCanvas.height = Math.round(targetH * ratio);
+      outputCanvas.style.width = targetW + 'px';
+      outputCanvas.style.height = targetH + 'px';
+      const ctx = outputCanvas.getContext('2d');
+      ctx.save(); ctx.clearRect(0,0,outputCanvas.width,outputCanvas.height);
+      ctx.imageSmoothingQuality = 'high';
+      // apply rotation using translate/rotate
+      ctx.translate(outputCanvas.width/2, outputCanvas.height/2);
+      ctx.rotate(currentRotation * Math.PI / 180);
+      ctx.translate(-outputCanvas.width/2, -outputCanvas.height/2);
+      // apply filters via ctx.filter
+      ctx.filter = getFilterString();
+      // draw image fitted to canvas
+      ctx.drawImage(imgBitmap, 0, 0, imgBitmap.width, imgBitmap.height, 0, 0, outputCanvas.width, outputCanvas.height);
+      ctx.restore();
+      // cropping — if cropRect available, we'll crop after conversion to blob
+      return Promise.resolve();
+    }
+
+    async function generateOutputBlob(){
+      if(!imgBitmap) return null;
+      // apply transforms to offscreen canvas
+      await applyTransformAndDraw(afterCanvas, { width: Number(widthEl.value) || imgBitmap.width });
+      // if cropRect exists (in before canvas coords), map to afterCanvas coords
+      if(cropRect){
+        // cropRect is in beforeCanvas.style pixels; compute mapping to afterCanvas pixel buffer
+        const beforeStyleW = beforeCanvas.clientWidth; const beforeStyleH = beforeCanvas.clientHeight;
+        const afterStyleW = afterCanvas.clientWidth; const afterStyleH = afterCanvas.clientHeight;
+        const sx = cropRect.x / beforeStyleW * afterCanvas.width;
+        const sy = cropRect.y / beforeStyleH * afterCanvas.height;
+        const sw = cropRect.w / beforeStyleW * afterCanvas.width;
+        const sh = cropRect.h / beforeStyleH * afterCanvas.height;
+        // create temp canvas
+        const tmp = document.createElement('canvas'); tmp.width = Math.round(sw); tmp.height = Math.round(sh);
+        const tctx = tmp.getContext('2d');
+        tctx.drawImage(afterCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+        // replace afterCanvas content
+        afterCanvas.width = tmp.width; afterCanvas.height = tmp.height; afterCanvas.style.width = tmp.width / (window.devicePixelRatio||1) + 'px'; afterCanvas.style.height = tmp.height / (window.devicePixelRatio||1) + 'px';
+        afterCtx.clearRect(0,0,afterCanvas.width, afterCanvas.height);
+        afterCtx.drawImage(tmp, 0,0);
+      }
+      // convert to blob
+      const mime = formatSel.value;
+      const quality = mime === 'image/png' ? undefined : Number(qualityEl.value);
+      return new Promise(resolve => afterCanvas.toBlob(blob => resolve(blob), mime, quality));
+    }
+
+    async function drawAfterPreview(){
+      if(!imgBitmap) return;
+      await applyTransformAndDraw(afterCanvas, { width: Number(widthEl.value) || imgBitmap.width });
+      afterMeta.textContent = `${afterCanvas.width/(window.devicePixelRatio||1)} × ${afterCanvas.height/(window.devicePixelRatio||1)}`;
+      // compute expected out size (async via blob)
+      const blob = await new Promise(r => afterCanvas.toBlob(b => r(b), formatSel.value, formatSel.value==='image/png'?undefined:Number(qualityEl.value)));
+      outSizeEl.textContent = humanSize(blob ? blob.size : 0);
+    }
+
+    // events
+    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.style.borderColor='#06b6d4'; });
+    dropZone.addEventListener('dragleave', e=>{ dropZone.style.borderColor=''; });
+    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.style.borderColor=''; const f = e.dataTransfer.files[0]; if(f) await loadFile(f); });
+    pickBtn.addEventListener('click', ()=>fileInput.click());
+    fileInput.addEventListener('change', async ()=>{ const f = fileInput.files[0]; if(f) await loadFile(f); });
+
+    applyBtn.addEventListener('click', async ()=>{ if(!imgBitmap) return alert('Please load an image first'); await drawAfterPreview(); });
+    resetBtn.addEventListener('click', ()=>{ imgBitmap = null; beforeCtx.clearRect(0,0,beforeCanvas.width,beforeCanvas.height); afterCtx.clearRect(0,0,afterCanvas.width,afterCanvas.height); beforeMeta.textContent='No image loaded'; afterMeta.textContent='Nothing yet'; origSizeEl.textContent='—'; outSizeEl.textContent='—'; widthEl.value=''; cropRect=null; document.getElementById('beforeCrop').style.display='none'; document.getElementById('afterCrop').style.display='none'; });
+
+    downloadBtn.addEventListener('click', async ()=>{
+      if(!imgBitmap) return alert('No image');
+      const blob = await generateOutputBlob(); if(!blob) return alert('Failed to generate');
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'image-' + Date.now() + (formatSel.value==='image/png'?'.png': formatSel.value==='image/jpeg'?'.jpg':'.webp'); a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    // rotate
+    rotateBtns.forEach(b=>b.addEventListener('click', ()=>{ currentRotation = (currentRotation + Number(b.dataset.rot) + 360) % 360; drawAfterPreview(); }));
+
+    // quick sizes
+    document.querySelectorAll('[data-size]').forEach(b=>b.addEventListener('click', ()=>{ widthEl.value = b.dataset.size; drawAfterPreview(); }));
+
+    // live update on sliders
+    [qualityEl, brightness, contrast, saturation, grayscale, formatSel].forEach(el=>el.addEventListener('input', ()=>{ if(imgBitmap) drawAfterPreview(); }));
+    widthEl.addEventListener('input', ()=>{ if(imgBitmap) drawAfterPreview(); });
+
+    // cropping (simple rectangle drawn over BEFORE canvas)
+    const beforeWrap = document.getElementById('beforeWrap');
+    const beforeCrop = document.getElementById('beforeCrop');
+    let isDragging = false, startX=0, startY=0;
+    beforeWrap.addEventListener('mousedown', e=>{
+      if(!imgBitmap) return;
+      isDragging = true;
+      const rect = beforeWrap.getBoundingClientRect();
+      startX = e.clientX - rect.left; startY = e.clientY - rect.top;
+      beforeCrop.style.display = 'block'; beforeCrop.style.left = startX + 'px'; beforeCrop.style.top = startY + 'px'; beforeCrop.style.width = '0px'; beforeCrop.style.height = '0px';
+    });
+    window.addEventListener('mousemove', e=>{
+      if(!isDragging) return;
+      const rect = beforeWrap.getBoundingClientRect();
+      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+      const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
+      let w = x - startX; let h = y - startY;
+      // aspect lock
+      const aspect = aspectSel.value;
+      if(aspect !== 'free'){ const [aw,ah] = aspect.split(':').map(Number); if(aw && ah){ const targetH = Math.abs(w) * (ah/aw); h = (y<startY? -targetH : targetH); } }
+      const left = w < 0 ? startX + w : startX; const top = h < 0 ? startY + h : startY; const width = Math.abs(w); const height = Math.abs(h);
+      beforeCrop.style.left = left + 'px'; beforeCrop.style.top = top + 'px'; beforeCrop.style.width = width + 'px'; beforeCrop.style.height = height + 'px';
+    });
+    window.addEventListener('mouseup', e=>{
+      if(!isDragging) return; isDragging = false;
+      const rect = beforeWrap.getBoundingClientRect();
+      const left = parseFloat(beforeCrop.style.left); const top = parseFloat(beforeCrop.style.top);
+      const w = parseFloat(beforeCrop.style.width); const h = parseFloat(beforeCrop.style.height);
+      if(w < 6 || h < 6){ beforeCrop.style.display='none'; cropRect = null; document.getElementById('afterCrop').style.display='none'; return; }
+      cropRect = { x:left, y:top, w:w, h:h };
+      // show crop on after preview scaled
+      const afterRect = document.getElementById('afterCrop'); afterRect.style.display='block';
+      // compute mapping
+      const bw = beforeCanvas.clientWidth; const bh = beforeCanvas.clientHeight; const aw = afterCanvas.clientWidth; const ah = afterCanvas.clientHeight;
+      const ax = left / bw * aw; const ay = top / bh * ah; const awd = w / bw * aw; const ahd = h / bh * ah;
+      afterRect.style.left = ax + 'px'; afterRect.style.top = ay + 'px'; afterRect.style.width = awd + 'px'; afterRect.style.height = ahd + 'px';
+      // update after preview to reflect crop
+      drawAfterPreview();
+    });
+
+    // initial: sample image
+    (async ()=>{
+      try{
+        const res = await fetch('https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=1200&q=80');
+        const blob = await res.blob();
+        await loadFile(new File([blob], 'sample.jpg', { type: blob.type }));
+      }catch(e){ console.warn('Could not load sample'); }
+    })();
+
+  </script>
+</body>
+</html>

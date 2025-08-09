@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Personal Finance Simulator — What‑If Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f1724;--panel:#071022;--muted:#9aa6b2;--accent:#06b6d4;--accent-2:#7c3aed;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Roboto,Arial;color:#e6eef8;background:linear-gradient(180deg,#04121b,#061428)}
+    .app{max-width:1200px;margin:18px auto;padding:18px}
+    header{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#022}
+    h1{margin:0;font-size:20px}
+    .lead{color:var(--muted);font-size:13px}
+
+    .layout{display:grid;grid-template-columns:360px 1fr;gap:16px;margin-top:16px}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .small{font-size:13px;color:var(--muted)}
+    .row{display:flex;gap:8px}
+    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;padding:10px;border-radius:10px;color:#022;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--muted)}
+
+    .calc-section{margin-bottom:12px}
+    .out{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:8px}
+
+    .chart-wrap{height:360px}
+    .scenarios{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .scenario-item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
+
+    .footer{margin-top:12px;color:var(--muted);font-size:13px}
+
+    @media(max-width:1000px){ .layout{grid-template-columns:1fr;}.chart-wrap{height:260px} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">PF</div>
+      <div>
+        <h1>Personal Finance Simulator</h1>
+        <div class="lead">Goals • SIP & EMI calculators • Scenario compare • Charts • Shareable links (frontend only)</div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="panel">
+        <div class="calc-section">
+          <label>Scenario name</label>
+          <input id="scenarioName" placeholder="e.g. Retirement (age 60)" />
+        </div>
+
+        <div class="calc-section">
+          <label>Initial investment (₹)</label>
+          <input id="initial" type="number" min="0" value="100000" />
+        </div>
+
+        <div class="calc-section">
+          <label>Monthly SIP / Contribution (₹)</label>
+          <input id="monthly" type="number" min="0" value="5000" />
+        </div>
+
+        <div class="calc-section">
+          <label>Expected annual return (%)</label>
+          <input id="returnRate" type="number" min="0" step="0.01" value="10" />
+        </div>
+
+        <div class="calc-section">
+          <label>Term (years)</label>
+          <input id="years" type="number" min="1" value="10" />
+        </div>
+
+        <div class="calc-section">
+          <label>Inflation rate (%)</label>
+          <input id="inflation" type="number" min="0" step="0.01" value="4" />
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="addScenario" class="primary">Add Scenario</button>
+          <button id="clearScenarios" class="ghost">Clear</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <strong class="small">Saved scenarios</strong>
+          <div id="scenarios" class="scenarios"></div>
+        </div>
+
+        <div class="footer">Tip: Add 2–3 scenarios and click <em>Compare</em> to view differences. Use the share button to create a URL for sharing.</div>
+      </aside>
+
+      <main>
+        <div class="panel" style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="compare" class="primary">Compare</button>
+            <button id="exportLink" class="ghost">Share (link)</button>
+            <button id="downloadCsv" class="ghost">Download CSV</button>
+            <div style="margin-left:auto" class="small">Precision math via Decimal.js</div>
+          </div>
+
+          <div class="panel" style="padding:10px">
+            <strong>Results</strong>
+            <div id="results" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+              <div class="out"><div class="small">Future value</div><div id="fv">—</div></div>
+              <div class="out"><div class="small">Inflation adjusted</div><div id="fvReal">—</div></div>
+              <div class="out"><div class="small">Total contributions</div><div id="contrib">—</div></div>
+              <div class="out"><div class="small">CAGR</div><div id="cagr">—</div></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+              <strong>Chart</strong>
+              <select id="chartMode" style="width:200px"><option value="nominal">Nominal value</option><option value="real">Inflation-adjusted</option></select>
+            </div>
+            <div class="chart-wrap"><canvas id="chart"></canvas></div>
+          </div>
+
+          <div class="panel" style="margin-top:12px">
+            <strong>Scenario compare</strong>
+            <div id="compareList" style="margin-top:8px"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // Precision helpers using Decimal.js
+    const D = (n)=> new Decimal(n || 0);
+
+    // DOM refs
+    const initialEl = document.getElementById('initial');
+    const monthlyEl = document.getElementById('monthly');
+    const returnEl = document.getElementById('returnRate');
+    const yearsEl = document.getElementById('years');
+    const inflationEl = document.getElementById('inflation');
+    const addScenarioBtn = document.getElementById('addScenario');
+    const scenariosEl = document.getElementById('scenarios');
+    const compareBtn = document.getElementById('compare');
+    const exportLinkBtn = document.getElementById('exportLink');
+    const downloadCsvBtn = document.getElementById('downloadCsv');
+    const fvEl = document.getElementById('fv');
+    const fvRealEl = document.getElementById('fvReal');
+    const contribEl = document.getElementById('contrib');
+    const cagrEl = document.getElementById('cagr');
+    const chartCanvas = document.getElementById('chart');
+    const chartMode = document.getElementById('chartMode');
+    const scenarioNameEl = document.getElementById('scenarioName');
+    const compareListEl = document.getElementById('compareList');
+
+    // state
+    let scenarios = JSON.parse(localStorage.getItem('pfs_scenarios')||'[]');
+    let chart = null;
+
+    function saveScenarios(){ localStorage.setItem('pfs_scenarios', JSON.stringify(scenarios)); }
+
+    function renderScenarios(){ scenariosEl.innerHTML = '';
+      scenarios.forEach((s, idx)=>{
+        const div = document.createElement('div'); div.className = 'scenario-item';
+        div.innerHTML = `<div><strong>${escapeHtml(s.name||'Scenario')}</strong><div class="small">${s.years}y • ${s.return}%</div></div><div style="display:flex;gap:6px"><button class="ghost" data-idx="${idx}" data-action="load">Load</button><button class="ghost" data-idx="${idx}" data-action="remove">Delete</button></div>`;
+        scenariosEl.appendChild(div);
+      });
+      scenariosEl.querySelectorAll('[data-action="load"]').forEach(b=>b.addEventListener('click', (e)=>{ const i = +e.target.dataset.idx; loadScenario(i); }));
+      scenariosEl.querySelectorAll('[data-action="remove"]').forEach(b=>b.addEventListener('click', (e)=>{ const i = +e.target.dataset.idx; scenarios.splice(i,1); saveScenarios(); renderScenarios(); }));
+    }
+
+    function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function readInputs(){ return {
+      name: scenarioNameEl.value || `Scenario ${scenarios.length+1}`,
+      initial: D(initialEl.value||0).toNumber(),
+      monthly: D(monthlyEl.value||0).toNumber(),
+      rate: D(returnEl.value||0).toNumber(),
+      years: parseInt(yearsEl.value||0,10) || 0,
+      inflation: D(inflationEl.value||0).toNumber()
+    } }
+
+    // financial calculations
+    // SIP future value (monthly contributions at end of period) + initial compounded
+    function calcScenario(s){
+      const r = D(s.rate).div(100); // annual
+      const m = r.div(12);
+      const n = D(s.years).mul(12).toNumber();
+      const monthly = D(s.monthly);
+      const initial = D(s.initial);
+      // future value of monthly series: monthly * ((1+m)^n -1)/m
+      let fvSeries = D(0);
+      if(m.gt(0)){
+        fvSeries = monthly.mul( (D(1).plus(m).pow(n).minus(1)).div(m) );
+      } else {
+        fvSeries = monthly.mul(n);
+      }
+      const fvInitial = initial.mul( D(1).plus(m).pow(n) );
+      const fv = fvInitial.plus(fvSeries);
+      // total contributions
+      const totalContrib = initial.plus(monthly.mul(n));
+      // CAGR (annualized) = (fv/totalContrib)^(1/years)-1 but more precise is compute x from initial + series => approximate using rate
+      // We'll compute implied annualized return using numerical method on nominal series (for UX show rate used)
+      return { fv: fv.toNumber(), fvNominal: fv.toNumber(), totalContrib: totalContrib.toNumber(), months: n };
+    }
+
+    function inflationAdjust(value, inflation, years){ const adj = D(value).div( D(1).plus(D(inflation).div(100)).pow(years) ).toNumber(); return adj; }
+
+    function seriesForChart(s){ const r = D(s.rate).div(100); const m = r.div(12); const months = D(s.years).mul(12).toNumber(); const monthly = D(s.monthly); const initial = D(s.initial);
+      const arr = []; let balance = initial;
+      for(let i=0;i<=months;i++){
+        if(i===0) arr.push(balance.toNumber()); else{
+          balance = balance.mul( D(1).plus(m) ).plus(monthly);
+          arr.push(balance.toNumber());
+        }
+      }
+      return arr;
+    }
+
+    function updateSummary(s){ const res = calcScenario(s); fvEl.textContent = '₹ ' + numberWithCommas(res.fv.toFixed(2)); fvRealEl.textContent = '₹ ' + numberWithCommas(inflationAdjust(res.fv, s.inflation, s.years).toFixed(2)); contribEl.textContent = '₹ ' + numberWithCommas(res.totalContrib.toFixed(2)); cagrEl.textContent = s.rate + '%'; }
+
+    function numberWithCommas(x){ return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+    // charting
+    function drawChart(datasets, labels){ if(chart) chart.destroy(); chart = new Chart(chartCanvas.getContext('2d'), { type:'line', data:{ labels, datasets }, options:{ responsive:true, interaction:{mode:'index',intersect:false}, stacked:false, plugins:{legend:{position:'top'}}, scales:{y:{ticks:{callback: v => '₹' + Math.round(v).toLocaleString()}} } } }); }
+
+    // CSV export
+    function downloadCSV(name, series, labels){ const rows = [ ['Month', ...labels] ]; const months = series[0].length; for(let i=0;i<months;i++){ const row = [i, ...series.map(s=>s[i]) ]; rows.push(row); }
+      const csv = rows.map(r=>r.join(',')).join('\n'); const blob = new Blob([csv], { type:'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = (name||'scenario') + '.csv'; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    // shareable link: encode scenarios to URL (base64 JSON) — careful with length, so only include compare set
+    function makeShareLink(compareSet){ const payload = { scenarios: compareSet }; const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload)))); const url = location.origin + location.pathname + '?share=' + encoded; return url; }
+    function loadShareFromUrl(){ const params = new URLSearchParams(location.search); const share = params.get('share'); if(!share) return null; try{ const raw = decodeURIComponent(escape(atob(share))); const obj = JSON.parse(raw); return obj; }catch(e){ console.warn('Invalid share payload', e); return null; } }
+
+    // UI actions
+    addScenarioBtn.addEventListener('click', ()=>{
+      const s = readInputs(); scenarios.push(s); saveScenarios(); renderScenarios(); });
+
+    function loadScenario(i){ const s = scenarios[i]; if(!s) return; scenarioNameEl.value = s.name; initialEl.value = s.initial; monthlyEl.value = s.monthly; returnEl.value = s.rate; yearsEl.value = s.years; inflationEl.value = s.inflation; updateSummary(s); }
+
+    compareBtn.addEventListener('click', ()=>{
+      const selected = scenarios.slice(0,3); // simple: compare first 3 — user can edit order
+      if(selected.length===0) return alert('Add scenarios to compare');
+      compareListEl.innerHTML = '';
+      const labels = []; const series = [];
+      selected.forEach((s, idx)=>{
+        const name = s.name || 'Scenario ' + (idx+1);
+        labels.push(name);
+        const arr = seriesForChart(s);
+        series.push(arr);
+        const badge = document.createElement('div'); badge.className = 'out'; badge.textContent = name + ': FV ₹' + numberWithCommas(calcScenario(s).fv.toFixed(2)); compareListEl.appendChild(badge);
+      });
+      // build chart datasets: convert each series to dataset with labels "Month 0..N"
+      const months = series[0].length; const xlabels = Array.from({length:months}, (_,i)=> i);
+      const datasets = series.map((s,idx)=>({ label: labels[idx], data: s, borderWidth:2, tension:0.2 }));
+      drawChart(datasets, xlabels);
+
+      // update export link to include these scenarios
+      exportLinkBtn.onclick = ()=>{ const url = makeShareLink(selected); navigator.clipboard.writeText(url).then(()=> alert('Share link copied to clipboard')); };
+      downloadCsvBtn.onclick = ()=> downloadCSV('compare', series, labels);
+    });
+
+    // initialize
+    renderScenarios(); const shared = loadShareFromUrl(); if(shared && shared.scenarios){ scenarios = shared.scenarios; saveScenarios(); renderScenarios(); alert('Loaded shared scenarios'); }
+
+    // live single calculation update
+    [initialEl, monthlyEl, returnEl, yearsEl, inflationEl].forEach(el=>el.addEventListener('input', ()=>{ const s = readInputs(); updateSummary(s); }));
+    chartMode.addEventListener('change', ()=>{ /* optionally redraw as nominal/real */ });
+
+    // initial draw
+    updateSummary(readInputs());
+
+  </script>
+</body>
+</html>

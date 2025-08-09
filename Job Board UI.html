@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Job Board — Explore Jobs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#2563eb;--glass:rgba(37,99,235,0.06);--success:#16a34a}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#0f172a}
+    .wrap{max-width:1100px;margin:22px auto;padding:18px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:var(--muted)}
+
+    .controls{display:flex;gap:12px;margin-top:16px;align-items:center}
+    .search{flex:1;display:flex;gap:8px}
+    input[type=text],select{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #e6e9ef;background:var(--card)}
+    button{background:var(--accent);color:white;border:0;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--muted)}
+
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
+
+    /* Jobs list */
+    .jobs{display:flex;flex-direction:column;gap:12px}
+    .job{background:var(--card);border-radius:10px;padding:14px;border:1px solid #eef2f7;display:flex;gap:12px;align-items:flex-start}
+    .logo-sm{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,#e9eefc,#eef8ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:14px}
+    .job-main{flex:1}
+    .job-title{font-weight:700;font-size:16px;margin-bottom:4px}
+    .job-meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:var(--glass);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--accent);border:1px solid rgba(37,99,235,0.06)}
+    .job-actions{display:flex;flex-direction:column;gap:8px}
+    .save{background:#fff;border:1px solid #eef2f7;padding:8px;border-radius:8px;cursor:pointer}
+
+    /* sidebar filters */
+    .card{background:var(--card);border-radius:12px;padding:12px;border:1px solid #eef2f7}
+    .filter-group{margin-bottom:12px}
+    .filter-group label{display:block;font-weight:600;margin-bottom:6px}
+    .checkbox-list{display:flex;flex-direction:column;gap:6px}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* pagination */
+    .pager{display:flex;justify-content:center;gap:8px;margin-top:12px}
+    .page-btn{background:transparent;border:1px solid #eef2f7;padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    /* modal */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;padding:16px}
+    .dialog{background:var(--card);padding:18px;border-radius:12px;max-width:800px;width:100%;box-shadow:0 10px 30px rgba(2,6,23,0.12)}
+    .dialog h3{margin:0 0 6px}
+    .dialog .meta{color:var(--muted);font-size:13px;margin-bottom:12px}
+    .dialog .desc{line-height:1.6;color:#0b1720}
+    .dialog .actions{display:flex;gap:8px;margin-top:12px}
+
+    /* saved list */
+    .saved-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .saved-item{display:flex;gap:8px;align-items:center;background:#fbfdff;padding:8px;border-radius:8px;border:1px solid #eef6ff}
+
+    /* responsive */
+    @media(max-width:980px){ .layout{grid-template-columns:1fr} .controls{flex-direction:column;align-items:stretch} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">JB</div>
+      <div>
+        <h1>Job Board</h1>
+        <p class="lead">Static demo job board with search, filters, save jobs (local only), and apply modal.</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="search">
+        <input id="searchInput" type="text" placeholder="Search by title, company, skills..." />
+        <select id="locationFilter"><option value="">All locations</option></select>
+        <select id="typeFilter"><option value="">All types</option><option value="Full-time">Full-time</option><option value="Part-time">Part-time</option><option value="Contract">Contract</option><option value="Remote">Remote</option></select>
+      </div>
+      <button id="clearFilters" class="ghost">Clear</button>
+      <button id="loadAPI" class="ghost">Load sample API</button>
+    </div>
+
+    <div class="layout">
+      <main>
+        <div id="jobs" class="jobs"></div>
+        <div class="pager" id="pager"></div>
+      </main>
+
+      <aside>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <strong>Saved Jobs</strong>
+            <button id="exportSaved" class="ghost">Export</button>
+          </div>
+          <div id="saved" class="saved-list small"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="filter-group">
+            <label>Skills</label>
+            <div class="checkbox-list" id="skillsFilter"></div>
+          </div>
+          <div class="filter-group">
+            <label>Sort</label>
+            <select id="sortSel"><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="salary">Salary (high → low)</option></select>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- modal container -->
+  <div id="modalRoot" style="display:none"></div>
+
+  <script>
+    // Job Board UI - static data with optional API load
+    const JOBS = [
+      { id:'j1', title:'Frontend Developer', company:'PixelCraft', location:'Bengaluru, India', type:'Full-time', posted:'2025-07-28', salary: '₹50,000 - ₹80,000', skills:['JavaScript','React','CSS'], description: 'Build responsive user interfaces using React. Work closely with designers and backend engineers.' , applyUrl:'https://example.com/apply/j1' },
+      { id:'j2', title:'Backend Engineer', company:'DataMesh', location:'Remote', type:'Remote', posted:'2025-07-24', salary: '₹70,000 - ₹120,000', skills:['Node.js','Databases','API'], description: 'Design and maintain scalable APIs and services.' , applyUrl:'https://example.com/apply/j2' },
+      { id:'j3', title:'UI/UX Designer', company:'StudioNova', location:'Mumbai, India', type:'Contract', posted:'2025-07-20', salary: '₹40,000 - ₹70,000', skills:['Figma','Prototyping','Visual Design'], description: 'Design delightful product experiences and prototypes.', applyUrl:'https://example.com/apply/j3' },
+      { id:'j4', title:'Machine Learning Intern', company:'AICore', location:'Hyderabad, India', type:'Part-time', posted:'2025-07-15', salary: 'Stipend', skills:['Python','ML','Data'], description: 'Work with ML engineers on model training and evaluation.' , applyUrl:'https://example.com/apply/j4' },
+      { id:'j5', title:'DevOps Engineer', company:'CloudWorks', location:'Pune, India', type:'Full-time', posted:'2025-07-10', salary: '₹80,000 - ₹140,000', skills:['AWS','Docker','CI/CD'], description: 'Manage infrastructure, pipelines and reliability.' , applyUrl:'https://example.com/apply/j5' },
+      { id:'j6', title:'Product Manager', company:'LaunchPad', location:'Remote', type:'Remote', posted:'2025-07-05', salary: '₹90,000 - ₹150,000', skills:['Product','Roadmap','Stakeholders'], description: 'Lead product strategy and execution.' , applyUrl:'https://example.com/apply/j6' },
+      { id:'j7', title:'QA Engineer', company:'TestLab', location:'Chennai, India', type:'Full-time', posted:'2025-06-28', salary: '₹35,000 - ₹60,000', skills:['Testing','Automation','Selenium'], description: 'Automate tests and improve product quality.' , applyUrl:'https://example.com/apply/j7' },
+      { id:'j8', title:'Mobile Developer', company:'Appify', location:'Bengaluru, India', type:'Full-time', posted:'2025-06-20', salary: '₹60,000 - ₹110,000', skills:['Kotlin','Android','Java'], description: 'Build native Android applications.' , applyUrl:'https://example.com/apply/j8' },
+      { id:'j9', title:'Data Analyst', company:'InsightX', location:'Remote', type:'Contract', posted:'2025-06-10', salary: '₹40,000 - ₹70,000', skills:['SQL','Excel','Visualization'], description: 'Analyze datasets and create dashboards.' , applyUrl:'https://example.com/apply/j9' },
+      { id:'j10', title:'Full Stack Developer', company:'Stackly', location:'Delhi, India', type:'Full-time', posted:'2025-05-30', salary: '₹60,000 - ₹120,000', skills:['Node.js','React','MongoDB'], description: 'Work across frontend and backend to ship features.' , applyUrl:'https://example.com/apply/j10' }
+    ];
+
+    // state
+    let jobs = [...JOBS];
+    let filtered = [];
+    const PAGE_SIZE = 5;
+    let page = 1;
+
+    // DOM refs
+    const jobsEl = document.getElementById('jobs');
+    const pagerEl = document.getElementById('pager');
+    const searchInput = document.getElementById('searchInput');
+    const locationFilter = document.getElementById('locationFilter');
+    const typeFilter = document.getElementById('typeFilter');
+    const skillsFilter = document.getElementById('skillsFilter');
+    const savedEl = document.getElementById('saved');
+    const exportSaved = document.getElementById('exportSaved');
+    const sortSel = document.getElementById('sortSel');
+    const clearFilters = document.getElementById('clearFilters');
+    const loadAPI = document.getElementById('loadAPI');
+
+    // saved jobs (localStorage)
+    const SAVED_KEY = 'jobboard_saved_v1';
+    function getSaved(){ try{ return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); }catch(e){ return []; } }
+    function saveSaved(arr){ localStorage.setItem(SAVED_KEY, JSON.stringify(arr)); }
+
+    // init filters
+    function initFilters(){
+      // unique locations
+      const locs = Array.from(new Set(jobs.map(j=>j.location))).sort();
+      locationFilter.innerHTML = '<option value="">All locations</option>' + locs.map(l=>`<option value="${l}">${l}</option>`).join('');
+      // skills list
+      const skills = Array.from(new Set(jobs.flatMap(j=>j.skills))).sort();
+      skillsFilter.innerHTML = skills.map(s=>`<label><input type="checkbox" value="${s}" /> ${s}</label>`).join('');
+    }
+
+    // render jobs list
+    function renderJobs(){
+      applyFilters();
+      jobsEl.innerHTML = '';
+      const start = (page-1)*PAGE_SIZE; const end = start + PAGE_SIZE;
+      const pageJobs = filtered.slice(start, end);
+      if(pageJobs.length===0){ jobsEl.innerHTML = '<div class="card">No jobs found. Try clearing filters.</div>'; pagerEl.innerHTML=''; return; }
+      pageJobs.forEach(j=>{
+        const el = document.createElement('div'); el.className='job';
+        el.innerHTML = `
+          <div class="logo-sm">${j.company.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
+          <div class="job-main">
+            <div class="job-title">${escapeHtml(j.title)}</div>
+            <div class="job-meta">${escapeHtml(j.company)} • ${escapeHtml(j.location)} • ${escapeHtml(j.type)} • <span class="small">${escapeHtml(j.posted)}</span></div>
+            <div class="tags">${j.skills.map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('')}</div>
+          </div>
+          <div class="job-actions">
+            <button class="ghost" data-id="${j.id}" data-action="view">View</button>
+            <button class="save" data-id="${j.id}" data-action="save">Save</button>
+          </div>
+        `;
+        jobsEl.appendChild(el);
+      });
+      renderPager();
+      attachJobListeners();
+    }
+
+    function attachJobListeners(){
+      document.querySelectorAll('[data-action="view"]').forEach(b=>b.addEventListener('click', e=>{ const id = b.dataset.id || e.target.dataset.id; openJobModal(id); }));
+      document.querySelectorAll('[data-action="save"]').forEach(b=>b.addEventListener('click', e=>{ const id = b.dataset.id || e.target.dataset.id; toggleSave(id); }));
+    }
+
+    function renderPager(){
+      const total = filtered.length; const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      pagerEl.innerHTML = '';
+      for(let i=1;i<=pages;i++){
+        const btn = document.createElement('button'); btn.className='page-btn'; btn.textContent = i; if(i===page) btn.style.fontWeight='700'; btn.addEventListener('click', ()=>{ page = i; renderJobs(); }); pagerEl.appendChild(btn);
+      }
+    }
+
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      const loc = locationFilter.value;
+      const type = typeFilter.value;
+      const checkedSkills = Array.from(skillsFilter.querySelectorAll('input:checked')).map(i=>i.value);
+      // copy
+      filtered = jobs.filter(j=>{
+        if(q){ const hay = (j.title + ' ' + j.company + ' ' + j.skills.join(' ')).toLowerCase(); if(!hay.includes(q)) return false; }
+        if(loc && j.location !== loc) return false;
+        if(type && j.type !== type) return false;
+        if(checkedSkills.length){ if(!checkedSkills.every(s=>j.skills.includes(s))) return false; }
+        return true;
+      });
+      // sort
+      const sort = sortSel.value;
+      if(sort === 'newest') filtered.sort((a,b)=> new Date(b.posted) - new Date(a.posted));
+      else if(sort === 'oldest') filtered.sort((a,b)=> new Date(a.posted) - new Date(b.posted));
+      else if(sort === 'salary') filtered.sort((a,b)=> parseSalary(b.salary) - parseSalary(a.salary));
+      // reset page if out of range
+      const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)); if(page > pages) page = pages;
+    }
+
+    function parseSalary(s){ if(!s) return 0; const nums = s.replace(/[^0-9\-]/g,'').split('-').map(n=>Number(n)||0); return nums.reduce((a,b)=>a+b,0)/ (nums.length||1); }
+
+    function openJobModal(id){ const j = jobs.find(x=>x.id===id); if(!j) return; const root = document.getElementById('modalRoot'); root.innerHTML = '';
+      const modal = document.createElement('div'); modal.className='modal';
+      modal.innerHTML = `<div class="dialog" role="dialog" aria-modal="true">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>${escapeHtml(j.title)}</h3><div style="color:var(--muted);font-size:13px">${escapeHtml(j.company)}</div></div>
+        <div class="meta">${escapeHtml(j.location)} • ${escapeHtml(j.type)} • Posted ${escapeHtml(j.posted)} • ${escapeHtml(j.salary)}</div>
+        <div class="desc">${escapeHtml(j.description)}</div>
+        <div class="tags" style="margin-top:8px">${j.skills.map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('')}</div>
+        <div class="actions"><a href="${escapeAttr(j.applyUrl)}" target="_blank" rel="noopener" class="button">Apply</a><button id="copyLink" class="ghost">Copy link</button><button id="closeModal" class="ghost">Close</button></div>
+      </div>`;
+      root.appendChild(modal);
+      root.style.display = 'block';
+      modal.querySelector('#closeModal').addEventListener('click', ()=>{ root.style.display='none'; root.innerHTML=''; });
+      modal.querySelector('#copyLink').addEventListener('click', ()=>{ navigator.clipboard.writeText(j.applyUrl).then(()=>alert('Link copied')) ; });
+    }
+
+    function toggleSave(id){ const saved = getSaved(); const exists = saved.find(s=>s.id===id); if(exists){ const next = saved.filter(s=>s.id!==id); saveSaved(next); } else { const job = jobs.find(j=>j.id===id); if(job) { saved.unshift(job); saveSaved(saved); } }
+      renderSaved(); renderJobs(); }
+
+    function renderSaved(){ const arr = getSaved(); savedEl.innerHTML = arr.length ? arr.map(j=>`<div class="saved-item"><div style="flex:1"><strong>${escapeHtml(j.title)}</strong><div class="small">${escapeHtml(j.company)}</div></div><div><button data-id="${j.id}" class="ghost" data-action="remove">Remove</button></div></div>`).join('') : '<div class="small">No saved jobs</div>';
+      // attach remove
+      savedEl.querySelectorAll('[data-action="remove"]').forEach(b=>b.addEventListener('click', e=>{ const id = b.dataset.id || e.target.dataset.id; const next = getSaved().filter(s=>s.id!==id); saveSaved(next); renderSaved(); }));
+    }
+
+    exportSaved.addEventListener('click', ()=>{ const arr = getSaved(); if(arr.length===0) return alert('No saved jobs'); const blob = new Blob([JSON.stringify(arr, null, 2)], { type:'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'saved-jobs.json'; a.click(); URL.revokeObjectURL(a.href); });
+
+    // helpers
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function escapeAttr(s){ return String(s).replace(/"/g,'\"'); }
+
+    // clear filters
+    clearFilters.addEventListener('click', ()=>{ searchInput.value=''; locationFilter.value=''; typeFilter.value=''; skillsFilter.querySelectorAll('input').forEach(i=>i.checked=false); sortSel.value='newest'; page=1; renderJobs(); });
+
+    // wire inputs
+    [searchInput, locationFilter, typeFilter, sortSel].forEach(el=>el.addEventListener('input', ()=>{ page=1; renderJobs(); }));
+    skillsFilter.addEventListener('change', ()=>{ page=1; renderJobs(); });
+
+    // load optional sample API (public placeholder to show async)
+    loadAPI.addEventListener('click', async ()=>{
+      loadAPI.textContent = 'Loading...'; loadAPI.disabled = true;
+      try{
+        // this is just a demo fetch to show how to integrate a remote API; we won't rely on remote structure
+        const res = await fetch('https://jsonplaceholder.typicode.com/users');
+        const users = await res.json();
+        // map to job-like items (demo)
+        const remoteJobs = users.slice(0,5).map((u,i)=>({ id:'r'+i, title: u.company.bs.split(' ')[0] + ' Engineer', company:u.company.name, location: u.address.city, type: i%2===0 ? 'Remote' : 'Full-time', posted: '2025-08-01', salary: 'Competitive', skills:['Communication'], description: 'Sample remote job imported from demo API', applyUrl: 'https://example.com' }));
+        jobs = [...remoteJobs, ...JOBS];
+        initFilters(); page=1; renderJobs();
+      }catch(e){ alert('Failed to fetch sample API'); }
+      loadAPI.textContent = 'Load sample API'; loadAPI.disabled = false;
+    });
+
+    // initial setup
+    initFilters(); renderJobs(); renderSaved();
+
+    // accessibility: allow Enter to trigger save on saved items container
+    savedEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ const btn = e.target.closest('[data-action="remove"]'); if(btn) btn.click(); } });
+
+  </script>
+</body>
+</html>

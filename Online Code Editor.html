@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini CodePen — Online Code Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#06b6d4;--glass:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#e6eef8;background:linear-gradient(180deg,#071026 0%, #001122 100%)}
+
+    .app{height:100vh;display:flex;flex-direction:column;gap:12px;padding:14px}
+    .topbar{display:flex;align-items:center;gap:12px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#05202b}
+    h1{font-size:16px;margin:0}
+    .controls{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+    button.btn{background:linear-gradient(90deg,#06b6d4,#3b82f6);border:0;color:#021220;padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(6,182,212,0.12)}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px}
+    .toggle{display:inline-flex;align-items:center;gap:8px;background:var(--glass);padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
+
+    .workspace{flex:1;display:grid;grid-template-columns:1fr 520px;gap:12px;align-items:stretch}
+
+    /* Editors column */
+    .editors{display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,0.02);border-radius:12px;padding:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .tabs{display:flex;gap:8px;margin-bottom:8px}
+    .tab{padding:8px 12px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid transparent;cursor:pointer}
+    .tab.active{background:linear-gradient(90deg,#022433,#063848);color:#fff;border:1px solid rgba(255,255,255,0.04)}
+    .editor-wrap{flex:1;display:flex;flex-direction:column;gap:8px}
+    .editor{flex:1;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Right column = preview */
+    .preview-card{display:flex;flex-direction:column;gap:8px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:10px}
+    .preview-toolbar{display:flex;gap:8px;align-items:center}
+    .preview-frame{flex:1;border-radius:8px;border:1px solid rgba(0,0,0,0.25);overflow:hidden}
+    iframe#preview{width:100%;height:100%;border:0;background:#fff}
+
+    .console{height:140px;border-radius:8px;background:#071422;padding:10px;color:#cfeafe;overflow:auto;font-family:monospace;font-size:13px;border:1px solid rgba(255,255,255,0.03)}
+    .console .log{padding:6px 8px;border-radius:6px;margin-bottom:6px;background:rgba(255,255,255,0.02)}
+    .console .err{background:linear-gradient(90deg,rgba(239,68,68,0.12),rgba(239,68,68,0.06));color:#ffcccb}
+
+    /* Side footer */
+    .meta{display:flex;gap:8px;align-items:center}
+    select, input[type="text"]{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px;border-radius:8px}
+
+    /* responsive */
+    @media(max-width:1100px){ .workspace{grid-template-columns:1fr;}.preview-card{order:2} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <h1>Mini CodePen</h1>
+          <div style="font-size:12px;color:var(--muted)">Online editor — frontend-only, localStorage, export</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="toggle" title="Auto run">
+          <label style="font-size:13px;color:var(--muted);">Auto</label>
+          <input id="autorun" type="checkbox" />
+        </div>
+        <button class="ghost" id="runBtn">Run (Ctrl+Enter)</button>
+        <button class="ghost" id="saveBtn">Save</button>
+        <select id="savedList" title="Saved snippets"><option value="">Open saved...</option></select>
+        <button class="ghost" id="downloadBtn">Download</button>
+        <button class="btn" id="newBtn">New</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <div class="editors">
+        <div class="tabs">
+          <div class="tab active" data-tab="html">HTML</div>
+          <div class="tab" data-tab="css">CSS</div>
+          <div class="tab" data-tab="js">JS</div>
+        </div>
+
+        <div class="editor-wrap">
+          <div class="editor" id="editorHtml"></div>
+          <div class="editor" id="editorCss" style="display:none"></div>
+          <div class="editor" id="editorJs" style="display:none"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;padding-top:6px">
+          <div style="color:var(--muted);font-size:13px">Template: <select id="templateSel"><option value="blank">Blank</option><option value="hello">Hello World</option><option value="todo">Todo Example</option></select></div>
+          <div class="meta">
+            <input id="snippetName" type="text" placeholder="Snippet name (for save)" style="width:220px" />
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-card">
+        <div class="preview-toolbar">
+          <div style="font-weight:600">Live Preview</div>
+          <div style="flex:1"></div>
+          <div style="color:var(--muted);font-size:13px">Errors & console are shown below</div>
+        </div>
+        <div class="preview-frame" style="height:55%">
+          <iframe id="preview" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+        <div class="console" id="console"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+
+  <script>
+    // ----- init editors -----
+    const htmlArea = document.getElementById('editorHtml');
+    const cssArea = document.getElementById('editorCss');
+    const jsArea = document.getElementById('editorJs');
+
+    const editorHtml = CodeMirror(htmlArea, { mode: 'htmlmixed', theme:'dracula', lineNumbers:true, value: '<h2 style="color:#0ea5a4">Hello — Mini CodePen</h2>\n<p>Edit HTML here</p>' });
+    const editorCss = CodeMirror(cssArea, { mode: 'css', theme:'dracula', lineNumbers:true, value: 'body{font-family:Inter,Arial;margin:16px;background:#f8fafc;color:#04263a} h2{margin:0}' });
+    const editorJs = CodeMirror(jsArea, { mode: 'javascript', theme:'dracula', lineNumbers:true, value: 'console.log("Hello from your JS");' });
+
+    // tabs
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const tab = t.getAttribute('data-tab');
+      document.getElementById('editorHtml').style.display = tab==='html' ? 'block' : 'none';
+      document.getElementById('editorCss').style.display = tab==='css' ? 'block' : 'none';
+      document.getElementById('editorJs').style.display = tab==='js' ? 'block' : 'none';
+      editorHtml.refresh(); editorCss.refresh(); editorJs.refresh();
+    }));
+
+    // ---- utilities -----
+    const preview = document.getElementById('preview');
+    const consoleEl = document.getElementById('console');
+    const autorun = document.getElementById('autorun');
+    const runBtn = document.getElementById('runBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const newBtn = document.getElementById('newBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const savedList = document.getElementById('savedList');
+    const snippetName = document.getElementById('snippetName');
+    const templateSel = document.getElementById('templateSel');
+
+    const STORAGE_KEY = 'mini_codepen_snippets_v1';
+
+    function buildPreviewHTML(html, css, js){
+      // inject console bridge
+      return `<!doctype html><html><head><meta charset="utf-8"><style>${css}</style></head><body>${html}
+      <script>
+        // bridge
+        (function(){
+          function send(type, args){ parent.postMessage({type:type, args:args}, '*'); }
+          var origLog = console.log; console.log = function(){ send('log', Array.from(arguments)); origLog.apply(console, arguments); };
+          var origErr = console.error; console.error = function(){ send('error', Array.from(arguments)); origErr.apply(console, arguments); };
+          window.onerror = function(msg, src, line, col, err){ send('error', [msg + ' at ' + (src||'') + ':' + line + ':' + col]); };
+          // notify ready
+          send('ready', ['iframe-ready']);
+        })();
+      <\/script>
+      <script>${js} <\/script>
+      </body></html>`;
+    }
+
+    function runPreview(){
+      consoleEl.innerHTML = '';
+      const h = editorHtml.getValue();
+      const c = editorCss.getValue();
+      const j = editorJs.getValue();
+      const src = buildPreviewHTML(h,c,j);
+      const blob = new Blob([src], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      preview.src = url;
+      setTimeout(()=>URL.revokeObjectURL(url), 2000);
+    }
+
+    // message from iframe
+    window.addEventListener('message', (ev) => {
+      if(!ev.data || !ev.data.type) return;
+      const {type,args} = ev.data;
+      const item = document.createElement('div'); item.className='log';
+      if(type==='log'){
+        item.textContent = args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ');
+        consoleEl.appendChild(item);
+      } else if(type==='error'){
+        item.classList.add('err'); item.textContent = args.join(' ');
+        consoleEl.appendChild(item);
+      } else if(type==='ready'){
+        // optional
+      }
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    });
+
+    // autorun debounce
+    let runTimer; function scheduleRun(){ clearTimeout(runTimer); if(autorun.checked) runTimer = setTimeout(runPreview, 700); }
+    [editorHtml, editorCss, editorJs].forEach(ed=>ed.on('change', scheduleRun));
+
+    runBtn.addEventListener('click', runPreview);
+
+    // keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); saveSnippet(); }
+      if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); runPreview(); }
+    });
+
+    // saving / loading snippets
+    function loadSavedList(){
+      const raw = localStorage.getItem(STORAGE_KEY); const arr = raw ? JSON.parse(raw) : [];
+      savedList.innerHTML = '<option value="">Open saved...</option>' + arr.map((s,i)=>`<option value="${i}">${s.name} — ${new Date(s.updated).toLocaleString()}</option>`).join('');
+    }
+
+    function saveSnippet(){
+      const name = (snippetName.value || prompt('Snippet name:') || '').trim();
+      if(!name) return alert('Name required to save');
+      const raw = localStorage.getItem(STORAGE_KEY); const arr = raw ? JSON.parse(raw) : [];
+      const payload = { name, html: editorHtml.getValue(), css: editorCss.getValue(), js: editorJs.getValue(), updated: Date.now() };
+      arr.unshift(payload); // latest first
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      snippetName.value = '';
+      loadSavedList();
+      alert('Saved ✓');
+    }
+
+    saveBtn.addEventListener('click', saveSnippet);
+    loadSavedList();
+
+    savedList.addEventListener('change', ()=>{
+      const idx = savedList.value; if(idx==='' ) return;
+      const arr = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+      const s = arr[Number(idx)]; if(!s) return;
+      editorHtml.setValue(s.html); editorCss.setValue(s.css); editorJs.setValue(s.js);
+      runPreview();
+    });
+
+    // new
+    newBtn.addEventListener('click', ()=>{
+      if(!confirm('Start a new snippet? Unsaved changes will be lost.')) return;
+      editorHtml.setValue(''); editorCss.setValue(''); editorJs.setValue(''); consoleEl.innerHTML='';
+    });
+
+    // download
+    downloadBtn.addEventListener('click', ()=>{
+      const h = editorHtml.getValue(); const c = editorCss.getValue(); const j = editorJs.getValue();
+      const full = buildPreviewHTML(h,c,j);
+      const blob = new Blob([full], { type: 'text/html' });
+      const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'snippet.html'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // templates
+    templateSel.addEventListener('change', ()=>{
+      const t = templateSel.value;
+      if(t==='blank'){ editorHtml.setValue(''); editorCss.setValue(''); editorJs.setValue(''); }
+      else if(t==='hello'){
+        editorHtml.setValue('<div class="card"><h2>Welcome</h2><p>Mini CodePen — live preview</p></div>');
+        editorCss.setValue('body{font-family:Inter,Arial;padding:20px;background:#f8fafc} .card{background:#fff;padding:14px;border-radius:8px;box-shadow:0 8px 30px rgba(2,6,23,0.06)} h2{margin:0}');
+        editorJs.setValue('console.log("Hello — from template");');
+      } else if(t==='todo'){
+        editorHtml.setValue('<div id="app">\n  <h3>Todo</h3>\n  <input id="t" placeholder="Add item"/> <button id="add">Add</button>\n  <ul id="list"></ul>\n</div>');
+        editorCss.setValue('body{font-family:Inter,Arial;padding:14px;background:#f8fafc} #app{max-width:600px} li{margin:6px 0}');
+        editorJs.setValue('document.getElementById("add").addEventListener("click",()=>{const v=document.getElementById("t").value;if(!v) return;const li=document.createElement("li");li.textContent=v;document.getElementById("list").appendChild(li);document.getElementById("t").value="";});');
+      }
+      runPreview();
+    });
+
+    // initial run
+    runPreview();
+    loadSavedList();
+  </script>
+</body>
+</html>

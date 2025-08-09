@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+        }
+        
+        .project-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff8a00;
+            text-align: center;
+        }
+        
+        .project-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .project-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(229, 46, 113, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(229, 46, 113, 0.5);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-item .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff8a00;
+        }
+        
+        .stat-item .label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        footer p {
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .stat-item {
+                min-width: 150px;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My Projects Portfolio</h1>
+            <p>A showcase of my top 10 development projects. Each project represents hours of dedication, problem-solving, and creativity. Click on any project to explore it in detail.</p>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="number">10</div>
+                <div class="label">Projects</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">2500+</div>
+                <div class="label">Lines of Code</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">5</div>
+                <div class="label">Technologies</div>
+            </div>
+        </div>
+        
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>Job Board</h3>
+                <p>Browse and filter job listings with multi-facet search and pagination. 
+                    Save favorites and keep your state in the URL for sharing.
+
+                </p>
+                <button class="btn" onclick="openProject1()">View Project</button>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Finance Simulator</h3>
+                <p>Model SIP/EMI scenarios and long-term goals with accurate math. 
+                    Compare what-if plans side by side with clear charts.</p>
+                <button class="btn" onclick="openProject2()">View Project</button>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Photo Gallery</h3>
+                <p>A beautiful masonry/grid gallery with lightbox and keyboard navigation.
+                     Lazy-load images for performance and cache for offline viewing.
+
+                 </p>
+                <button class="btn" onclick="openProject3()">View Project</button>
+            </div>
+            
+            <!-- Project 4 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Markdown Editor</h3>
+                <p>Write in Markdown and see live preview with themes and autosave.
+                     Import/export files and enjoy distraction-free writing.</p>
+                <button class="btn" onclick="openProject4()">View Project</button>
+            </div>
+            
+            <!-- Project 5 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>Kanban Board</h3>
+                <p>Drag-and-drop tasks across customizable columns with labels and due dates.
+                     Everything is saved locally for a smooth, offline-first workflow.</p>
+                <button class="btn" onclick="openProject5()">View Project</button>
+            </div>
+            
+            <!-- Project 6 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Image Toolbox</h3>
+                <p>Compress, resize, crop, and convert images right in the browser.
+                     Powered by Canvas/Web Workers for speed and offline capability.
+
+                   </p>
+                <button class="btn" onclick="openProject6()">View Project</button>
+            </div>
+            
+            <!-- Project 7 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>Code Editor</h3>
+                <p>A mini CodePen with split panes and live preview in an iframe.
+                     Save sessions locally and share states via URL hashes.</p>
+                <button class="btn" onclick="openProject7()">View Project</button>
+            </div>
+            
+            <!-- Project 8 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Expense Tracker</h3>
+                <p>Track income and expenses with categories and monthly summaries.
+                     Visualize your spending with interactive charts and export/import CSV.
+
+                   </p>
+                <button class="btn" onclick="openProject8()">View Project</button>
+            </div>
+            
+            <!-- Project 9 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Project 9</h3>
+                <p>Coming soon...</p>
+                <button class="btn" onclick="openProject9()">View Project</button>
+            </div>
+            
+            <!-- Project 10 -->
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>Project 10</h3>
+                <p>coming soon...</p>
+                <button class="btn" onclick="openProject10()">View Project</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 My Projects Portfolio. All rights reserved.</p>
+        </footer>
+    </div>
+
+   <script>
+    // Project navigation functions
+    function openProject1() {
+        window.location.href = "Job Board UI.html"; 
+    }
+    
+    function openProject2() {
+        window.location.href = "Personal Finance simulator.html"; 
+    }
+    
+    function openProject3() {
+        window.location.href = "Photo Gallery.html"; 
+    }
+    
+    function openProject4() {
+        window.location.href = "Markdown Editor.html"; 
+    }
+    
+    function openProject5() {
+        window.location.href = "Kanban Board.html"; 
+    }
+    
+    function openProject6() {
+        window.location.href = "Image Toolbox.html"; 
+    }
+    
+    function openProject7() {
+        window.location.href = "Online Code Editor.html"; 
+    }
+    
+    function openProject8() {
+        window.location.href = "Expense Tracker + Charts.html"; 
+    }
+    
+    function openProject9() {
+        window.location.href = "#"; 
+    }
+    
+    function openProject10() {
+        window.location.href = "#"; 
+    }
+    function openProject9() {
+        alert("This Project is Not Available Yet");
+    }
+    function openProject10() {
+        alert("This Project is Not Available Yet");
+    }
+   </script>
+</body>
+</html>

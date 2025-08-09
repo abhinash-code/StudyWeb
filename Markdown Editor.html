@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Markdown Editor + Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+  <style>
+    :root{--bg:#0b1220;--panel:#071021;--muted:#9aa6b2;--accent:#06b6d4;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Roboto,Arial;color:#e6eef8;background:linear-gradient(180deg,#04121b,#061428)}
+    .app{max-width:1200px;margin:20px auto;padding:16px}
+    .head{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:800;color:#021}
+    h1{margin:0;font-size:18px}
+    .sub{color:var(--muted);font-size:13px}
+
+    .toolbar{display:flex;gap:8px;margin-top:12px;align-items:center}
+    .btn{background:linear-gradient(90deg,#06b6d4,#3b82f6);border:0;color:#021;padding:8px 10px;border-radius:8px;font-weight:600;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px 10px;border-radius:8px}
+    .toggle{background:var(--glass);padding:6px;border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
+
+    .workspace{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;height:70vh}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;overflow:hidden}
+    .panel .title{font-weight:700;margin-bottom:8px}
+
+    /* editor area (CodeMirror) */
+    .editor-wrap{flex:1;display:flex;flex-direction:column}
+    .cm-editor{height:100%;border-radius:8px;overflow:hidden}
+
+    /* preview */
+    .preview{flex:1;overflow:auto;padding:14px;background:#fff;border-radius:8px;color:#0b1220}
+    .preview h1,.preview h2,.preview h3{margin-top:0}
+    .preview pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+    .preview code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+
+    .status{display:flex;gap:12px;align-items:center;margin-top:8px;color:var(--muted);font-size:13px}
+    .actions{margin-left:auto;display:flex;gap:8px}
+
+    .footer{margin-top:10px;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media(max-width:900px){ .workspace{grid-template-columns:1fr;height:60vh} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="head">
+      <div class="logo">MD</div>
+      <div>
+        <h1>Markdown Editor + Preview</h1>
+        <div class="sub">Live preview, syntax highlight, save/load, export HTML/MD, image drop — sab browser me.</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toggle" title="Auto-render">
+        Auto <input id="autorender" type="checkbox" style="margin-left:6px" checked />
+      </div>
+      <button class="ghost" id="boldBtn">B</button>
+      <button class="ghost" id="italicBtn">I</button>
+      <button class="ghost" id="h1Btn">H1</button>
+      <button class="ghost" id="codeBtn">Code</button>
+      <button class="ghost" id="linkBtn">Link</button>
+      <button class="ghost" id="imgBtn">Image</button>
+
+      <div style="margin-left:auto" class="actions">
+        <button class="ghost" id="openBtn">Open</button>
+        <button class="ghost" id="saveBtn">Save</button>
+        <button class="ghost" id="exportMdBtn">Export .md</button>
+        <button class="btn" id="exportHtmlBtn">Export HTML</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <div class="title">Editor</div>
+        <div class="editor-wrap">
+          <div id="editor" class="cm-editor"></div>
+        </div>
+        <div class="status">
+          <div id="wordCount">Words: 0</div>
+          <div id="charCount">Chars: 0</div>
+          <div id="lastSaved">Last saved: —</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="title">Preview</div>
+        <div id="preview" class="preview"></div>
+        <div class="footer">Tip: Drag & drop images into editor to embed (base64). Use Ctrl/Cmd+S to save.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+
+  <script>
+    // Markdown Editor + Preview (frontend-only)
+    const STORAGE_KEY = 'md_editor_v1';
+    const editorEl = document.getElementById('editor');
+    const previewEl = document.getElementById('preview');
+    const autorender = document.getElementById('autorender');
+    const saveBtn = document.getElementById('saveBtn');
+    const openBtn = document.getElementById('openBtn');
+    const exportMdBtn = document.getElementById('exportMdBtn');
+    const exportHtmlBtn = document.getElementById('exportHtmlBtn');
+    const wordCountEl = document.getElementById('wordCount');
+    const charCountEl = document.getElementById('charCount');
+    const lastSavedEl = document.getElementById('lastSaved');
+
+    // toolbar buttons
+    const boldBtn = document.getElementById('boldBtn');
+    const italicBtn = document.getElementById('italicBtn');
+    const h1Btn = document.getElementById('h1Btn');
+    const codeBtn = document.getElementById('codeBtn');
+    const linkBtn = document.getElementById('linkBtn');
+    const imgBtn = document.getElementById('imgBtn');
+
+    // Initialize CodeMirror
+    const cm = CodeMirror(editorEl, {
+      mode: 'markdown', theme: 'material-darker', lineNumbers: true, value: localStorage.getItem(STORAGE_KEY) || '# Welcome\n\nStart writing markdown...', lineWrapping: true
+    });
+
+    // Markdown-it with highlight.js
+    const md = window.markdownit({
+      html: true,
+      linkify: true,
+      typographer: true,
+      highlight: function (str, lang) {
+        try{
+          if (lang && hljs.getLanguage(lang)) {
+            return '<pre><code class="hljs">' + hljs.highlight(str, {language: lang}).value + '</code></pre>';
+          }
+        }catch(e){ }
+        return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
+      }
+    });
+
+    // render function
+    function renderPreview(){
+      const text = cm.getValue();
+      const raw = md.render(text);
+      const clean = DOMPurify.sanitize(raw, {ADD_ATTR: ['target']});
+      previewEl.innerHTML = clean;
+      // highlight code blocks (already handled by md.highlight), but ensure any leftover code tags are highlighted
+      previewEl.querySelectorAll('pre code').forEach(block => { try{ hljs.highlightElement(block); }catch(e){} });
+      updateStats(text);
+    }
+
+    // stats
+    function updateStats(text){
+      const words = text.trim().split(/\s+/).filter(Boolean).length || 0;
+      const chars = text.length;
+      wordCountEl.textContent = 'Words: ' + words;
+      charCountEl.textContent = 'Chars: ' + chars;
+    }
+
+    // sync scrolling (editor -> preview)
+    cm.on('scroll', function(){
+      if(!previewEl || !cm.getScrollInfo) return;
+      const info = cm.getScrollInfo();
+      const ratio = info.top / (info.height - info.clientHeight || 1);
+      previewEl.scrollTop = ratio * (previewEl.scrollHeight - previewEl.clientHeight);
+    });
+
+    // auto-render debounce
+    let renderTimer;
+    function scheduleRender(){ clearTimeout(renderTimer); if(autorender.checked) renderTimer = setTimeout(renderPreview, 250); }
+    cm.on('change', scheduleRender);
+
+    // initial render
+    renderPreview();
+
+    // save & load
+    function saveDoc(){ localStorage.setItem(STORAGE_KEY, cm.getValue()); lastSavedEl.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+    saveBtn.addEventListener('click', ()=>{ saveDoc(); alert('Saved to localStorage'); });
+
+    openBtn.addEventListener('click', ()=>{ const v = localStorage.getItem(STORAGE_KEY) || ''; cm.setValue(v); renderPreview(); alert('Loaded'); });
+
+    // export markdown
+    exportMdBtn.addEventListener('click', ()=>{
+      const data = cm.getValue(); const blob = new Blob([data], { type: 'text/markdown' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'document.md'; a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    // export html
+    exportHtmlBtn.addEventListener('click', ()=>{
+      const html = `<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css\"><style>body{font-family:Inter,Arial;padding:24px;background:#fff;color:#0b1220}</style></head><body>${DOMPurify.sanitize(md.render(cm.getValue()))}</body></html>`;
+      const blob = new Blob([html], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'document.html'; a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    // keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey||e.metaKey) && e.key === 's'){ e.preventDefault(); saveDoc(); }
+      if((e.ctrlKey||e.metaKey) && e.key === 'Enter'){ e.preventDefault(); renderPreview(); }
+    });
+
+    // toolbar insert helpers (preserve selection)
+    function insertAround(before, after){ const doc = cm.getDoc(); const sel = doc.getSelection(); doc.replaceSelection(before + sel + after); cm.focus(); if(!sel){ const cursor = doc.getCursor(); doc.setCursor({line:cursor.line, ch: cursor.ch - after.length}); } }
+    boldBtn.addEventListener('click', ()=> insertAround('**','**'));
+    italicBtn.addEventListener('click', ()=> insertAround('_','_'));
+    h1Btn.addEventListener('click', ()=> insertAround('# ', '\n'));
+    codeBtn.addEventListener('click', ()=> insertAround('``\n','\n``'));
+    linkBtn.addEventListener('click', ()=>{ const url = prompt('URL'); if(url) insertAround('[','](' + url + ')'); });
+    imgBtn.addEventListener('click', ()=>{ const url = prompt('Image URL (or leave empty to drop an image)'); if(url) insertAround('![](','(' + url + ')'); });
+
+    // drag & drop image into editor -> embed as base64
+    function fileToDataUrl(file){ return new Promise((res, rej)=>{ const r = new FileReader(); r.onload = ()=>res(r.result); r.onerror = rej; r.readAsDataURL(file); }); }
+    cm.getWrapperElement().addEventListener('drop', async (e)=>{
+      e.preventDefault(); const files = Array.from(e.dataTransfer.files || []);
+      for(const f of files){ if(f.type.startsWith('image/')){ const data = await fileToDataUrl(f); const doc = cm.getDoc(); const cursor = doc.getCursor(); doc.replaceRange(`![](${data})`, cursor); } }
+    });
+
+    // open file (.md)
+    const inputFile = document.createElement('input'); inputFile.type = 'file'; inputFile.accept = '.md,.markdown,text/markdown';
+    openBtn.addEventListener('click', ()=> inputFile.click());
+    inputFile.addEventListener('change', ()=>{
+      const f = inputFile.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = e=>{ cm.setValue(e.target.result); renderPreview(); }; reader.readAsText(f);
+    });
+
+    // restore cursor and content on load
+    window.addEventListener('beforeunload', ()=>{ saveDoc(); });
+
+    // convenience: update stats immediately
+    updateStats(cm.getValue());
+
+  </script>
+</body>
+</html>
