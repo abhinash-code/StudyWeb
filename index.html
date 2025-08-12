@@ -690,6 +690,17 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* Optional: unique icon look for Bookmarks */
+.menu-icon-bookmarks {
+    color: #8b5cf6;            /* purple-ish by default */
+    filter: drop-shadow(0 6px 18px rgba(139,92,246,0.12));
+    transition: transform .25s ease, color .25s ease;
+}
+.menu-item:hover .menu-icon-bookmarks {
+    transform: scale(1.15);
+    color: #06b6d4; /* hover color to match other icons */
+}
+
     </style>
 </head>
 <body>
@@ -729,10 +740,17 @@
                 <i class="fas fa-book"></i>
                 <span>Modules</span>
             </a>
-            <a href="FormulaChart.html" class="menu-item">
-                <i class="fas fa-calculator"></i>
-                <span>Formula Chart</span>
-            </a>
+           <a href="FormulaPage.html" class="menu-item">
+                 <i class="fas fa-square-root-alt menu-icon-formulas"></i>
+                 <span>Formulas</span>
+             </a>
+
+              <!-- New Sidebar item: Bookmarks -->
+           <a href="ToolsPage.html" class="menu-item">
+                <i class="fas fa-tools menu-icon-tools"></i>
+             <span>Tools</span>
+           </a>
+
 
             <div class="menu-divider"></div>
 
@@ -747,7 +765,7 @@
 
             <div class="menu-divider"></div>
 
-            <a href="https://www.google.com" target="_self" class="menu-item">
+            <a href="#" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
@@ -876,14 +894,37 @@
         });
 
         // Menu item active state
-        const menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                window.location.href = item.getAttribute('href');
-                menuItems.forEach(mi => mi.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
+      // Improved menu item handler (replace your existing "Menu item active state" block)
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        const href = item.getAttribute('href');
+        const action = item.getAttribute('data-action');
+
+        // Remove active from all and set on clicked
+        menuItems.forEach(mi => mi.classList.remove('active'));
+        item.classList.add('active');
+
+        // If it's a placeholder link or uses data-action, prevent default navigation
+        if (href === '#' || href === '' || action) {
+            e.preventDefault();
+            // Example: data-action="bookmarks" -> open panel/modal (add your code here)
+            if (action === 'bookmarks') {
+                // TODO: open bookmarks modal/panel
+                console.log('Open bookmarks panel (implement modal/panel)');
+            }
+            return;
+        }
+
+        // Otherwise perform normal navigation
+        // (keeps existing behavior)
+        // small delay to let CSS active effect show (optional)
+        setTimeout(() => {
+            window.location.href = href;
+        }, 80);
+    });
+});
+
 
         // Create floating particles
         function createParticles() {
@@ -1022,5 +1063,3 @@
     </script>
 </body>
 </html>
-
-
