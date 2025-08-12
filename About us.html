@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — About Us</title>
+  <meta name="description" content="StudyWeb — शिक्षार्थियों के लिए पढ़ाई का स्मार्ट प्लेटफ़ॉर्म। नोट्स, वीडियोज़, प्रैक्टिस टेस्ट और करियर मार्गदर्शन।" />
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#58627a;--accent:#2563eb;--accent-2:#06b6d4;--radius:12px;--maxw:1100px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;background:var(--bg);color:#0b2540}
+    .wrap{max-width:var(--maxw);margin:36px auto;padding:20px}
+    .hero{padding:28px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);box-shadow:0 10px 30px rgba(11,37,64,0.06)}
+    .hero-top{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:72px;height:72px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-size:20px}
+    h1{margin:0;font-size:28px}
+    .lead{color:var(--muted);margin-top:10px}
+    .lang-switch{display:flex;gap:8px}
+    .lang-btn{background:transparent;border:1px solid rgba(11,37,64,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+    .lang-btn.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border-color:transparent}
+
+    .content{margin-top:18px;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 8px 24px rgba(11,37,64,0.03);line-height:1.7}
+    .section{margin-bottom:18px}
+    .section h2{margin:0 0 8px;font-size:18px;color:var(--accent)}
+    .section p{margin:0 0 10px;color:#123047}
+    .quote{padding:12px 16px;background:linear-gradient(90deg,#f1f7ff,#fff);border-left:4px solid var(--accent);border-radius:8px;color:#2b3f55}
+    .cta{margin-top:16px;display:flex;gap:12px}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+    @media(max-width:800px){ .hero{padding:18px} .hero-top{flex-direction:column;align-items:flex-start} }
+  </style>
+</head>
+<body>
+    
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="brand">
+          <div class="logo">SW</div>
+          <div>
+            <h1 id="title">StudyWeb — हमारा उद्देश्य</h1>
+            <div id="lead" class="lead">StudyWeb एक ऐसा प्लेटफ़ॉर्म है जिसे शिक्षार्थियों के वास्तविक ज़रूरतों को ध्यान में रखकर बनाया गया है — तेज़, स्पष्ट और व्यवहारिक ज्ञान।</div>
+          </div>
+        </div>
+
+        <div class="lang-switch" role="tablist" aria-label="Language switch">
+          <button id="btn-hi" class="lang-btn" aria-pressed="true">हिन्दी</button>
+          <button id="btn-en" class="lang-btn" aria-pressed="false">English</button>
+        </div>
+      </div>
+
+      <div class="content" id="content">
+        <!-- Content sections are rendered by JavaScript so we can swap language -->
+      </div>
+
+      <div class="cta">
+        <button id="startBtn" class="btn">Start Learning</button>
+        <div class="small">अगर आप सामग्री साझा करना चाहते हैं या सहयोग करना चाहते हैं तो हमसे संपर्क करें।</div>
+      </div>
+    </div>
+
+    <footer id="footer">© 2025 StudyWeb • Built for learners</footer>
+  </div>
+
+  <script>
+    // Bilingual content for StudyWeb - Hindi and English
+    const LANG = {
+      hi: {
+        title: 'StudyWeb — हमारा उद्देश्य',
+        lead: 'StudyWeb एक ऐसा प्लेटफ़ॉर्म है जिसे शिक्षार्थियों के वास्तविक ज़रूरतों को ध्यान में रखकर बनाया गया है — तेज़, स्पष्ट और व्यवहारिक ज्ञान।',
+        sections: [
+          {
+            h: 'हमारी कहानी',
+            p: `StudyWeb की शुरुआत एक साधारण विचार से हुई — पढ़ाई को जटिल, लंबे और बिखरे हुए संसाधनों के स्थान पर सरल, सुसंगत और इस्तेमाल करने में आसान बनाना। हमने देखा कि बहुत से छात्र सही सामग्री खोजने में समय गंवाते हैं, उनकी पढ़ाई का ढाँचा नहीं बन पाता और प्रैक्टिस करने के पर्याप्त अवसर नहीं मिलते। इसी समस्या को हल करने के लिए StudyWeb की नींव रखी गई — एक ऐसा घर जहाँ नोट्स, वीडियो, प्रश्न‑उत्तर और मार्गदर्शक योजना एक ही जगह उपलब्ध हों।`
+          },
+          {
+            h: 'हम क्या प्रदान करते हैं',
+            p: `StudyWeb पर आप विषय‑वार नोट्स, छोटे वीडियो लेक्चर, टॉपिक वाइज प्रैक्टिस टेस्ट और लक्ष्य‑आधारित स्टडी प्लान पाएँगे। नोट्स में प्रमुख बिंदु, उदाहरण और तेज़ रिवीजन के लिए शॉर्ट‑फॉर्म चिट‑शीट होती हैं। वीडियो में केवल महत्वपूर्ण अवधारणाओं और हल करने की रणनीतियों पर फोकस होता है।` 
+          },
+          {
+            h: 'हमारी शिक्षा‑दृष्टिकोण',
+            p: `हम मानते हैं कि सीखना सतत और सक्रिय होना चाहिए। समझना, अभ्यास करना और आत्म‑मूल्यांकन — ये तीनों एक साथ चलेंगे। छोटे वीडियो, क्विज़ और विस्तार से हल वाले प्रश्न हमारी पद्धति का हिस्सा हैं।` 
+          },
+          {
+            h: 'कैसे इस्तेमाल करें',
+            p: `किसी विषय को चुनें, पहले संक्षेप नोट्स पढ़ें, फिर वीडियो देखें और अंत में संबंधित प्रैक्टिस टेस्ट दें। StudyWeb के स्टडी प्लान्स सप्ताह‑वार लक्ष्य और रिवीजन शेड्यूल देते हैं ताकि आपकी तैयारी व्यवस्थित रहे।` 
+          },
+          {
+            h: 'समुदाय और योगदान',
+            p: `StudyWeb पर छात्र और शिक्षक दोनों सक्रिय रूप से जुड़ सकते हैं — प्रश्न पूछें, अनुभव साझा करें और सामग्री योगदान करें। शिक्षक हमारे कंटेंट‑सबमिशन प्रोग्राम के ज़रिए नोट्स और वीडियो भेज सकते हैं।` 
+          },
+          {
+            h: 'गुणवत्ता और भरोसा',
+            p: `हमारी टीम हर सामग्री की समीक्षा करती है। नोट्स और टेस्ट अनुभवी शिक्षकों द्वारा बनाए या मान्य किए जाते हैं। डेटा‑प्राइवेसी और सुरक्षा हमारे मुख्य सिद्धांत हैं।` 
+          },
+          {
+            h: 'भविष्य की योजनाएँ',
+            p: `हम भविष्य में पर्सनलाइज़्ड लर्निंग, AI‑सहायता से रिवीजन शेड्यूल और बहुभाषी कंटेंट लाने की योजना बना रहे हैं ताकि अधिक छात्र लाभान्वित हों।` 
+          }
+        ],
+        quote: 'हमारा वादा: StudyWeb आपकी पढ़ाई को प्रभावी, प्रासंगिक और समय‑बचत बनाने में मदद करेगा — ताकि आप अपने लक्ष्य पर फोकस कर सकें।',
+        startBtn: 'Start Learning',
+        footer: '© 2025 StudyWeb • Built for learners'
+      },
+      en: {
+        title: 'StudyWeb — Our Mission',
+        lead: 'StudyWeb is a learning platform built with real students’ needs in mind — fast, clear and practical knowledge for focused study.',
+        sections: [
+          {
+            h: 'Our Story',
+            p: `StudyWeb began with a simple idea: make studying simpler, structured and easy to use instead of scattered, long and complex resources. We noticed students spending hours searching for the right content, lacking a study structure and missing sufficient practice opportunities. StudyWeb was created to solve this — a single place for notes, videos, practice questions and guided plans.`
+          },
+          {
+            h: 'What we provide',
+            p: `On StudyWeb you will find topic‑wise notes, short video lessons, focused practice tests and goal‑oriented study plans. Notes include key points, examples and quick revision cheat‑sheets. Videos focus on concepts and problem‑solving strategies.`
+          },
+          {
+            h: 'Our pedagogy',
+            p: `We believe learning should be active and continuous. Understanding, practice and self‑assessment go hand in hand. Short videos, quizzes and detailed solutions are part of our approach.`
+          },
+          {
+            h: 'How to use',
+            p: `Choose a subject, read the concise notes, watch the related video and then take the practice tests. Follow StudyWeb’s study plans which provide weekly goals and revision schedules to keep your preparation on track.`
+          },
+          {
+            h: 'Community & contribution',
+            p: `Students and teachers can actively participate on StudyWeb — ask questions, share experiences and contribute materials. Teachers can submit notes and videos through our content program.`
+          },
+          {
+            h: 'Quality & trust',
+            p: `All content is reviewed by our team. Notes and tests are prepared or validated by experienced educators. We prioritise data privacy and security.`
+          },
+          {
+            h: 'Future plans',
+            p: `We plan to add personalised learning paths, AI‑assisted revision schedules and multilingual content so more learners can benefit.`
+          }
+        ],
+        quote: 'Our promise: StudyWeb aims to make your learning effective, relevant and time‑saving — so you can focus on your goals.',
+        startBtn: 'Start Learning',
+        footer: '© 2025 StudyWeb • Built for learners'
+      }
+    };
+
+    // DOM refs
+    const titleEl = document.getElementById('title');
+    const leadEl = document.getElementById('lead');
+    const contentEl = document.getElementById('content');
+    const footerEl = document.getElementById('footer');
+    const btnHi = document.getElementById('btn-hi');
+    const btnEn = document.getElementById('btn-en');
+    const startBtn = document.getElementById('startBtn');
+
+    // render function
+    function renderLang(lang){
+      const L = LANG[lang] || LANG.hi;
+      // title & lead
+      titleEl.textContent = L.title;
+      leadEl.textContent = L.lead;
+      // content sections
+      contentEl.innerHTML = '';
+      L.sections.forEach(sec=>{
+        const s = document.createElement('section'); s.className='section';
+        const h = document.createElement('h2'); h.textContent = sec.h; s.appendChild(h);
+        const p = document.createElement('p'); p.textContent = sec.p; s.appendChild(p);
+        contentEl.appendChild(s);
+      });
+      // quote
+      const q = document.createElement('div'); q.className='quote'; q.textContent = L.quote; contentEl.appendChild(q);
+      // update CTA and footer
+      startBtn.textContent = L.startBtn;
+      footerEl.textContent = L.footer;
+      // update active button UI
+      if(lang === 'hi'){ btnHi.classList.add('active'); btnEn.classList.remove('active'); btnHi.setAttribute('aria-pressed','true'); btnEn.setAttribute('aria-pressed','false'); }
+      else { btnEn.classList.add('active'); btnHi.classList.remove('active'); btnEn.setAttribute('aria-pressed','true'); btnHi.setAttribute('aria-pressed','false'); }
+    }
+
+    // initial render (Hindi)
+    renderLang('hi');
+
+    // attach events
+    btnHi.addEventListener('click', ()=> renderLang('hi'));
+    btnEn.addEventListener('click', ()=> renderLang('en'));
+
+  </script>
+</body>
+</html>

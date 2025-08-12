@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — Professional Word Counter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#0066ff;--accent-2:#0ea5a4;--glass:rgba(2,6,23,0.04);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    *{box-sizing:border-box}
+    body{margin:0; min-height:100vh; background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 60%); color:#0f172a; display:flex; align-items:flex-start; justify-content:center; padding:32px}
+    .wrap{width:1100px; max-width:100%; display:grid; grid-template-columns:1fr 360px; gap:20px}
+    @media(max-width:980px){.wrap{grid-template-columns:1fr}}
+    .card{background:var(--card); border-radius:12px; padding:18px; box-shadow:0 10px 30px rgba(2,6,23,0.06); border:1px solid var(--glass)}
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:white;font-weight:800}
+    h1{font-size:18px;margin:0}
+    .lead{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .editor{margin-top:12px}
+    textarea{width:100%; min-height:320px; resize:vertical; padding:14px; border-radius:10px; border:1px solid #e6e9ef; font-size:15px; font-family:inherit}
+
+    .controls{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041226}
+    .btn.ghost{background:transparent;border:1px solid rgba(2,6,23,0.06);color:var(--muted)}
+
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
+    .stat{background:linear-gradient(180deg,#ffffff,#fbfdff); padding:12px; border-radius:10px; border:1px solid rgba(2,6,23,0.04)}
+    .stat h3{margin:0; font-size:14px}
+    .big{font-weight:800; font-size:20px; margin-top:8px}
+
+    .aside{padding:12px}
+    .metrics{display:flex; flex-direction:column; gap:8px}
+    .metric{display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; border:1px solid rgba(2,6,23,0.04)}
+
+    .freq-list{margin-top:12px; max-height:320px; overflow:auto; display:flex; flex-direction:column; gap:8px}
+    .freq-item{display:flex; justify-content:space-between; gap:8px; padding:8px; border-radius:8px; border:1px solid rgba(2,6,23,0.03)}
+
+    .small{font-size:13px;color:var(--muted)}
+    .mono{font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace}
+
+    .progress{height:10px;background:rgba(2,6,23,0.04);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ff9a5c,#00e6a8);transition:width 300ms}
+
+    .top-row{display:flex; gap:12px; align-items:center}
+    .search{padding:8px 10px; border-radius:8px; border:1px solid #e6e9ef}
+
+    footer{margin-top:12px; color:var(--muted); font-size:13px}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <header>
+        <div class="brand"><div class="logo">SW</div><div><h1>Professional Word Counter</h1><div class="lead">Live counts, reading time, keyword frequency, text tools & export</div></div></div>
+        <div class="small">StudyWeb Tools</div>
+      </header>
+
+      <div class="editor">
+        <div class="top-row">
+          <input id="quickSearch" class="search" placeholder="Search inside text (press Enter)" />
+          <div style="margin-left:auto; display:flex; gap:8px">
+            <button id="clearBtn" class="btn ghost">Clear</button>
+            <button id="cleanBtn" class="btn ghost">Clean Spaces</button>
+            <button id="downloadBtn" class="btn ghost">Download</button>
+            <button id="copyBtn" class="btn primary">Copy Text</button>
+          </div>
+        </div>
+        <textarea id="text" placeholder="Paste or type your text here..."></textarea>
+
+        <div class="controls">
+          <button id="lowerBtn" class="btn ghost">lowercase</button>
+          <button id="upperBtn" class="btn ghost">UPPERCASE</button>
+          <button id="titleBtn" class="btn ghost">Title Case</button>
+          <button id="reverseBtn" class="btn ghost">Reverse</button>
+          <button id="removeDupBtn" class="btn ghost">Remove Duplicate Lines</button>
+          <div style="margin-left:auto; display:flex; gap:8px">
+            <label class="small"><input id="excludeStop" type="checkbox" /> Exclude stopwords in frequency</label>
+          </div>
+        </div>
+
+        <div class="stats" aria-live="polite">
+          <div class="stat"><h3>Words</h3><div id="words" class="big">0</div><div class="small">Unique: <span id="unique">0</span></div></div>
+          <div class="stat"><h3>Characters</h3><div id="chars" class="big">0</div><div class="small">(no spaces): <span id="charsNoSpace">0</span></div></div>
+          <div class="stat"><h3>Sentences & Paragraphs</h3><div class="big"><span id="sentences">0</span> / <span id="paras">0</span></div><div class="small">Avg word/sentence: <span id="avgWS">0</span></div></div>
+
+          <div class="stat"><h3>Reading Time</h3><div id="reading" class="big">0 min</div><div class="small">(at 200 wpm)</div></div>
+          <div class="stat"><h3>Longest Word</h3><div id="longest" class="big mono">—</div><div class="small">Avg word length: <span id="avgWL">0</span></div></div>
+          <div class="stat"><h3>Estimated Entropy</h3><div class="big mono" id="entropy">— bits</div><div class="small">(rough estimate)</div></div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:12px; align-items:center">
+          <div style="width:280px">
+            <div class="small">Keyword frequency (top 10)</div>
+            <div id="freqBox" class="freq-list"></div>
+          </div>
+          <div style="flex:1">
+            <div class="small">Readability / Sentiment quick hints</div>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center">
+              <div style="flex:1">
+                <div class="progress"><i id="readProg"></i></div>
+                <div class="small" style="margin-top:6px">Flesch Reading Ease: <strong id="flesch">—</strong></div>
+              </div>
+              <div style="width:140px; text-align:right">
+                <div class="small">Tone (very rough)</div>
+                <div id="tone" class="big">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer>Tip: Use "Clean Spaces" to remove extra spaces & normalize newlines. Frequency respects "Exclude stopwords" toggle.</footer>
+      </div>
+    </section>
+
+    <aside class="card aside">
+      <h3 style="margin-top:0">Tools & Export</h3>
+      <div class="metrics">
+        <div class="metric"><div class="small">Copy stats</div><div><button id="copyStats" class="btn ghost">Copy</button></div></div>
+        <div class="metric"><div class="small">Export CSV (keywords)</div><div><button id="exportCsv" class="btn ghost">Export</button></div></div>
+        <div class="metric"><div class="small">Clear favorites</div><div><button id="clearFav" class="btn ghost">Clear</button></div></div>
+      </div>
+      <div style="margin-top:12px" class="small">Advanced: You can chain transformations then download the cleaned text.</div>
+    </aside>
+  </div>
+
+  <script>
+    // ===== utilities =====
+    const $ = id => document.getElementById(id);
+
+    function tokenize(text){
+      // words: letters/digits/apostrophes/hyphens
+      const words = text.match(/\b[\p{L}\p{N}'-]+\b/gu) || [];
+      return words.map(w=>w.trim());
+    }
+
+    function sentences(text){
+      // simple sentence split by ., ?, ! followed by space or EOL
+      const s = text.split(/(?<=[.!?])\s+/); return s.filter(Boolean);
+    }
+
+    function paragraphs(text){ return text.split(/\n{2,}/).map(p=>p.trim()).filter(Boolean); }
+
+    const STOPWORDS = new Set(['the','is','in','and','to','a','of','it','you','that','i','for','on','with','as','are','this','be','or','have','not','by','at','from']);
+
+    // ===== main analysis =====
+    function analyze(){
+      const text = $('text').value || '';
+      const words = tokenize(text);
+      const wordCount = words.length;
+      const unique = new Set(words.map(w=>w.toLowerCase())).size;
+      const chars = text.length;
+      const charsNoSpace = text.replace(/\s+/g,'').length;
+      const sents = sentences(text).length;
+      const paras = paragraphs(text).length;
+      const avgWS = sents? (wordCount / sents).toFixed(1) : 0;
+      const avgWL = wordCount? (words.reduce((a,b)=>a+b.length,0)/wordCount).toFixed(2):0;
+      const longest = words.reduce((a,b)=> b.length > a.length? b:a , '');
+      const readingMins = Math.max(0, (wordCount / 200)).toFixed(1); // 200 wpm
+
+      // frequency
+      const freq = {};
+      words.forEach(w=>{
+        const key = w.toLowerCase();
+        freq[key] = (freq[key]||0) + 1;
+      });
+
+      const excludeStop = $('excludeStop').checked;
+      const freqArr = Object.keys(freq).map(k=>({k,count:freq[k]}));
+      const filtered = freqArr.filter(x=> !excludeStop || !STOPWORDS.has(x.k));
+      filtered.sort((a,b)=> b.count - a.count || a.k.localeCompare(b.k));
+      const top = filtered.slice(0,10);
+
+      // entropy rough: unique characters
+      const uniqueChars = new Set((text.replace(/\s+/g,'')).split('')).size || 1;
+      const entropy = Math.round(Math.log2(uniqueChars) * (charsNoSpace || 1));
+
+      // flesch reading ease (approx): 206.835 - 1.015*(words/sentences) - 84.6*(syllables/words)
+      const syllables = estimateSyllables(words.join(' '));
+      const flesch = sents? Math.round(206.835 - 1.015*(wordCount/sents) - 84.6*(syllables/Math.max(1,wordCount))) : '—';
+
+      // tone rough: positive/negative by presence of words
+      const toneScore = sentimentSimple(words.join(' '));
+      const toneLabel = toneScore > 0.1 ? 'Positive' : toneScore < -0.1 ? 'Negative' : 'Neutral';
+
+      // update UI
+      $('words').textContent = wordCount;
+      $('unique').textContent = unique;
+      $('chars').textContent = chars;
+      $('charsNoSpace').textContent = charsNoSpace;
+      $('sentences').textContent = sents;
+      $('paras').textContent = paras || 0;
+      $('avgWS').textContent = avgWS || 0;
+      $('avgWL').textContent = avgWL;
+      $('longest').textContent = longest || '—';
+      $('reading').textContent = readingMins + ' min';
+      $('entropy').textContent = entropy + ' bits';
+      $('flesch').textContent = flesch;
+      $('tone').textContent = toneLabel;
+
+      // update freq list
+      const box = $('freqBox'); box.innerHTML = '';
+      top.forEach(item=>{
+        const d = document.createElement('div'); d.className='freq-item';
+        d.innerHTML = `<div style="font-weight:700">${item.k}</div><div class="small">${item.count}</div>`;
+        box.appendChild(d);
+      });
+
+      // progress reading ease mapping to 0-100
+      let prog = 0; if(typeof flesch === 'number'){ prog = Math.max(0, Math.min(100, flesch)); }
+      $('readProg').style.width = prog + '%';
+    }
+
+    // rough syllable estimator
+    function estimateSyllables(text){
+      text = text.toLowerCase(); if(!text) return 0;
+      const words = text.split(/[^a-z]+/).filter(Boolean);
+      let count = 0;
+      words.forEach(w=>{
+        let syl = 0; const a = w.match(/[aeiouy]{1,2}/g); if(a) syl = a.length; if(w.endsWith('e')) syl = Math.max(1, syl-1); if(syl===0) syl=1; count += syl;
+      });
+      return count;
+    }
+
+    // very simple sentiment scoring by positive/negative lexicons
+    const POS = new Set(['good','great','happy','love','excellent','success','positive','win','best','nice','awesome','enjoy']);
+    const NEG = new Set(['bad','sad','hate','angry','worse','terrible','fail','loss','awful','problem','hard']);
+    function sentimentSimple(text){ const words = (text||'').toLowerCase().match(/\b[\p{L}']+\b/gu)||[]; let s=0; words.forEach(w=>{ if(POS.has(w)) s+=1; if(NEG.has(w)) s-=1; }); return s/Math.max(1,words.length); }
+
+    // ===== transformations =====
+    $('cleanBtn').addEventListener('click', ()=>{
+      const t = $('text').value.replace(/[\t\u00A0]/g,' ').replace(/ +/g,' ').replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim(); $('text').value = t; analyze();
+    });
+    $('clearBtn').addEventListener('click', ()=>{ if(confirm('Clear text?')){ $('text').value=''; analyze(); } });
+    $('copyBtn').addEventListener('click', ()=>{ navigator.clipboard.writeText($('text').value).then(()=>alert('Copied text')); });
+    $('downloadBtn').addEventListener('click', ()=>{ const txt = $('text').value; const blob = new Blob([txt], {type:'text/plain'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='text.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+
+    $('lowerBtn').addEventListener('click', ()=>{ $('text').value = $('text').value.toLowerCase(); analyze(); });
+    $('upperBtn').addEventListener('click', ()=>{ $('text').value = $('text').value.toUpperCase(); analyze(); });
+    $('titleBtn').addEventListener('click', ()=>{ $('text').value = $('text').value.toLowerCase().replace(/(^|\s)\S/g, l=>l.toUpperCase()); analyze(); });
+    $('reverseBtn').addEventListener('click', ()=>{ $('text').value = $('text').value.split('').reverse().join(''); analyze(); });
+    $('removeDupBtn').addEventListener('click', ()=>{ const lines = $('text').value.split('\n'); const uniq = [...new Set(lines)]; $('text').value = uniq.join('\n'); analyze(); });
+
+    // quick search inside
+    $('quickSearch').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ const q = e.target.value.trim(); if(!q) return; const idx = $('text').value.toLowerCase().indexOf(q.toLowerCase()); if(idx>=0){ $('text').focus(); $('text').setSelectionRange(idx, idx+q.length); } else alert('Not found'); } });
+
+    // copy stats
+    $('copyStats').addEventListener('click', ()=>{ const stats = `Words: ${$('words').textContent}\nChars: ${$('chars').textContent}\nSentences: ${$('sentences').textContent}`; navigator.clipboard.writeText(stats).then(()=>alert('Stats copied')); });
+
+    // export keywords CSV
+    $('exportCsv').addEventListener('click', ()=>{
+      const items = Array.from(document.querySelectorAll('#freqBox .freq-item')).map(n=>`${n.children[0].textContent},${n.children[1].textContent}`);
+      if(items.length===0) return alert('No keywords'); const blob = new Blob([items.join('\n')], {type:'text/csv'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='keywords.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    $('exportBtn').addEventListener('click', ()=>{ $('exportCsv').click(); });
+    $('clearFav').addEventListener('click', ()=>{ if(confirm('Clear exported items?')){ /* placeholder */ alert('Cleared'); } });
+
+    // live analyze on input with debounce
+    let timer;
+    $('text').addEventListener('input', ()=>{ clearTimeout(timer); timer=setTimeout(analyze, 250); });
+
+    // initial
+    analyze();
+  </script>
+</body>
+</html>

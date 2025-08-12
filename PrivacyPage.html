@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyWeb — Privacy Policy</title>
+  <meta name="description" content="StudyWeb's Privacy Policy. Learn how we collect, use, and protect your data.">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-2: #06b6d4;
+      --radius: 12px;
+      --max-width: 1100px;
+      --border: 1px solid rgba(30, 41, 59, 0.08);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: var(--max-width);
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--accent);
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .lang-switcher {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .lang-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: var(--border);
+      background: transparent;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .lang-btn.active {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      border-color: transparent;
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    
+    .last-updated {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    
+    .policy-content {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(30, 41, 59, 0.05);
+    }
+    
+    .section {
+      margin-bottom: 28px;
+    }
+    
+    .section h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--accent);
+      padding-bottom: 6px;
+      border-bottom: var(--border);
+    }
+    
+    .section h3 {
+      font-size: 16px;
+      margin: 16px 0 8px;
+      color: var(--text);
+    }
+    
+    .section p, .section ul {
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    
+    .section ul {
+      padding-left: 24px;
+    }
+    
+    .section li {
+      margin-bottom: 6px;
+    }
+    
+    .contact-info {
+      background: linear-gradient(90deg, #f1f7ff, #fff);
+      border-left: 4px solid var(--accent);
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: var(--border);
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      
+      .policy-content {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">SW</div>
+        <span>StudyWeb</span>
+      </div>
+      <div class="lang-switcher" role="tablist" aria-label="Language switch">
+        <button id="btn-hi" class="lang-btn active" aria-pressed="true">हिन्दी</button>
+        <button id="btn-en" class="lang-btn" aria-pressed="false">English</button>
+      </div>
+    </header>
+    
+    <main id="policy-content">
+      <!-- Content will be loaded by JavaScript -->
+    </main>
+    
+    <footer id="footer">
+      © 2025 StudyWeb. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Bilingual Privacy Policy Content
+    const POLICY = {
+      hi: {
+        title: "गोपनीयता नीति",
+        lastUpdated: "अंतिम अपडेट: 12 जनवरी 2025",
+        sections: [
+          {
+            title: "परिचय",
+            content: "StudyWeb आपकी गोपनीयता को गंभीरता से लेता है। यह नीति बताती है कि हम आपके व्यक्तिगत डेटा को कैसे एकत्र, उपयोग और सुरक्षित करते हैं।"
+          },
+          {
+            title: "डेटा संग्रह",
+            content: "हम निम्नलिखित प्रकार का डेटा एकत्र कर सकते हैं:",
+            subsections: [
+              {
+                title: "आपके द्वारा प्रदान किया गया डेटा",
+                content: "जब आप खाता बनाते हैं या हमसे संपर्क करते हैं, तो हम आपका नाम, ईमेल पता और अन्य विवरण एकत्र कर सकते हैं।"
+              },
+              {
+                title: "स्वचालित रूप से एकत्र डेटा",
+                content: "हम आपके डिवाइस, IP पते, ब्राउज़र प्रकार और उपयोग पैटर्न के बारे में जानकारी एकत्र कर सकते हैं।"
+              }
+            ]
+          },
+          {
+            title: "डेटा का उपयोग",
+            content: "हम आपके डेटा का उपयोग निम्नलिखित उद्देश्यों के लिए करते हैं:",
+            list: [
+              "सेवाओं को प्रदान करने और सुधारने के लिए",
+              "व्यक्तिगत अनुभव प्रदान करने के लिए",
+              "ग्राहक सहायता प्रदान करने के लिए",
+              "सुरक्षा और धोखाधड़ी की रोकथाम के लिए"
+            ]
+          },
+          {
+            title: "डेटा साझाकरण",
+            content: "हम आपका डेटा निम्नलिखित स्थितियों में साझा कर सकते हैं:",
+            list: [
+              "कानूनी आवश्यकताओं के अनुपालन में",
+              "सेवा प्रदाताओं के साथ (जो गोपनीयता समझौतों के अधीन हैं)",
+              "व्यवसाय हस्तांतरण की स्थिति में"
+            ]
+          },
+          {
+            title: "डेटा सुरक्षा",
+            content: "हम तकनीकी और संगठनात्मक उपायों का उपयोग करके आपके डेटा की सुरक्षा करते हैं, जिसमें एन्क्रिप्शन और पहुंच नियंत्रण शामिल हैं।"
+          },
+          {
+            title: "आपके अधिकार",
+            content: "आपके पास निम्नलिखित अधिकार हैं:",
+            list: [
+              "अपने डेटा तक पहुंचने का अधिकार",
+              "डेटा सुधारने का अधिकार",
+              "डेटा हटाने का अधिकार",
+              "प्रसंस्करण पर आपत्ति करने का अधिकार"
+            ]
+          },
+          {
+            title: "कुकीज़",
+            content: "हम कुकीज़ और समान तकनीकों का उपयोग करते हैं सेवाओं को बेहतर बनाने के लिए। आप अपने ब्राउज़र सेटिंग्स के माध्यम से कुकीज़ को प्रबंधित कर सकते हैं।"
+          }
+        ],
+        contact: "यदि आपके पास गोपनीयता संबंधी कोई प्रश्न हैं, तो कृपया privacy@studyweb.com पर हमसे संपर्क करें।",
+        footer: "© 2025 StudyWeb. सर्वाधिकार सुरक्षित।"
+      },
+      en: {
+        title: "Privacy Policy",
+        lastUpdated: "Last Updated: January 12, 2025",
+        sections: [
+          {
+            title: "Introduction",
+            content: "StudyWeb takes your privacy seriously. This policy explains how we collect, use, and protect your personal data."
+          },
+          {
+            title: "Data Collection",
+            content: "We may collect the following types of data:",
+            subsections: [
+              {
+                title: "Data You Provide",
+                content: "When you create an account or contact us, we may collect your name, email address, and other details."
+              },
+              {
+                title: "Automatically Collected Data",
+                content: "We may collect information about your device, IP address, browser type, and usage patterns."
+              }
+            ]
+          },
+          {
+            title: "Use of Data",
+            content: "We use your data for the following purposes:",
+            list: [
+              "To provide and improve our services",
+              "To personalize your experience",
+              "To provide customer support",
+              "For security and fraud prevention"
+            ]
+          },
+          {
+            title: "Data Sharing",
+            content: "We may share your data in these circumstances:",
+            list: [
+              "To comply with legal requirements",
+              "With service providers (under privacy agreements)",
+              "In case of business transfers"
+            ]
+          },
+          {
+            title: "Data Security",
+            content: "We protect your data using technical and organizational measures, including encryption and access controls."
+          },
+          {
+            title: "Your Rights",
+            content: "You have the following rights:",
+            list: [
+              "Right to access your data",
+              "Right to rectification",
+              "Right to erasure",
+              "Right to object to processing"
+            ]
+          },
+          {
+            title: "Cookies",
+            content: "We use cookies and similar technologies to enhance our services. You can manage cookies through your browser settings."
+          }
+        ],
+        contact: "If you have any privacy-related questions, please contact us at privacy@studyweb.com.",
+        footer: "© 2025 StudyWeb. All rights reserved."
+      }
+    };
+
+    // DOM Elements
+    const policyContentEl = document.getElementById('policy-content');
+    const btnHi = document.getElementById('btn-hi');
+    const btnEn = document.getElementById('btn-en');
+    const footerEl = document.getElementById('footer');
+
+    // Render Function
+    function renderPolicy(lang) {
+      const policy = POLICY[lang] || POLICY.en;
+      
+      // Clear existing content
+      policyContentEl.innerHTML = '';
+      
+      // Create and append title
+      const titleEl = document.createElement('h1');
+      titleEl.textContent = policy.title;
+      policyContentEl.appendChild(titleEl);
+      
+      // Create and append last updated
+      const updatedEl = document.createElement('p');
+      updatedEl.className = 'last-updated';
+      updatedEl.textContent = policy.lastUpdated;
+      policyContentEl.appendChild(updatedEl);
+      
+      // Create main content container
+      const contentContainer = document.createElement('div');
+      contentContainer.className = 'policy-content';
+      
+      // Render each section
+      policy.sections.forEach(section => {
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'section';
+        
+        const title = document.createElement('h2');
+        title.textContent = section.title;
+        sectionEl.appendChild(title);
+        
+        const content = document.createElement('p');
+        content.textContent = section.content;
+        sectionEl.appendChild(content);
+        
+        // Render subsections if they exist
+        if (section.subsections) {
+          section.subsections.forEach(sub => {
+            const subTitle = document.createElement('h3');
+            subTitle.textContent = sub.title;
+            sectionEl.appendChild(subTitle);
+            
+            const subContent = document.createElement('p');
+            subContent.textContent = sub.content;
+            sectionEl.appendChild(subContent);
+          });
+        }
+        
+        // Render list if it exists
+        if (section.list) {
+          const listEl = document.createElement('ul');
+          section.list.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            listEl.appendChild(li);
+          });
+          sectionEl.appendChild(listEl);
+        }
+        
+        contentContainer.appendChild(sectionEl);
+      });
+      
+      // Add contact information
+      const contactEl = document.createElement('div');
+      contactEl.className = 'contact-info';
+      contactEl.textContent = policy.contact;
+      contentContainer.appendChild(contactEl);
+      
+      policyContentEl.appendChild(contentContainer);
+      
+      // Update footer
+      footerEl.textContent = policy.footer;
+      
+      // Update active language button
+      if (lang === 'hi') {
+        btnHi.classList.add('active');
+        btnHi.setAttribute('aria-pressed', 'true');
+        btnEn.classList.remove('active');
+        btnEn.setAttribute('aria-pressed', 'false');
+      } else {
+        btnEn.classList.add('active');
+        btnEn.setAttribute('aria-pressed', 'true');
+        btnHi.classList.remove('active');
+        btnHi.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    // Initial render (Hindi)
+    renderPolicy('hi');
+
+    // Event listeners for language switching
+    btnHi.addEventListener('click', () => renderPolicy('hi'));
+    btnEn.addEventListener('click', () => renderPolicy('en'));
+  </script>
+</body>
+</html>

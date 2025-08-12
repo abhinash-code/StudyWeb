@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — Watch: Stopwatch & Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b1020;
+      --card: #0f1724;
+      --accent: #00e6a8; /* neon green */
+      --accent-2: #00a1ff; /* cyan */
+      --danger: #ff4d6d;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.65);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1200px 600px at 10% 10%, rgba(0,161,255,0.06), transparent), radial-gradient(900px 400px at 95% 90%, rgba(0,230,168,0.04), transparent), var(--bg); color:#dbeafe; display:flex; align-items:center; justify-content:center; padding:28px;
+    }
+
+    .wrap{width:1100px; max-width:100%; display:grid; grid-template-columns: 520px 1fr; gap:28px; align-items:start}
+    @media(max-width:980px){ .wrap{grid-template-columns:1fr} }
+
+    /* Card */
+    .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:18px; padding:22px; box-shadow: 0 10px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)}
+
+    header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
+    .title{display:flex; gap:12px; align-items:center}
+    .logo{width:44px; height:44px; border-radius:10px; background: linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:800; color:#071127}
+    h1{font-size:16px; margin:0}
+    p.lead{margin:0; color:var(--muted); font-size:13px}
+
+    /* Watch face */
+    .watch-wrap{display:flex; align-items:center; justify-content:center; flex-direction:column}
+    .watch{
+      /* responsive size so the full circle always fits in the container */
+      width:420px; max-width: calc(100% - 40px); height:auto; aspect-ratio:1/1; border-radius:50%; position:relative; display:grid; place-items:center;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      box-shadow: inset 0 -30px 80px rgba(0,0,0,0.6), 0 20px 40px rgba(2,6,23,0.6);
+      border: 10px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      /* small downward offset so top bezel is fully visible in tight containers */
+      margin-top:18px;
+    }
+    .bezel{width:100%; height:100%; border-radius:50%; position:absolute; top:0; left:0; display:block; box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 8px 0 rgba(255,255,255,0.02);}
+    .glass-reflection{position:absolute; left:14%; top:6%; width:60%; height:36%; border-radius:50%; background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.02)); transform: rotate(-12deg); filter: blur(8px); mix-blend-mode: screen; opacity:0.45}
+
+    /* dial center */
+    .dial{width:84%; height:84%; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; background: radial-gradient(circle at 40% 20%, rgba(255,255,255,0.02), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.12));}
+
+    /* digital display */
+    .digital{
+      font-weight:800; font-size:48px; letter-spacing:1px; color:var(--accent); text-shadow: 0 6px 20px rgba(0,160,255,0.08);
+      font-variant-numeric: tabular-nums;
+    }
+    .sub{font-size:13px; color:var(--muted); margin-top:6px}
+
+    /* circular progress ring */
+    .ring{position:absolute; width:92%; height:92%; inset:0; display:grid; place-items:center}
+    svg{width:100%; height:100%; transform:rotate(-90deg)}
+    .ring .bg{stroke: rgba(255,255,255,0.03);}
+    .ring .fg{stroke: url(#grad); stroke-linecap:round; transition: stroke-dashoffset 400ms linear;}
+
+    /* Crown */
+    .crown{position:absolute; right:-18px; top:45%; transform:translateY(-50%); width:26px; height:46px; background:linear-gradient(180deg,#cfd8ff,#8aa7ff); border-radius:8px; box-shadow: 0 6px 20px rgba(2,6,23,0.6); display:grid; place-items:center; color:#071127; font-weight:700}
+
+    /* Controls */
+    .controls{margin-top:18px; display:flex; gap:12px; align-items:center; justify-content:center}
+    .btn{padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; letter-spacing:0.6px}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#041226}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted)}
+    .btn.danger{background:linear-gradient(90deg,var(--danger),#ff9aa8); color:#071127}
+
+    /* Stopwatch & Timer panels */
+    .panel{margin-top:12px}
+    .panel .row{display:flex; gap:8px; align-items:center}
+    .input{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+
+    /* laps / timer history */
+    .list{margin-top:12px; max-height:220px; overflow:auto}
+    .item{display:flex; justify-content:space-between; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); margin-bottom:8px}
+
+    /* warning pulse */
+    .urgent{animation: pulse 1s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,77,109,0.12)}50%{box-shadow:0 0 0 12px rgba(255,77,109,0)}100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}}
+
+    /* info */
+    .info{color:var(--muted); font-size:13px; margin-top:10px}
+ 
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card watch-wrap">
+      <header style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px">
+        <div class="title"><div class="logo">SW</div><div><h1>StudyWeb — Watch</h1><p class="lead">Realistic CSS watch with high-precision Stopwatch & Countdown Timer</p></div></div>
+        <div class="meta" style="color:var(--muted); font-size:13px">Interactive • Smooth animation</div>
+      </header>
+
+      <div class="watch" role="application" aria-label="Watch with stopwatch and timer">
+        <div class="bezel"></div>
+        <div class="glass-reflection" aria-hidden="true"></div>
+
+        <div class="dial" id="dial">
+          <div class="ring" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="grad" x1="0%" x2="100%"><stop offset="0%" stop-color="#00e6a8" /><stop offset="100%" stop-color="#00a1ff" /></linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" class="bg" stroke-width="8" fill="none"></circle>
+              <circle cx="50" cy="50" r="45" class="fg" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="283" fill="none"></circle>
+            </svg>
+          </div>
+
+          <div style="text-align:center">
+            <div id="display" class="digital" aria-live="polite">00:00:00.000</div>
+            <div id="modeLabel" class="sub">Stopwatch</div>
+          </div>
+
+        </div>
+
+        <div class="crown" aria-hidden="true">●</div>
+
+      </div>
+
+      <div class="controls">
+        <button id="sw-start" class="btn primary">Start</button>
+        <button id="sw-lap" class="btn ghost">Lap</button>
+        <button id="sw-stop" class="btn ghost">Pause</button>
+        <button id="sw-reset" class="btn danger">Reset</button>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex; gap:12px; align-items:center">
+          <div style="flex:1">
+            <label class="sub">Countdown Timer</label>
+            <div class="row" style="margin-top:6px">
+              <input id="timer-min" class="input" type="number" min="0" value="0" aria-label="minutes" style="width:90px"/> <span class="sub">min</span>
+              <input id="timer-sec" class="input" type="number" min="0" max="59" value="30" aria-label="seconds" style="width:90px"/> <span class="sub">sec</span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px">
+            <button id="tm-start" class="btn primary">Start Timer</button>
+            <button id="tm-reset" class="btn ghost">Reset</button>
+          </div>
+        </div>
+
+        <div class="info">Tip: Stopwatch shows milliseconds; Timer pulses red near end. You can save laps and copy them.</div>
+      </div>
+
+    </section>
+
+    <aside class="card">
+      <h3 style="margin-top:0">Laps & Timer Log</h3>
+      <div class="list" id="log"></div>
+      <div style="display:flex; gap:8px; margin-top:12px">
+        <button id="export" class="btn ghost" title="Copy log">Copy Log</button>
+        <button id="clear-log" class="btn danger">Clear</button>
+      </div>
+      <div class="info">Pro tip: Use the Start key to start/stop quickly on keyboard (Space).</div>
+    </aside>
+  </div>
+
+  <script>
+    // ====== High-precision Stopwatch & Timer ======
+    // Using performance.now and requestAnimationFrame for precision
+
+    const display = document.getElementById('display');
+    const modeLabel = document.getElementById('modeLabel');
+    const fg = document.querySelector('.ring .fg');
+    const totalCirc = 2 * Math.PI * 45; // r=45 -> circumference ~283
+
+    // Stopwatch state
+    let swRunning = false;
+    let swStart = 0; // performance.now() when started
+    let swElapsed = 0; // ms accumulated when paused
+    let rafId;
+
+    // Timer state
+    let tmRunning = false;
+    let tmTotal = 30000; // ms default 30s
+    let tmRemaining = tmTotal;
+    let tmStartTimestamp = 0;
+
+    // Log
+    const logEl = document.getElementById('log');
+    let logs = [];
+
+    // Audio beep for timer end
+    function beep(){
+      try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 880;
+        g.gain.value = 0.0001;
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 1.0);
+        setTimeout(()=>{ o.stop(); ctx.close(); }, 1200);
+      }catch(e){ console.log('beep error', e); }
+    }
+
+    // Formatting helpers
+    function pad(n, z=2){ return n.toString().padStart(z,'0'); }
+    function formatTime(ms){
+      const sign = ms < 0 ? '-' : '';
+      const abs = Math.abs(ms);
+      const hours = Math.floor(abs / 3600000);
+      const mins = Math.floor((abs % 3600000) / 60000);
+      const secs = Math.floor((abs % 60000) / 1000);
+      const millis = Math.floor(abs % 1000);
+      return `${sign}${pad(hours)}:${pad(mins)}:${pad(secs)}.${pad(millis,3)}`;
+    }
+
+    // Update display for stopwatch and timer
+    function update(){
+      // Stopwatch compute
+      if(swRunning){
+        const now = performance.now();
+        const elapsed = swElapsed + (now - swStart);
+        display.textContent = formatTime(elapsed);
+      }
+
+      // Timer compute
+      if(tmRunning){
+        const now = performance.now();
+        const elapsedSince = now - tmStartTimestamp;
+        tmRemaining = Math.max(0, tmTotal - elapsedSince);
+        // progress ring
+        const progress = (tmRemaining / tmTotal) || 0;
+        fg.style.strokeDashoffset = totalCirc * (1 - progress);
+        // red urgent when <10% left
+        if(progress <= 0.1){ document.querySelector('.watch').classList.add('urgent'); } else { document.querySelector('.watch').classList.remove('urgent'); }
+        // show timer in display if timer running else show stopwatch
+        display.textContent = formatTime(tmRemaining);
+        modeLabel.textContent = 'Timer';
+        if(tmRemaining === 0){ // finish
+          stopTimer(true);
+        }
+      }
+
+      // If neither running show current stopwatch elapsed or idle
+      if(!tmRunning){
+        modeLabel.textContent = 'Stopwatch';
+        if(!swRunning){ display.textContent = formatTime(swElapsed); }
+      }
+
+      rafId = requestAnimationFrame(update);
+    }
+
+    // Stopwatch controls
+    const btnStart = document.getElementById('sw-start');
+    const btnLap = document.getElementById('sw-lap');
+    const btnStop = document.getElementById('sw-stop');
+    const btnReset = document.getElementById('sw-reset');
+
+    btnStart.addEventListener('click', ()=>{
+      if(!swRunning){ // start
+        swRunning = true; swStart = performance.now(); btnStart.textContent = 'Running'; btnStart.classList.remove('primary'); btnStart.classList.add('ghost');
+        if(!rafId) update();
+      }
+    });
+    btnStop.addEventListener('click', ()=>{
+      if(swRunning){ // pause
+        swRunning = false; swElapsed += performance.now() - swStart; btnStart.textContent = 'Start'; btnStart.classList.remove('ghost'); btnStart.classList.add('primary');
+      }
+    });
+    btnReset.addEventListener('click', ()=>{
+      if(confirm('Reset stopwatch?')){ swRunning = false; swElapsed = 0; swStart = 0; display.textContent = formatTime(0); btnStart.textContent = 'Start'; btnStart.classList.remove('ghost'); btnStart.classList.add('primary'); addLog('Stopwatch reset'); }
+    });
+    btnLap.addEventListener('click', ()=>{
+      const t = swRunning ? (swElapsed + (performance.now() - swStart)) : swElapsed;
+      const entry = {type:'Lap', time: t, text: formatTime(t)}; logs.push(entry); renderLogs(); copyToClipboard(entry.text + ' (Lap)');
+    });
+
+    // Timer controls
+    const tmStartBtn = document.getElementById('tm-start');
+    const tmResetBtn = document.getElementById('tm-reset');
+    const minInput = document.getElementById('timer-min');
+    const secInput = document.getElementById('timer-sec');
+
+    tmStartBtn.addEventListener('click', ()=>{
+      if(!tmRunning){
+        const mins = Math.max(0, Number(minInput.value) || 0);
+        const secs = Math.max(0, Math.min(59, Number(secInput.value) || 0));
+        tmTotal = (mins * 60000) + (secs * 1000);
+        if(tmTotal <= 0){ alert('Enter a positive timer duration'); return; }
+        tmRemaining = tmTotal; tmRunning = true; tmStartTimestamp = performance.now(); tmStartBtn.textContent = 'Running'; tmStartBtn.classList.remove('primary'); tmStartBtn.classList.add('ghost'); if(!rafId) update();
+      } else { // pause
+        tmRunning = false; // preserve remaining
+        // compute remaining now
+        const elapsedSince = performance.now() - tmStartTimestamp; tmRemaining = Math.max(0, tmTotal - elapsedSince); tmTotal = tmRemaining;
+        tmStartBtn.textContent = 'Start Timer'; tmStartBtn.classList.remove('ghost'); tmStartBtn.classList.add('primary');
+      }
+    });
+
+    function stopTimer(finish=false){
+      tmRunning = false; if(finish){ // finished naturally
+        addLog('Timer finished: ' + formatTime(0)); beep(); flashFinish();
+      }
+      tmStartBtn.textContent = 'Start Timer'; tmStartBtn.classList.remove('ghost'); tmStartBtn.classList.add('primary');
+      fg.style.strokeDashoffset = totalCirc; document.querySelector('.watch').classList.remove('urgent');
+    }
+
+    tmResetBtn.addEventListener('click', ()=>{ if(confirm('Reset timer?')){ tmRunning = false; tmTotal = 30000; tmRemaining = tmTotal; fg.style.strokeDashoffset = totalCirc; display.textContent = formatTime(0); modeLabel.textContent='Stopwatch'; addLog('Timer reset'); document.querySelector('.watch').classList.remove('urgent'); } });
+
+    // Logs
+    function addLog(text){ logs.unshift({time: Date.now(), text}); renderLogs(); }
+    function renderLogs(){ logEl.innerHTML = '';
+      if(logs.length===0){ logEl.innerHTML = '<div class="item" style="border-style:dashed; color:var(--muted)">No logs yet.</div>'; return; }
+      for(const l of logs){ const el = document.createElement('div'); el.className='item'; el.innerHTML = `<div style="color:var(--muted); font-size:13px">${new Date(l.time).toLocaleString()}</div><div style="font-weight:700">${l.text}</div>`; logEl.appendChild(el); }
+    }
+
+    document.getElementById('export').addEventListener('click', ()=>{ if(logs.length===0){ alert('No logs to copy'); return; } const txt = logs.map(x => `${new Date(x.time).toLocaleString()} - ${x.text}`).join('\n'); copyToClipboard(txt); alert('Copied log to clipboard'); });
+    document.getElementById('clear-log').addEventListener('click', ()=>{ if(confirm('Clear all logs?')){ logs = []; renderLogs(); } });
+
+    function copyToClipboard(txt){ try{ navigator.clipboard.writeText(txt); }catch(e){ console.log('copy fail', e); } }
+
+    // Visual flash when finished
+    function flashFinish(){ const w = document.querySelector('.watch'); w.style.transition = 'transform 120ms ease'; w.style.transform='scale(1.03)'; setTimeout(()=>{ w.style.transform='scale(1)'; },200); }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      if(e.code === 'Space'){ e.preventDefault(); if(swRunning){ btnStop.click(); addLog('Stopwatch paused at ' + display.textContent); } else { btnStart.click(); addLog('Stopwatch started'); } }
+    });
+
+    // start RAF loop initially to keep UI responsive
+    rafId = requestAnimationFrame(update);
+
+    // initial state
+    display.textContent = formatTime(0);
+    fg.style.strokeDasharray = totalCirc;
+    fg.style.strokeDashoffset = totalCirc;
+  </script>
+</body>
+</html>

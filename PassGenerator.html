@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Password Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background: #1e293b;
+        padding: 20px;
+        border-radius: 10px;
+        width: 350px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    input[type="number"] {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 5px;
+    }
+    .options {
+        margin-top: 10px;
+    }
+    button {
+        margin-top: 15px;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        background: #2563eb;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #1d4ed8;
+    }
+    .output {
+        margin-top: 15px;
+        padding: 10px;
+        background: #0f172a;
+        border-radius: 5px;
+        word-break: break-all;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>🔐 Password Generator</h2>
+    <label>Password Length:</label>
+    <input type="number" id="length" min="6" max="128" value="12">
+
+    <div class="options">
+        <label><input type="checkbox" id="uppercase" checked> Include Uppercase</label>
+        <label><input type="checkbox" id="lowercase" checked> Include Lowercase</label>
+        <label><input type="checkbox" id="numbers" checked> Include Numbers</label>
+        <label><input type="checkbox" id="symbols" checked> Include Symbols</label>
+        <label><input type="checkbox" id="noAmbiguous"> Exclude Ambiguous Characters</label>
+    </div>
+
+    <button onclick="generatePassword()">Generate Password</button>
+    <div class="output" id="passwordOutput">Your password will appear here</div>
+</div>
+
+<script>
+function generatePassword() {
+    const length = document.getElementById("length").value;
+    const includeUppercase = document.getElementById("uppercase").checked;
+    const includeLowercase = document.getElementById("lowercase").checked;
+    const includeNumbers = document.getElementById("numbers").checked;
+    const includeSymbols = document.getElementById("symbols").checked;
+    const excludeAmbiguous = document.getElementById("noAmbiguous").checked;
+
+    let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+    let numberChars = "0123456789";
+    let symbolChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+    let ambiguousChars = "O0l1I";
+
+    let allChars = "";
+    if (includeUppercase) allChars += uppercaseChars;
+    if (includeLowercase) allChars += lowercaseChars;
+    if (includeNumbers) allChars += numberChars;
+    if (includeSymbols) allChars += symbolChars;
+
+    if (excludeAmbiguous) {
+        for (let char of ambiguousChars) {
+            allChars = allChars.replace(char, "");
+        }
+    }
+
+    if (allChars.length === 0) {
+        document.getElementById("passwordOutput").textContent = "Please select at least one option.";
+        return;
+    }
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        let randomIndex = crypto.getRandomValues(new Uint32Array(1))[0] % allChars.length;
+        password += allChars[randomIndex];
+    }
+
+    document.getElementById("passwordOutput").textContent = password;
+}
+</script>
+</body>
+</html>

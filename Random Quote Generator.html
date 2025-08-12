@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — Random Quote Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: linear-gradient(180deg,#0f1724,#071026);
+      --card:#071426;
+      --accent:#7cf2c7;
+      --accent-2:#39a9ff;
+      --muted:#9aa7bb;
+      --glass: rgba(255,255,255,0.04);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; min-height:100vh; background:var(--bg); color:#e6f0ff; display:flex; align-items:center; justify-content:center; padding:28px}
+
+    .wrap{width:1100px; max-width:100%; display:grid; grid-template-columns:1fr 360px; gap:24px}
+    @media (max-width:980px){ .wrap{grid-template-columns:1fr} }
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08)); border-radius:14px; padding:22px; border:1px solid var(--glass); box-shadow: 0 12px 40px rgba(2,6,23,0.6)}
+
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:46px; height:46px; border-radius:10px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); display:grid; place-items:center; color:#041226; font-weight:800}
+    h1{font-size:18px; margin:0; font-family:'Playfair Display', serif}
+    p.lead{margin:0; color:var(--muted); font-size:13px}
+
+    /* Quote display */
+    .quote-wrap{display:flex; gap:22px; align-items:center; padding:28px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06)); min-height:220px; position:relative; overflow:hidden}
+    .quote-mark{font-size:120px; line-height:0.6; color:rgba(255,255,255,0.06); font-family: 'Playfair Display', serif}
+    .quote-content{flex:1}
+    .text{font-family:'Playfair Display', serif; font-size:28px; margin:0 0 8px 0; line-height:1.25}
+    .author{font-weight:700; color:var(--accent-2); letter-spacing:0.6px}
+    .meta{color:var(--muted); font-size:13px}
+
+    /* actions */
+    .actions{display:flex; gap:10px; align-items:center; margin-top:14px}
+    .btn{padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#041226}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
+
+    .controls{display:flex; gap:10px; align-items:center}
+    .select, .search{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:inherit}
+
+    /* sidebar favorites */
+    .aside h3{margin-top:0}
+    .fav-list{display:flex; flex-direction:column; gap:8px; margin-top:12px; max-height:480px; overflow:auto}
+    .fav-item{display:flex; gap:8px; align-items:center; justify-content:space-between; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.02)}
+    .tag{font-size:12px; color:var(--muted); background:rgba(255,255,255,0.02); padding:6px 8px; border-radius:6px}
+
+    /* small utilities */
+    .info{font-size:13px; color:var(--muted); margin-top:10px}
+    .cover-bg{position:absolute; right:-120px; top:-60px; width:400px; height:400px; background:radial-gradient(circle at 20% 20%, rgba(57,169,255,0.06), transparent), radial-gradient(circle at 80% 80%, rgba(124,242,199,0.04), transparent); transform:rotate(20deg); pointer-events:none}
+
+    /* quote animation */
+    .fade-enter{opacity:0; transform: translateY(8px) scale(0.995)}
+    .fade-enter-active{transition: all 260ms cubic-bezier(.2,.8,.2,1); opacity:1; transform: translateY(0) scale(1)}
+
+    /* small responsiveness */
+    @media (max-width:600px){ .text{font-size:20px} .quote-mark{font-size:80px} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <header>
+        <div class="brand"><div class="logo">SW</div><div><h1>Random Quote Generator</h1><div class="lead">Curated quotes • categories • save & share • offline-ready</div></div></div>
+        <div class="controls">
+          <select id="category" class="select" aria-label="Filter by category"><option value="all">All Categories</option></select>
+          <input id="search" class="search" placeholder="Search quotes or authors..." aria-label="Search quotes" />
+          <button id="nextBtn" class="btn primary">Next</button>
+        </div>
+      </header>
+
+      <div class="quote-wrap" id="quoteCard">
+        <div class="cover-bg" aria-hidden="true"></div>
+        <div class="quote-mark">“</div>
+        <div class="quote-content">
+          <div id="quoteText" class="text">Loading inspirational quote…</div>
+          <div style="display:flex; gap:10px; align-items:center; margin-top:8px">
+            <div id="quoteAuthor" class="author">— Author</div>
+            <div id="quoteTags" class="meta">• <span id="tags">tag1, tag2</span></div>
+          </div>
+
+          <div class="actions" style="margin-top:18px">
+            <button id="favBtn" class="btn ghost">★ Save</button>
+            <button id="copyBtn" class="btn ghost">Copy</button>
+            <button id="tweetBtn" class="btn ghost">Share</button>
+            <button id="speakBtn" class="btn ghost">🔊 Read</button>
+            <label style="margin-left:auto; color:var(--muted); font-size:13px">Auto-play</label>
+            <input id="autoplay" type="checkbox" style="transform:scale(1.1)" title="Auto-play quotes" />
+          </div>
+        </div>
+      </div>
+
+      <div class="info">Tip: Use search to find quotes by keyword or author. Saved quotes are stored locally in your browser.</div>
+    </section>
+
+    <aside class="card">
+      <h3>Saved Quotes</h3>
+      <div class="fav-list" id="favorites"></div>
+
+      <div style="display:flex; gap:8px; margin-top:12px">
+        <button id="exportBtn" class="btn ghost">Export</button>
+        <button id="importBtn" class="btn ghost">Import</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none" />
+        <button id="clearFavs" class="btn ghost">Clear</button>
+      </div>
+
+      <div class="info" style="margin-top:14px">Pro features: auto-play with interval, speech synthesis, offline fallback, and share-to-social functionality.</div>
+    </aside>
+  </div>
+
+  <script>
+    // ===== Quotes dataset (offline fallback & curated list) =====
+    const FALLBACK_QUOTES = [
+      {text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt", tags:["inspiration","future"]},
+      {text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein", tags:["perseverance","opportunity"]},
+      {text: "The best way to predict the future is to invent it.", author: "Alan Kay", tags:["future","innovation"]},
+      {text: "Do not wait to strike till the iron is hot; but make it hot by striking.", author: "William Butler Yeats", tags:["action","motivation"]},
+      {text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", tags:["success","courage"]},
+      {text: "Life is what happens when you're busy making other plans.", author: "John Lennon", tags:["life","plans"]},
+      {text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky", tags:["risk","motivation"]},
+      {text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein", tags:["value","success"]},
+      {text: "The purpose of our lives is to be happy.", author: "Dalai Lama", tags:["life","happiness"]},
+      {text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius", tags:["perseverance","patience"]},
+      {text: "Everything you’ve ever wanted is on the other side of fear.", author: "George Addair", tags:["fear","growth"]},
+      {text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu", tags:["journey","start"]},
+      {text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson", tags:["time","motivation"]},
+      {text: "The secret of getting ahead is getting started.", author: "Mark Twain", tags:["start","productivity"]},
+      {text: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi", tags:["change","leadership"]},
+      {text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci", tags:["simplicity","design"]},
+      {text: "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.", author: "Roy T. Bennett", tags:["fear","dreams"]},
+      {text: "Action is the foundational key to all success.", author: "Pablo Picasso", tags:["action","success"]},
+      {text: "If you want to go fast, go alone. If you want to go far, go together.", author: "African Proverb", tags:["teamwork","wisdom"]},
+      {text: "What you do today can improve all your tomorrows.", author: "Ralph Marston", tags:["today","future"]}
+    ];
+
+    // ===== State & storage keys =====
+    const STORAGE_KEY = 'studyweb_quotes_favs_v1';
+    let quotes = []; // loaded quotes
+    let current = null;
+    let autoplayId = null;
+
+    // ===== Utilities =====
+    function $(id){return document.getElementById(id)}
+    function saveFavs(arr){localStorage.setItem(STORAGE_KEY, JSON.stringify(arr))}
+    function loadFavs(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch(e){return []}}
+
+    // ===== Fetch remote quotes (optional) =====
+    async function fetchRemote(){
+      try{
+        const res = await fetch('https://api.quotable.io/quotes?limit=20');
+        if(!res.ok) throw new Error('network');
+        const data = await res.json();
+        return data.results.map(q=>({text:q.content, author:q.author, tags:q.tags||[]}));
+      }catch(e){ return null; }
+    }
+
+    // ===== Initialize categories from dataset =====
+    function buildCategories(list){
+      const set = new Set(); list.forEach(q=> (q.tags||[]).forEach(t=> set.add(t)));
+      const cat = $('category'); cat.innerHTML = '<option value="all">All Categories</option>';
+      Array.from(set).sort().forEach(t=>{ const o=document.createElement('option'); o.value=t; o.textContent=t[0].toUpperCase()+t.slice(1); cat.appendChild(o); });
+    }
+
+    // ===== Random selection with optional filters/search =====
+    function pickRandom(filter={category:'all', q:'', avoid:[]}){
+      const filtered = quotes.filter(qt=>{
+        if(filter.category && filter.category!=='all'){
+          if(!(qt.tags||[]).includes(filter.category)) return false;
+        }
+        if(filter.q){ const s = filter.q.toLowerCase(); if(!(qt.text.toLowerCase().includes(s) || (qt.author||'').toLowerCase().includes(s))) return false; }
+        if(filter.avoid.includes(qt)) return false;
+        return true;
+      });
+      if(filtered.length===0) return null;
+      return filtered[Math.floor(Math.random()*filtered.length)];
+    }
+
+    // ===== Render quote =====
+    function renderQuote(q, {animate=true} = {}){
+      if(!q) return;
+      current = q;
+      const qtEl = $('quoteText'); const aEl = $('quoteAuthor'); const tagsEl = $('tags');
+      if(animate){ qtEl.classList.add('fade-enter'); aEl.classList.add('fade-enter'); }
+      setTimeout(()=>{ qtEl.classList.add('fade-enter-active'); aEl.classList.add('fade-enter-active'); },10);
+      qtEl.textContent = q.text;
+      aEl.textContent = q.author ? '— ' + q.author : '';
+      tagsEl.textContent = (q.tags||[]).join(', ');
+      // remove animation classes after transition
+      setTimeout(()=>{ qtEl.classList.remove('fade-enter','fade-enter-active'); aEl.classList.remove('fade-enter','fade-enter-active'); },360);
+      updateFavButton();
+    }
+
+    // ===== Favorite handling =====
+    function isFavorited(q){ const favs = loadFavs(); return favs.some(f=> f.text===q.text && f.author===q.author); }
+    function toggleFavorite(){ if(!current) return; const favs = loadFavs(); const idx = favs.findIndex(f=> f.text===current.text && f.author===current.author); if(idx>=0){ favs.splice(idx,1); saveFavs(favs); } else { favs.push(current); saveFavs(favs); } renderFavList(); updateFavButton(); }
+    function updateFavButton(){ const btn = $('favBtn'); if(current && isFavorited(current)){ btn.textContent='★ Saved'; btn.classList.add('primary'); btn.classList.remove('ghost'); } else { btn.textContent='☆ Save'; btn.classList.remove('primary'); btn.classList.add('ghost'); } }
+
+    function renderFavList(){ const el = $('favorites'); el.innerHTML=''; const favs = loadFavs(); if(favs.length===0){ el.innerHTML = '<div style="color:var(--muted);">No saved quotes yet.</div>'; return; }
+      favs.slice().reverse().forEach((f, i)=>{
+        const d = document.createElement('div'); d.className='fav-item';
+        const left = document.createElement('div'); left.style.flex='1'; left.innerHTML = `<div style="font-weight:700">${f.text}</div><div class="meta">— ${f.author || 'Unknown'}</div>`;
+        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='6px';
+        const use = document.createElement('button'); use.className='btn ghost'; use.textContent='Use'; use.onclick = ()=>{ renderQuote(f); };
+        const del = document.createElement('button'); del.className='btn ghost'; del.textContent='Delete'; del.onclick = ()=>{ const arr = loadFavs(); const idx = arr.findIndex(x=> x.text===f.text && x.author===f.author); if(idx>=0){ arr.splice(idx,1); saveFavs(arr); renderFavList(); updateFavButton(); } };
+        right.appendChild(use); right.appendChild(del);
+        d.appendChild(left); d.appendChild(right); el.appendChild(d);
+      });
+    }
+
+    // ===== Copy / Share / Speech =====
+    function copyCurrent(){ if(!current) return; navigator.clipboard.writeText(`"${current.text}" — ${current.author||'Unknown'}`).then(()=>{ alert('Copied to clipboard'); }).catch(()=>{ alert('Unable to copy'); }); }
+    function shareCurrent(){ if(!current) return; const text = `"${current.text}" — ${current.author||''}`; const url = encodeURIComponent(window.location.href); const t = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`; window.open(t, '_blank'); }
+    function speakCurrent(){ if(!current) return; if('speechSynthesis' in window){ const u = new SpeechSynthesisUtterance(current.text + (current.author ? ' by ' + current.author : '')); speechSynthesis.cancel(); speechSynthesis.speak(u); } else { alert('Speech not supported'); } }
+
+    // ===== Export / Import favorites =====
+    function exportFavs(){ const arr = loadFavs(); if(arr.length===0) return alert('No favorites to export'); const blob = new Blob([JSON.stringify(arr, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='favorites-quotes.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function importFavs(file){ const reader = new FileReader(); reader.onload = e => { try{ const data = JSON.parse(e.target.result); if(Array.isArray(data)){ saveFavs(data.concat(loadFavs())); renderFavList(); alert('Imported favorites'); } else alert('Invalid file'); }catch(err){ alert('Failed to import'); } }; reader.readAsText(file); }
+
+    // ===== Autoplay =====
+    function startAutoplay(interval=5000){ stopAutoplay(); autoplayId = setInterval(()=>{ $('nextBtn').click(); }, interval); }
+    function stopAutoplay(){ if(autoplayId){ clearInterval(autoplayId); autoplayId = null; } }
+
+    // ===== Initialization =====
+    async function init(){
+      // try remote first, fallback to offline list
+      const remote = await fetchRemote(); quotes = remote && remote.length>0 ? remote : FALLBACK_QUOTES;
+      buildCategories(quotes);
+      renderQuote(pickRandom({}));
+      renderFavList();
+
+      // wire UI
+      $('nextBtn').addEventListener('click', ()=>{ const cat = $('category').value; const q = $('search').value.trim(); const picked = pickRandom({category:cat, q}); if(picked) renderQuote(picked); else alert('No quote found for that filter'); });
+      $('copyBtn').addEventListener('click', copyCurrent);
+      $('tweetBtn').addEventListener('click', shareCurrent);
+      $('speakBtn').addEventListener('click', speakCurrent);
+      $('favBtn').addEventListener('click', toggleFavorite);
+      $('exportBtn').addEventListener('click', exportFavs);
+      $('importBtn').addEventListener('click', ()=>{ $('importFile').click(); });
+      $('importFile').addEventListener('change', e=>{ const f = e.target.files[0]; if(f) importFavs(f); });
+      $('clearFavs').addEventListener('click', ()=>{ if(confirm('Clear all saved quotes?')){ saveFavs([]); renderFavList(); updateFavButton(); } });
+      $('category').addEventListener('change', ()=>{ /* show first matching when changed */ const cat = $('category').value; const q = pickRandom({category:cat}); if(q) renderQuote(q); });
+      $('search').addEventListener('keydown', e=>{ if(e.key==='Enter'){ $('nextBtn').click(); } });
+      $('autoplay').addEventListener('change', (e)=>{ if(e.target.checked){ startAutoplay(6000); } else stopAutoplay(); });
+
+      // keyboard support: N for next, S for speak, F for favorite
+      document.addEventListener('keydown', e=>{
+        if(e.key.toLowerCase()==='n') $('nextBtn').click();
+        if(e.key.toLowerCase()==='s') speakCurrent();
+        if(e.key.toLowerCase()==='f') toggleFavorite();
+      });
+    }
+
+    // start
+    init();
+  </script>
+</body>
+</html>

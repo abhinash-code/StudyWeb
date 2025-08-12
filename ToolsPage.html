@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Tools Hub | Professional Web Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4A44B5;
+            --accent: #FF6B8B;
+            --dark: #121220;
+            --darker: #0A0A14;
+            --light: #F0F0FF;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        /* Tools Grid */
+        .tools-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .tool-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(0);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .tool-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(108, 99, 255, 0.2), transparent 40%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .tool-card:hover:before {
+            opacity: 1;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(108, 99, 255, 0.4);
+        }
+
+        .tool-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .tool-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .tool-description {
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .tool-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            max-width: 1400px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #bbb;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 20, 0.9);
+            padding: 50px 20px 30px;
+            margin-top: 80px;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .tool-card:nth-child(1) { transition-delay: 0.1s; }
+        .tool-card:nth-child(2) { transition-delay: 0.2s; }
+        .tool-card:nth-child(3) { transition-delay: 0.3s; }
+        .tool-card:nth-child(4) { transition-delay: 0.4s; }
+        .tool-card:nth-child(5) { transition-delay: 0.5s; }
+        .tool-card:nth-child(6) { transition-delay: 0.6s; }
+        .tool-card:nth-child(7) { transition-delay: 0.7s; }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tool-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 40px 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <div class="logo-text">ToolHub</div>
+        </div>
+        <nav class="nav-links">
+            <a href="#"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-th-large"></i> Tools</a>
+            <a href="#"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Ultimate Tools Hub</h1>
+        <p>A professional suite of powerful web tools designed to enhance your productivity and simplify complex tasks. Experience the future of online utilities with our cutting-edge interface and seamless functionality.</p>
+    </section>
+    
+    <!-- Tools Grid -->
+    <section class="tools-container">
+        <h2 class="section-title">Our Powerful Tools</h2>
+        <div class="tools-grid">
+            <!-- Calculator -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3 class="tool-title">Calculator</h3>
+                <p class="tool-description">Advanced calculator with scientific functions, history tracking, and real-time calculations.</p>
+                <button class="tool-btn" onclick="redirectToTool('calculator')">Access Tool</button>
+            </div>
+            
+            <!-- Unit Converter -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3 class="tool-title">Unit Converter</h3>
+                <p class="tool-description">Convert between various units of length, weight, temperature, volume, and more.</p>
+                <button class="tool-btn" onclick="redirectToTool('converter')">Access Tool</button>
+            </div>
+            
+            <!-- Stop Watch -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-stopwatch"></i>
+                </div>
+                <h3 class="tool-title">Stopwatch</h3>
+                <p class="tool-description">Precision stopwatch with lap functionality, countdown timer, and performance analytics.</p>
+                <button class="tool-btn" onclick="redirectToTool('stopwatch')">Access Tool</button>
+            </div>
+            
+            <!-- Password Generator -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3 class="tool-title">Password Generator</h3>
+                <p class="tool-description">Create ultra-secure passwords with customizable length and character options.</p>
+                <button class="tool-btn" onclick="redirectToTool('password')">Access Tool</button>
+            </div>
+            
+            <!-- Quote Generator -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <h3 class="tool-title">Quote Generator</h3>
+                <p class="tool-description">Discover inspiring quotes from great minds, with sharing and saving capabilities.</p>
+                <button class="tool-btn" onclick="redirectToTool('quote')">Access Tool</button>
+            </div>
+            
+            <!-- Age Calculator -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-birthday-cake"></i>
+                </div>
+                <h3 class="tool-title">Age Calculator</h3>
+                <p class="tool-description">Calculate exact age in years, months, days, and even seconds since your birth.</p>
+                <button class="tool-btn" onclick="redirectToTool('age')">Access Tool</button>
+            </div>
+            
+            <!-- Word Counter -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="fas fa-font"></i>
+                </div>
+                <h3 class="tool-title">Word Counter</h3>
+                <p class="tool-description">Count words, characters, sentences, and analyze reading time for any text.</p>
+                <button class="tool-btn" onclick="redirectToTool('wordcounter')">Access Tool</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <h2 class="section-title">Why Choose Our Tools</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Accuracy Guarantee</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">7+</div>
+                <div class="stat-label">Premium Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Availability</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>ToolHub</h3>
+                <p>Your ultimate destination for powerful, easy-to-use web tools designed to enhance productivity and simplify complex tasks.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="ToolsPage.html"><i class="fas fa-chevron-right"></i> Tools</a></li>
+                    <li><a href="About us.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="ContactPage.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    <li><a href="PrivacyPage.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Popular Tools</h3>
+                <ul class="footer-links">
+                    <li><a href="Calculator.html"><i class="fas fa-calculator"></i> Calculator</a></li>
+                    <li><a href="Unit Converter.html"><i class="fas fa-exchange-alt"></i> Unit Converter</a></li>
+                    <li><a href="PassGenerator.html"><i class="fas fa-key"></i> Password Generator</a></li>
+                    <li><a href="StopWatch.html"><i class="fas fa-stopwatch"></i> Stopwatch</a></li>
+                    <li><a href="Age Calculator.html"><i class="fas fa-birthday-cake"></i> Age Calculator</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> India</li>
+                    <li><i class="fas fa-phone"></i> +91 78701 09958</li>
+                    <li><i class="fas fa-envelope"></i> kumarjhaabhinash68@gmail.com</li>
+                    <li><i class="fas fa-clock"></i> 24/7 Support</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 StudyWeb. All Rights Reserved. Designed with ❤️ for Professionals.
+        </div>
+    </footer>
+    
+    <script>
+     
+function redirectToTool(toolName) {
+    const toolPages = {
+        'calculator': 'Calculator.html',
+        'converter': 'Unit Converter.html',
+        'stopwatch': 'StopWatch.html',
+        'password': 'PassGenerator.html',
+        'quote': 'Random Quote Generator.html',
+        'age': 'Age Calculator.html',
+        'wordcounter': 'Word Counter.html'
+    };
+    
+    // Redirect to the specific tool page
+    if (toolPages[toolName]) {
+        window.location.href = toolPages[toolName];
+    } else {
+        console.error('Tool not found:', toolName);
+        // Optional: Redirect to default page if tool not found
+        window.location.href = 'tools.html';
+    }
+}
+
+
+        // Mouse position tracking for card hover effect
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.onmousemove = function(e) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            };
+        });
+    </script>
+    
+    <!-- Particles.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles background
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#6C63FF"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.3,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6C63FF",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.3
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

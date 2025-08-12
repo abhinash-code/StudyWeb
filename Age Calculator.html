@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — Age Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7280;--accent:#0066ff;--accent-2:#0ea5a4;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    *{box-sizing:border-box}
+    body{margin:0; min-height:100vh; background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 60%); color:#0f172a; display:flex; align-items:center; justify-content:center; padding:28px}
+    .wrap{width:980px; max-width:100%; display:grid; grid-template-columns:1fr 320px; gap:20px}
+    @media(max-width:980px){.wrap{grid-template-columns:1fr}}
+    .card{background:var(--card); border-radius:12px; padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+    header{display:flex; align-items:center; justify-content:space-between}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:white;font-weight:800}
+    h1{font-size:18px;margin:0}
+    .lead{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .form{display:grid; gap:12px; margin-top:12px}
+    label{font-size:13px;color:var(--muted)}
+    input, select{padding:10px 12px;border-radius:8px;border:1px solid #e6e9ef;background:transparent;font-size:14px}
+    .row{display:flex; gap:10px}
+    .row .col{flex:1}
+    .buttons{display:flex; gap:10px; margin-top:6px}
+    .btn{padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white}
+    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--accent)}
+
+    .result{margin-top:12px;padding:14px;border-radius:10px;background:linear-gradient(180deg,#f8fbff,#ffffff);font-weight:700}
+    .small{font-size:13px;color:var(--muted)}
+
+    .aside .stat{display:flex;justify-content:space-between;padding:10px;border-radius:8px;border:1px solid #eef3ff;margin-bottom:8px}
+    .footer{margin-top:10px;color:var(--muted);font-size:13px}
+
+    .big{font-size:28px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <header>
+        <div class="brand"><div class="logo">SW</div><div><h1>Age Calculator</h1><div class="lead">Exact age (years, months, days, hours, minutes, seconds) — next birthday & more</div></div></div>
+        <div class="small">StudyWeb Tools</div>
+      </header>
+
+      <div class="form" role="form" aria-label="Age calculator form">
+        <div class="row">
+          <div class="col">
+            <label for="dob">Date of birth</label>
+            <input id="dob" type="date" />
+          </div>
+          <div class="col">
+            <label for="tob">Time of birth (optional)</label>
+            <input id="tob" type="time" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="tz">Timezone</label>
+            <select id="tz"></select>
+          </div>
+          <div class="col">
+            <label for="life">Life expectancy (years) — optional</label>
+            <input id="life" type="number" min="40" max="120" placeholder="e.g., 80" />
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="calc" class="btn primary">Calculate</button>
+          <button id="now" class="btn ghost">Use current date/time</button>
+          <button id="copy" class="btn ghost">Copy Result</button>
+        </div>
+
+        <div id="output" class="result" aria-live="polite">
+          <div class="small">Calculated age will appear here.</div>
+        </div>
+
+      </div>
+
+      <div class="footer">Tip: Fill date and time (if known) for millisecond-accurate results. Timezone auto-detected but you can change it.</div>
+    </section>
+
+    <aside class="card aside">
+      <h3 style="margin-top:0">Quick Stats</h3>
+      <div class="stat"><div>Age in full years</div><div id="stat-years">—</div></div>
+      <div class="stat"><div>Age in days</div><div id="stat-days">—</div></div>
+      <div class="stat"><div>Age in months (approx)</div><div id="stat-months">—</div></div>
+      <div class="stat"><div>Next birthday</div><div id="stat-next">—</div></div>
+      <div class="stat"><div>Zodiac (Sun sign)</div><div id="stat-zodiac">—</div></div>
+      <div style="margin-top:12px">
+        <button id="share" class="btn ghost">Share Result</button>
+        <button id="export" class="btn ghost">Download .txt</button>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // ===== Helper functions =====
+    const $ = id => document.getElementById(id);
+
+    // Populate timezone select (using Intl.supportedValuesOf when available)
+    function populateTimezones(){
+      const select = $('tz');
+      select.innerHTML = '';
+      let zones = [];
+      if(Intl && Intl.supportedValuesOf){ try{ zones = Intl.supportedValuesOf('timeZone'); }catch(e){ zones = []; } }
+      if(!zones || zones.length===0){ // fallback small list
+        zones = ['UTC','Asia/Kolkata','Europe/London','America/New_York','Asia/Tokyo'];
+      }
+      const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+      zones.forEach(z=>{ const o = document.createElement('option'); o.value = z; o.textContent = z; if(z===userTZ) o.selected=true; select.appendChild(o); });
+    }
+
+    function parseInput(){
+      const dobVal = $('dob').value; if(!dobVal) return null;
+      const tobVal = $('tob').value;
+      const tz = $('tz').value;
+      // build ISO datetime string: yyyy-mm-ddThh:mm:ss in chosen timezone
+      let iso;
+      if(tobVal){ iso = dobVal + 'T' + tobVal + ':00'; } else { iso = dobVal + 'T00:00:00'; }
+      return {iso, tz};
+    }
+
+    // convert local iso string to Date object in chosen timezone using DateTimeFormat trick
+    function zonedDateFromISO(isoString, timeZone){
+      // isoString like '2020-05-12T08:30:00'
+      // build parts by formatting the same instant interpreted as local of that timezone
+      const dt = new Date(isoString + 'Z');
+      // The above creates UTC time at that ISO (unexpected), so instead use manual mapping using Intl
+      // Safer approach: use Date constructor for components
+      const [datePart, timePart] = isoString.split('T');
+      const [y,m,d] = datePart.split('-').map(Number);
+      const [hh,mm,ss] = (timePart||'00:00:00').split(':').map(Number);
+      // Build a Date using UTC that represents the wall time in the target timezone by finding offset
+      // We'll get the epoch milliseconds for that local time in the target tz by using Intl
+      const formatter = new Intl.DateTimeFormat('en-US', {timeZone, hour12:false, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit'});
+      // Find epoch ms by searching for the instant whose formatted parts match desired wall time
+      // Binary search within a day range: start at UTC midnight of that date, search ±1 day for a timestamp t where formatted local parts equal desired
+      const targetParts = {year: y, month: String(m).padStart(2,'0'), day: String(d).padStart(2,'0'), hour: String(hh).padStart(2,'0'), minute: String(mm).padStart(2,'0'), second: String(ss).padStart(2,'0')};
+      // start search from approximate UTC time = Date.UTC(y,m-1,d,hh,mm,ss)
+      const approx = Date.UTC(y, m-1, d, hh, mm, ss);
+      let low = approx - 36e5*24; let high = approx + 36e5*24; // +/- 24 hours
+      while(low <= high){ const mid = Math.floor((low+high)/2); const f = formatter.format(new Date(mid));
+        // parse f like "MM/DD/YYYY, HH:MM:SS"
+        const parts = f.match(/(\d{2})\/(\d{2})\/(\d{4}),?\s*(\d{2}):(\d{2}):(\d{2})/);
+        if(!parts){ break; }
+        const fp = {month:parts[1], day:parts[2], year:parts[3], hour:parts[4], minute:parts[5], second:parts[6]};
+        const equal = fp.year==targetParts.year && fp.month==targetParts.month && fp.day==targetParts.day && fp.hour==targetParts.hour && fp.minute==targetParts.minute && fp.second==targetParts.second;
+        if(equal) return new Date(mid);
+        // compare formatted date-time lexicographically to guide binary search
+        const curKey = `${fp.year}${fp.month}${fp.day}${fp.hour}${fp.minute}${fp.second}`;
+        const tgtKey = `${targetParts.year}${targetParts.month}${targetParts.day}${targetParts.hour}${targetParts.minute}${targetParts.second}`;
+        if(curKey < tgtKey) low = mid + 1; else high = mid -1;
+      }
+      // fallback: return new Date(isoString) as best effort
+      return new Date(isoString);
+    }
+
+    // Compute precise age between two Date objects
+    function computeAge(birthDate, nowDate){
+      // compute years, months, days by progressive subtraction to handle variable month lengths
+      let y = nowDate.getUTCFullYear() - birthDate.getUTCFullYear();
+      let m = nowDate.getUTCMonth() - birthDate.getUTCMonth();
+      let d = nowDate.getUTCDate() - birthDate.getUTCDate();
+      let hh = nowDate.getUTCHours() - birthDate.getUTCHours();
+      let mm = nowDate.getUTCMinutes() - birthDate.getUTCMinutes();
+      let ss = nowDate.getUTCSeconds() - birthDate.getUTCSeconds();
+
+      if(ss < 0){ ss += 60; mm -= 1; }
+      if(mm < 0){ mm += 60; hh -= 1; }
+      if(hh < 0){ hh += 24; d -= 1; }
+      if(d < 0){ // borrow days from previous month
+        const prevMonth = new Date(Date.UTC(nowDate.getUTCFullYear(), nowDate.getUTCMonth(), 0)); // last day of previous month
+        d += prevMonth.getUTCDate(); m -= 1;
+      }
+      if(m < 0){ m += 12; y -= 1; }
+      return {years:y, months:m, days:d, hours:hh, minutes:mm, seconds:ss};
+    }
+
+    function nextBirthday(birthDate, nowDate, tz){
+      // find next occurrence of month/day after nowDate in same timezone
+      const bMonth = birthDate.getUTCMonth(); const bDay = birthDate.getUTCDate();
+      // build candidate in this year
+      const y = nowDate.getUTCFullYear();
+      let cand = new Date(Date.UTC(y, bMonth, bDay, birthDate.getUTCHours(), birthDate.getUTCMinutes(), birthDate.getUTCSeconds()));
+      if(cand <= nowDate) cand = new Date(Date.UTC(y+1, bMonth, bDay, birthDate.getUTCHours(), birthDate.getUTCMinutes(), birthDate.getUTCSeconds()));
+      // days until
+      const diffMs = cand - nowDate; const days = Math.floor(diffMs / 86400000);
+      return {date:cand, inDays:days, ms:diffMs};
+    }
+
+    function zodiacSign(month, day){
+      // month: 1-12
+      const signs = [
+        {name:'Capricorn', start:{m:1,d:1}, end:{m:1,d:19}},
+        {name:'Aquarius', start:{m:1,d:20}, end:{m:2,d:18}},
+        {name:'Pisces', start:{m:2,d:19}, end:{m:3,d:20}},
+        {name:'Aries', start:{m:3,d:21}, end:{m:4,d:19}},
+        {name:'Taurus', start:{m:4,d:20}, end:{m:5,d:20}},
+        {name:'Gemini', start:{m:5,d:21}, end:{m:6,d:20}},
+        {name:'Cancer', start:{m:6,d:21}, end:{m:7,d:22}},
+        {name:'Leo', start:{m:7,d:23}, end:{m:8,d:22}},
+        {name:'Virgo', start:{m:8,d:23}, end:{m:9,d:22}},
+        {name:'Libra', start:{m:9,d:23}, end:{m:10,d:22}},
+        {name:'Scorpio', start:{m:10,d:23}, end:{m:11,d:21}},
+        {name:'Sagittarius', start:{m:11,d:22}, end:{m:12,d:21}},
+        {name:'Capricorn', start:{m:12,d:22}, end:{m:12,d:31}}
+      ];
+      for(const s of signs){ const sm=s.start.m, sd=s.start.d, em=s.end.m, ed=s.end.d; if((month===sm && day>=sd) || (month===em && day<=ed)) return s.name; }
+      return 'Unknown';
+    }
+
+    // Compute total days between dates
+    function daysBetween(a,b){ const ms = b - a; return Math.floor(ms/86400000); }
+
+    // Build result display
+    function showResult(birthZonedDate, nowDate, tz){
+      const age = computeAge(birthZonedDate, nowDate);
+      const yearsFull = age.years;
+      const totalDays = daysBetween(birthZonedDate, nowDate);
+      const totalMonthsApprox = Math.floor(((nowDate.getTime() - birthZonedDate.getTime())/ (1000*60*60*24*30)));
+      const nb = nextBirthday(birthZonedDate, nowDate, tz);
+      const z = zodiacSign(birthZonedDate.getUTCMonth()+1, birthZonedDate.getUTCDate());
+      // life expectancy percent
+      const lifeY = Number($('life').value) || null;
+      let lifeInfo = '';
+      if(lifeY){ const percent = Math.min(100, Math.round((yearsFull / lifeY) * 100)); lifeInfo = `Life progress: ${percent}% of ${lifeY} years.`; }
+
+      $('output').innerHTML = `
+        <div class="big mono">${yearsFull} years, ${age.months} months, ${age.days} days</div>
+        <div style="margin-top:6px">${age.hours} hours, ${age.minutes} minutes, ${age.seconds} seconds</div>
+        <div class="small" style="margin-top:8px">Total days: <strong>${totalDays.toLocaleString()}</strong> • Approx months: <strong>${totalMonthsApprox}</strong></div>
+        <div class="small" style="margin-top:8px">Next birthday: <strong>${new Date(nb.date).toLocaleString()}</strong> (in ${nb.inDays} days)</div>
+        <div class="small" style="margin-top:6px">Zodiac: <strong>${z}</strong></div>
+        <div class="small" style="margin-top:6px">${lifeInfo}</div>
+      `;
+
+      // update quick stats
+      $('stat-years').textContent = yearsFull + ' yrs';
+      $('stat-days').textContent = totalDays.toLocaleString();
+      $('stat-months').textContent = totalMonthsApprox + ' mo';
+      $('stat-next').textContent = `${nb.inDays} days`;
+      $('stat-zodiac').textContent = z;
+    }
+
+    // ===== Event handlers =====
+    document.addEventListener('DOMContentLoaded', ()=>{
+      populateTimezones();
+
+      // set default dob to 2000-01-01 for convenience
+      $('dob').value = '';
+
+      $('now').addEventListener('click', (e)=>{
+        e.preventDefault(); const now = new Date(); const isoDate = now.toISOString().slice(0,10); const isoTime = now.toTimeString().slice(0,5); $('dob').value = isoDate; $('tob').value = isoTime; });
+
+      $('calc').addEventListener('click', async (e)=>{
+        e.preventDefault(); const parsed = parseInput(); if(!parsed){ alert('Please enter date of birth'); return; }
+        const birthZoned = zonedDateFromISO(parsed.iso, parsed.tz);
+        // use current instant
+        const now = new Date();
+        showResult(birthZoned, now, parsed.tz);
+      });
+
+      $('copy').addEventListener('click', ()=>{
+        const txt = $('output').innerText; if(!txt) return; navigator.clipboard.writeText(txt).then(()=>{ alert('Result copied'); }).catch(()=>{ alert('Unable to copy'); });
+      });
+
+      $('share').addEventListener('click', ()=>{
+        const txt = $('output').innerText; if(navigator.share){ navigator.share({title:'My age', text:txt}).catch(()=>{}); } else { prompt('Copy this text to share', txt); }
+      });
+
+      $('export').addEventListener('click', ()=>{
+        const txt = 'Age calculation:\n' + $('output').innerText; const blob = new Blob([txt], {type:'text/plain'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='age.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+
+    });
+  </script>
+</body>
+</html>
