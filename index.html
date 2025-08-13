@@ -123,22 +123,40 @@
             animation: floatUp 25s infinite ease-in-out;
             backdrop-filter: blur(2px);
         }
-
-        /* Sidebar Styles */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 320px;
-            height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 1000;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background: #ffffff; /* Solid color for better performance */
+    border-right: 1px solid rgba(15, 23, 42, 0.1);
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: #0f172a;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin: 0.5rem 1rem;
+    border-radius: 12px;
+    position: relative;
+    will-change: transform; /* Performance hint */
+    backface-visibility: hidden; /* Prevent flickering */
+}
+
+/* Simplified hover effect */
+.menu-item:hover {
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateX(8px);
+}
 
         .sidebar.hidden {
             transform: translateX(-100%);
@@ -187,40 +205,6 @@
 
         .sidebar-menu {
             padding: 1.5rem 0;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem 2rem;
-            color: #0f172a;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            margin: 0.5rem 1rem;
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
-            transition: 0.5s;
-        }
-
-        .menu-item:hover::before {
-            left: 100%;
-        }
-
-        .menu-item:hover {
-            background: rgba(6, 182, 212, 0.1);
-            transform: translateX(8px);
-            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.15);
         }
 
         .menu-item.active {
@@ -893,38 +877,30 @@
             overlay.classList.remove('active');
         });
 
-        // Menu item active state
-      // Improved menu item handler (replace your existing "Menu item active state" block)
-const menuItems = document.querySelectorAll('.menu-item');
+       
+         const menuItems = document.querySelectorAll('.sidebar-menu .menu-item'); 
 menuItems.forEach(item => {
     item.addEventListener('click', (e) => {
         const href = item.getAttribute('href');
-        const action = item.getAttribute('data-action');
-
-        // Remove active from all and set on clicked
-        menuItems.forEach(mi => mi.classList.remove('active'));
-        item.classList.add('active');
-
-        // If it's a placeholder link or uses data-action, prevent default navigation
-        if (href === '#' || href === '' || action) {
-            e.preventDefault();
-            // Example: data-action="bookmarks" -> open panel/modal (add your code here)
-            if (action === 'bookmarks') {
-                // TODO: open bookmarks modal/panel
-                console.log('Open bookmarks panel (implement modal/panel)');
-            }
-            return;
+        
+        /* Close sidebar on mobile after click */
+        if (window.innerWidth <= 1024) {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
         }
-
-        // Otherwise perform normal navigation
-        // (keeps existing behavior)
-        // small delay to let CSS active effect show (optional)
-        setTimeout(() => {
+        
+        /* Handle navigation */
+        if (href && href !== '#') {
+            menuItems.forEach(mi => mi.classList.remove('active'));
+            item.classList.add('active');
             window.location.href = href;
-        }, 80);
+        } else {
+            e.preventDefault();
+            menuItems.forEach(mi => mi.classList.remove('active'));
+            item.classList.add('active');
+        }
     });
 });
-
 
         // Create floating particles
         function createParticles() {
@@ -1063,4 +1039,5 @@ menuItems.forEach(item => {
     </script>
 </body>
 </html>
+
 
