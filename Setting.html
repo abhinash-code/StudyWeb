@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyWeb — Settings</title>
+  <style>
+    /* --------------------
+       Settings Page - Professional UI
+       - Responsive two-column layout (sidebar + content)
+       - Modern variables, subtle glassmorphism, micro-interactions
+       - JS handles theme, localStorage save/reset, avatar preview
+       -------------------- */
+
+    :root{
+      --bg-1: #0f1724;         /* deep background */
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --muted: #9aa4b2;
+      --accent: #06b6d4;      /* cyan */
+      --accent-2:#7c3aed;     /* purple */
+      --success: #16a34a;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --transition: 220ms cubic-bezier(.2,.9,.2,1);
+      color-scheme: dark;
+    }
+
+    /* Light theme overrides (applied when .theme-light on <html>) */
+    .theme-light{
+      --bg-1: #f6fafc;
+      --card: rgba(16,24,32,0.04);
+      --glass: rgba(16,24,32,0.02);
+      --muted: #56606a;
+      --accent: #0ea5a3;
+      --accent-2:#6d28d9;
+      color-scheme: light;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 400px at 10% 10%, rgba(124,58,237,0.06), transparent),
+                  linear-gradient(180deg,var(--bg-1), #081226);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      color: #e8f0f7; padding:20px; 
+      display:flex; align-items:flex-start; justify-content:center;
+    }
+
+    .shell{
+      width:100%; max-width:1200px; display:grid; grid-template-columns:260px 1fr; gap:24px;
+      align-items:start; margin-top:12px;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius); padding:18px; box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .brand{display:flex; gap:12px; align-items:center; margin-bottom:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:grid;place-items:center;font-weight:700;color:white}
+    .brand h2{font-size:1.05rem;margin:0}
+    .nav{margin-top:8px}
+    .nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:inherit;text-decoration:none;font-weight:600;margin-bottom:6px;transition:all var(--transition)}
+    .nav a svg{opacity:0.85}
+    .nav a.active{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:inset 0 -1px 0 rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    .nav a:hover{transform:translateY(-3px)}
+
+    /* Card area */
+    .content{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius); padding:26px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .page-head .title{font-size:1.3rem;font-weight:700}
+    .page-head .desc{color:var(--muted);font-size:0.95rem}
+
+    /* grid for settings sections */
+    .grid{display:grid;grid-template-columns: 1fr 360px; gap:20px}
+
+    /* left column form */
+    .panel{background:var(--card); border-radius:10px; padding:18px; border:1px solid rgba(255,255,255,0.02)}
+    .panel h3{margin:0 0 10px 0}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 8px;border-radius:8px}
+    .row + .row{margin-top:6px}
+    .row strong{font-weight:700}
+    .muted{color:var(--muted);font-size:0.92rem}
+
+    /* toggle */
+    .toggle{width:56px;height:32px;background:rgba(255,255,255,0.06);border-radius:999px;position:relative;cursor:pointer;border:1px solid rgba(255,255,255,0.03);transition:all var(--transition)}
+    .toggle .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:white;box-shadow:0 4px 12px rgba(2,6,23,0.6);transition:all var(--transition);transform:translateX(0)}
+    .toggle.on{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+    .toggle.on .knob{transform:translateX(24px); background:#fff}
+
+    /* inputs */
+    label{display:block;font-size:0.9rem;margin-bottom:6px}
+    input[type='text'], input[type='email'], select, .file-input{
+      width:100%; padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;outline:none;transition:box-shadow var(--transition);
+    }
+    input:focus, select:focus{box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+
+    .btns{display:flex;gap:12px}
+    .btn{padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001; font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(12,18,40,0.6);transition:transform var(--transition)}
+    .btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .btn:hover{transform:translateY(-3px)}
+
+    /* right column preview */
+    .preview{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .avatar{width:84px;height:84px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#fff4, rgba(255,255,255,0.02));display:grid;place-items:center;font-weight:700}
+    .meta-row{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .small{font-size:0.9rem;color:var(--muted)}
+
+    /* footer actions */
+    .actions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,0.6);visibility:hidden;opacity:0;transition:all var(--transition)}
+    .modal.open{visibility:visible;opacity:1}
+    .modal .dialog{background:var(--card);padding:18px;border-radius:12px;width:420px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* toast */
+    .toast{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:12px 16px;border-radius:10px;font-weight:700;box-shadow:0 10px 30px rgba(2,6,23,0.6);transform:translateY(30px);opacity:0;transition:all 300ms}
+    .toast.show{transform:translateY(0);opacity:1}
+
+    /* responsive */
+    @media (max-width:980px){.grid{grid-template-columns:1fr}; .shell{grid-template-columns:1fr}} 
+    @media (max-width:520px){.nav a{padding:10px}}
+
+  </style>
+</head>
+<body>
+  <div class="shell" role="application">
+    <aside class="sidebar" aria-label="Main sidebar">
+      <div class="brand"><div class="logo">SW</div><div><h2>StudyWeb</h2><div class="muted">v2.0 • Your dashboard</div></div></div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#" class="active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Projects</a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/></svg> Modules</a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Formula Chart</a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15l-3 3 8 0 0-8-3 3" stroke="currentColor" stroke-width="1.6"/></svg> Settings</a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 20v-1c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Contact</a>
+      </nav>
+      <div style="margin-top:18px" class="muted">© 2025 StudyWeb</div>
+    </aside>
+
+    <main class="content" role="main" aria-labelledby="settingsTitle">
+      <div class="page-head">
+        <div>
+          <div class="title" id="settingsTitle">Settings</div>
+          <div class="desc">Manage your account, preferences, and privacy — changes are stored locally (demo)</div>
+        </div>
+        <div class="btns" aria-hidden="false">
+          <button class="btn secondary" id="resetBtn">Reset</button>
+          <button class="btn" id="saveBtn">Save Changes</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section>
+          <!-- Account panel -->
+          <div class="panel" aria-labelledby="accountHeading">
+            <h3 id="accountHeading">Account</h3>
+            <div style="display:flex;gap:14px;align-items:center;margin-top:12px">
+              <div class="avatar" id="avatarPreview">AB</div>
+              <div style="flex:1">
+                <label>Display name</label>
+                <input type="text" id="displayName" placeholder="Your name" />
+                <label style="margin-top:8px">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" />
+                <label style="margin-top:8px">Profile picture</label>
+                <input type="file" id="avatarFile" accept="image/*" class="file-input" />
+              </div>
+            </div>
+
+            <div style="margin-top:14px;display:flex;gap:12px;align-items:center">
+              <div>
+                <label>Language</label>
+                <select id="langSelect"><option>English</option><option>हिन्दी</option><option>বাংলা</option></select>
+              </div>
+              <div style="flex:1"></div>
+              <button class="btn secondary" id="changePassword">Change password</button>
+            </div>
+          </div>
+
+          <!-- Preferences panel -->
+          <div class="panel" style="margin-top:14px" aria-labelledby="prefsHeading">
+            <h3 id="prefsHeading">Preferences</h3>
+            <div class="row" style="align-items:center">
+              <div>
+                <strong>Dark theme</strong>
+                <div class="muted">Enable dark look (also saved)</div>
+              </div>
+              <div>
+                <div class="toggle" id="themeToggle" role="switch" aria-checked="true"><div class="knob"></div></div>
+              </div>
+            </div>
+
+            <div class="row" style="align-items:center">
+              <div>
+                <strong>Compact layout</strong>
+                <div class="muted">Reduce spacing for dense view</div>
+              </div>
+              <div>
+                <div class="toggle" id="compactToggle"><div class="knob"></div></div>
+              </div>
+            </div>
+
+            <div class="row" style="align-items:center">
+              <div>
+                <strong>Text size</strong>
+                <div class="muted">Adjust interface scale</div>
+              </div>
+              <div>
+                <input id="textSize" type="range" min="14" max="20" value="16" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications panel -->
+          <div class="panel" style="margin-top:14px" aria-labelledby="notifHeading">
+            <h3 id="notifHeading">Notifications</h3>
+            <div class="row"><div><strong>Email updates</strong><div class="muted">Receive release notes & tips</div></div><div><div class="toggle" id="emailToggle"><div class="knob"></div></div></div></div>
+            <div class="row" style="margin-top:8px"><div><strong>Push notifications</strong><div class="muted">Browser alerts</div></div><div><div class="toggle on" id="pushToggle"><div class="knob"></div></div></div></div>
+          </div>
+
+          <!-- Privacy panel -->
+          <div class="panel" style="margin-top:14px" aria-labelledby="privacyHeading">
+            <h3 id="privacyHeading">Privacy & Data</h3>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+              <label><input type="checkbox" id="analytics" /> Allow anonymous analytics</label>
+              <label><input type="checkbox" id="personalize" /> Use data to personalize content</label>
+              <label style="color:var(--muted);font-size:0.9rem">You can export or delete your local data below.</label>
+              <div style="display:flex;gap:8px">
+                <button class="btn secondary" id="exportData">Export data</button>
+                <button class="btn" id="deleteData" style="background:linear-gradient(90deg,#ff7a7a,#ef4444);color:white">Delete local data</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right column preview / help -->
+        <aside class="preview" aria-label="Preview & help">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:800">Live preview</div>
+              <div class="small" style="margin-top:6px">See changes reflected here instantly</div>
+            </div>
+            <div style="text-align:right">
+              <div class="small">Account status</div>
+              <div style="font-weight:700;color:var(--accent);margin-top:6px">Pro (student)</div>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div style="flex:1">
+              <div class="small">Name</div>
+              <div id="previewName" style="font-weight:800;margin-top:6px">Your name</div>
+              <div class="small" style="margin-top:8px">Email</div>
+              <div id="previewEmail" style="margin-top:6px;color:var(--muted)">you@example.com</div>
+            </div>
+            <div style="width:110px;text-align:center">
+              <div class="avatar" id="previewAvatarSmall">AB</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="small">Display preferences</div>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+              <div class="muted">Theme:</div><div id="previewTheme" style="font-weight:700">Dark</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
+            <div class="small">Quick actions</div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn secondary" id="openPrivacy">Privacy settings</button>
+              <button class="btn" id="openSupport">Contact support</button>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" id="cancelBtn">Cancel</button>
+        <button class="btn" id="saveBottom">Save</button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal" id="pwdModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="dialog">
+      <h3 style="margin-top:0">Change password</h3>
+      <div style="margin-top:8px"><label>Current password</label><input type="password" id="curPwd" /></div>
+      <div style="margin-top:8px"><label>New password</label><input type="password" id="newPwd" /></div>
+      <div style="margin-top:8px"><label>Confirm</label><input type="password" id="newPwd2" /></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+        <button class="btn secondary" id="closeModal">Close</button>
+        <button class="btn" id="savePwd">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+  <script>
+    /* ---------- Utility & state ---------- */
+    const $ = (s)=>document.querySelector(s);
+    const qs = (s)=>document.querySelectorAll(s);
+
+    const storageKey = 'studyweb_settings_v1';
+    const defaults = {
+      displayName: 'Your name',
+      email: 'you@example.com',
+      themeDark: true,
+      compact: false,
+      textSize: 16,
+      avatar: null,
+      emailUpdates: false,
+      push: true,
+      analytics: true,
+      personalize: false
+    };
+
+    let state = {...defaults};
+
+    /* ---------- Helpers ---------- */
+    function toast(msg='Saved'){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000)}
+
+    function saveToStorage(){ localStorage.setItem(storageKey, JSON.stringify(state)); toast('Settings saved') }
+    function loadFromStorage(){ try{ const s=JSON.parse(localStorage.getItem(storageKey)); if(s) state={...defaults,...s} }catch(e){} }
+    function resetToDefaults(){ state = {...defaults}; render(); localStorage.removeItem(storageKey); toast('Reset to defaults') }
+
+    /* ---------- Render UI from state ---------- */
+    function render(){
+      // form fields
+      $('#displayName').value = state.displayName;
+      $('#email').value = state.email;
+      $('#langSelect').value = state.lang || 'English';
+      $('#themeToggle').classList.toggle('on', !!state.themeDark);
+      $('#compactToggle').classList.toggle('on', !!state.compact);
+      $('#emailToggle').classList.toggle('on', !!state.emailUpdates);
+      $('#pushToggle').classList.toggle('on', !!state.push);
+      $('#textSize').value = state.textSize;
+      $('#analytics').checked = !!state.analytics;
+      $('#personalize').checked = !!state.personalize;
+
+      // previews
+      $('#previewName').textContent = state.displayName || defaults.displayName;
+      $('#previewEmail').textContent = state.email || defaults.email;
+      $('#previewTheme').textContent = state.themeDark ? 'Dark' : 'Light';
+
+      // avatar
+      if(state.avatar){ $('#avatarPreview').style.backgroundImage = `url(${state.avatar})`; $('#avatarPreview').textContent = ''; $('#previewAvatarSmall').style.backgroundImage = `url(${state.avatar})`; $('#previewAvatarSmall').textContent = '' }
+      else{ $('#avatarPreview').style.backgroundImage = ''; $('#avatarPreview').textContent = initials(state.displayName); $('#previewAvatarSmall').style.backgroundImage = ''; $('#previewAvatarSmall').textContent = initials(state.displayName) }
+
+      // theme
+      document.documentElement.classList.toggle('theme-light', !state.themeDark);
+
+      // text size
+      document.documentElement.style.setProperty('--base-font-size', state.textSize+'px');
+      document.body.style.fontSize = state.textSize+'px';
+
+    }
+
+    function initials(name=''){ return name.split(' ').map(s=>s[0]).filter(Boolean).slice(0,2).join('').toUpperCase() }
+
+    /* ---------- wire up interactions ---------- */
+    function bind(){
+      // form controls update state live
+      $('#displayName').addEventListener('input', e=>{ state.displayName = e.target.value; render(); });
+      $('#email').addEventListener('input', e=>{ state.email = e.target.value; render(); });
+
+      $('#themeToggle').addEventListener('click', ()=>{ state.themeDark = !state.themeDark; $('#themeToggle').classList.toggle('on', state.themeDark); render(); });
+      $('#compactToggle').addEventListener('click', ()=>{ state.compact = !state.compact; $('#compactToggle').classList.toggle('on', state.compact); if(state.compact) document.body.classList.add('compact'); else document.body.classList.remove('compact') });
+      $('#emailToggle').addEventListener('click', ()=>{ state.emailUpdates = !state.emailUpdates; $('#emailToggle').classList.toggle('on', state.emailUpdates); });
+      $('#pushToggle').addEventListener('click', ()=>{ state.push = !state.push; $('#pushToggle').classList.toggle('on', state.push); });
+
+      $('#textSize').addEventListener('input', e=>{ state.textSize = Number(e.target.value); render(); });
+
+      $('#avatarFile').addEventListener('change', async (e)=>{
+        const f = e.target.files[0]; if(!f) return;
+        // small client-side preview
+        const url = await fileToDataURL(f); state.avatar = url; render();
+      });
+
+      $('#saveBtn').addEventListener('click', saveToStorage);
+      $('#saveBottom').addEventListener('click', saveToStorage);
+      $('#resetBtn').addEventListener('click', ()=>{ if(confirm('Reset settings to defaults?')) resetToDefaults() });
+      $('#cancelBtn').addEventListener('click', ()=>{ loadFromStorage(); render(); toast('Cancelled') });
+
+      $('#changePassword').addEventListener('click', ()=>{ openModal(true) });
+      $('#closeModal').addEventListener('click', ()=>{ openModal(false) });
+      $('#savePwd').addEventListener('click', ()=>{
+        const n = $('#newPwd').value, n2 = $('#newPwd2').value;
+        if(!n || n.length < 6){ alert('New password must be at least 6 characters'); return; }
+        if(n !== n2){ alert('Passwords do not match'); return; }
+        openModal(false); toast('Password updated (simulated)');
+      });
+
+      $('#exportData').addEventListener('click', ()=>{
+        const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='studyweb-settings.json'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      $('#deleteData').addEventListener('click', ()=>{
+        if(confirm('Delete local settings and data? This cannot be undone.')){ localStorage.removeItem(storageKey); state = {...defaults}; render(); toast('Local data deleted') }
+      });
+
+      $('#exportData').addEventListener('keydown', (e)=>{ if(e.key==='Enter') e.target.click(); });
+
+      // quick actions
+      $('#openPrivacy').addEventListener('click', ()=>{ alert('Open privacy docs (demo)') });
+      $('#openSupport').addEventListener('click', ()=>{ alert('Open support chat (demo)') });
+    }
+
+    function openModal(show=true){ const m = $('#pwdModal'); m.classList.toggle('open', show); m.setAttribute('aria-hidden', (!show).toString()); if(show){ $('#curPwd').value=''; $('#newPwd').value=''; $('#newPwd2').value=''; $('#newPwd').focus() } }
+
+    function fileToDataURL(file){ return new Promise((res, rej)=>{ const r = new FileReader(); r.onload = ()=>res(r.result); r.onerror = rej; r.readAsDataURL(file) }) }
+
+    /* ---------- init ---------- */
+    loadFromStorage(); render(); bind();
+  </script>
+</body>
+</html>
