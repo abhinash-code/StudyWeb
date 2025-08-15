@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Selector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 50px -10px rgba(0, 0, 0, 0.2);
+            --gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --gradient-secondary: linear-gradient(135deg, #10b981, #06b6d4);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .card:nth-child(2)::before {
+            background: var(--gradient-secondary);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .card:nth-child(2) .card-icon {
+            background: var(--gradient-secondary);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .card-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .features {
+            text-align: left;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            background: rgba(226, 232, 240, 0.7);
+            transform: translateX(5px);
+        }
+
+        .feature i {
+            width: 30px;
+            height: 30px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .card:nth-child(2) .feature i {
+            background: var(--gradient-secondary);
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            border: none;
+            width: 80%;
+            max-width: 300px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            z-index: -1;
+            transition: transform 0.5s ease;
+            transform: scaleX(1);
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1.1);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .card:nth-child(2) .btn {
+            background: var(--gradient-secondary);
+        }
+
+        .card:nth-child(2) .btn::before {
+            background: var(--gradient-secondary);
+        }
+
+        .card:nth-child(2) .btn:hover {
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header, .card {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .card-title {
+                font-size: 1.6rem;
+            }
+            
+            .card-subtitle {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Portfolio Selector</div>
+        <h1 class="title">Choose Your Portfolio </h1>
+        <p class="subtitle">Select between our two specialized portfolio versions designed for different devices and user experiences</p>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-desktop"></i>
+            </div>
+            <h2 class="card-title">Advanced Portfolio</h2>
+            <p class="card-subtitle">This is for PC - Full desktop experience with advanced features</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Rich animations and interactive elements</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Expansive project galleries with detailed case studies</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Advanced filtering and search capabilities</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Comprehensive skills matrix with proficiency levels</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="viewAdvanced">Preview Portfolio</button>
+        </div>
+        
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h2 class="card-title">Mobile Portfolio</h2>
+            <p class="card-subtitle">This is for Phone - Optimized for mobile viewing</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Lightning-fast loading on mobile networks</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Touch-friendly navigation and interactions</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">Simplified content for quick browsing</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check"></i>
+                    <span class="feature-text">One-tap contact options</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="viewMobile">Preview Portfolio</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Portfolio Selector.</p>
+    </footer>
+
+    <script>
+        
+        document.getElementById('viewAdvanced').addEventListener('click', function() {
+            window.location.href = "My_Portofolio.html";
+        });
+        
+        document.getElementById('viewMobile').addEventListener('click', function() {
+            window.location.href = "Mobile-Portfolio.html";
+
+        });
+        
+        // Add subtle hover effects to cards
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+                card.style.boxShadow = '0 20px 50px -10px rgba(0, 0, 0, 0.2)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
+            });
+        });
+        
+        // Add animation to features on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const features = document.querySelectorAll('.feature');
+            features.forEach((feature, index) => {
+                feature.style.animation = `fadeIn 0.5s ease-out ${index * 0.1 + 0.5}s forwards`;
+                feature.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>
