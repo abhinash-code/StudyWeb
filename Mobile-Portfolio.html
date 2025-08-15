@@ -878,8 +878,8 @@
                 <h1>Hi, I'm Abhinash</h1>
                 <p>A self-taught developer building useful, beautiful web experiences.</p>
                 <div class="hero-cta">
-                    <a href="" class="btn btn-primary" id="projects-btn-2" onclick="projectPage()">See Projects</a>
-                    <a href="" class="btn btn-secondary" onclick="hirePage()">Hire me</a>
+                    <a href="MainProjects.html" class="btn btn-primary" id="projects-btn-2" >See Projects</a>
+                    <a href="Hire-me.html" class="btn btn-secondary" >Hire me</a>
                 </div>
                 <div class="hero-avatar">A</div>
             </div>
@@ -1073,13 +1073,7 @@
     </footer>
 
     <script>
-        function projectPage() {
-            window.location.href ="MainProjects.html";
-        }
-        function hirePage() {
-            window.location.href ="Hire-me.html";
-        }
-        // DOM Elements
+            // DOM Elements
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
         const backdrop = document.getElementById('backdrop');
@@ -1201,13 +1195,10 @@
 
         // Placeholder links
         projectsBtn.addEventListener('click', () => {
-            alert('Projects page would open here. Replace this with your actual projects URL.');
+            alert('Coming soon...');
         });
 
-        projectsBtn2.addEventListener('click', () => {
-            alert('Projects page would open here. Replace this with your actual projects URL.');
-        });
-
+      
         resumeLink.addEventListener('click', (e) => {
             e.preventDefault();
             alert('Resume would download here. Replace with your actual resume URL.');
@@ -1240,3 +1231,4 @@
 </body>
 
 </html>
+
