@@ -1,583 +1,476 @@
-<!DOCTYPE html>
-<html lang="hi">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meri Personal Website</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .typing-animation {
-            border-right: 2px solid #667eea;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #667eea }
-        }
-        
-        .skill-bar {
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 4px;
-            width: 0%;
-            transition: width 2s ease-in-out;
-        }
-        
-        .project-card {
-            transition: all 0.3s ease;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .floating-animation {
-            animation: floating 6s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translate(0, 0px); }
-            50% { transform: translate(0, -20px); }
-            100% { transform: translate(0, -0px); }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Abhinash — Portfolio Hero (Updated)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Portfolio-Design.css">
+
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-lg">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold text-gray-800">
-                    <span class="text-purple-600">My</span>Portfolio
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="HomePage.html" class="text-gray-700 hover:text-purple-600 transition-colors">Home</a>
-                    <a href="#about" class="text-gray-700 hover:text-purple-600 transition-colors">About</a>
-                    <a href="#skills" class="text-gray-700 hover:text-purple-600 transition-colors">Skills</a>
-                    <a href="#projects" class="text-gray-700 hover:text-purple-600 transition-colors">Projects</a>
-                    <a href="#contact" class="text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-700">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
+<body>
+
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Professional Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">P</div>
+                <div class="logo-text">Portfolio</div>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
-                <a href="#home" class="block py-2 text-gray-700 hover:text-purple-600">Home</a>
-                <a href="#about" class="block py-2 text-gray-700 hover:text-purple-600">About</a>
-                <a href="#skills" class="block py-2 text-gray-700 hover:text-purple-600">Skills</a>
-                <a href="#projects" class="block py-2 text-gray-700 hover:text-purple-600">Projects</a>
-                <a href="#contact" class="block py-2 text-gray-700 hover:text-purple-600">Contact</a>
+            <div class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
             </div>
+        </div>
+        
+        <div class="user-profile">
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <div class="user-name">Abhinash Jha</div>
+                <div class="user-role">Web Developer</div>
+            </div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-section">Main Navigation</div>
+            
+            <div class="menu-item active" data-target="dashboard">
+                <div class="icon"><i class="fas fa-home"></i></div>
+                <div class="label">Dashboard</div>
+            </div>
+            
+            <div class="menu-item" data-target="projects">
+                <div class="icon"><i class="fas fa-project-diagram"></i></div>
+                <div class="label" onclick="ProjectsPage()">Projects</div>
+                <div class="badge"></div>
+            </div>
+            
+            <div class="menu-item" data-target="analytics">
+                <div class="icon"><i class="fas fa-chart-line"></i></div>
+                <div class="label">Analytics</div>
+            </div>
+            
+            <div class="menu-item" data-target="documentation">
+                <div class="icon"><i class="fas fa-book"></i></div>
+                <div class="label">Documentation</div>
+                <div class="arrow"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            
+            <div class="submenu" id="documentationSubmenu">
+                <div class="submenu-item">API Reference</div>
+                <div class="submenu-item">Guides</div>
+                <div class="submenu-item">Tutorials</div>
+                <div class="submenu-item">Examples</div>
+            </div>
+            
+            <div class="menu-section">Development Tools</div>
+            
+            <div class="menu-item" data-target="debugger">
+                <div class="icon"><i class="fas fa-bug"></i></div>
+                <div class="label">Debugger</div>
+            </div>
+            
+            <div class="menu-item" data-target="terminal">
+                <div class="icon"><i class="fas fa-terminal"></i></div>
+                <div class="label">Terminal</div>
+            </div>
+            
+            <div class="menu-item" data-target="database">
+                <div class="icon"><i class="fas fa-database"></i></div>
+                <div class="label">Database</div>
+            </div>
+            
+            <div class="menu-item" data-target="api">
+                <div class="icon"><i class="fas fa-network-wired"></i></div>
+                <div class="label">API Tester</div>
+                <div class="badge"></div>
+            </div>
+            
+            <div class="menu-section">Settings</div>
+            
+            <div class="menu-item" data-target="profile">
+                <div class="icon"><i class="fas fa-user-cog"></i></div>
+                <div class="label">Profile</div>
+            </div>
+            
+            <div class="menu-item" data-target="security">
+                <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="label">Security</div>
+            </div>
+            
+            <div class="menu-item" data-target="notifications">
+                <div class="icon"><i class="fa-solid fa-share-nodes"></i> </div>
+                <div class="label" id="shareBtn">Share</div>
+                <div class="badge"></div>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <p>v2.5.0 | © 2025 Portfolio</p>
+            <p>Professional Developer Console</p>
         </div>
     </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="gradient-bg min-h-screen flex items-center relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 text-white">
-                    <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                        Hello, I'm <span class="text-yellow-300">Abhinash Jha</span>
-                    </h1>
-                    <div class="text-xl md:text-2xl mb-8 h-8 overflow-hidden">
-                        <span id="typing-text" class="typing-animation inline-block">Web Developer & Designer</span>
-                    </div>
-                    <p class="text-lg mb-8 opacity-90">
-                        I am a passionate developer who builds modern and responsive websites.<br>
-                         My passion is to create innovation with technology.
-                    </p>
-                    <div class="space-x-4">
-                        <button class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all" onclick="ShowPage()">
-                            Hire Me
-                        </button>
-                        <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-all"onclick = "SeePage()">
-                            See Projects
-                        </button>
-                    </div>
-                </div>
-                <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
-                    <div class="floating-animation">
-                        <img src="hackerA.jpg" alt="Professional portrait photo of a young developer in business casual attire with a confident smile, modern studio lighting" class="rounded-3xl shadow-2xl border-4 border-white/20" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-            <i class="fas fa-chevron-down text-2xl"></i>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">About Me</h2>
-            <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-1/2 mb-10 lg:mb-0">
-                    <img src="HackerAK.jpg" alt="Casual lifestyle photo of developer working on laptop in a modern coffee shop environment with natural lighting" class="rounded-2xl shadow-lg" />
-                </div>
-                <div class="lg:w-1/2 lg:pl-16">
-                    <h3 class="text-3xl font-bold mb-6 text-gray-800">Passionate Developer</h3>
-                    <p class="text-gray-600 text-lg mb-6">
-                       I'm a dedicated web developer working in the industry for 3+ years.<br> 
-                       I love modern technologies and writing clean code.
-                    </p>
-                    <p class="text-gray-600 text-lg mb-8">
-                        My goal is to deliver more than the client's expectations in every project.<br> 
-                        I constantly seek out new challenges and opportunities.
-                    </p>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Name:</h4>
-                            <p class="text-gray-600">Abhinash Jha</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Experience:</h4>
-                            <p class="text-gray-600">3+ Years</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Location:</h4>
-                            <p class="text-gray-600">India</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Email:</h4>
-                            <p class="text-gray-600">kumarjhaabhinash68@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">My Skills</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-2xl font-bold mb-8 text-gray-800">Technical Skills</h3>
-                    <div class="space-y-6">
-                        <div class="skill-item" data-skill="90">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-semibold">HTML/CSS</span>
-                                <span class="text-gray-500">90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-skill="85">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-semibold">JavaScript</span>
-                                <span class="text-gray-500">85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-skill="80">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-semibold">React.js</span>
-                                <span class="text-gray-500">80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-skill="75">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-semibold">Node.js</span>
-                                <span class="text-gray-500">75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold mb-8 text-gray-800">Professional Skills</h3>
-                    <div class="space-y-8">
-                        <div class="flex items-center">
-                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-lightbulb text-purple-600 text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-800">Creative Thinking</h4>
-                                <p class="text-gray-600">Creative approach for innovative solutions</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-users text-blue-600 text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-800">Team Work</h4>
-                                <p class="text-gray-600">Effective collaboration and communication</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-clock text-green-600 text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-800">Time Management</h4>
-                                <p class="text-gray-600">To deliver quality work on deadline</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Additional Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="project-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="MyWebsiteImage1.JPG" alt="Modern e-commerce website homepage with clean design, product grid layout, and shopping cart interface" class="w-full h-48 object-cover" />
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">StudyWeb</h3>
-                        <p class="text-gray-600 mb-4">My Modern Study Materials Website</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Notes</span>
-                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">Test</span>
-                            <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">Objectives</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
-                                <i class="fas fa-eye mr-2"></i><a href="index.html">Visit</a>
-                            </button>
-                            <button class="border border-purple-600 text-purple-600 px-4 py-2 rounded hover:bg-purple-50 transition-colors" onclick="click2()">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="MyWebsiteImage2.JPG" alt="Mobile portfolio app interface showing dark theme with project galleries and smooth animations" class="w-full h-48 object-cover" />
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">My Projects Web</h3>
-                        <p class="text-gray-600 mb-4">My Personal Projects Website</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">HTML</span>
-                            <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-sm">CSS</span>
-                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">JS</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
-                                <i class="fas fa-eye mr-2"></i><a href="MyProjects.html">Visit</a>
-                            </button>
-                            <button class="border border-purple-600 text-purple-600 px-4 py-2 rounded hover:bg-purple-50 transition-colors" onclick="click3()">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="MyWebsiteImage3.JPG" alt="Business dashboard with data visualization charts, graphs, and analytics widgets in a professional layout" class="w-full h-48 object-cover" />
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Business Dashboard</h3>
-                        <p class="text-gray-600 mb-4">Analytics dashboard for business data visualization</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-sm">Vue.js</span>
-                            <span class="bg-red-100 text-red-700 px-2 py-1 rounded text-sm">Laravel</span>
-                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">MySQL</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
-                                <i class="fas fa-eye mr-2"></i><a href="my web.html">Visit</a>
-                            </button>
-                            <button class="border border-purple-600 text-purple-600 px-4 py-2 rounded hover:bg-purple-50 transition-colors" onclick="click4()">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 gradient-bg">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 text-white">Contact Me</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-2xl font-bold mb-8 text-white">Get In Touch</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-phone text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold">Phone</h4>
-                                <p class="text-white/80">+91 7870109958</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-envelope text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold">Email</h4>
-                                <p class="text-white/80">kumarjhaabhinash68@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-map-marker-alt text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold">Location</h4>
-                                <p class="text-white/80">India</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex space-x-4 mt-8">
-                        <a href="#" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <form class="glass-effect rounded-xl p-8">
-                        <div class="mb-6">
-                            <input type="text" placeholder="Your Name" class="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:border-white">
-                        </div>
-                        <div class="mb-6">
-                            <input type="email" placeholder="Your Email" class="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:border-white">
-                        </div>
-                        <div class="mb-6">
-                            <input type="text" placeholder="Subject" class="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:border-white">
-                        </div>
-                        <div class="mb-6">
-                            <textarea rows="5" placeholder="Your Message" class="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:border-white resize-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-white text-purple-600 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
     
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p>© 2024 Aapka Naam. All rights reserved. | Made with ❤️ in India</p>
-        </div>
-    </footer>
+   
+    <!-- Context Indicator -->
+    <div class="context-indicator">
+        <i class="fas fa-code context-icon"></i>
+        <span>Professional Developer Console</span>
+    </div>
 
-    <script>
-        function click2 () {
-            window.location.href = "HomePage.txt";
-        }
-        function click3 () {
-            window.location.href="My_Projects.txt";
-        }
-        function click4 () {
-            window.location.href="MyWeb.txt";
-        }
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+  <div class="bg"></div>
+  
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
 
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                // Close mobile menu if open
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // Typing Animation
-        const typingTexts = [
-            'Web Developer & Designer',
-            'Frontend Specialist',
-            'UI/UX Enthusiast',
-            'Problem Solver'
-        ];
-        let textIndex = 0;
-        let charIndex = 0;
-        const typingElement = document.getElementById('typing-text');
-
-        function typeText() {
-            if (charIndex < typingTexts[textIndex].length) {
-                typingElement.textContent += typingTexts[textIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(typeText, 100);
-            } else {
-                setTimeout(deleteText, 2000);
-            }
-        }
-
-        function deleteText() {
-            if (charIndex > 0) {
-                typingElement.textContent = typingTexts[textIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(deleteText, 50);
-            } else {
-                textIndex = (textIndex + 1) % typingTexts.length;
-                setTimeout(typeText, 500);
-            }
-        }
-
-        // Start typing animation
-        typingElement.textContent = '';
-        typeText();
-
-        // Skills Animation
-        const skillBars = document.querySelectorAll('.skill-item');
-        const animateSkills = () => {
-            skillBars.forEach(bar => {
-                const skillProgress = bar.querySelector('.skill-progress');
-                const skillValue = bar.getAttribute('data-skill');
-                
-                const rect = bar.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                    setTimeout(() => {
-                        skillProgress.style.width = skillValue + '%';
-                    }, 500);
-                }
-            });
-        };
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.closest('#skills')) {
-                        animateSkills();
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observe sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Form Submission
-        const contactForm = document.querySelector('form');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            
-            // Show success message
-            alert('Message sent successfully! Main aap se jald hi contact karunga.');
-            
-            // Reset form
-            this.reset();
-        });
-
-        // Add some interactive effects
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add scroll effect to header
-            let lastScrollY = window.scrollY;
-            const header = document.querySelector('nav');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > lastScrollY) {
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    header.style.transform = 'translateY(0)';
-                }
-                lastScrollY = window.scrollY;
-            });
-
-            // Parallax effect for hero section
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const heroSection = document.getElementById('home');
-                if (heroSection) {
-                    heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
-                }
-            });
-        });
-
-        // Add some fun interactions
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-        function ShowPage() {
-            window.location.href= "Hire-me.html";
-        }
+  <div class="stage">
     
-    function SeePage() {
-    window.location.href = "MainProjects.html";
+    <section class="hero-card" role="region" aria-label="Hero">
+     
+      <!-- LEFT -->
+      <div class="hero-left">
+           <div class="NavBar">
+          <ul type="none">
+             <li><a class="scroll-link" data-target=".logo-text">Home</a></li>
+      <li><a class="scroll-link" data-target=".section-title">Bio</a></li>
+      <li><a class="scroll-link" data-target=".skills-section">Skills</a></li>
+      <li><a class="scroll-link" data-target=".lead">Contact</a></li>
+          </ul>
+        </div>
+        <div class="header">
+        <div class="logo">
+            
+            <div class="logo-text">Portfolio</div>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        </div>
+     
+        <div class="pre-title">Welcome To My Portfolio</div>
+        <h1 class="title">Helping Entrepreneurs Dreams Come To Life</h1>
+
+        <div id="subtitle-wrap" class="subtitle" aria-live="polite"></div>
+
+        <p class="description" id="intro-paragraph">
+          I am a passionate full-stack developer focused on clean UI, smooth interactions, and performance-first builds. I build beautiful interfaces and reliable front-end systems that scale.
+        </p>
+
+        <div class="cta-row">
+          <button class="btn btn-primary" id="hireBtn" onclick="HirePage()">Hire Me</button>
+          <button class="btn btn-ghost" id="projectsBtn" onclick="ProjectsPage()">View Projects</button>
+        </div>
+
+      </div>
+     
+      <!-- RIGHT -->
+      <div class="hero-right">
+        <figure class="photo-frame" id="photoFrame" aria-hidden="true">
+          <img id="heroImage" src="Portfolio Page.jpg" alt="Hero portrait placeholder (replace with your image)">
+        </figure>
+      </div>
+
+    </section>
+  </div>
+   <div class="container">
+        <header>
+            <div class="header-content">
+              
+                <p class="tagline">Developer & AI Enthusiast | Crafting Digital Solutions with Performance and Design</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <section class="bio-section">
+                <h2 class="section-title">About Me</h2>
+                <p class="bio-text">
+                    Hi, I’m Abhinash — a self-taught programmer and AI enthusiast. Currently, I’m focusing on mastering <span class="highlight">JavaScript</span>, <span class="highlight">HTML</span>, <span class="highlight">CSS</span>, <span class="highlight">Python</span>, and <span class="highlight">C++</span>, along with sharpening my <span class="highlight">UI/UX design</span> skills.
+                </p>
+                <p class="bio-text">
+                    For me, coding is not just about writing lines of code — it’s about crafting digital solutions that are both visually appealing and technically powerful. I’m passionate about problem-solving and aim to strike the perfect balance between performance, design, and user experience in every project.
+                </p>
+                <p class="bio-text">
+                    My ultimate goal is to build a startup that leverages technology to make people’s lives easier and more productive. Right now, I’m committed to continuously improving my skills and exploring new tools so I’m always ready for any challenge that comes my way.
+                </p>
+            </section>
+
+          
+            
+        </div>
+
+        <section class="goals-section">
+            <h2 class="section-title">My Goals & Vision</h2>
+            <div class="goal-card">
+                <div class="goal-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="goal-content">
+                    <h3>Startup Vision</h3>
+                    <p>Build a technology startup focused on creating solutions that enhance productivity and simplify everyday life through innovative applications of AI and intuitive design.</p>
+                </div>
+            </div>
+            <div class="goal-card">
+                <div class="goal-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="goal-content">
+                    <h3>Design Philosophy</h3>
+                    <p>Master the art of balancing aesthetic appeal with technical excellence to create digital experiences that are both beautiful and highly functional.</p>
+                </div>
+            </div>
+            <div class="goal-card">
+                <div class="goal-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="goal-content">
+                    <h3>Continuous Growth</h3>
+                    <p>Commit to lifelong learning, constantly updating my skillset with emerging technologies and methodologies to stay at the forefront of development practices.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p class="quote">"The most powerful solutions emerge where elegant design meets robust engineering."</p>
+            <p>© 2023 Abhinash | Developer & AI Enthusiast</p>
+        </footer>
+    </div>
+   <!-- Skills & Tools Section -->
+    <section class="skills-section">
+        <div class="section-title">
+            <h2>Skills & Tools</h2>
+            <p>Technologies and tools I work with to create amazing digital experiences</p>
+        </div>
+        
+        <div class="categories-grid">
+            <!-- Languages -->
+            <div class="category-card floating" style="animation-delay: 0.1s;">
+                <h3 class="category-title"><i class="fas fa-code"></i> Languages</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-html5 skill-icon html-icon"></i>
+                        <span class="skill-name">HTML</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-css3-alt skill-icon css-icon"></i>
+                        <span class="skill-name">CSS</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-js skill-icon js-icon"></i>
+                        <span class="skill-name">JavaScript</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-python skill-icon python-icon"></i>
+                        <span class="skill-name">Python</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-file-code skill-icon cpp-icon"></i>
+                        <span class="skill-name">C++</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Frameworks & Libraries -->
+            <div class="category-card floating" style="animation-delay: 0.3s;">
+                <h3 class="category-title"><i class="fas fa-cubes"></i> Frameworks / Libraries</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-node-js skill-icon node-icon"></i>
+                        <span class="skill-name">Node.js</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-react skill-icon react-icon"></i>
+                        <span class="skill-name">React</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-bootstrap skill-icon bootstrap-icon"></i>
+                        <span class="skill-name">Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Design Tools -->
+            <div class="category-card floating" style="animation-delay: 0.5s;">
+                <h3 class="category-title"><i class="fas fa-paint-brush"></i> Design Tools</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-figma skill-icon figma-icon"></i>
+                        <span class="skill-name">Figma</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-palette skill-icon canva-icon"></i>
+                        <span class="skill-name">Canva</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-film skill-icon capcut-icon"></i>
+                        <span class="skill-name">CapCut</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other Tools -->
+            <div class="category-card floating" style="animation-delay: 0.7s;">
+                <h3 class="category-title"><i class="fas fa-tools"></i> Other Tools</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-github skill-icon github-icon"></i>
+                        <span class="skill-name">GitHub</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-code skill-icon vscode-icon"></i>
+                        <span class="skill-name">VS Code</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-terminal skill-icon pyscripter-icon"></i>
+                        <span class="skill-name">PyScripter</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="contact-wrap">
+  <!-- LEFT: Form Card -->
+  <div class="card contact-form" role="region" aria-labelledby="contactHeading">
+    <h3 id="contactHeading">Let's build something great together</h3>
+    <p class="lead">Have a project, an idea, or just want to say hi? Send a message and I'll get back to you within 24–48 hours.</p>
+
+    <form id="contactForm" autocomplete="on">
+      <div class="row">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Your full name" required aria-required="true" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="your Email" required aria-required="true" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input id="subject" name="subject" type="text" placeholder="Short summary (e.g. Website project)" />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell me about the project, timeline, and budget (if any)..." required aria-required="true"></textarea>
+        <div class="muted-note">Tip: Be clear and concise — this helps me understand your needs fast.</div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-send" id="sendBtn" aria-live="polite">
+          <!-- gradient text effect -->
+          <span style="background:var(--accent); -webkit-background-clip:text; background-clip:text; color:transparent;">Send Message</span>
+        </button>
+
+        <button type="button" class="btn-outline" id="clearBtn">Clear</button>
+
+        <div style="margin-left:auto; font-size:13px; color:var(--muted)">or email me at <strong>kumarjhaabhinash68@gmail.com</strong></div>
+      </div>
+
+      <div id="status" class="note" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <!-- RIGHT: Info Card -->
+  <aside class="card info-card" aria-label="Contact and social links">
+    <div class="profile-pill">
+      <div class="avatar"><i class="fas fa-user"></i></div>
+      <div class="name-job"><b>Abhinash</b><small>Full-stack Developer • UI/UX Enthusiast</small></div>
+    </div>
+
+    <div class="contact-list">
+      <div class="contact-item">
+        <!-- location icon -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8 2 5 5.4 5 9.2c0 5.1 6 12.3 6.4 12.8.2.2.6.2.8 0 .4-.5 6.6-7.7 6.6-12.8C19 5.4 16 2 12 2z" stroke="#7ee9ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <strong>Based in India</strong>
+          <small>Available for remote & freelance work</small>
+        </div>
+      </div>
+
+      <div class="contact-item" style="margin-top:10px">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a1 1 0 0 1-1 1c-8 0-14-5.5-14-12a1 1 0 0 1 1-1h4" stroke="#7ee9ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <strong>+91 7870109958</strong>
+          <small>Call / WhatsApp</small>
+        </div>
+      </div>
+
+      <div class="contact-item" style="margin-top:10px">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8.6v6.8A2 2 0 0 0 5 18h14a2 2 0 0 0 2-2V8.6M21 6H3v.01M7 11l5 3 5-3" stroke="#7ee9ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <strong>kumarjhaabhinash68@gmail.com</strong>
+          <small>Preferred contact method</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="socials" aria-label="Social links">
+      <a href="#" title="GitHub" aria-label="GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.4 6.9 9.8.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.1-3.4-1.1-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.6 1.2 3.2.9.1-.8.4-1.2.7-1.5-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1a9.7 9.7 0 012.7-.4c.9 0 1.9.1 2.7.4 2-.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.7 0 3.9-2.4 4.7-4.6 4.9.4.3.7.8.7 1.6v2.4c0 .3.2.6.8.5A10 10 0 0022 12.2C22 6.6 17.5 2 12 2z" stroke="#7ee9ff" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" title="LinkedIn" aria-label="LinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5a2.5 2.5 0 11-.02 0zM3 8.5h4v12H3zM8.5 8.5h3.8v1.6h.1c.5-.9 1.8-1.8 3.7-1.8 4 0 4.8 2.6 4.8 6v6.2h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.6h-4V8.5z" stroke="#7ee9ff" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" title="Instagram" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#7ee9ff" stroke-width="0.6"/><path d="M8 12a4 4 0 108 0 4 4 0 00-8 0zM17.5 6.5h.01" stroke="#7ee9ff" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="resume">
+      <a href="#" download id="resumeBtn">Download Resume</a>
+      <div class="note">PDF available — includes education, certificates, and quick links.</div>
+    </div>
+
+  </aside>
+</section><br><br><br>
+  <section class="quote-wrap" aria-label="Inspirational quote">
+  <div class="quote-card">
+    <div class="quote-mark">“</div>
+    <div>
+      <div class="quote-text">"Code is not just what I do — it's how I leave my mark on the world."</div>
+      <div class="quote-author">— Abhinash, Full-stack Developer</div>
+    </div>
+  </div>
+</section><br><br>
+
+  <script src="Portfolio-Logic.js"></script>
+  <script>
+     const links = document.querySelectorAll('.scroll-link');
+
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // page reload rokta hai
+        const targetClass = this.getAttribute('data-target');
+        const targetSection = document.querySelector(targetClass);
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+  </script>
+  <script>
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: document.title,
+        text: 'Check out this awesome page!',
+        url: window.location.href
+      });
+      console.log('Page shared successfully!');
+    } catch (err) {
+      console.error('Share failed:', err);
     }
-    </script>
+  } else {
+    alert('Your browser does not support the Web Share API.');
+  }
+});
+  </script>
+
 </body>
 </html>
-
-
-
-
