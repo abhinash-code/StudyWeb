@@ -28,7 +28,7 @@
         </div>
         
         <div class="user-profile">
-            <div class="avatar">
+            <div class="avatar" style="cursor:pointer;" onclick="openProfile()">
                 <i class="fas fa-user"></i>
             </div>
             <div class="user-info">
@@ -52,8 +52,8 @@
             </div>
             
             <div class="menu-item" data-target="analytics">
-                <div class="icon"><i class="fas fa-chart-line"></i></div>
-                <div class="label">Analytics</div>
+                <div class="icon"><i class="fa-regular fa-circle-user"></i></div>
+                <div class="label" onclick="openProfile()">Profile</div>
             </div>
             
             <div class="menu-item" data-target="documentation">
@@ -379,7 +379,7 @@
   <!-- RIGHT: Info Card -->
   <aside class="card info-card" aria-label="Contact and social links">
     <div class="profile-pill">
-      <div class="avatar"><i class="fas fa-user"></i></div>
+      <div class="avatar" onclick= "openProfile()"><i class="fas fa-user"></i></div>
       <div class="name-job"><b>Abhinash</b><small>Full-stack Developer • UI/UX Enthusiast</small></div>
     </div>
 
@@ -411,7 +411,7 @@
     </div>
 
     <div class="socials" aria-label="Social links">
-      <a href="#" title="GitHub" aria-label="GitHub">
+      <a href="https://github.com/abhinash-code" title="GitHub" aria-label="GitHub">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.4 6.9 9.8.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.1-3.4-1.1-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.6 1.2 3.2.9.1-.8.4-1.2.7-1.5-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1a9.7 9.7 0 012.7-.4c.9 0 1.9.1 2.7.4 2-.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.7 0 3.9-2.4 4.7-4.6 4.9.4.3.7.8.7 1.6v2.4c0 .3.2.6.8.5A10 10 0 0022 12.2C22 6.6 17.5 2 12 2z" stroke="#7ee9ff" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <a href="#" title="LinkedIn" aria-label="LinkedIn">
@@ -440,6 +440,11 @@
 </section><br><br>
 
   <script src="Portfolio-Logic.js"></script>
+    <script>
+        function openProfile() {
+            window.location.href = "Advance_Portfolio.html";
+        }
+    </script>
   <script>
      const links = document.querySelectorAll('.scroll-link');
 
@@ -474,3 +479,4 @@
 
 </body>
 </html>
+
