@@ -1,0 +1,370 @@
+#studyweb-app{--sw-accent:#0f7bff;--sw-text:#0b1220;--sw-muted:#6b7280;--sw-radius:1rem;--sw-shadow:0 12px 30px rgba(11,18,32,0.12);--sw-clearance-right:10%;--sw-font:'Poppins',system-ui,Segoe UI,Roboto,Arial;}
+.sw-section{padding:80px 24px;min-height:70vh;position:relative}
+.sw-section + .sw-section{border-top:1px solid rgba(11,18,32,0.04)}
+
+
+/* Hero */
+.sw-hero{display:grid;grid-template-columns:1fr 440px;gap:40px;align-items:center}
+@media (max-width:900px){.sw-hero{grid-template-columns:1fr;grid-auto-rows:auto}}
+.sw-hero-title{max-width:760px}
+.sw-title{font-size:clamp(34px,5vw,56px);line-height:1.02; margin-top: -20%; font-weight:700}
+.sw-sub {
+  display: inline-block;   /* independent rakhega */
+  transform: translateY(12px); /* thoda neeche slide karega */
+  transition: transform 0.3s ease; /* smoothness ke liye */
+}
+
+
+
+
+/* Hero image circle */
+.sw-hero-right{display:flex;justify-content:center;align-items:center}
+.sw-hero-circle{width:420px;height:420px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(11,18,32,0.12);transform-origin:center}
+@media (max-width:900px){.sw-hero-circle{width:300px;height:300px;margin:30px auto}}
+
+.sw-hero-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.sw-hero-img {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* ---------- Wrapper: isolate painting & stacking context ---------- */
+.hero-heading-wrap{
+  display: inline-block;       /* wrapper sirf heading size le */
+  position: relative;          /* inner absolute allowed if needed */
+  isolation: isolate;          /* create new stacking context so blend/glow won't affect siblings */
+  contain: paint;
+  margin-top: -30px;              /* limit painting to this element (modern browsers) */
+  z-index: 1;                  /* ensure it's above nearby backgrounds if needed */
+  /* optional: small padding so glow doesn't visually overlap adjacent content */
+  padding: 0 0.25rem;
+}
+
+/* ---------- Heading base (scoped only to #hero-heading in wrapper) ---------- */
+.hero-heading-wrap #hero-heading.sw-title{
+  margin: 0;                   /* remove default margins that may push others */
+  display: inline-block;       /* limit effect to its own inline box */
+  line-height: 1;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4.8vw, 2.8rem); /* small adjusted size per request */
+  text-align: center;
+  background: none;            /* no global bg on outer heading */
+  -webkit-text-fill-color: unset;
+}
+
+/* ---------- Inner text: actual gradient, glow and animations (only this element) ---------- */
+.hero-heading-wrap .sw-title-inner{
+  display: inline-block;       /* very important — transforms & animation confined here */
+  background: linear-gradient(90deg, #00e5ff 0%, #0099ff 50%, #00e5ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Controlled glow — keep small so it doesn't visually overflow much */
+  text-shadow:
+    0 0 6px rgba(0, 165, 255, 0.65),
+    0 0 12px rgba(0, 120, 255, 0.35);
+
+  /* Animation (unique names) */
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+  animation:
+    hwFadeInUp 1.1s cubic-bezier(.2,.9,.3,1) forwards,
+    hwFloatUpDown 4s ease-in-out 1.1s infinite;
+
+  /* Prevent inner element from affecting siblings layout while animating */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Keyframes (unique names to avoid collisions) ---------- */
+@keyframes hwFadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hwFloatUpDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ---------- Accessibility / reduce motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-heading-wrap .sw-title-inner{
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .hero-heading-wrap { contain: none; isolation: auto; }
+}
+
+/* ---------- Fallback notes for older browsers (optional) ---------- */
+/* If 'contain: paint' not supported, isolation still helps. If you see glow still overlapping,
+   reduce text-shadow blur values to 4px / 8px or add more horizontal padding on wrapper. */
+
+
+
+/* Section headings */
+.sw-section h2{font-size:28px;margin:0 0 18px;font-weight:600}
+
+
+/* Cards grid */
+.sw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media (max-width:1100px){.sw-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:800px){.sw-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.sw-grid{grid-template-columns:1fr}}
+
+
+.sw-card{background:linear-gradient(180deg,rgba(255,255,255,0.98),#fff);padding:22px;border-radius:18px;box-shadow:var(--sw-shadow);display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(11,18,32,0.04)}
+.sw-card h3{margin:0 0 8px;font-size:18px}
+.sw-card p{margin:0 0 12px;color:var(--sw-muted)}
+.sw-card .sw-btn{align-self:flex-start;padding:10px 14px;border-radius:12px;background:transparent;border:2px solid var(--sw-accent);color:var(--sw-accent);font-weight:600;cursor:pointer;text-decoration:none}
+.sw-card .sw-btn:focus{outline:3px solid rgba(15,123,255,0.12)}
+
+
+/* Footer */
+.sw-footer{padding:36px 24px;text-align:center;color:var(--sw-muted);font-size:14px}
+.sw-footer a{text-decoration:none;color:var(--sw-accent);font-weight:600}
+
+
+/* Modal (namespaced) */
+.sw-modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:2000}
+.sw-modal{background:#fff;border-radius:14px;max-width:720px;width:min(92%,720px);padding:22px;box-shadow:0 40px 90px rgba(11,18,32,0.3)}
+
+
+/* Animations: fade-up entrance */
+@keyframes sw-fade-up{from{opacity:0;transform:translateY(14px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+.sw-anim{opacity:0;animation:sw-fade-up .75s cubic-bezier(.2,.9,.2,1) both;}
+
+
+/* Hero image slow rotation */
+
+
+/* Card hover lift */
+.sw-card:hover{transform:translateY(-8px);transition:transform .28s,box-shadow .28s;box-shadow:0 28px 60px rgba(11,18,32,0.14)}
+
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){.sw-anim,.sw-rotate{animation:none !important}.sw-card:hover{transform:none}}
+
+
+/* Small utilities */
+.sw-container{max-width:1200px;margin:0 auto}
+.sw-row{display:flex;gap:12px;align-items:center; transform: translateY(35px);}
+
+
+/* Focus visible improvements */
+:where(#studyweb-app) a:focus,:where(#studyweb-app) button:focus{outline:none}
+:where(#studyweb-app) a:focus-visible,:where(#studyweb-app) button:focus-visible{outline:3px solid rgba(15,123,255,0.12);border-radius:8px}
+.NavBar {
+  position: absolute;   /* fixed bhi kar sakte ho agar hamesha screen pe chahiye */
+  top: 20px;            /* jitna upar chahiye */
+  right: 20px;          /* bilkul right side chipka do */
+  background: transparent;     /* optional, navbar ke liye background */
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  z-index: 1000;        /* sabse upar rahe */
+}
+
+.NavBar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;   
+  justify-content: flex-end;        /* links ke beech gap */
+}
+
+.NavBar li {
+  list-style: none;
+}
+
+.NavBar ul a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.NavBar ul a:hover {
+  color: #00ff40;
+}
+
+    .container {
+  
+  background: none; /* video hi background hai */
+  filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.5)); /* base */
+}
+
+/* Video ko shape detect karane ke liye transparent bg honi chahiye */
+.container video {
+
+  filter: drop-shadow(25px 25px 25px);
+}
+/* First fade-in, then floating */
+.sw-hero-img {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: fadeInUp 1s ease forwards, floatUpDown 3s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms), 1s; /* pehla delay fadeIn ke liye, dusra float ke start ke liye */
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating animation */
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+.sw-sub {
+  display: inline-block;
+  transform: translateY(12px);
+  color: rgba(255, 255, 255, 0.85); /* soft white */
+  font-size: 1.05rem; /* readable size */
+  font-weight: 300;   /* halka sa light */
+  line-height: 1.6;   /* comfortable spacing */
+  letter-spacing: 0.5px; /* thoda professional touch */
+  text-shadow: 0 0 6px rgba(0, 170, 255, 0.4); /* halka neon glow */
+  max-width: 550px; /* readability ke liye width limit */
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.sw-sub:hover {
+  color: #ffffff; /* hover pe aur bright ho */
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.7); /* hover effect mast */
+}
+
+.sw-cta {
+  --clr-font-main: hsla(0 0% 20% / 100);
+  --btn-bg-1: hsla(194 100% 69% / 1);
+  --btn-bg-2: hsla(217 100% 56% / 1);
+  --btn-bg-color: hsla(360 100% 100% / 1);
+  --radii: 0.5em;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-size: var(--size, 1rem);
+  font-weight: 500;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0px 0px 20px rgba(71, 184, 255, 0.5),
+    0px 5px 5px -1px rgba(58, 125, 233, 0.25),
+    inset 4px 4px 8px rgba(175, 230, 255, 0.5),
+    inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+}
+
+.sw-cta:hover {
+  background-position: right top;
+}
+
+.sw-cta:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--btn-bg-color),
+    0 0 0 6px var(--btn-bg-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-cta {
+    transition: linear;
+  }
+}
+.sw-row a {
+    text-decoration: none;
+}
+.NavBar {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.NavBar ul {
+  display: inline-flex;
+  gap: 40px;
+  padding: 0;
+}
+
+.NavBar li {
+  list-style: none;
+}
+
+.sw-nav-link {
+  position: relative;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+/* underline effect */
+.sw-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #00c6ff; /* underline color */
+  transition: width 0.3s ease;
+}
+
+/* active link underline */
+.sw-nav-link.active::after {
+  width: 100%;
+}
+
+/* hover effect (sirf color) */
+.sw-nav-link:hover {
+  color: #fff;
+}
+@media (max-width: 768px) {
+  .NavBar ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sw-sub {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p, h1, h2, h3 {
+  word-wrap: break-word;
+}
+table {
+    height: 1000px;
+    width: auto;
+}
