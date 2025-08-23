@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics — Chapter 1 (Electric Charges and Fields) — Exam Essentials</title>
+    <style>
+        /* ===== CSS Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Root Variables ===== */
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #ffab00;
+            --secondary-light: #ffdd4b;
+            --secondary-dark: #c67c00;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --bg-light: #ffffff;
+            --bg-dark: #e0e0e0;
+            --success: #2e7d32;
+            --error: #c62828;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== Base Styles ===== */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: #043a07 ;
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 2sec ease-in-out;
+        }
+        header:hover {
+            background-color: rgb(7, 110, 29);
+        }
+        /* Put this in your CSS file */
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-light);
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        /* ===== Language Toggle ===== */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 171, 0, 0.1);
+        }
+
+        /* ===== Main Content ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* ===== Topics Section ===== */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Formulas Section ===== */
+        .formulas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formula-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .formula-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-desc {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Lectures Section ===== */
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-thumbnail {
+            height: 160px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .lecture-body {
+            padding: 1.5rem;
+        }
+
+        .lecture-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lecture-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .lecture-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== Objectives Section ===== */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .option-input {
+            accent-color: var(--primary);
+        }
+
+        .check-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .check-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(198, 40, 40, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgb(82, 5, 5);
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .navbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .topics-grid,
+            .formulas-container,
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #Hindi {
+            color: rgb(250, 15, 15);
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgb(129, 118, 118);
+            margin-left: 50%;
+            margin-top: 50px;
+        }
+        #hide {
+            visibility: hidden;
+        }
+       /* -------------------------
+   .Btn0 — Duniya ka sundar button
+   ------------------------- */
+
+/* Theme variables (aap badal sakte ho) */
+
+/* CSS */
+.Btn0 {
+  align-items: center;
+  appearance: none;
+  background-clip: padding-box;
+  background-color: initial;
+  background-image: none;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-family: Eina01,sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  justify-content: center;
+  line-height: 15px;
+  margin: 0;
+  min-height: 40px;
+  outline: none;
+  overflow: visible;
+  padding: 15px 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: auto;
+  word-break: keep-all;
+  z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .Btn0 {
+    padding: 19px 32px;
+  }
+}
+
+.Btn0:before,
+.Btn0:after {
+  border-radius: 80px;
+}
+
+.Btn0:before {
+  background-image: linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -2;
+}
+
+.Btn0:after {
+  background-color: initial;
+  background-image: linear-gradient(#c22b0d 0, #0c0d0d 100%);
+  bottom: 4px;
+  content: "";
+  display: block;
+  left: 4px;
+  overflow: hidden;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 100ms ease-out;
+  z-index: -1;
+}
+
+.Btn0:hover:not(:disabled):before {
+  background: linear-gradient(92.83deg, rgb(255, 116, 38) 0%, rgb(249, 58, 19) 100%);
+}
+
+.Btn0:hover:not(:disabled):after {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition-timing-function: ease-in;
+  opacity: 0;
+}
+
+.Btn0:active:not(:disabled) {
+  color: #ccc;
+}
+
+.Btn0:active:not(:disabled):before {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+}
+
+.Btn0:active:not(:disabled):after {
+  background-image: linear-gradient(#541a0f 0, #0c0d0d 100%);
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+}
+
+.Btn0:disabled {
+  cursor: default;
+  opacity: .24;
+}
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8s-1.5-2-4-2-4 2-4 2"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    <path d="M10 16s1.5 2 4 2 4-2 4-2"></path>
+                </svg>
+            </div>
+            <h1 class="logo-text" id="page-title" title="Chapter 1 (Electric Charges and Fields)" style="cursor: default;">Physics — Chapter 1 (Electric Charges and Fields) — Exam Essentials</h1>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="topics" title="Topics">Topics</a></li>
+                <li><a href="#" class="nav-link" data-target="formulas" title="Formulas">Formulas</a></li>
+                <li><a href="#" class="nav-link" data-target="lectures" title="Lectures">Lectures</a></li>
+                <li><a href="#" class="nav-link" data-target="objectives" title="Objectives">Objectives</a></li>
+            </ul>
+            <button class="lang-toggle" id="langToggle">
+                <span>हिंदी</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Topics Section (Default Active) -->
+        <section class="content-section active" id="topics">
+            <h2 class="section-title" id="topics-title" title="Lesson 1 - Electric Charges and Fields" style="cursor: default;">Lesson 1 - Electric Charges and Fields </h2>
+            <div class="topics-grid">
+                <!-- Class 12 Physics Chapter 1: (English) -->
+<div class="topic-card">
+  <h3 class="topic-title">1) Electric Charge</h3>
+  <p class="topic-desc">An intrinsic property of matter that causes electromagnetic interaction; charges exist as positive or negative and are quantized and conserved.</p><br>
+  <button class="Btn0" id="openWinP1E1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) Quantization of Charge</h3>
+  <p class="topic-desc">Electric charge exists in integral multiples of elementary charge e: q = ±ne, where n is an integer.</p><br>
+  <button class="Btn0" id="openWinP1E2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) Conservation of Charge</h3>
+  <p class="topic-desc">The algebraic sum of all electric charges in an isolated system remains constant during any physical process.</p><br>
+  <button class="Btn0" id="openWinP1E3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) Coulomb’s Law</h3>
+  <p class="topic-desc">The electrostatic force between two point charges is directly proportional to the product of charges and inversely proportional to the square of the distance between them, acting along the line joining them.</p><br>
+  <button class="Btn0" id="openWinP1E4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) Superposition Principle (Electrostatics)</h3>
+  <p class="topic-desc">The net electrostatic force on a charge is the vector sum of individual forces due to all other charges, independent of their mutual interactions.</p><br>
+  <button class="Btn0" id="openWinP1E5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) Electric Field</h3>
+  <p class="topic-desc">A vector field defining the force per unit positive test charge at a point in space: E = F/q0.</p><br>
+  <button class="Btn0" id="openWinP1E6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) Electric Field Lines</h3>
+  <p class="topic-desc">Imaginary curves whose tangent at any point gives the direction of the electric field; they originate on positive and terminate on negative charges and never intersect.</p><br>
+  <button class="Btn0" id="openWinP1E7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) Electric Dipole</h3>
+  <p class="topic-desc">A pair of equal and opposite point charges separated by a small distance.</p><br>
+  <button class="Btn0" id="openWinP1E8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) Dipole Moment (p)</h3>
+  <p class="topic-desc">A vector quantity defined as p = q·2a in direction from negative to positive charge; measures the strength of a dipole.</p><br>
+  <button class="Btn0" id="openWinP1E9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) Electric Field of a Dipole (Axial/Equatorial: Form)</h3>
+  <p class="topic-desc">The field due to an ideal dipole decreases as 1/r^3; axial and equatorial points have directions opposite to each other.</p><br>
+  <button class="Btn0" id="openWinP1E10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) Torque on a Dipole in Uniform Field</h3>
+  <p class="topic-desc">A dipole in a uniform electric field experiences a torque τ = p × E that tends to align it with the field; no net force in uniform field.</p><br>
+  <button class="Btn0" id="openWinP1E11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) Electric Flux (Φ_E)</h3>
+  <p class="topic-desc">The measure of the number of electric field lines passing through a surface; for area vector dA, dΦ = E · dA.</p><br>
+  <button class="Btn0" id="openWinP1E12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) Gauss’s Law</h3>
+  <p class="topic-desc">The net electric flux through any closed surface equals 1/ε0 times the total charge enclosed by the surface.</p><br>
+  <button class="Btn0" id="openWinP1E13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) Gaussian Surface</h3>
+  <p class="topic-desc">An imaginary closed surface chosen to exploit symmetry for applying Gauss’s law to compute electric fields.</p><br>
+  <button class="Btn0" id="openWinP1E14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) Electric Field due to Infinite Line Charge</h3>
+  <p class="topic-desc">A cylindrically symmetric field whose magnitude varies inversely with radial distance r from the line.</p><br>
+  <button class="Btn0" id="openWinP1E15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) Electric Field due to Infinite Plane Sheet</h3>
+  <p class="topic-desc">A uniform field on either side of the sheet, directed normal to the surface, independent of the distance from the sheet.</p><br>
+  <button class="Btn0" id="openWinP1E16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) Electric Field inside a Conductor (Electrostatic Equilibrium)</h3>
+  <p class="topic-desc">Zero electric field inside a conductor in electrostatic equilibrium; any excess charge resides on its surface.</p><br>
+  <button class="Btn0" id="openWinP1E17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) Electrostatic Shielding</h3>
+  <p class="topic-desc">The phenomenon by which the electric field inside a hollow conductor is zero, protecting the interior from external static fields.</p><br>
+  <button class="Btn0" id="openWinP1E18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) Continuous Charge Distribution</h3>
+  <p class="topic-desc">A distribution described by charge density (linear λ, surface σ, volume ρ) instead of discrete point charges.</p><br>
+  <button class="Btn0" id="openWinP1E19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) Conductors and Insulators</h3>
+  <p class="topic-desc">Conductors allow free movement of charges; insulators (dielectrics) do not allow free charge flow under static conditions.</p><br>
+  <button class="Btn0" id="openWinP1E20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) Polarization (Qualitative)</h3>
+  <p class="topic-desc">Alignment or slight displacement of bound charges in a dielectric placed in an electric field, inducing dipole moments.</p><br>
+  <button class="Btn0" id="openWinP1E21">View More</button>
+</div>
+
+                <br><br>
+                <div id="Hindi"><U style="color: blue;"> हिंदी में</U></div><br>
+                <div class="topic-card" id="hide">
+                    <h3 class="topic-title" ></h3>
+                    <p class="topic-desc"></p><br><button class = "Btn0" id="openWin15">View More</button>
+                </div>
+              <!-- कक्षा 12 भौतिकी अध्याय 1:  (Hindi) -->
+<div class="topic-card">
+  <h3 class="topic-title">1) विद्युत आवेश</h3>
+  <p class="topic-desc">पदार्थ का अंतर्निहित गुण जो विद्युतचुंबकीय परस्पर क्रिया का कारण बनता है; आवेश धनात्मक या ऋणात्मक होते हैं और परिमाणित तथा संरक्षित रहते हैं।</p><br>
+  <button class="Btn0" id="openWinP1H1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) आवेश का परिमाणीकरण</h3>
+  <p class="topic-desc">विद्युत आवेश मूलभूत आवेश e के पूर्ण गुणज में ही मिलता है: q = ±ne, जहाँ n पूर्णांक है।</p><br>
+  <button class="Btn0" id="openWinP1H2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) आवेश संरक्षण</h3>
+  <p class="topic-desc">किसी पृथक तंत्र में समस्त आवेशों का बीजीय योग किसी भी प्रक्रिया के दौरान स्थिर रहता है।</p><br>
+  <button class="Btn0" id="openWinP1H3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) कूलॉम का नियम</h3>
+  <p class="topic-desc">दो बिंदु आवेशों के बीच वैद्युतस्थैतिक बल उनके आवेशों के गुणनफल के समानुपाती और उनके बीच की दूरी के वर्ग के व्युत्क्रमानुपाती होता है तथा दोनों को जोड़ने वाली रेखा के अनुदिश कार्य करता है।</p><br>
+  <button class="Btn0" id="openWinP1H4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) अध्यारोपण सिद्धांत (वैद्युतस्थैतिक)</h3>
+  <p class="topic-desc">किसी आवेश पर कुल बल अन्य सभी आवेशों के कारण लगने वाले बलों का सदिश योग होता है और आपसी अंतःक्रियाओं से स्वतंत्र माना जाता है।</p><br>
+  <button class="Btn0" id="openWinP1H5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) वैद्युत क्षेत्र</h3>
+  <p class="topic-desc">किसी बिंदु पर प्रति इकाई धनात्मक परीक्षण आवेश पर लगने वाला बल; E = F/q0, एक सदिश राश‍ि।</p><br>
+  <button class="Btn0" id="openWinP1H6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) वैद्युत क्षेत्र रेखाएँ</h3>
+  <p class="topic-desc">काल्पनिक वक्र जिनके प्रत्येक बिंदु पर स्पर्शरेखा वैद्युत क्षेत्र की दिशा बताती है; ये धन आवेश से निकलती और ऋण आवेश पर समाप्त होती हैं तथा कभी प्रतिच्छेद नहीं करतीं।</p><br>
+  <button class="Btn0" id="openWinP1H7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) वैद्युत द्विध्रुव</h3>
+  <p class="topic-desc">समान परिमाण के विपरीत चिन्ह वाले दो बिंदु आवेश जो थोड़ी दूरी पर स्थित हों।</p><br>
+  <button class="Btn0" id="openWinP1H8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) द्विध्रुव आघूर्ण (p)</h3>
+  <p class="topic-desc">p = q·2a से परिभाषित सदिश राश‍ि, दिशा ऋण आवेश से धन आवेश की ओर; द्विध्रुव की तीव्रता का माप।</p><br>
+  <button class="Btn0" id="openWinP1H9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) द्विध्रुव का वैद्युत क्षेत्र (रूप)</h3>
+  <p class="topic-desc">आदर्श द्विध्रुव का क्षेत्र दूरी के साथ 1/r^3 के रूप में घटता है; अक्षीय और विषुवतीय बिंदुओं पर दिशा विपरीत होती है।</p><br>
+  <button class="Btn0" id="openWinP1H10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) समांगी क्षेत्र में द्विध्रुव पर आघूर्ण</h3>
+  <p class="topic-desc">समांगी वैद्युत क्षेत्र में द्विध्रुव पर τ = p × E आघूर्ण लगता है जो उसे क्षेत्र के अनुदिश अभिविन्यस्त करने की प्रवृत्ति देता है; समांगी क्षेत्र में शुद्ध बल शून्य होता है।</p><br>
+  <button class="Btn0" id="openWinP1H11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) वैद्युत फ्लक्स (Φ_E)</h3>
+  <p class="topic-desc">किसी पृष्‍ठ से गुजरने वाली वैद्युत क्षेत्र रेखाओं का माप; क्षेत्रफल सदिश dA के लिए dΦ = E · dA।</p><br>
+  <button class="Btn0" id="openWinP1H12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) गाउस का नियम</h3>
+  <p class="topic-desc">किसी भी बंद पृष्ठ से निकलने वाला कुल वैद्युत फ्लक्स उस पृष्ठ द्वारा आबद्ध कुल आवेश के ε0 के व्युत्क के बराबर होता है।</p><br>
+  <button class="Btn0" id="openWinP1H13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) गॉसियन पृष्ठ</h3>
+  <p class="topic-desc">एक काल्पनिक बंद पृष्ठ जिसे सममिति का लाभ उठाकर गाउस के नियम के अनुप्रयोग हेतु चुना जाता है।</p><br>
+  <button class="Btn0" id="openWinP1H14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) अनन्त रेखीय आवेश का क्षेत्र</h3>
+  <p class="topic-desc">बेलन सममित क्षेत्र जिसका परिमाण रेखा से दूरी r के व्युत्क्रमानुपाती घटता है।</p><br>
+  <button class="Btn0" id="openWinP1H15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) अनन्त समतल पृष्ठ का क्षेत्र</h3>
+  <p class="topic-desc">पृष्ठ के दोनों ओर समान परिमाण का समांगी क्षेत्र जो पृष्ठ के लम्बवत दिशा में होता है तथा दूरी पर निर्भर नहीं करता।</p><br>
+  <button class="Btn0" id="openWinP1H16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) चालक के भीतर का क्षेत्र (वैद्युतस्थैतिक साम्य)</h3>
+  <p class="topic-desc">वैद्युतस्थैतिक साम्य में चालक के भीतर वैद्युत क्षेत्र शून्य होता है; अतिरिक्त आवेश सतह पर स्थित होता है।</p><br>
+  <button class="Btn0" id="openWinP1H17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) वैद्युत परिरक्षण</h3>
+  <p class="topic-desc">वह घटना जिसमें खोखले चालक के भीतर वैद्युत क्षेत्र शून्य हो जाता है और बाह्य स्थिर क्षेत्रों से आंतरिक भाग सुरक्षित रहता है।</p><br>
+  <button class="Btn0" id="openWinP1H18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) सतत आवेश वितरण</h3>
+  <p class="topic-desc">ऐसा वितरण जिसे बिंदु आवेशों के बजाय रैखिक (λ), पृष्ठीय (σ) और आयतन (ρ) घनत्व द्वारा निरूपित किया जाता है।</p><br>
+  <button class="Btn0" id="openWinP1H19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) चालक और कुचालक</h3>
+  <p class="topic-desc">चालक आवेशों के मुक्त गमन की अनुमति देते हैं; कुचालक (डाइइलेक्ट्रिक) स्थिर दशाओं में मुक्त आवेश प्रवाह की अनुमति नहीं देते।</p><br>
+  <button class="Btn0" id="openWinP1H20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) ध्रुवण (गुणात्मक)</h3>
+  <p class="topic-desc">डाइइलेक्ट्रिक को वैद्युत क्षेत्र में रखने पर आबद्ध आवेशों का हल्का विस्थापन/संरेखण, जिससे प्रेरित द्विध्रुव आघूर्ण उत्पन्न होते हैं।</p><br>
+  <button class="Btn0" id="openWinP1H21">View More</button>
+</div>
+
+
+            </div>
+        </section>
+
+        <!-- Formulas Section -->
+        <section class="content-section" id="formulas">
+            <h2 class="section-title" id="formulas-title" title="Essential Formulas - Electric Charges and Fields" style="cursor: default;">Essential Formulas - Electric Charges and Fields</h2>
+            <div class="formulas-container">
+                <!-- Keep your original empty card unchanged -->
+
+<div class="formula-card">
+  <h3 class="formula-title">Quantization of Charge</h3>
+  <div class="formula-content">q = n&nbsp;e</div>
+  <p class="formula-desc">Total charge q, elementary charge e (1.6&times;10<sup>−19</sup> C) ka integer multiple hota hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Conservation of Charge</h3>
+  <div class="formula-content">Σq<sub>initial</sub> = Σq<sub>final</sub></div>
+  <p class="formula-desc">Isolated system me net charge constant rehta hai.</p>
+</div>
+
+<!-- Coulomb’s Law -->
+<div class="formula-card">
+  <h3 class="formula-title">Coulomb’s Law (Magnitude)</h3>
+  <div class="formula-content">F = (1 / 4&pi;&nbsp;&epsilon;<sub>0</sub>) &times; (|q<sub>1</sub> q<sub>2</sub>| / r<sup>2</sup>)</div>
+  <p class="formula-desc">Do point charges ke beech force distance ke square ke inverse ke proportional.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Coulomb’s Constant</h3>
+  <div class="formula-content">k = 1 / (4&pi;&nbsp;&epsilon;<sub>0</sub>) &approx; 9.0&times;10<sup>9</sup> N&nbsp;m<sup>2</sup>&nbsp;C<sup>−2</sup></div>
+  <p class="formula-desc">Vacuum/air me electrostatic interaction ka proportionality constant.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Medium Effect</h3>
+  <div class="formula-content">F = (1 / 4&pi;&nbsp;&epsilon;<sub>0</sub>&epsilon;<sub>r</sub>) &times; (|q<sub>1</sub> q<sub>2</sub>| / r<sup>2</sup>)</div>
+  <p class="formula-desc">Dielectric medium (relative permittivity &epsilon;<sub>r</sub>) force ko reduce karta hai.</p>
+</div>
+
+<!-- Superposition -->
+<div class="formula-card">
+  <h3 class="formula-title">Superposition (Force)</h3>
+  <div class="formula-content">F⃗&nbsp;= Σ F⃗<sub>i</sub></div>
+  <p class="formula-desc">Net electrostatic force vector sum of individual forces hota hai.</p>
+</div>
+
+<!-- Electric Field -->
+<div class="formula-card">
+  <h3 class="formula-title">Electric Field (Definition)</h3>
+  <div class="formula-content">E⃗ = F⃗ / q<sub>0</sub></div>
+  <p class="formula-desc">Test charge par force per unit charge; unit N&nbsp;C<sup>−1</sup>.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Field of a Point Charge</h3>
+  <div class="formula-content">E = (1 / 4&pi;&nbsp;&epsilon;<sub>0</sub>) &times; (|q| / r<sup>2</sup>)</div>
+  <p class="formula-desc">Field radially outward (+q) ya inward (−q), magnitude 1/r<sup>2</sup> ke saath.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Superposition (Field)</h3>
+  <div class="formula-content">E⃗<sub>net</sub> = Σ E⃗<sub>i</sub></div>
+  <p class="formula-desc">Total electric field individual fields ka vector sum.</p>
+</div>
+
+<!-- Charge Densities -->
+<div class="formula-card">
+  <h3 class="formula-title">Linear Charge Density</h3>
+  <div class="formula-content">&lambda; = dq / dl</div>
+  <p class="formula-desc">Per unit length charge (wire/rod).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Surface Charge Density</h3>
+  <div class="formula-content">&sigma; = dq / dA</div>
+  <p class="formula-desc">Per unit area charge (sheet/surface).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Volume Charge Density</h3>
+  <div class="formula-content">&rho; = dq / dV</div>
+  <p class="formula-desc">Per unit volume charge; 3D distributions ke liye.</p>
+</div>
+
+<!-- Electric Flux and Gauss’s Law -->
+<div class="formula-card">
+  <h3 class="formula-title">Electric Flux</h3>
+  <div class="formula-content">&Phi;<sub>E</sub> = &int; E⃗ &middot; dA⃗</div>
+  <p class="formula-desc">Surface se pass hota field ka normal component ka integral.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Gauss’s Law (Integral Form)</h3>
+  <div class="formula-content">&oint; E⃗ &middot; dA⃗ = Q<sub>encl</sub> / &epsilon;<sub>0</sub></div>
+  <p class="formula-desc">Closed surface se total flux enclosed charge / &epsilon;<sub>0</sub> ke barabar.</p>
+</div>
+
+<!-- Applications of Gauss’s Law -->
+<div class="formula-card">
+  <h3 class="formula-title">Infinite Line Charge Field</h3>
+  <div class="formula-content">E(r) = &lambda; / (2&pi;&nbsp;&epsilon;<sub>0</sub> r)</div>
+  <p class="formula-desc">Cylindrical symmetry me line se distance r par field 1/r ke proportional.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Infinite Plane Sheet Field</h3>
+  <div class="formula-content">E = &sigma; / (2&epsilon;<sub>0</sub>)</div>
+  <p class="formula-desc">Uniform infinite sheet ke dono sides par constant field.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Uniformly Charged Spherical Shell</h3>
+  <div class="formula-content">
+    Outside (r &gt; R): E = (1 / 4&pi;&epsilon;<sub>0</sub>)&times;(Q / r<sup>2</sup>)<br>
+    On Surface (r = R): E = (1 / 4&pi;&epsilon;<sub>0</sub>)&times;(Q / R<sup>2</sup>)<br>
+    Inside (r &lt; R): E = 0
+  </div>
+  <p class="formula-desc">Shell ke bahar point charge jaisa; andar field zero.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Uniformly Charged Solid Sphere</h3>
+  <div class="formula-content">
+    Outside (r &gt; R): E = (1 / 4&pi;&epsilon;<sub>0</sub>)&times;(Q / r<sup>2</sup>)<br>
+    Inside (r &lt; R): E = (1 / 4&pi;&epsilon;<sub>0</sub>)&times;(Q r / R<sup>3</sup>)
+  </div>
+  <p class="formula-desc">Inside field r ke proportional; outside point charge jaisa.</p>
+</div>
+
+<!-- Conductors -->
+<div class="formula-card">
+  <h3 class="formula-title">Field Just Outside Conductor</h3>
+  <div class="formula-content">E = &sigma; / &epsilon;<sub>0</sub> (outward normal)</div>
+  <p class="formula-desc">Electrostatic equilibrium me surface ke bahar field normal hota hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Field Inside Conductor</h3>
+  <div class="formula-content">E<sub>inside</sub> = 0</div>
+  <p class="formula-desc">Electrostatic condition me conductor ke andar electric field zero.</p>
+</div>
+
+<!-- Dipole -->
+<div class="formula-card">
+  <h3 class="formula-title">Electric Dipole Moment</h3>
+  <div class="formula-content">p⃗ = q&nbsp;d⃗</div>
+  <p class="formula-desc">−q se +q ki taraf direction; magnitude q&times;separation.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Dipole Field (Axial)</h3>
+  <div class="formula-content">E<sub>axial</sub> = (1 / 4&pi;&epsilon;<sub>0</sub>) &times; (2p / r<sup>3</sup>)</div>
+  <p class="formula-desc">Axis par large r ke liye 1/r<sup>3</sup> dependence.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Dipole Field (Equatorial)</h3>
+  <div class="formula-content">E<sub>eq</sub> = (1 / 4&pi;&epsilon;<sub>0</sub>) &times; (p / r<sup>3</sup>)</div>
+  <p class="formula-desc">Equatorial line par magnitude p/(4&pi;&epsilon;<sub>0</sub> r<sup>3</sup>) direction dipole ke opposite.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Torque on Dipole</h3>
+  <div class="formula-content">&tau;⃗ = p⃗ &times; E⃗</div>
+  <p class="formula-desc">Uniform field me torque pE&nbsp;sin&theta; lagta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Potential Energy of Dipole</h3>
+  <div class="formula-content">U = − pE&nbsp;cos&theta;</div>
+  <p class="formula-desc">Minimum energy jab dipole field ke saath align ho (θ=0).</p>
+</div>
+
+<!-- Potential and Field -->
+<div class="formula-card">
+  <h3 class="formula-title">Potential Difference</h3>
+  <div class="formula-content">V(B) − V(A) = − &int;<sub>A→B</sub> E⃗ &middot; dl⃗</div>
+  <p class="formula-desc">Electrostatic field conservative hota hai; line integral se potential difference milta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Potential of a Point Charge</h3>
+  <div class="formula-content">V(r) = (1 / 4&pi;&epsilon;<sub>0</sub>) &times; (q / r)</div>
+  <p class="formula-desc">Reference at infinity; potential 1/r ke proportional.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Potential of a Dipole (Far Field)</h3>
+  <div class="formula-content">V(r, &theta;) = (1 / 4&pi;&epsilon;<sub>0</sub>) &times; (p&nbsp;cos&theta; / r<sup>2</sup>)</div>
+  <p class="formula-desc">Large r par dipole potential 1/r<sup>2</sup> depend karta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Relation Between E and V</h3>
+  <div class="formula-content">E⃗ = − &nabla;V</div>
+  <p class="formula-desc">Electric field scalar potential ka negative gradient.</p>
+</div>
+
+<!-- Work and Energy -->
+<div class="formula-card">
+  <h3 class="formula-title">Work to Move Charge</h3>
+  <div class="formula-content">W = q &Delta;V</div>
+  <p class="formula-desc">Potential difference se charge ko move karne ka work.</p>
+</div>
+
+<!-- Useful Results (Axis Fields) -->
+<div class="formula-card">
+  <h3 class="formula-title">Ring of Charge (Axis Field)</h3>
+  <div class="formula-content">E<sub>x</sub> = (1 / 4&pi;&epsilon;<sub>0</sub>) &times; (q x / (x<sup>2</sup> + R<sup>2</sup>)<sup>3/2</sup>)</div>
+  <p class="formula-desc">Ring radius R ke axis par distance x par field.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Disc of Charge (Axis Field)</h3>
+  <div class="formula-content">E<sub>x</sub> = (&sigma; / 2&epsilon;<sub>0</sub>) &times; (1 − x / &radic;(x<sup>2</sup> + R<sup>2</sup>))</div>
+  <p class="formula-desc">Uniform disc ke axis par field; x &ll; R par sheet limit milti hai.</p>
+</div>
+
+<!-- Constants -->
+<div class="formula-card">
+  <h3 class="formula-title">Permittivity of Free Space</h3>
+  <div class="formula-content">&epsilon;<sub>0</sub> = 8.854&times;10<sup>−12</sup> C<sup>2</sup> N<sup>−1</sup> m<sup>−2</sup></div>
+  <p class="formula-desc">Coulomb’s law aur Gauss’s law me aane wala vacuum constant.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Handy Constant k</h3>
+  <div class="formula-content">k = 9.0&times;10<sup>9</sup> N&nbsp;m<sup>2</sup> C<sup>−2</sup></div>
+  <p class="formula-desc">1/(4&pi;&epsilon;<sub>0</sub>) ka approximate value fast calculations ke liye.</p>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Lectures Section -->
+        <section class="content-section" id="lectures">
+            <h2 class="section-title" id="lectures-title">Recommended Lecture Videos</h2>
+            <div class="lectures-grid">
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Electric Charges and Fields - One Shot(Hindi)</h3>
+                        <div class="lecture-meta">
+                            <span>Anand Sir(Taget Board)</span>
+                            <span>4:23:05</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/uetgLMwITMI?si=IfoLvBEA8J8Dh3u1" title="Watch Lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Electric Charges and Fields - One Shot(English)</h3>
+                        <div class="lecture-meta">
+                            <span>Rajwant Sir(Pw)</span>
+                            <span>3:06:28</span>
+                        </div>
+                        <a href="https://youtu.be/i_yT6CpUOTk?si=6Stb7PKcavwBUT1l" title = "Watch lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title"></h3>
+                        <div class="lecture-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="" class="lecture-btn" target="_blank" rel="noopener noreferrer" onclick="alert('coming soon...')">Watch Lecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="content-section" id="objectives">
+            <h2 class="section-title" id="objectives-title" title="Practice Questions" style="cursor: default;">Practice Questions</h2>
+            <div class="questions-container">
+                <div class="question-card">
+                    <h3 class="question-text" id="q1">1. Which crystal system does Sodium chloride (NaCl) follow?</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="A" class="option-input">
+                            <span id="q1a">A) Simple Cubic (SC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="B" class="option-input">
+                            <span id="q1b">B) Body-Centered Cubic (BCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="C" class="option-input">
+                            <span id="q1c">C) Face-Centered Cubic (FCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="D" class="option-input">
+                            <span id="q1d">D) Hexagonal Close Packing (HCP)</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q1">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q2">2. Packing efficiency of FCC is approximately:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="A" class="option-input">
+                            <span id="q2a">A) 52%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="B" class="option-input">
+                            <span id="q2b">B) 68%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="C" class="option-input">
+                            <span id="q2c">C) 74%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="D" class="option-input">
+                            <span id="q2d">D) 42%</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q3">3. Bragg's law relates:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="A" class="option-input">
+                            <span id="q3a">A) wavelength & interplanar spacing</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="B" class="option-input">
+                            <span id="q3b">B) density & mass</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="C" class="option-input">
+                            <span id="q3c">C) radius & lattice parameter</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="D" class="option-input">
+                            <span id="q3d">D) none of these</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="A" data-question="q3">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+                <!-- Q1 -->
+<div class="question-card">
+  <h3 class="question-text" id="q1">बेरवैदार (amorphous) ठोस का उदाहरण है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q1" value="A" class="option-input">
+      <span id="q1a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="B" class="option-input">
+      <span id="q1b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="C" class="option-input">
+      <span id="q1c">C) नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="D" class="option-input">
+      <span id="q1d">D) रबर</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q1">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card">
+  <h3 class="question-text" id="q2">निम्नलिखित में कौन क्रिस्टलीय (crystalline) ठोस का उदाहरण है? [2013A, 2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q2" value="A" class="option-input">
+      <span id="q2a">A) NaCl</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="B" class="option-input">
+      <span id="q2b">B) ZnS</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="C" class="option-input">
+      <span id="q2c">C) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="D" class="option-input">
+      <span id="q2d">D) SiC</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card">
+  <h3 class="question-text" id="q3">hcp इकाई सेल में परमाणुओं की संख्या है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q3" value="A" class="option-input">
+      <span id="q3a">A) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="B" class="option-input">
+      <span id="q3b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="C" class="option-input">
+      <span id="q3c">C) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="D" class="option-input">
+      <span id="q3d">D) 7</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q3">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card">
+  <h3 class="question-text" id="q4">‘खवार’ (cleavage/cleavable) ठोस है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q4" value="A" class="option-input">
+      <span id="q4a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="B" class="option-input">
+      <span id="q4b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="C" class="option-input">
+      <span id="q4c">C) रबर</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="D" class="option-input">
+      <span id="q4d">D) इनमें से कोई नहीं</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q4">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card">
+  <h3 class="question-text" id="q5">बेरवैदार ठोस पदार्थ है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q5" value="A" class="option-input">
+      <span id="q5a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="B" class="option-input">
+      <span id="q5b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="C" class="option-input">
+      <span id="q5c">C) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="D" class="option-input">
+      <span id="q5d">D) इनमें से सभी</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q5">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card">
+  <h3 class="question-text" id="q6">एक धातु का स्वरूपण हेक्सागोनल क्लोज़्ड पैक (hcp) संरचना में होता है, तो धातु की कोऑर्डिनेशन संख्या है— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q6" value="A" class="option-input">
+      <span id="q6a">A) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="B" class="option-input">
+      <span id="q6b">B) 8</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="C" class="option-input">
+      <span id="q6c">C) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="D" class="option-input">
+      <span id="q6d">D) 6</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q6">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card">
+  <h3 class="question-text" id="q7">निम्नलिखित में कौन-से जोड़े में क्रमशः: चतुर्भुजीय बंदन (tetrahedral voids) और अष्टफलककीय बंदन (octahedral voids) होते हैं? [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q7" value="A" class="option-input">
+      <span id="q7a">A) bcc और fcc</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="B" class="option-input">
+      <span id="q7b">B) hcp और simple cubic</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="C" class="option-input">
+      <span id="q7c">C) hcp और ccp</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="D" class="option-input">
+      <span id="q7d">D) bcc और hcp</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q7">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card">
+  <h3 class="question-text" id="q8">निम्नलिखित में कौन ‘बेरवैदार’ ठोस है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q8" value="A" class="option-input">
+      <span id="q8a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="B" class="option-input">
+      <span id="q8b">B) क्वार्ट्ज़ ग्लास (SiO₂)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="C" class="option-input">
+      <span id="q8c">C) कोयला/कोक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="D" class="option-input">
+      <span id="q8d">D) सिलिकॉन कार्बाइड (SiC)</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q8">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card">
+  <h3 class="question-text" id="q9">धात्विक क्रिस्टल में सबसे अधिक चालकों की संख्या होती है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q9" value="A" class="option-input">
+      <span id="q9a">A) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="B" class="option-input">
+      <span id="q9b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="C" class="option-input">
+      <span id="q9c">C) 10</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="D" class="option-input">
+      <span id="q9d">D) 12</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q9">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card">
+  <h3 class="question-text" id="q10">क्रिस्टलीय ठोस में स्पष्ट धारियाँ/तल होते हैं— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q10" value="A" class="option-input">
+      <span id="q10a">A) 1</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="B" class="option-input">
+      <span id="q10b">B) 2</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="C" class="option-input">
+      <span id="q10c">C) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="D" class="option-input">
+      <span id="q10d">D) 4</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q10">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card">
+  <h3 class="question-text" id="q11">निम्नलिखित में से कौन सहसंयोजक ठोस है? [2024A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q11" value="A" class="option-input">
+      <span id="q11a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="B" class="option-input">
+      <span id="q11b">B) सोडियम क्लोराइड</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="C" class="option-input">
+      <span id="q11c">C) धात्विक तांबा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="D" class="option-input">
+      <span id="q11d">D) बर्फ</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q11">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card">
+  <h3 class="question-text" id="q12">क्रिस्टलीय ठोस किस प्रकार का होता है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q12" value="A" class="option-input">
+      <span id="q12a">A) समदैशिक (isotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="B" class="option-input">
+      <span id="q12b">B) विषमदैशिक (anisotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="C" class="option-input">
+      <span id="q12c">C) अमोर्फस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="D" class="option-input">
+      <span id="q12d">D) धात्विक</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q12">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card">
+  <h3 class="question-text" id="q13">NaCl-type ठोस किस वर्ग का है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q13" value="A" class="option-input">
+      <span id="q13a">A) आयनिक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="B" class="option-input">
+      <span id="q13b">B) धात्विक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="C" class="option-input">
+      <span id="q13c">C) सहसंयोजक जालक (network) ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="D" class="option-input">
+      <span id="q13d">D) अणुगत ठोस</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q13">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card">
+  <h3 class="question-text" id="q14">निम्न में से किसका चालकता व्यवहार अलग है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q14" value="A" class="option-input">
+      <span id="q14a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="B" class="option-input">
+      <span id="q14b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="C" class="option-input">
+      <span id="q14c">C) सामान्य नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="D" class="option-input">
+      <span id="q14d">D) काँच</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q14">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">Physics Exam Essentials - Electric Charges and Fields Chapter | Created for Class 12 Students</p>
+        <p class="footer-text">All content is for educational purposes only</p>
+    </footer>
+    
+  <script src="Physics Lesson-1.js"></script>
+  <script>
+    
+  </script>
+
+    <script>
+        // ====== Language Translations ======
+        const translations = {
+            en: {
+                "page-title": "Physics — Chapter 1 (Electric Charges and Fields) — Exam Essentials",
+                "topics-title": "Key Topics - Electric Charges and Fields Physics",
+                "formulas-title": "Essential Formulas - Electric Charges and Fields",
+                "lectures-title": "Recommended Lecture Videos",
+                "objectives-title": "Practice Questions",
+                "nav-topics": "Topics",
+                "nav-formulas": "Formulas",
+                "nav-lectures": "Lectures",
+                "nav-objectives": "Objectives",
+                "lang-toggle": "English",
+                "q1": "1. Which crystal system does Sodium chloride (NaCl) follow?",
+                "q1a": "A) Simple Cubic (SC)",
+                "q1b": "B) Body-Centered Cubic (BCC)",
+                "q1c": "C) Face-Centered Cubic (FCC)",
+                "q1d": "D) Hexagonal Close Packing (HCP)",
+                "q2": "2. Packing efficiency of FCC is approximately:",
+                "q2a": "A) 52%",
+                "q2b": "B) 68%",
+                "q2c": "C) 74%",
+                "q2d": "D) 42%",
+                "q3": "3. Bragg's law relates:",
+                "q3a": "A) wavelength & interplanar spacing",
+                "q3b": "B) density & mass",
+                "q3c": "C) radius & lattice parameter",
+                "q3d": "D) none of these"
+            },
+            hi: {
+                "page-title": "भौतिक विज्ञान — अध्याय 1 (विद्युत आवेश एवं क्षेत्र) — परीक्षा आवश्यक सामग्री",
+                "topics-title": "मुख्य विषय - विद्युत आवेश एवं क्षेत्र भौतिक",
+                "formulas-title": "आवश्यक सूत्र - विद्युत आवेश एवं क्षेत्र",
+                "lectures-title": "अनुशंसित व्याख्यान वीडियो",
+                "objectives-title": "अभ्यास प्रश्न",
+                "nav-topics": "विषय",
+                "nav-formulas": "सूत्र",
+                "nav-lectures": "व्याख्यान",
+                "nav-objectives": "प्रश्न",
+                "lang-toggle": "English",
+                "q1": "1. सोडियम क्लोराइड (NaCl) किस क्रिस्टल प्रणाली का अनुसरण करता है?",
+                "q1a": "क) सरल घनीय (SC)",
+                "q1b": "ख) अंत: केन्द्रित घनीय (BCC)",
+                "q1c": "ग) फलक केन्द्रित घनीय (FCC)",
+                "q1d": "घ) षट्कोणीय निविड संकुलन (HCP)",
+                "q2": "2. FCC की संकुलन दक्षता लगभग है:",
+                "q2a": "क) 52%",
+                "q2b": "ख) 68%",
+                "q2c": "ग) 74%",
+                "q2d": "घ) 42%",
+                "q3": "3. ब्रैग का नियम संबंधित है:",
+                "q3a": "क) तरंगदैर्ध्य और अंतरतलीय दूरी से",
+                "q3b": "ख) घनत्व और द्रव्यमान से",
+                "q3c": "ग) त्रिज्या और जालक मापदंड से",
+                "q3d": "घ) इनमें से कोई नहीं"
+            }
+        };
+
+        // ====== Initial Setup ======
+        let currentLang = 'en';
+
+        // ====== DOM Elements ======
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const langToggle = document.getElementById('langToggle');
+        const langToggleText = langToggle.querySelector('span');
+
+        // ====== Navigation Functionality ======
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ====== Language Toggle Functionality ======
+        langToggle.addEventListener('click', () => {
+            // Toggle language
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            // Update all translatable elements
+            Object.keys(translations[currentLang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT') {
+                        // For radio buttons, update the next span
+                        el.nextElementSibling.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+            
+            // Update toggle button text
+            langToggleText.textContent = translations[currentLang]['lang-toggle'];
+        });
+
+        // ====== Question Checking Functionality ======
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('check-btn')) {
+                const button = e.target;
+                const questionId = button.getAttribute('data-question');
+                const correctAnswer = button.getAttribute('data-answer');
+                const questionCard = button.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                // Get selected option
+                const selectedOption = questionCard.querySelector(`input[name="${questionId}"]:checked`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Please select an answer!';
+                    feedback.className = 'feedback incorrect';
+                    return;
+                }
+                
+                if (selectedOption.value === correctAnswer) {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+        });
+
+        // ====== Accessibility Features ======
+        // Keyboard navigation for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Focus styles for better keyboard navigation
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab') {
+                document.documentElement.classList.add('keyboard-focus');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.documentElement.classList.remove('keyboard-focus');
+        });
+    </script>
+   
+</body>
+</html>

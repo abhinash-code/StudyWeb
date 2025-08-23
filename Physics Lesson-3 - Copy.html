@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics — Chapter 3 (Electric Current) — Exam Essentials</title>
+    <style>
+        /* ===== CSS Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Root Variables ===== */
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #ffab00;
+            --secondary-light: #ffdd4b;
+            --secondary-dark: #c67c00;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --bg-light: #ffffff;
+            --bg-dark: #e0e0e0;
+            --success: #2e7d32;
+            --error: #c62828;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== Base Styles ===== */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: #043a07 ;
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 2sec ease-in-out;
+        }
+        header:hover {
+            background-color: rgb(7, 110, 29);
+        }
+        /* Put this in your CSS file */
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-light);
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        /* ===== Language Toggle ===== */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 171, 0, 0.1);
+        }
+
+        /* ===== Main Content ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* ===== Topics Section ===== */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Formulas Section ===== */
+        .formulas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formula-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .formula-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-desc {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Lectures Section ===== */
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-thumbnail {
+            height: 160px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .lecture-body {
+            padding: 1.5rem;
+        }
+
+        .lecture-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lecture-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .lecture-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== Objectives Section ===== */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .option-input {
+            accent-color: var(--primary);
+        }
+
+        .check-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .check-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(198, 40, 40, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgb(82, 5, 5);
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .navbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .topics-grid,
+            .formulas-container,
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #Hindi {
+            color: rgb(250, 15, 15);
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgb(129, 118, 118);
+            margin-left: 50%;
+            margin-top: 50px;
+        }
+        #hide {
+            visibility: hidden;
+        }
+       /* -------------------------
+   .Btn0 — Duniya ka sundar button
+   ------------------------- */
+
+/* Theme variables (aap badal sakte ho) */
+
+/* CSS */
+.Btn0 {
+  align-items: center;
+  appearance: none;
+  background-clip: padding-box;
+  background-color: initial;
+  background-image: none;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-family: Eina01,sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  justify-content: center;
+  line-height: 15px;
+  margin: 0;
+  min-height: 40px;
+  outline: none;
+  overflow: visible;
+  padding: 15px 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: auto;
+  word-break: keep-all;
+  z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .Btn0 {
+    padding: 19px 32px;
+  }
+}
+
+.Btn0:before,
+.Btn0:after {
+  border-radius: 80px;
+}
+
+.Btn0:before {
+  background-image: linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -2;
+}
+
+.Btn0:after {
+  background-color: initial;
+  background-image: linear-gradient(#c22b0d 0, #0c0d0d 100%);
+  bottom: 4px;
+  content: "";
+  display: block;
+  left: 4px;
+  overflow: hidden;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 100ms ease-out;
+  z-index: -1;
+}
+
+.Btn0:hover:not(:disabled):before {
+  background: linear-gradient(92.83deg, rgb(255, 116, 38) 0%, rgb(249, 58, 19) 100%);
+}
+
+.Btn0:hover:not(:disabled):after {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition-timing-function: ease-in;
+  opacity: 0;
+}
+
+.Btn0:active:not(:disabled) {
+  color: #ccc;
+}
+
+.Btn0:active:not(:disabled):before {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+}
+
+.Btn0:active:not(:disabled):after {
+  background-image: linear-gradient(#541a0f 0, #0c0d0d 100%);
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+}
+
+.Btn0:disabled {
+  cursor: default;
+  opacity: .24;
+}
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8s-1.5-2-4-2-4 2-4 2"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    <path d="M10 16s1.5 2 4 2 4-2 4-2"></path>
+                </svg>
+            </div>
+            <h1 class="logo-text" id="page-title" title="Chapter 3 (Electric Current)" style="cursor: default;">Physics — Chapter 3 (Electric Current) — Exam Essentials</h1>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="topics" title="Topics">Topics</a></li>
+                <li><a href="#" class="nav-link" data-target="formulas" title="Formulas">Formulas</a></li>
+                <li><a href="#" class="nav-link" data-target="lectures" title="Lectures">Lectures</a></li>
+                <li><a href="#" class="nav-link" data-target="objectives" title="Objectives">Objectives</a></li>
+            </ul>
+            <button class="lang-toggle" id="langToggle">
+                <span>हिंदी</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Topics Section (Default Active) -->
+        <section class="content-section active" id="topics">
+            <h2 class="section-title" id="topics-title" title="Lesson 1 -Electric Current" style="cursor: default;">Lesson 1 -Electric Current </h2>
+            <div class="topics-grid">
+                <!-- Class 12 Physics Chapter 3:Electric Current (English) -->
+<!-- Class 12 Physics Chapter 3: Current Electricity (English) -->
+<div class="topic-card">
+  <h3 class="topic-title">1) Electric Current (I)</h3>
+  <p class="topic-desc">Rate of flow of charge through a cross-section: I = dq/dt; in conductors I = n q A v_d.</p><br>
+  <button class="Btn0" id="openP3E1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) Conventional Current Direction</h3>
+  <p class="topic-desc">Direction in which positive charges would flow; opposite to electron drift in metals.</p><br>
+  <button class="Btn0" id="openP3E2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) Drift Velocity (v_d)</h3>
+  <p class="topic-desc">Average velocity acquired by charge carriers under an electric field; v_d ∝ E and typically very small.</p><br>
+  <button class="Btn0" id="openP3E3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) Mobility (μ)</h3>
+  <p class="topic-desc">Drift velocity per unit electric field: μ = v_d/E; relates to conductivity via σ = n q μ for one carrier type.</p><br>
+  <button class="Btn0" id="openP3E4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) Current Density (J)</h3>
+  <p class="topic-desc">Current per unit area flowing normal to the area: J = I/A; in a conductor J = σE.</p><br>
+  <button class="Btn0" id="openP3E5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) Resistivity (ρ)</h3>
+  <p class="topic-desc">Material property defined by ρ = E/J; resistance R = ρ (L/A) for a uniform conductor.</p><br>
+  <button class="Btn0" id="openP3E6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) Conductivity (σ)</h3>
+  <p class="topic-desc">Reciprocal of resistivity: σ = 1/ρ; measures a material’s ability to conduct electricity.</p><br>
+  <button class="Btn0" id="openP3E7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) Ohm’s Law</h3>
+  <p class="topic-desc">At constant physical conditions, current through a conductor is directly proportional to the potential difference across it: V = IR.</p><br>
+  <button class="Btn0" id="openP3E8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) Resistance (R)</h3>
+  <p class="topic-desc">Opposition to current flow: R = V/I; for a wire R = ρL/A, depends on material, length, and cross-section.</p><br>
+  <button class="Btn0" id="openP3E9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) Temperature Coefficient of Resistance (α)</h3>
+  <p class="topic-desc">Fractional change in resistance per degree change in temperature: R_T = R_0(1 + αΔT) for small ΔT.</p><br>
+  <button class="Btn0" id="openP3E10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) Superconductivity (Note)</h3>
+  <p class="topic-desc">A state of certain materials below critical temperature where resistivity drops to nearly zero.</p><br>
+  <button class="Btn0" id="openP3E11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) EMF (Electromotive Force)</h3>
+  <p class="topic-desc">Work done per unit charge by a source to move charge through the entire circuit; equals potential difference across terminals at zero current.</p><br>
+  <button class="Btn0" id="openP3E12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) Internal Resistance (r)</h3>
+  <p class="topic-desc">Effective resistance within a source; terminal voltage V = ε − Ir for a cell delivering current I.</p><br>
+  <button class="Btn0" id="openP3E13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) Terminal Voltage</h3>
+  <p class="topic-desc">Potential difference across the terminals of a source under load; less than EMF when current flows.</p><br>
+  <button class="Btn0" id="openP3E14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) Kirchhoff’s Current Law (KCL)</h3>
+  <p class="topic-desc">At any junction, the algebraic sum of currents is zero; sum of currents entering equals sum leaving.</p><br>
+  <button class="Btn0" id="openP3E15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) Kirchhoff’s Voltage Law (KVL)</h3>
+  <p class="topic-desc">In any closed loop, the algebraic sum of potential differences and EMFs is zero.</p><br>
+  <button class="Btn0" id="openP3E16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) Series Combination of Resistors</h3>
+  <p class="topic-desc">Equivalent resistance adds: R_eq = ΣR_i; same current flows through each resistor.</p><br>
+  <button class="Btn0" id="openP3E17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) Parallel Combination of Resistors</h3>
+  <p class="topic-desc">Reciprocals add: 1/R_eq = Σ(1/R_i); same potential across each, currents add.</p><br>
+  <button class="Btn0" id="openP3E18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) Power (Electrical)</h3>
+  <p class="topic-desc">Rate of energy transfer: P = VI = I^2R = V^2/R.</p><br>
+  <button class="Btn0" id="openP3E19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) Heating Effect of Current (Joule’s Law)</h3>
+  <p class="topic-desc">Heat produced in time t: H = I^2Rt (or VIt), in absence of other energy conversions.</p><br>
+  <button class="Btn0" id="openP3E20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) Resistor Color Code (Note)</h3>
+  <p class="topic-desc">A coding scheme using colored bands to indicate resistance value and tolerance.</p><br>
+  <button class="Btn0" id="openP3E21">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) Cells in Series</h3>
+  <p class="topic-desc">EMFs add (ε_eq = Σε_i); internal resistances add (r_eq = Σr_i); useful for higher voltage.</p><br>
+  <button class="Btn0" id="openP3E22">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) Cells in Parallel</h3>
+  <p class="topic-desc">Same EMF if identical cells; internal resistance reduces: 1/r_eq = Σ(1/r_i); useful for higher current.</p><br>
+  <button class="Btn0" id="openP3E23">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) Balanced Wheatstone Bridge</h3>
+  <p class="topic-desc">A network of four resistors is balanced when (P/Q) = (R/S); galvanometer shows zero current.</p><br>
+  <button class="Btn0" id="openP3E24">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) Meter Bridge (Slide Wire Bridge)</h3>
+  <p class="topic-desc">A practical form of Wheatstone bridge using a uniform wire to measure unknown resistance by null deflection.</p><br>
+  <button class="Btn0" id="openP3E25">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) Potentiometer</h3>
+  <p class="topic-desc">A device that measures EMF or compares potential differences based on null method using a uniform resistive wire.</p><br>
+  <button class="Btn0" id="openP3E26">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) Sensitivity of Potentiometer</h3>
+  <p class="topic-desc">Increases with the length of the wire and decreases with higher current; smaller potential gradient gives higher sensitivity.</p><br>
+  <button class="Btn0" id="openP3E27">View More</button>
+</div>
+
+                <br><br>
+                <div id="Hindi"><U style="color: blue;"> हिंदी में</U></div><br>
+                
+<div class="topic-card">
+  <h3 class="topic-title">1) विद्युत धारा (I)</h3>
+  <p class="topic-desc">किसी अनुप्रस्थ काट से आवेश के प्रवाह की दर: I = dq/dt; चालकों में I = n q A v_d।</p><br>
+  <button class="Btn0" id="openP3H1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) परंपरागत धारा दिशा</h3>
+  <p class="topic-desc">वह दिशा जिस ओर धनात्मक आवेश प्रवाहित माना जाता है; धातुओं में यह इलेक्ट्रॉन बहाव के विपरीत होती है।</p><br>
+  <button class="Btn0" id="openP3H2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) बहाव वेग (Drift Velocity)</h3>
+  <p class="topic-desc">विद्युत क्षेत्र के प्रभाव में वह औसत वेग जो वाहक प्राप्त करते हैं; v_d ∝ E और प्रायः बहुत छोटा होता है।</p><br>
+  <button class="Btn0" id="openP3H3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) गतिशीलता (Mobility, μ)</h3>
+  <p class="topic-desc">प्रति इकाई वैद्युत क्षेत्र पर बहाव वेग: μ = v_d/E; एकल वाहक के लिए σ = n q μ।</p><br>
+  <button class="Btn0" id="openP3H4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) धारा घनत्व (J)</h3>
+  <p class="topic-desc">प्रति इकाई क्षेत्र धारा: J = I/A; चालक में J = σE।</p><br>
+  <button class="Btn0" id="openP3H5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) विशिष्ट प्रतिरोध (ρ)</h3>
+  <p class="topic-desc">पदार्थ का गुण: ρ = E/J; समरूप चालक के लिए R = ρ (L/A)।</p><br>
+  <button class="Btn0" id="openP3H6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) चालकता (σ)</h3>
+  <p class="topic-desc">विशिष्ट प्रतिरोध का व्युत्क्रम: σ = 1/ρ; किसी पदार्थ की विद्युत वहन क्षमता का माप।</p><br>
+  <button class="Btn0" id="openP3H7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) ओम का नियम</h3>
+  <p class="topic-desc">भौतिक दशाएँ नियत रहने पर, चालक में धारा, उसके सिरों के विभवांतर के सीधे समानुपाती है: V = IR।</p><br>
+  <button class="Btn0" id="openP3H8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) प्रतिरोध (R)</h3>
+  <p class="topic-desc">धारा के प्रवाह का विरोध: R = V/I; तार के लिए R = ρL/A, जो पदार्थ, लंबाई और अनुप्रस्थ क्षेत्र पर निर्भर है।</p><br>
+  <button class="Btn0" id="openP3H9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) प्रतिरोध का ताप गुणांक (α)</h3>
+  <p class="topic-desc">ताप में प्रति डिग्री परिवर्तन पर प्रतिरोध का आंशिक परिवर्तन: R_T = R_0(1 + αΔT) (छोटे ΔT के लिए)।</p><br>
+  <button class="Btn0" id="openP3H10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) अतिचालकता (टिप्पणी)</h3>
+  <p class="topic-desc">कुछ पदार्थों की वह अवस्था जिसमें नियत ताप से नीचे विशिष्ट प्रतिरोध लगभग शून्य हो जाता है।</p><br>
+  <button class="Btn0" id="openP3H11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) विद्युतवाहक बल (EMF)</h3>
+  <p class="topic-desc">स्रोत द्वारा पूरे परिपथ में प्रति इकाई आवेश किया गया कार्य; शून्य धारा पर स्रोत का टर्मिनल विभव।</p><br>
+  <button class="Btn0" id="openP3H12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) आंतरिक प्रतिरोध (r)</h3>
+  <p class="topic-desc">स्रोत के भीतर का प्रभावी प्रतिरोध; धारा I पर टर्मिनल विभव V = ε − Ir।</p><br>
+  <button class="Btn0" id="openP3H13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) टर्मिनल विभवांतर</h3>
+  <p class="topic-desc">भार के साथ जुड़े स्रोत के सिरों के बीच का विभवांतर; धारा प्रवाह पर EMF से कम होता है।</p><br>
+  <button class="Btn0" id="openP3H14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) किर्चहॉफ का धारा नियम (KCL)</h3>
+  <p class="topic-desc">किसी जंक्शन पर धाराओं का बीजीय योग शून्य होता है; जितनी धारा प्रवेश करती है उतनी ही निकलती है।</p><br>
+  <button class="Btn0" id="openP3H15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) किर्चहॉफ का वोल्टेज नियम (KVL)</h3>
+  <p class="topic-desc">किसी बंद लूप में सभी विभवांतरों और EMF का बीजीय योग शून्य होता है।</p><br>
+  <button class="Btn0" id="openP3H16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) श्रेणी क्रम में प्रतिरोधक</h3>
+  <p class="topic-desc">समतुल्य प्रतिरोध जोड़ता है: R_eq = ΣR_i; प्रत्येक में समान धारा प्रवाहित होती है।</p><br>
+  <button class="Btn0" id="openP3H17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) समान्तर क्रम में प्रतिरोधक</h3>
+  <p class="topic-desc">व्युत्क्रम जोड़ते हैं: 1/R_eq = Σ(1/R_i); प्रत्येक पर विभव समान, धाराएँ जोड़ती हैं।</p><br>
+  <button class="Btn0" id="openP3H18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) शक्ति (विद्युत)</h3>
+  <p class="topic-desc">ऊर्जा स्थानांतरण की दर: P = VI = I^2R = V^2/R।</p><br>
+  <button class="Btn0" id="openP3H19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) धारा का ऊष्मीय प्रभाव (जूल का नियम)</h3>
+  <p class="topic-desc">समय t में उत्पन्न ऊष्मा: H = I^2Rt (या VIt), जब अन्य ऊर्जा रूपांतरण न हों।</p><br>
+  <button class="Btn0" id="openP3H20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) प्रतिरोधक रंग कोड (टिप्पणी)</h3>
+  <p class="topic-desc">रंगीन पट्टियों द्वारा प्रतिरोध मान और सहनशीलता बताने की पद्धति।</p><br>
+  <button class="Btn0" id="openP3H21">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) कोशों का श्रेणी संयोजन</h3>
+  <p class="topic-desc">EMF जोड़ते हैं (ε_eq = Σε_i); आंतरिक प्रतिरोध जोड़ते हैं (r_eq = Σr_i); उच्च वोल्टेज हेतु उपयुक्त।</p><br>
+  <button class="Btn0" id="openP3H22">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) कोशों का समान्तर संयोजन</h3>
+  <p class="topic-desc">समान EMF (समान कोशों में); आंतरिक प्रतिरोध घटता है: 1/r_eq = Σ(1/r_i); उच्च धारा हेतु उपयुक्त।</p><br>
+  <button class="Btn0" id="openP3H23">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) सन्तुलित व्हीटस्टोन सेतु</h3>
+  <p class="topic-desc">चार प्रतिरोधों का नेटवर्क तब संतुलित होता है जब (P/Q) = (R/S); गैल्वानोमीटर में शून्य धारा।</p><br>
+  <button class="Btn0" id="openP3H24">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) मीटर ब्रिज</h3>
+  <p class="topic-desc">व्हीटस्टोन सेतु का व्यावहारिक रूप जिसमें समानुपाती तार से अज्ञात प्रतिरोध को शून्य विचलन विधि से मापा जाता है।</p><br>
+  <button class="Btn0" id="openP3H25">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) पोटेंशियोमीटर</h3>
+  <p class="topic-desc">EMF नापने/विभवांतरों की तुलना हेतु समानुपाती प्रतिरोध तार पर आधारित शून्य विधि का उपकरण।</p><br>
+  <button class="Btn0" id="openP3H26">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) पोटेंशियोमीटर की संवेदनशीलता</h3>
+  <p class="topic-desc">तार की लंबाई बढ़ाने और धारा घटाने से बढ़ती है; छोटा विभव-ढाल अधिक संवेदनशीलता देता है।</p><br>
+  <button class="Btn0" id="openP3H27">View More</button>
+</div>
+
+
+
+            </div>
+        </section>
+
+        <!-- Formulas Section -->
+        <section class="content-section" id="formulas">
+            <h2 class="section-title" id="formulas-title" title="Essential Formulas -Electric Current" style="cursor: default;">Essential Formulas -Electric Current</h2>
+            <div class="formulas-container">
+                <!-- Keep your original empty card unchanged -->
+
+            <!-- Keep your original empty card unchanged as requested -->
+
+<div class="formula-card">
+  <h3 class="formula-title">Electric Current</h3>
+  <div class="formula-content">I = dq / dt</div>
+  <p class="formula-desc">Time per flow of charge; SI unit ampere (A).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Current Density</h3>
+  <div class="formula-content">J = I / A</div>
+  <p class="formula-desc">Unit area per current; vector along flow direction (A m<sup>−2</sup>).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Drift Velocity</h3>
+  <div class="formula-content">v<sub>d</sub> = I / (n q A)</div>
+  <p class="formula-desc">n carriers per m<sup>3</sup>, charge q; average drift speed under electric field.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Mobility</h3>
+  <div class="formula-content">μ = v<sub>d</sub> / E</div>
+  <p class="formula-desc">Drift velocity per unit electric field; unit m<sup>2</sup> V<sup>−1</sup> s<sup>−1</sup>.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Conductivity (Microscopic)</h3>
+  <div class="formula-content">σ = n q μ</div>
+  <p class="formula-desc">Material property linking J = σ E; inverse of resistivity.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Ohm’s Law (Macroscopic)</h3>
+  <div class="formula-content">V = I R</div>
+  <p class="formula-desc">Potential difference V directly proportional to current through a conductor.</p>
+</div>
+
+<!-- Resistivity and Resistance -->
+<div class="formula-card">
+  <h3 class="formula-title">Resistivity (Microscopic)</h3>
+  <div class="formula-content">ρ = 1 / σ</div>
+  <p class="formula-desc">Material’s opposition to current; unit Ω m.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Resistance of Uniform Conductor</h3>
+  <div class="formula-content">R = ρ (l / A)</div>
+  <p class="formula-desc">Length l and cross-sectional area A; valid for uniform temperature.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Temperature Dependence of Resistance</h3>
+  <div class="formula-content">R = R<sub>0</sub>[1 + α (T − T<sub>0</sub>)]</div>
+  <p class="formula-desc">Approx linear variation near reference temperature T<sub>0</sub>; α is temperature coefficient.</p>
+</div>
+
+<!-- EMF and Internal Resistance -->
+<div class="formula-card">
+  <h3 class="formula-title">Cell EMF</h3>
+  <div class="formula-content">ε = W / q</div>
+  <p class="formula-desc">Work done per unit charge by the source; open-circuit potential difference.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Terminal Voltage of a Cell</h3>
+  <div class="formula-content">V = ε − I r</div>
+  <p class="formula-desc">Internal resistance r ki wajah se load par potential drop.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Current in Simple Circuit</h3>
+  <div class="formula-content">I = ε / (R + r)</div>
+  <p class="formula-desc">Single cell of EMF ε and internal resistance r with external resistor R.</p>
+</div>
+
+<!-- Series/Parallel Combinations -->
+<div class="formula-card">
+  <h3 class="formula-title">Resistors in Series</h3>
+  <div class="formula-content">R<sub>eq</sub> = R<sub>1</sub> + R<sub>2</sub> + …</div>
+  <p class="formula-desc">Same current flows; potential differences add up.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Resistors in Parallel</h3>
+  <div class="formula-content">1 / R<sub>eq</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> + …</div>
+  <p class="formula-desc">Same voltage across branches; currents add.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Conductance Form (Parallel)</h3>
+  <div class="formula-content">G<sub>eq</sub> = G<sub>1</sub> + G<sub>2</sub> + …</div>
+  <p class="formula-desc">G = 1/R use karke parallel combinations ko quickly add karein.</p>
+</div>
+
+<!-- Cells in Combination -->
+<div class="formula-card">
+  <h3 class="formula-title">Cells in Series (Same Polarity)</h3>
+  <div class="formula-content">ε<sub>eq</sub> = ε<sub>1</sub> + ε<sub>2</sub> + … , &nbsp; r<sub>eq</sub> = r<sub>1</sub> + r<sub>2</sub> + …</div>
+  <p class="formula-desc">Net EMF and internal resistance add; higher voltage output.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Cells in Parallel (Identical Cells)</h3>
+  <div class="formula-content">ε<sub>eq</sub> = ε , &nbsp; r<sub>eq</sub> = r / n</div>
+  <p class="formula-desc">n identical cells parallel: EMF same, internal resistance reduces.</p>
+</div>
+
+<!-- Kirchhoff’s Laws -->
+<div class="formula-card">
+  <h3 class="formula-title">Kirchhoff’s Junction Rule</h3>
+  <div class="formula-content">Σ I<sub>in</sub> = Σ I<sub>out</sub></div>
+  <p class="formula-desc">Charge conservation at a node; algebraic sum of currents is zero.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Kirchhoff’s Loop Rule</h3>
+  <div class="formula-content">Σ ΔV = 0 (around any closed loop)</div>
+  <p class="formula-desc">EMFs and potential drops ka algebraic sum zero hota hai.</p>
+</div>
+
+<!-- Electric Power -->
+<div class="formula-card">
+  <h3 class="formula-title">Electrical Power</h3>
+  <div class="formula-content">P = V I = I<sup>2</sup> R = V<sup>2</sup> / R</div>
+  <p class="formula-desc">Different useful forms depending on known quantities.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Power Delivered by Cell</h3>
+  <div class="formula-content">P<sub>load</sub> = I<sup>2</sup> R , &nbsp; P<sub>internal loss</sub> = I<sup>2</sup> r</div>
+  <p class="formula-desc">Load par useful power aur cell ke andar heat loss.</p>
+</div>
+
+<!-- Wheatstone Bridge and Meter Bridge -->
+<div class="formula-card">
+  <h3 class="formula-title">Wheatstone Bridge Balance Condition</h3>
+  <div class="formula-content">R<sub>1</sub> / R<sub>2</sub> = R<sub>3</sub> / R<sub>4</sub></div>
+  <p class="formula-desc">Galvanometer current zero jab ratio arms equal hote hain.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Meter Bridge (Slide Wire)</h3>
+  <div class="formula-content">X = (R &times; l) / (100 − l)</div>
+  <p class="formula-desc">Balance point l cm par unknown resistance X ko shunt R se relate karta hai.</p>
+</div>
+
+<!-- Potentiometer -->
+<div class="formula-card">
+  <h3 class="formula-title">Potentiometer Principle</h3>
+  <div class="formula-content">V ∝ l</div>
+  <p class="formula-desc">Uniform wire me potential difference measured length ke proportional hota hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">EMF Comparison (Potentiometer)</h3>
+  <div class="formula-content">ε<sub>1</sub> / ε<sub>2</sub> = l<sub>1</sub> / l<sub>2</sub></div>
+  <p class="formula-desc">Null deflection par balancing lengths ka ratio EMFs ka ratio deta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Internal Resistance by Potentiometer</h3>
+  <div class="formula-content">ε / V = l<sub>open</sub> / l<sub>closed</sub> = (R + r) / R</div>
+  <p class="formula-desc">Open-circuit vs external load R ke saath balancing lengths se r find karte hain.</p>
+</div>
+
+<!-- Microscopic Model (Drude) -->
+<div class="formula-card">
+  <h3 class="formula-title">Drift Velocity (Field Form)</h3>
+  <div class="formula-content">v<sub>d</sub> = (q τ E) / m</div>
+  <p class="formula-desc">Relaxation time τ and carrier mass m ke saath average drift speed.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Resistivity (Drude)</h3>
+  <div class="formula-content">ρ = m / (n q<sup>2</sup> τ)</div>
+  <p class="formula-desc">Microscopic parameters se material resistivity ka expression.</p>
+</div>
+
+<!-- Combination Shortcuts -->
+<div class="formula-card">
+  <h3 class="formula-title">Two Resistors Parallel (Shortcut)</h3>
+  <div class="formula-content">R<sub>eq</sub> = (R<sub>1</sub> R<sub>2</sub>) / (R<sub>1</sub> + R<sub>2</sub>)</div>
+  <p class="formula-desc">Do resistors ke parallel equivalent ka quick formula.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">n Identical Resistors</h3>
+  <div class="formula-content">Series: nR ; &nbsp; Parallel: R / n</div>
+  <p class="formula-desc">Identical elements ke combinations ko simplify karne ke liye.</p>
+</div>
+
+<!-- Heating Effect -->
+<div class="formula-card">
+  <h3 class="formula-title">Joule Heating</h3>
+  <div class="formula-content">H = I<sup>2</sup> R t</div>
+  <p class="formula-desc">Conductor me current ke karan generated heat over time t.</p>
+</div>
+
+<!-- Measurement Notes -->
+<div class="formula-card">
+  <h3 class="formula-title">Voltmeter and Ammeter (Ideal)</h3>
+  <div class="formula-content">R<sub>V</sub> → ∞ , &nbsp; R<sub>A</sub> → 0</div>
+  <p class="formula-desc">Ideal voltmeter draws negligible current; ideal ammeter has negligible drop.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Shunt for Ammeter</h3>
+  <div class="formula-content">S = (I<sub>g</sub> R<sub>g</sub>) / (I − I<sub>g</sub>)</div>
+  <p class="formula-desc">Galvanometer (R<sub>g</sub>, I<sub>g</sub>) ko ammeter banane ke liye required shunt resistance.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Series Multiplier for Voltmeter</h3>
+  <div class="formula-content">R<sub>s</sub> = (V / I<sub>g</sub>) − R<sub>g</sub></div>
+  <p class="formula-desc">Galvanometer ko voltmeter banane ke liye series resistance value.</p>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Lectures Section -->
+        <section class="content-section" id="lectures">
+            <h2 class="section-title" id="lectures-title">Recommended Lecture Videos</h2>
+            <div class="lectures-grid">
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Electric Current - One Shot(Hindi)</h3>
+                        <div class="lecture-meta">
+                            <span>Anand Sir(Taget Board)</span>
+                            <span>4:20:46</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/Eunk3L4rb5o?si=GLEGajRxRX6ib6h2" title="Watch Lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Solid State - One Shot(English)</h3>
+                        <div class="lecture-meta">
+                            <span>Rajwant Sir(Pw)</span>
+                            <span>3:24:41</span>
+                        </div>
+                        <a href="https://youtu.be/ANz7YYAZzrM?si=ZkMGRikifJxMhvrl" title = "Watch lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title"></h3>
+                        <div class="lecture-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="" class="lecture-btn" target="_blank" rel="noopener noreferrer" onclick="alert('coming soon...')">Watch Lecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="content-section" id="objectives">
+            <h2 class="section-title" id="objectives-title" title="Practice Questions" style="cursor: default;">Practice Questions</h2>
+            <div class="questions-container">
+                <div class="question-card">
+                    <h3 class="question-text" id="q1">1. Which crystal system does Sodium chloride (NaCl) follow?</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="A" class="option-input">
+                            <span id="q1a">A) Simple Cubic (SC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="B" class="option-input">
+                            <span id="q1b">B) Body-Centered Cubic (BCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="C" class="option-input">
+                            <span id="q1c">C) Face-Centered Cubic (FCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="D" class="option-input">
+                            <span id="q1d">D) Hexagonal Close Packing (HCP)</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q1">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q2">2. Packing efficiency of FCC is approximately:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="A" class="option-input">
+                            <span id="q2a">A) 52%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="B" class="option-input">
+                            <span id="q2b">B) 68%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="C" class="option-input">
+                            <span id="q2c">C) 74%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="D" class="option-input">
+                            <span id="q2d">D) 42%</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q3">3. Bragg's law relates:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="A" class="option-input">
+                            <span id="q3a">A) wavelength & interplanar spacing</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="B" class="option-input">
+                            <span id="q3b">B) density & mass</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="C" class="option-input">
+                            <span id="q3c">C) radius & lattice parameter</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="D" class="option-input">
+                            <span id="q3d">D) none of these</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="A" data-question="q3">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+                <!-- Q1 -->
+<div class="question-card">
+  <h3 class="question-text" id="q1">बेरवैदार (amorphous) ठोस का उदाहरण है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q1" value="A" class="option-input">
+      <span id="q1a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="B" class="option-input">
+      <span id="q1b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="C" class="option-input">
+      <span id="q1c">C) नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="D" class="option-input">
+      <span id="q1d">D) रबर</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q1">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card">
+  <h3 class="question-text" id="q2">निम्नलिखित में कौन क्रिस्टलीय (crystalline) ठोस का उदाहरण है? [2013A, 2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q2" value="A" class="option-input">
+      <span id="q2a">A) NaCl</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="B" class="option-input">
+      <span id="q2b">B) ZnS</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="C" class="option-input">
+      <span id="q2c">C) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="D" class="option-input">
+      <span id="q2d">D) SiC</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card">
+  <h3 class="question-text" id="q3">hcp इकाई सेल में परमाणुओं की संख्या है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q3" value="A" class="option-input">
+      <span id="q3a">A) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="B" class="option-input">
+      <span id="q3b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="C" class="option-input">
+      <span id="q3c">C) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="D" class="option-input">
+      <span id="q3d">D) 7</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q3">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card">
+  <h3 class="question-text" id="q4">‘खवार’ (cleavage/cleavable) ठोस है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q4" value="A" class="option-input">
+      <span id="q4a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="B" class="option-input">
+      <span id="q4b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="C" class="option-input">
+      <span id="q4c">C) रबर</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="D" class="option-input">
+      <span id="q4d">D) इनमें से कोई नहीं</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q4">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card">
+  <h3 class="question-text" id="q5">बेरवैदार ठोस पदार्थ है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q5" value="A" class="option-input">
+      <span id="q5a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="B" class="option-input">
+      <span id="q5b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="C" class="option-input">
+      <span id="q5c">C) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="D" class="option-input">
+      <span id="q5d">D) इनमें से सभी</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q5">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card">
+  <h3 class="question-text" id="q6">एक धातु का स्वरूपण हेक्सागोनल क्लोज़्ड पैक (hcp) संरचना में होता है, तो धातु की कोऑर्डिनेशन संख्या है— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q6" value="A" class="option-input">
+      <span id="q6a">A) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="B" class="option-input">
+      <span id="q6b">B) 8</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="C" class="option-input">
+      <span id="q6c">C) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="D" class="option-input">
+      <span id="q6d">D) 6</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q6">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card">
+  <h3 class="question-text" id="q7">निम्नलिखित में कौन-से जोड़े में क्रमशः: चतुर्भुजीय बंदन (tetrahedral voids) और अष्टफलककीय बंदन (octahedral voids) होते हैं? [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q7" value="A" class="option-input">
+      <span id="q7a">A) bcc और fcc</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="B" class="option-input">
+      <span id="q7b">B) hcp और simple cubic</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="C" class="option-input">
+      <span id="q7c">C) hcp और ccp</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="D" class="option-input">
+      <span id="q7d">D) bcc और hcp</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q7">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card">
+  <h3 class="question-text" id="q8">निम्नलिखित में कौन ‘बेरवैदार’ ठोस है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q8" value="A" class="option-input">
+      <span id="q8a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="B" class="option-input">
+      <span id="q8b">B) क्वार्ट्ज़ ग्लास (SiO₂)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="C" class="option-input">
+      <span id="q8c">C) कोयला/कोक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="D" class="option-input">
+      <span id="q8d">D) सिलिकॉन कार्बाइड (SiC)</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q8">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card">
+  <h3 class="question-text" id="q9">धात्विक क्रिस्टल में सबसे अधिक चालकों की संख्या होती है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q9" value="A" class="option-input">
+      <span id="q9a">A) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="B" class="option-input">
+      <span id="q9b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="C" class="option-input">
+      <span id="q9c">C) 10</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="D" class="option-input">
+      <span id="q9d">D) 12</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q9">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card">
+  <h3 class="question-text" id="q10">क्रिस्टलीय ठोस में स्पष्ट धारियाँ/तल होते हैं— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q10" value="A" class="option-input">
+      <span id="q10a">A) 1</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="B" class="option-input">
+      <span id="q10b">B) 2</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="C" class="option-input">
+      <span id="q10c">C) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="D" class="option-input">
+      <span id="q10d">D) 4</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q10">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card">
+  <h3 class="question-text" id="q11">निम्नलिखित में से कौन सहसंयोजक ठोस है? [2024A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q11" value="A" class="option-input">
+      <span id="q11a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="B" class="option-input">
+      <span id="q11b">B) सोडियम क्लोराइड</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="C" class="option-input">
+      <span id="q11c">C) धात्विक तांबा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="D" class="option-input">
+      <span id="q11d">D) बर्फ</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q11">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card">
+  <h3 class="question-text" id="q12">क्रिस्टलीय ठोस किस प्रकार का होता है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q12" value="A" class="option-input">
+      <span id="q12a">A) समदैशिक (isotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="B" class="option-input">
+      <span id="q12b">B) विषमदैशिक (anisotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="C" class="option-input">
+      <span id="q12c">C) अमोर्फस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="D" class="option-input">
+      <span id="q12d">D) धात्विक</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q12">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card">
+  <h3 class="question-text" id="q13">NaCl-type ठोस किस वर्ग का है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q13" value="A" class="option-input">
+      <span id="q13a">A) आयनिक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="B" class="option-input">
+      <span id="q13b">B) धात्विक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="C" class="option-input">
+      <span id="q13c">C) सहसंयोजक जालक (network) ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="D" class="option-input">
+      <span id="q13d">D) अणुगत ठोस</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q13">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card">
+  <h3 class="question-text" id="q14">निम्न में से किसका चालकता व्यवहार अलग है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q14" value="A" class="option-input">
+      <span id="q14a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="B" class="option-input">
+      <span id="q14b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="C" class="option-input">
+      <span id="q14c">C) सामान्य नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="D" class="option-input">
+      <span id="q14d">D) काँच</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q14">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">Physics Exam Essentials -Electric Current Chapter | Created for Class 12 Students</p>
+        <p class="footer-text">All content is for educational purposes only</p>
+    </footer>
+    
+  <script src="Physics Lesson-1.js"></script>
+  <script>
+    
+  </script>
+
+    <script>
+        // ====== Language Translations ======
+        const translations = {
+            en: {
+                "page-title": "Physics — Chapter 3 (Electric Current) — Exam Essentials",
+                "topics-title": "Key Topics -Electric Current Physics",
+                "formulas-title": "Essential Formulas -Electric Current",
+                "lectures-title": "Recommended Lecture Videos",
+                "objectives-title": "Practice Questions",
+                "nav-topics": "Topics",
+                "nav-formulas": "Formulas",
+                "nav-lectures": "Lectures",
+                "nav-objectives": "Objectives",
+                "lang-toggle": "English",
+                "q1": "1. Which crystal system does Sodium chloride (NaCl) follow?",
+                "q1a": "A) Simple Cubic (SC)",
+                "q1b": "B) Body-Centered Cubic (BCC)",
+                "q1c": "C) Face-Centered Cubic (FCC)",
+                "q1d": "D) Hexagonal Close Packing (HCP)",
+                "q2": "2. Packing efficiency of FCC is approximately:",
+                "q2a": "A) 52%",
+                "q2b": "B) 68%",
+                "q2c": "C) 74%",
+                "q2d": "D) 42%",
+                "q3": "3. Bragg's law relates:",
+                "q3a": "A) wavelength & interplanar spacing",
+                "q3b": "B) density & mass",
+                "q3c": "C) radius & lattice parameter",
+                "q3d": "D) none of these"
+            },
+            hi: {
+                "page-title": "भौतिक विज्ञान — अध्याय 1 (विद्युत धारा) — परीक्षा आवश्यक सामग्री",
+                "topics-title": "मुख्य विषय - विद्युत धारा भौतिक",
+                "formulas-title": "आवश्यक सूत्र - विद्युत धारा",
+                "lectures-title": "अनुशंसित व्याख्यान वीडियो",
+                "objectives-title": "अभ्यास प्रश्न",
+                "nav-topics": "विषय",
+                "nav-formulas": "सूत्र",
+                "nav-lectures": "व्याख्यान",
+                "nav-objectives": "प्रश्न",
+                "lang-toggle": "English",
+                "q1": "1. सोडियम क्लोराइड (NaCl) किस क्रिस्टल प्रणाली का अनुसरण करता है?",
+                "q1a": "क) सरल घनीय (SC)",
+                "q1b": "ख) अंत: केन्द्रित घनीय (BCC)",
+                "q1c": "ग) फलक केन्द्रित घनीय (FCC)",
+                "q1d": "घ) षट्कोणीय निविड संकुलन (HCP)",
+                "q2": "2. FCC की संकुलन दक्षता लगभग है:",
+                "q2a": "क) 52%",
+                "q2b": "ख) 68%",
+                "q2c": "ग) 74%",
+                "q2d": "घ) 42%",
+                "q3": "3. ब्रैग का नियम संबंधित है:",
+                "q3a": "क) तरंगदैर्ध्य और अंतरतलीय दूरी से",
+                "q3b": "ख) घनत्व और द्रव्यमान से",
+                "q3c": "ग) त्रिज्या और जालक मापदंड से",
+                "q3d": "घ) इनमें से कोई नहीं"
+            }
+        };
+
+        // ====== Initial Setup ======
+        let currentLang = 'en';
+
+        // ====== DOM Elements ======
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const langToggle = document.getElementById('langToggle');
+        const langToggleText = langToggle.querySelector('span');
+
+        // ====== Navigation Functionality ======
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ====== Language Toggle Functionality ======
+        langToggle.addEventListener('click', () => {
+            // Toggle language
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            // Update all translatable elements
+            Object.keys(translations[currentLang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT') {
+                        // For radio buttons, update the next span
+                        el.nextElementSibling.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+            
+            // Update toggle button text
+            langToggleText.textContent = translations[currentLang]['lang-toggle'];
+        });
+
+        // ====== Question Checking Functionality ======
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('check-btn')) {
+                const button = e.target;
+                const questionId = button.getAttribute('data-question');
+                const correctAnswer = button.getAttribute('data-answer');
+                const questionCard = button.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                // Get selected option
+                const selectedOption = questionCard.querySelector(`input[name="${questionId}"]:checked`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Please select an answer!';
+                    feedback.className = 'feedback incorrect';
+                    return;
+                }
+                
+                if (selectedOption.value === correctAnswer) {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+        });
+
+        // ====== Accessibility Features ======
+        // Keyboard navigation for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Focus styles for better keyboard navigation
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab') {
+                document.documentElement.classList.add('keyboard-focus');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.documentElement.classList.remove('keyboard-focus');
+        });
+    </script>
+   
+</body>
+</html>

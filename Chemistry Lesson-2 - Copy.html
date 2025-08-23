@@ -1,0 +1,3055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry — Chapter 2 (Solution) — Exam Essentials</title>
+    <style>
+        /* ===== CSS Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Root Variables ===== */
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #ffab00;
+            --secondary-light: #ffdd4b;
+            --secondary-dark: #c67c00;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --bg-light: #ffffff;
+            --bg-dark: #e0e0e0;
+            --success: #2e7d32;
+            --error: #c62828;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== Base Styles ===== */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-light);
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        /* ===== Language Toggle ===== */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 171, 0, 0.1);
+        }
+
+        /* ===== Main Content ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* ===== Topics Section ===== */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Formulas Section ===== */
+        .formulas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formula-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .formula-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-desc {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Lectures Section ===== */
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-thumbnail {
+            height: 160px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .lecture-body {
+            padding: 1.5rem;
+        }
+
+        .lecture-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lecture-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .lecture-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== Objectives Section ===== */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .option-input {
+            accent-color: var(--primary);
+        }
+
+        .check-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .check-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(198, 40, 40, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .navbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .topics-grid,
+            .formulas-container,
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #Hindi {
+            color: rgb(250, 15, 15);
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgb(129, 118, 118);
+            margin-left: 50%;
+            margin-top: 50px;
+        }
+        #hide {
+            visibility: hidden;
+        }
+       /* -------------------------
+   .Btn0 — Duniya ka sundar button
+   ------------------------- */
+
+/* Theme variables (aap badal sakte ho) */
+.Btn0 {
+  --btn-bg-1: #6a8cff;        /* primary gradient start */
+  --btn-bg-2: #4f6ef6;        /* primary gradient end */
+  --btn-accent: #ffd166;      /* accent / glow */
+  --btn-text: #ffffff;
+  --btn-shadow-1: 0 6px 20px rgba(79,110,246,0.28);
+  --btn-shadow-2: 0 2px 6px rgba(44,52,80,0.12);
+  --btn-radius: 14px;
+  --btn-padding-y: 12px;
+  --btn-padding-x: 20px;
+  --btn-font-size: 15px;
+  --btn-font-weight: 700;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  color: var(--btn-text);
+  background: linear-gradient(135deg, var(--btn-bg-1), var(--btn-bg-2));
+  box-shadow: var(--btn-shadow-1), var(--btn-shadow-2), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:
+    transform 240ms cubic-bezier(.2,.9,.2,1),
+    box-shadow 240ms cubic-bezier(.2,.9,.2,1),
+    filter 240ms cubic-bezier(.2,.9,.2,1),
+    opacity 200ms linear;
+  transform: translateZ(0);
+  outline: none;
+  overflow: hidden; /* shine pseudo-element stays clipped */
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.12);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* subtle glossy highlight */
+.Btn0::before{
+  content: "";
+  position: absolute;
+  left: -30%;
+  top: -60%;
+  width: 160%;
+  height: 220%;
+  background: radial-gradient(600px 200px at 20% 10%, rgba(255,255,255,0.18), rgba(255,255,255,0) 25%),
+              linear-gradient(120deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  transform: rotate(-18deg) translateY(0);
+  transition: transform 600ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+/* small accent glow under the button (neat depth) */
+.Btn0::after{
+  content: "";
+  position: absolute;
+  inset: auto 8% -18% 8%;
+  height: 18px;
+  filter: blur(18px);
+  background: linear-gradient(90deg, rgba(255,209,102,0.16), rgba(79,110,246,0.12));
+  opacity: 1;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+}
+
+/* icon styling */
+.Btn0__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 0;
+  transform-origin: center;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1);
+  color: rgba(255,255,255,0.95);
+}
+
+/* text */
+.Btn0__text{
+  display: inline-block;
+  transform-origin: left center;
+  letter-spacing: 0.2px;
+}
+
+/* Hover — lift + stronger glow + subtle slide of gloss */
+.Btn0:hover{
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(79,110,246,0.22), 0 6px 14px rgba(44,52,80,0.14);
+  filter: saturate(1.06) contrast(1.02);
+}
+.Btn0:hover::before{
+  transform: rotate(-18deg) translateY(-6%);
+  opacity: 1;
+}
+.Btn0:hover::after{
+  transform: translateY(-4px);
+  opacity: 1;
+}
+.Btn0:hover .Btn0__icon{
+  transform: translateY(-2px) rotate(-6deg) scale(1.03);
+}
+
+/* Active / pressed state — tactile feedback */
+.Btn0:active{
+  transform: translateY(0) scale(0.995);
+  box-shadow: 0 6px 12px rgba(44,52,80,0.12), inset 0 2px 6px rgba(0,0,0,0.12);
+}
+.Btn0:active::before{
+  transform: rotate(-18deg) translateY(2%);
+  opacity: 0.9;
+}
+.Btn0:active .Btn0__icon{
+  transform: translateY(0) scale(0.98);
+}
+
+/* Focus-visible for keyboard users (accessibility) */
+.Btn0:focus-visible{
+  box-shadow: 0 20px 40px rgba(79,110,246,0.18), 0 0 0 6px rgba(79,110,246,0.12);
+  outline: none;
+}
+.Btn0:focus-visible::after{
+  opacity: 0.85;
+}
+
+/* Disabled state */
+.Btn0[disabled],
+.Btn0:disabled{
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.62;
+  filter: grayscale(0.15) saturate(0.9);
+  box-shadow: 0 6px 14px rgba(25,30,40,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.Btn0[disabled]::before,
+.Btn0[disabled]::after{
+  opacity: 0.0;
+}
+
+/* Size variants */
+.Btn0.sm{
+  --btn-padding-y: 8px;
+  --btn-padding-x: 12px;
+  --btn-font-size: 13px;
+  border-radius: 10px;
+}
+.Btn0.lg{
+  --btn-padding-y: 16px;
+  --btn-padding-x: 26px;
+  --btn-font-size: 16px;
+  border-radius: 16px;
+}
+.Btn0.xl{
+  --btn-padding-y: 20px;
+  --btn-padding-x: 32px;
+  --btn-font-size: 18px;
+  border-radius: 20px;
+}
+
+/* Variant: outline / ghost */
+.Btn0.ghost{
+  background: transparent;
+  color: var(--btn-bg-1);
+  box-shadow: none;
+  border: 1.5px solid rgba(79,110,246,0.12);
+}
+.Btn0.ghost:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(79,110,246,0.08);
+}
+
+/* Variant: secondary (dark) */
+.Btn0.secondary{
+  --btn-bg-1: #1f2a44;
+  --btn-bg-2: #273556;
+  --btn-accent: #7de4ff;
+  color: #e6f0ff;
+  box-shadow: 0 12px 28px rgba(15,20,40,0.36);
+}
+.Btn0.secondary::after{
+  background: linear-gradient(90deg, rgba(125,228,255,0.06), rgba(35,50,90,0.08));
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce){
+  .Btn0,
+  .Btn0::before,
+  .Btn0::after,
+  .Btn0__icon{
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* small responsive tweak */
+@media (max-width:420px){
+  .Btn0{
+    --btn-padding-y: 10px;
+    --btn-padding-x: 16px;
+    --btn-font-size: 14px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8s-1.5-2-4-2-4 2-4 2"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    <path d="M10 16s1.5 2 4 2 4-2 4-2"></path>
+                </svg>
+            </div>
+            <h1 class="logo-text" id="page-title" title="Chapter 2 (Solution)" style="cursor: default;">Chemistry — Chapter 2 (Solution) — Exam Essentials</h1>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="topics" title="Topics">Topics</a></li>
+                <li><a href="#" class="nav-link" data-target="formulas" title="Formulas">Formulas</a></li>
+                <li><a href="#" class="nav-link" data-target="lectures" title="Lectures">Lectures</a></li>
+                <li><a href="#" class="nav-link" data-target="objectives" title="Objectives">Objectives</a></li>
+            </ul>
+            <button class="lang-toggle" id="langToggle">
+                <span>हिंदी</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Topics Section (Default Active) -->
+        <section class="content-section active" id="topics">
+            <h2 class="section-title" id="topics-title" title="Lesson 2 - Solution" style="cursor: default;">Lesson 2 - Solution </h2>
+            <div class="topics-grid">
+                <div class="topic-card">
+  <h3 class="topic-title">1) Solution</h3>
+  <p class="topic-desc">A homogeneous mixture of two or more components with particle sizes at the molecular/ionic level, appearing uniform throughout.</p><br>
+  <button class="Btn0" id="openWin1">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) Solute</h3>
+  <p class="topic-desc">The component present in lesser amount that dissolves in the solvent.</p><br>
+  <button class="Btn0" id="openWin2">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) Solvent</h3>
+  <p class="topic-desc">The component present in larger amount in which the solute dissolves; it generally decides the phase of the solution.</p><br>
+  <button class="Btn0" id="openWin3">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) Binary Solution</h3>
+  <p class="topic-desc">A solution containing only two components—one solvent and one solute.</p><br>
+  <button class="Btn0" id="openWin4">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) Ternary Solution</h3>
+  <p class="topic-desc">A solution containing three components.</p><br>
+  <button class="Btn0" id="openWin5">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) Concentration</h3>
+  <p class="topic-desc">Quantitative expression of the amount of solute in a solution with respect to a standard basis (solution volume, mass of solvent/solution, moles, etc.).</p><br>
+  <button class="Btn0" id="openWin6">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) Mass Percentage (w/w%)</h3>
+  <p class="topic-desc">(mass of solute / mass of solution) × 100.</p><br>
+  <button class="Btn0" id="openWin7">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) Volume Percentage (v/v%)</h3>
+  <p class="topic-desc">(volume of solute / volume of solution) × 100.</p><br>
+  <button class="Btn0" id="openWin8">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) Mass by Volume Percentage (w/v%)</h3>
+  <p class="topic-desc">(mass of solute / volume of solution) × 100; commonly expressed as g per 100 mL.</p><br>
+  <button class="Btn0" id="openWin9">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) Parts per million (ppm) / Parts per billion (ppb)</h3>
+  <p class="topic-desc">Units for very dilute concentrations; ppm = (parts of component / total parts) × 10^6; ppb = × 10^9.</p><br>
+  <button class="Btn0" id="openWin10">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) Mole Fraction</h3>
+  <p class="topic-desc">Moles of a component divided by total moles of all components; dimensionless and sums to 1 over all components.</p><br>
+  <button class="Btn0" id="openWin11">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) Molarity (M)</h3>
+  <p class="topic-desc">Moles of solute per liter of solution; temperature-dependent.</p><br>
+  <button class="Btn0" id="openWin12">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) Molality (m)</h3>
+  <p class="topic-desc">Moles of solute per kilogram of solvent; temperature-independent.</p><br>
+  <button class="Btn0" id="openWin13">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) Normality (N)</h3>
+  <p class="topic-desc">Equivalents of solute per liter of solution; reaction-specific and depends on equivalence factor.</p><br>
+  <button class="Btn0" id="openWin14">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) Mole Percent</h3>
+  <p class="topic-desc">Mole fraction × 100.</p><br>
+  <button class="Btn0" id="openWin15">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) Ideal Solution</h3>
+  <p class="topic-desc">Obeys Raoult’s law at all compositions and temperatures with ΔH_mix ≈ 0 and ΔV_mix ≈ 0.</p><br>
+  <button class="Btn0" id="openWin16">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) Non-ideal Solution</h3>
+  <p class="topic-desc">Shows positive or negative deviation from Raoult’s law.</p><br>
+  <button class="Btn0" id="openWin17">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) Raoult’s Law</h3>
+  <p class="topic-desc">Partial vapor pressure of a volatile component is proportional to its mole fraction: p_i = x_i · p_i^0.</p><br>
+  <button class="Btn0" id="openWin18">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) Partial Vapor Pressure</h3>
+  <p class="topic-desc">Pressure a volatile component would exert if it alone occupied the vapor phase at the same temperature.</p><br>
+  <button class="Btn0" id="openWin19">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) Henry’s Law</h3>
+  <p class="topic-desc">Solubility of a gas in a liquid is proportional to the gas’s partial pressure above the liquid: p = k_H · x (or C = k′_H · p).</p><br>
+  <button class="Btn0" id="openWin20">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) Vapor Pressure</h3>
+  <p class="topic-desc">Equilibrium pressure exerted by the vapor over a liquid/solution at a given temperature.</p><br>
+  <button class="Btn0" id="openWin21">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) Lowering of Vapor Pressure</h3>
+  <p class="topic-desc">Decrease in solvent vapor pressure upon adding a non-volatile solute; Δp = p^0 − p.</p><br>
+  <button class="Btn0" id="openWin22">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) Relative Lowering of Vapor Pressure</h3>
+  <p class="topic-desc">Δp / p^0; equals the mole fraction of solute for ideal dilute solutions.</p><br>
+  <button class="Btn0" id="openWin23">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) Colligative Properties</h3>
+  <p class="topic-desc">Properties depending on number of solute particles, not their nature: vapor-pressure lowering, boiling-point elevation, freezing-point depression, osmotic pressure.</p><br>
+  <button class="Btn0" id="openWin24">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) Elevation in Boiling Point</h3>
+  <p class="topic-desc">Increase in boiling point on adding a non-volatile solute; ΔT_b = K_b · m for dilute solutions.</p><br>
+  <button class="Btn0" id="openWin25">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) Ebullioscopic Constant (K_b)</h3>
+  <p class="topic-desc">Solvent constant relating molality to boiling-point elevation; units K·kg·mol^-1.</p><br>
+  <button class="Btn0" id="openWin26">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) Depression in Freezing Point</h3>
+  <p class="topic-desc">Decrease in freezing point on adding a non-volatile solute; ΔT_f = K_f · m for dilute solutions.</p><br>
+  <button class="Btn0" id="openWin27">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">28) Cryoscopic Constant (K_f)</h3>
+  <p class="topic-desc">Solvent constant relating molality to freezing-point depression; units K·kg·mol^-1.</p><br>
+  <button class="Btn0" id="openWin28">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">29) Osmosis</h3>
+  <p class="topic-desc">Spontaneous flow of solvent through a semipermeable membrane from lower to higher solute concentration.</p><br>
+  <button class="Btn0" id="openWin29">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">30) Semipermeable Membrane</h3>
+  <p class="topic-desc">Membrane that allows solvent molecules to pass but not solute particles.</p><br>
+  <button class="Btn0" id="openWin30">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">31) Osmotic Pressure (π)</h3>
+  <p class="topic-desc">Minimum external pressure required to stop osmosis; for dilute solutions π = C R T (van’t Hoff equation).</p><br>
+  <button class="Btn0" id="openWin31">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">32) Isotonic Solutions</h3>
+  <p class="topic-desc">Solutions with the same osmotic pressure at a given temperature.</p><br>
+  <button class="Btn0" id="openWin32">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">33) Hypertonic Solution</h3>
+  <p class="topic-desc">Solution with higher osmotic pressure relative to another; draws solvent from the other solution.</p><br>
+  <button class="Btn0" id="openWin33">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">34) Hypotonic Solution</h3>
+  <p class="topic-desc">Solution with lower osmotic pressure relative to another; loses solvent to the other solution.</p><br>
+  <button class="Btn0" id="openWin34">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">35) Reverse Osmosis</h3>
+  <p class="topic-desc">Solvent is forced from a concentrated solution to a dilute one by applying pressure greater than the osmotic pressure; used in water purification.</p><br>
+  <button class="Btn0" id="openWin35">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">36) Ideal Dilute Solution</h3>
+  <p class="topic-desc">A very dilute solution that obeys Raoult’s law; solute–solvent interactions are effectively ideal in the dilute limit.</p><br>
+  <button class="Btn0" id="openWin36">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">37) Activity</h3>
+  <p class="topic-desc">Effective concentration accounting for non-ideality; often expressed as a = γ·x or a = γ·C.</p><br>
+  <button class="Btn0" id="openWin37">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">38) Activity Coefficient (γ)</h3>
+  <p class="topic-desc">Ratio of activity to concentration/mole fraction that quantifies non-ideality; γ = 1 for ideal behavior.</p><br>
+  <button class="Btn0" id="openWin38">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">39) Positive Deviation</h3>
+  <p class="topic-desc">Deviation where actual vapor pressure exceeds Raoult’s-law value; often due to weaker solute–solvent attractions.</p><br>
+  <button class="Btn0" id="openWin39">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">40) Negative Deviation</h3>
+  <p class="topic-desc">Deviation where actual vapor pressure is less than Raoult’s-law value; often due to stronger solute–solvent attractions.</p><br>
+  <button class="Btn0" id="openWin40">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">41) Azeotrope</h3>
+  <p class="topic-desc">A constant-boiling mixture whose vapor has the same composition as the liquid; minimum- or maximum-boiling types exist.</p><br>
+  <button class="Btn0" id="openWin41">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">42) Minimum-Boiling Azeotrope</h3>
+  <p class="topic-desc">Formed by systems showing positive deviation; mixture boils at a lower temperature than either component.</p><br>
+  <button class="Btn0" id="openWin42">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">43) Maximum-Boiling Azeotrope</h3>
+  <p class="topic-desc">Formed by systems showing negative deviation; mixture boils at a higher temperature than either component.</p><br>
+  <button class="Btn0" id="openWin43">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">44) Association</h3>
+  <p class="topic-desc">Aggregation of solute molecules in solution (e.g., H-bonded dimers) reducing the effective particle count.</p><br>
+  <button class="Btn0" id="openWin44">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">45) Dissociation</h3>
+  <p class="topic-desc">Splitting of solute into ions or smaller species in solution, increasing the effective particle count.</p><br>
+  <button class="Btn0" id="openWin45">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">46) van’t Hoff Factor (i)</h3>
+  <p class="topic-desc">Ratio of actual number of particles to the expected number; used to correct colligative properties (i = observed / ideal).</p><br>
+  <button class="Btn0" id="openWin46">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">47) Solubility</h3>
+  <p class="topic-desc">Maximum amount of solute that dissolves in a solvent at specified temperature and pressure to form a saturated solution.</p><br>
+  <button class="Btn0" id="openWin47">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">48) Saturated Solution</h3>
+  <p class="topic-desc">Contains the maximum amount of solute at a given temperature; added solute does not dissolve.</p><br>
+  <button class="Btn0" id="openWin48">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">49) Unsaturated Solution</h3>
+  <p class="topic-desc">Can dissolve more solute at a given temperature; below the solubility limit.</p><br>
+  <button class="Btn0" id="openWin49">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">50) Supersaturated Solution</h3>
+  <p class="topic-desc">Unstable solution containing more solute than equilibrium solubility; precipitates upon slight disturbance.</p><br>
+  <button class="Btn0" id="openWin50">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">51) Solubility Curve</h3>
+  <p class="topic-desc">Graph showing how solubility varies with temperature.</p><br>
+  <button class="Btn0" id="openWin51">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">52) Ideal Gas Approximation in Solutions</h3>
+  <p class="topic-desc">For very dilute dissolved gases, Henry’s law applies and solubility is proportional to partial pressure.</p><br>
+  <button class="Btn0" id="openWin52">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">53) Colligative Property Anomalies</h3>
+  <p class="topic-desc">Departures of colligative-property values from ideal due to association or dissociation; corrected using van’t Hoff factor i.</p><br>
+  <button class="Btn0" id="openWin53">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">54) Isopiestic Method</h3>
+  <p class="topic-desc">Experimental method that determines properties like molality or osmotic pressure by equalizing vapor pressures of two solutions.</p><br>
+  <button class="Btn0" id="openWin54">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">55) Abnormal Molar Mass</h3>
+  <p class="topic-desc">Molar mass computed from colligative properties that differs from the true value due to association or dissociation.</p><br>
+  <button class="Btn0" id="openWin55">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">56) Relative Lowering–Mole Ratio Relation</h3>
+  <p class="topic-desc">For dilute solutions with a non-volatile solute, Δp / p^0 ≈ n_solute / n_solvent.</p><br>
+  <button class="Btn0" id="openWin56">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">57) Ideal Mixing Enthalpy/Volume</h3>
+  <p class="topic-desc">In an ideal solution, enthalpy change on mixing ΔH_mix = 0 and volume change on mixing ΔV_mix = 0.</p><br>
+  <button class="Btn0" id="openWin57">View More</button> 
+</div>
+
+           <br><br>
+                <div id="Hindi"><U style="color: blue;"> हिंदी में</U></div><br>
+                <div class="topic-card" id="hide">
+                    <h3 class="topic-title" ></h3>
+                    <p class="topic-desc"></p><br><button class = "Btn0" id="openWin15">View More</button>
+                </div>
+            <div class="topic-card">
+  <h3 class="topic-title">1) घोल (Solution)</h3>
+  <p class="topic-desc">दो या अधिक घटकों का समांग मिश्रण, जिसमें कणों का आकार आणविक/आयनी स्तर पर होता है और मिश्रण एकसार दिखाई देता है।</p><br>
+  <button class="Btn0" id="openWinH1">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) विलयनी (Solute)</h3>
+  <p class="topic-desc">घोल का वह घटक जो कम मात्रा में उपस्थित होता है और जो विलायक में घुलता है।</p><br>
+  <button class="Btn0" id="openWinH2">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) विलायक (Solvent)</h3>
+  <p class="topic-desc">घोल का वह घटक जो अधिक मात्रा में उपस्थित होता है और जिसमें विलयनी घुलता है; यह घोल की अवस्था तय करता है।</p><br>
+  <button class="Btn0" id="openWinH3">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) द्विघटकी घोल (Binary Solution)</h3>
+  <p class="topic-desc">ऐसा घोल जिसमें केवल दो घटक—एक विलायक और एक विलयनी—होते हैं।</p><br>
+  <button class="Btn0" id="openWinH4">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) त्रिघटकी घोल (Ternary Solution)</h3>
+  <p class="topic-desc">ऐसा घोल जिसमें तीन घटक उपस्थित हों।</p><br>
+  <button class="Btn0" id="openWinH5">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) एकाग्रता (Concentration)</h3>
+  <p class="topic-desc">घोल में विलयनी की मात्रा का परिमाणात्मक अभिव्यक्ति, किसी मानक आधार (घोल का आयतन, विलायक/घोल का द्रव्यमान, मोल आदि) के सापेक्ष।</p><br>
+  <button class="Btn0" id="openWinH6">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) द्रव्यमान प्रतिशत (w/w%)</h3>
+  <p class="topic-desc">(विलयनी का द्रव्यमान / घोल का कुल द्रव्यमान) ×100।</p><br>
+  <button class="Btn0" id="openWinH7">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) आयतन प्रतिशत (v/v%)</h3>
+  <p class="topic-desc">(विलयनी का आयतन / घोल का कुल आयतन) ×100।</p><br>
+  <button class="Btn0" id="openWinH8">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) द्रव्यमान-आयतन प्रतिशत (w/v%)</h3>
+  <p class="topic-desc">(विलयनी का द्रव्यमान / घोल का आयतन) ×100; सामान्यतः g per 100 mL के रूप में।</p><br>
+  <button class="Btn0" id="openWinH9">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) प्रति मिलियन भाग/प्रति बिलियन भाग (ppm/ppb)</h3>
+  <p class="topic-desc">बहुत पतले घोलों में एकाग्रता की इकाइयाँ; ppm = (घटक के भाग / कुल भाग) ×10^6, ppb = ×10^9।</p><br>
+  <button class="Btn0" id="openWinH10">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) मोल अंश (Mole Fraction)</h3>
+  <p class="topic-desc">किसी घटक के मोल / सभी घटकों के कुल मोल; यह विमाहीन होता है और सभी मोल अंशों का योग 1 होता है।</p><br>
+  <button class="Btn0" id="openWinH11">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) मोलरता (Molarity, M)</h3>
+  <p class="topic-desc">विलयनी के मोल / घोल का आयतन (लीटर में); ताप पर निर्भर।</p><br>
+  <button class="Btn0" id="openWinH12">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) मोलालता (Molality, m)</h3>
+  <p class="topic-desc">विलयनी के मोल / विलायक का द्रव्यमान (किलोग्राम में); ताप-स्वतंत्र।</p><br>
+  <button class="Btn0" id="openWinH13">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) नॉर्मलता (Normality, N)</h3>
+  <p class="topic-desc">घोल के प्रति लीटर में विलयनी के समतुल्य (equivalents); अभिक्रिया-विशिष्ट परिभाषा पर निर्भर।</p><br>
+  <button class="Btn0" id="openWinH14">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) मोल प्रतिशत (Mole Percent)</h3>
+  <p class="topic-desc">मोल अंश ×100; मोल अंश का प्रतिशत रूप।</p><br>
+  <button class="Btn0" id="openWinH15">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) आदर्श घोल (Ideal Solution)</h3>
+  <p class="topic-desc">जो सभी संरचनाओं/तापों पर Raoult का नियम मानता है तथा ΔH_mix≈0 और ΔV_mix≈0 होते हैं।</p><br>
+  <button class="Btn0" id="openWinH16">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) अनादर्श घोल (Non-ideal Solution)</h3>
+  <p class="topic-desc">जो Raoult के नियम से सकारात्मक या नकारात्मक विचलन दिखाता है।</p><br>
+  <button class="Btn0" id="openWinH17">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) राउल्ट का नियम (Raoult’s Law)</h3>
+  <p class="topic-desc">घोल के प्रत्येक वाष्पशील घटक का आंशिक वाष्प दाब उसके मोल अंश के अनुपाती होता है: p_i = x_i · p_i^0।</p><br>
+  <button class="Btn0" id="openWinH18">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) आंशिक वाष्प दाब (Partial Vapour Pressure)</h3>
+  <p class="topic-desc">वह दाब जो कोई वाष्पशील घटक उसी ताप पर अकेला उपस्थित होने पर उत्पन्न करता।</p><br>
+  <button class="Btn0" id="openWinH19">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) हेनरी का नियम (Henry’s Law)</h3>
+  <p class="topic-desc">द्रव में गैस का घुलना उसके ऊपर गैस के आंशिक दाब के अनुपाती: p = k_H · x (या C = k′_H · p)।</p><br>
+  <button class="Btn0" id="openWinH20">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) वाष्प दाब (Vapour Pressure)</h3>
+  <p class="topic-desc">निर्दिष्ट ताप पर द्रव/घोल के ऊपर उसकी वाष्प द्वारा संतुलन में उत्पन्न दाब।</p><br>
+  <button class="Btn0" id="openWinH21">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) वाष्प दाब में कमी (Vapour Pressure Lowering)</h3>
+  <p class="topic-desc">अवाष्पशील विलयनी मिलाने से विलायक के वाष्प दाब में होने वाली कमी; Δp = p^0 − p।</p><br>
+  <button class="Btn0" id="openWinH22">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) सापेक्ष वाष्प-दाब कमी (Relative Lowering)</h3>
+  <p class="topic-desc">Δp/p^0; आदर्श पतले घोल के लिए यह विलयनी के मोल अंश के बराबर होता है।</p><br>
+  <button class="Btn0" id="openWinH23">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) सहगुणात्मक गुण (Colligative Properties)</h3>
+  <p class="topic-desc">घोल के ऐसे गुण जो विलयनी कणों की संख्या पर निर्भर करते हैं, प्रकृति पर नहीं—जैसे वाष्प-दाब में कमी, क्वथनांक वृद्धि, हिमांक अवनमन, परासरण दाब।</p><br>
+  <button class="Btn0" id="openWinH24">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) क्वथनांक में वृद्धि (Elevation in Boiling Point)</h3>
+  <p class="topic-desc">अवाष्पशील विलयनी मिलाने से विलायक का क्वथनांक बढ़ना; ΔT_b = K_b · m (पतले घोलों के लिए)।</p><br>
+  <button class="Btn0" id="openWinH25">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) क्वथनांक स्थिरांक (K_b)</h3>
+  <p class="topic-desc">विशिष्ट विलायक का स्थिरांक जो मोलालता से क्वथनांक वृद्धि को जोड़ता है; इकाई K·kg·mol^-1।</p><br>
+  <button class="Btn0" id="openWinH26">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) हिमांक में अवनमन (Depression in Freezing Point)</h3>
+  <p class="topic-desc">अवाष्पशील विलयनी मिलाने से विलायक का हिमांक घटना; ΔT_f = K_f · m (पतले घोलों के लिए)।</p><br>
+  <button class="Btn0" id="openWinH27">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">28) हिमांक स्थिरांक (K_f)</h3>
+  <p class="topic-desc">विशिष्ट विलायक का स्थिरांक जो मोलालता से हिमांक अवनमन को जोड़ता है; इकाई K·kg·mol^-1।</p><br>
+  <button class="Btn0" id="openWinH28">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">29) परासरण (Osmosis)</h3>
+  <p class="topic-desc">अर्धपारगम्य झिल्ली के पार विलायक का कम एकाग्रता वाले घोल से अधिक एकाग्रता वाले घोल की ओर स्वतः प्रवाह।</p><br>
+  <button class="Btn0" id="openWinH29">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">30) अर्धपारगम्य झिल्ली (Semipermeable Membrane)</h3>
+  <p class="topic-desc">ऐसी झिल्ली जो केवल विलायक अणुओं को गुजरने देती है, विलयनी कणों को नहीं।</p><br>
+  <button class="Btn0" id="openWinH30">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">31) परासरण दाब (Osmotic Pressure, π)</h3>
+  <p class="topic-desc">वह न्यूनतम बाह्य दाब जो परासरण को रोक देता है; पतले घोलों के लिए π = C R T (Van’t Hoff समीकरण)।</p><br>
+  <button class="Btn0" id="openWinH31">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">32) समदाब घोल (Isotonic Solutions)</h3>
+  <p class="topic-desc">ऐसे घोल जिनका परासरण दाब एक ही ताप पर समान होता है।</p><br>
+  <button class="Btn0" id="openWinH32">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">33) अधिदाब घोल (Hypertonic Solution)</h3>
+  <p class="topic-desc">दूसरे घोल की तुलना में अधिक परासरण दाब वाला घोल; यह दूसरे घोल से विलायक खींचता है।</p><br>
+  <button class="Btn0" id="openWinH33">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">34) अल्पदाब घोल (Hypotonic Solution)</h3>
+  <p class="topic-desc">दूसरे घोल की तुलना में कम परासरण दाब वाला घोल; इसका विलायक बाहर की ओर प्रवाहित होता है।</p><br>
+  <button class="Btn0" id="openWinH34">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">35) विपरीत परासरण (Reverse Osmosis)</h3>
+  <p class="topic-desc">परासरण दाब से अधिक दाब लगाकर विलायक को सघन घोल से पतले की ओर बलपूर्वक ले जाना; जल-शुद्धिकरण में प्रयुक्त।</p><br>
+  <button class="Btn0" id="openWinH35">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">36) आदर्श पतला घोल (Ideal Dilute Solution)</h3>
+  <p class="topic-desc">बहुत कम एकाग्रता पर ऐसा घोल जो Raoult के नियम का पालन करता है और solute–solvent अंतःक्रियाएँ आदर्श मानी जा सकती हैं।</p><br>
+  <button class="Btn0" id="openWinH36">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">37) क्रियाशीलता (Activity)</h3>
+  <p class="topic-desc">वास्तविक घोल में प्रभावी सांद्रता का माप जो अ-आदर्शता को सम्मिलित करता है; a = γ·x या a = γ·C।</p><br>
+  <button class="Btn0" id="openWinH37">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">38) क्रियाशीलता गुणांक (Activity Coefficient, γ)</h3>
+  <p class="topic-desc">क्रियाशीलता और सांद्रता/मोल-अंश के अनुपात का गुणांक; आदर्श में γ = 1।</p><br>
+  <button class="Btn0" id="openWinH38">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">39) सकारात्मक विचलन (Positive Deviation)</h3>
+  <p class="topic-desc">Raoult के नियम से ऐसा विचलन जहाँ वास्तविक वाष्प दाब आदर्श मान से अधिक हो; प्रायः solute–solvent आकर्षण कमजोर होने पर।</p><br>
+  <button class="Btn0" id="openWinH39">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">40) नकारात्मक विचलन (Negative Deviation)</h3>
+  <p class="topic-desc">Raoult के नियम से ऐसा विचलन जहाँ वास्तविक वाष्प दाब आदर्श मान से कम हो; प्रायः solute–solvent आकर्षण मजबूत होने पर।</p><br>
+  <button class="Btn0" id="openWinH40">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">41) एजियोट्रोप (Azeotrope)</h3>
+  <p class="topic-desc">वह स्थिर-संयोजन मिश्रण जो स्थिर ताप पर उबलता है और जिसकी वाष्प का संयोजन द्रव के समान रहता है; न्यूनतम या अधिकतम क्वथनांक प्रकार।</p><br>
+  <button class="Btn0" id="openWinH41">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">42) न्यूनतम क्वथनांक एजियोट्रोप (Minimum-Boiling)</h3>
+  <p class="topic-desc">सकारात्मक विचलन वाली प्रणालियों का एजियोट्रोप जिसमें मिश्रण का क्वथनांक घटकों से कम होता है।</p><br>
+  <button class="Btn0" id="openWinH42">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">43) अधिकतम क्वथनांक एजियोट्रोप (Maximum-Boiling)</h3>
+  <p class="topic-desc">नकारात्मक विचलन वाली प्रणालियों का एजियोट्रोप जिसमें मिश्रण का क्वथनांक घटकों से अधिक होता है।</p><br>
+  <button class="Btn0" id="openWinH43">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">44) संयोजन (Association)</h3>
+  <p class="topic-desc">घोल में विलेय अणुओं का आपसी संगठित होना (जैसे H-बॉन्डिंग से डाइमर बनना) जिससे प्रभावी कण संख्या घटती है।</p><br>
+  <button class="Btn0" id="openWinH44">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">45) अपघटन (Dissociation)</h3>
+  <p class="topic-desc">घोल में विलेय का आयनों/छोटे कणों में टूटना जिससे प्रभावी कण संख्या बढ़ती है।</p><br>
+  <button class="Btn0" id="openWinH45">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">46) वैन्ट हॉफ गुणांक (van’t Hoff Factor, i)</h3>
+  <p class="topic-desc">वास्तविक कण संख्या का अपेक्षित कण संख्या से अनुपात; सहगुणात्मक गुणों के संशोधन में प्रयुक्त: i = observed / ideal।</p><br>
+  <button class="Btn0" id="openWinH46">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">47) विलेयता (Solubility)</h3>
+  <p class="topic-desc">निर्दिष्ट ताप और दाब पर किसी विलायक में किसी विलेय की अधिकतम मात्रा जो संतृप्त घोल बनाने के लिए घुल सकती है।</p><br>
+  <button class="Btn0" id="openWinH47">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">48) संतृप्त घोल (Saturated Solution)</h3>
+  <p class="topic-desc">ऐसा घोल जो दिए गए ताप पर विलेयता की अधिकतम सीमा पर पहुँच चुका हो; अतिरिक्त विलेय नहीं घुलता।</p><br>
+  <button class="Btn0" id="openWinH48">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">49) असंतृप्त घोल (Unsaturated Solution)</h3>
+  <p class="topic-desc">ऐसा घोल जिसमें दिए गए ताप पर और विलेय घुल सकता है; विलेयता सीमा तक नहीं पहुँचा है।</p><br>
+  <button class="Btn0" id="openWinH49">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">50) अधिसंतृप्त घोल (Supersaturated Solution)</h3>
+  <p class="topic-desc">संतुलन विलेयता से अधिक विलेय समाहित करने वाला अस्थिर घोल जो हल्का व्यवधान मिलने पर विलेय को अलग कर सकता है।</p><br>
+  <button class="Btn0" id="openWinH50">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">51) विलेयता वक्र (Solubility Curve)</h3>
+  <p class="topic-desc">ताप के साथ विलेयता में परिवर्तन को दर्शाने वाला आलेख।</p><br>
+  <button class="Btn0" id="openWinH51">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">52) घोलों में आदर्श गैस सन्निकटन</h3>
+  <p class="topic-desc">बहुत पतले घोलों में विलयित गैसों के लिए Henry का नियम लागू मानते हुए गैस का घुलना p और x के अनुपाती माना जाता है।</p><br>
+  <button class="Btn0" id="openWinH52">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">53) सहगुणात्मक गुणों की विसंगतियाँ</h3>
+  <p class="topic-desc">Association/Dissociation के कारण सहगुणात्मक गुणों में अपेक्षित मानों से विचलन; i द्वारा सुधारा जाता है।</p><br>
+  <button class="Btn0" id="openWinH53">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">54) आइसोपाइस्टिक विधि (Isopiestic Method)</h3>
+  <p class="topic-desc">दो घोलों के वाष्प दाब बराबर कर मोललता/परासरण दाब जैसे गुणों का निर्धारण करने की प्रायोगिक विधि।</p><br>
+  <button class="Btn0" id="openWinH54">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">55) असामान्य मोलर द्रव्यमान (Abnormal Molar Mass)</h3>
+  <p class="topic-desc">सहगुणात्मक गुणों से निकाला गया मोलर द्रव्यमान जो association/dissociation के कारण वास्तविक मान से भिन्न मिलता है।</p><br>
+  <button class="Btn0" id="openWinH55">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">56) सापेक्ष कमी–मोल अनुपात संबंध</h3>
+  <p class="topic-desc">पतले घोल में, जब विलयनी अवाष्पशील हो, Δp/p^0 ≈ n_solute / n_solvent।</p><br>
+  <button class="Btn0" id="openWinH56">View More</button> 
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">57) आदर्श मिश्रण एन्थैल्पी/आयतन</h3>
+  <p class="topic-desc">आदर्श घोल में मिश्रण पर एन्थैल्पी परिवर्तन ΔH_mix=0 और आयतन परिवर्तन ΔV_mix=0 माने जाते हैं।</p><br>
+  <button class="Btn0" id="openWinH57">View More</button> 
+</div>
+
+            </div>
+        </section>
+
+        <!-- Formulas Section -->
+        <section class="content-section" id="formulas">
+            <h2 class="section-title" id="formulas-title" title="Essential Formulas - Solution" style="cursor: default;">Essential Formulas - Solution</h2>
+            <div class="formulas-container">
+                
+<div class="formula-card">
+  <h3 class="formula-title">Mole Fraction (x<sub>i</sub>)</h3>
+  <div class="formula-content">x<sub>i</sub> = n<sub>i</sub> / (n<sub>1</sub> + n<sub>2</sub> + ...)</div>
+  <p class="formula-desc">Total moles ke beech component i ka fraction; dimensionless composition term.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Mass Percentage (w/w%)</h3>
+  <div class="formula-content">w/w% = (mass of solute / mass of solution) × 100</div>
+  <p class="formula-desc">Mass-based concentration; solid–liquid ya solid–solid mixtures ke liye.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Volume Percentage (v/v%)</h3>
+  <div class="formula-content">v/v% = (volume of solute / volume of solution) × 100</div>
+  <p class="formula-desc">Volume-based concentration; liquid–liquid solutions me common.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Mass by Volume Percentage (w/v%)</h3>
+  <div class="formula-content">w/v% = (mass of solute in g / volume of solution in mL) × 100</div>
+  <p class="formula-desc">100 mL solution me solute ke grams; medical/lab use me common.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Parts per Million (ppm)</h3>
+  <div class="formula-content">ppm = (mass of solute / mass of solution) × 10<sup>6</sup></div>
+  <p class="formula-desc">Bahut dilute solutions (pollutants, impurities) ko express karne ke liye.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Molarity (M)</h3>
+  <div class="formula-content">M = moles of solute / volume of solution (L)</div>
+  <p class="formula-desc">1 liter solution me solute ke moles; temperature dependent (volume change hota hai).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Molality (m)</h3>
+  <div class="formula-content">m = moles of solute / mass of solvent (kg)</div>
+  <p class="formula-desc">1 kg solvent per moles; temperature independent.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Relation: m, M, density (d), Molar Mass (M<sub>B</sub>)</h3>
+  <div class="formula-content">m = (1000 M) / (1000 d − M M<sub>B</sub>)</div>
+  <p class="formula-desc">Given density aur solute molar mass se molarity ko molality me convert karta hai (d in g mL<sup>−1</sup>).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Mole Fraction from Molality (binary)</h3>
+  <div class="formula-content">x<sub>B</sub> = (m / M<sub>B</sub>) / [(m / M<sub>B</sub>) + (1 / M<sub>A</sub>)]</div>
+  <p class="formula-desc">Solvent A aur solute B ke liye molality se mole fraction nikalta hai.</p>
+</div>
+<!-- Raoult’s Law, Henry’s Law -->
+<div class="formula-card">
+  <h3 class="formula-title">Raoult’s Law (partial pressure)</h3>
+  <div class="formula-content">p<sub>A</sub> = x<sub>A</sub> p<sub>A</sub><sup>°</sup></div>
+  <p class="formula-desc">Ideal solutions me component A ka partial pressure = mole fraction × pure vapor pressure.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Total Pressure (binary ideal)</h3>
+  <div class="formula-content">p = p<sub>A</sub> + p<sub>B</sub> = x<sub>A</sub> p<sub>A</sub><sup>°</sup> + x<sub>B</sub> p<sub>B</sub><sup>°</sup></div>
+  <p class="formula-desc">Dono components ke Raoult’s-law partial pressures ka sum.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Henry’s Law (gas in liquid)</h3>
+  <div class="formula-content">p = K<sub>H</sub> x</div>
+  <p class="formula-desc">Gas ki solubility uske partial pressure ke proportional hoti hai (K<sub>H</sub> temperature dependent).</p>
+</div>
+<!-- Colligative Properties -->
+<div class="formula-card">
+  <h3 class="formula-title">Relative Lowering of Vapor Pressure (RLVP)</h3>
+  <div class="formula-content">(p<sup>°</sup> − p) / p<sup>°</sup> = x<sub>solute</sub> ≈ n<sub>B</sub> / (n<sub>A</sub> + n<sub>B</sub>) ≈ n<sub>B</sub> / n<sub>A</sub> (dilute)</div>
+  <p class="formula-desc">Non-volatile solute ke liye vapor pressure me kami particle number par depend karti hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Elevation in Boiling Point</h3>
+  <div class="formula-content">ΔT<sub>b</sub> = K<sub>b</sub> m</div>
+  <p class="formula-desc">Boiling point molality ke proportional badhta hai; K<sub>b</sub> solvent-specific constant.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Depression in Freezing Point</h3>
+  <div class="formula-content">ΔT<sub>f</sub> = K<sub>f</sub> m</div>
+  <p class="formula-desc">Freezing point molality ke proportional ghatta hai; K<sub>f</sub> solvent-specific constant.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Osmotic Pressure (van’t Hoff)</h3>
+  <div class="formula-content">π = C R T</div>
+  <p class="formula-desc">Dilute solutions me osmotic pressure molar concentration aur temperature ke proportional.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Osmotic Pressure (moles–volume)</h3>
+  <div class="formula-content">π = (n<sub>B</sub> / V) R T</div>
+  <p class="formula-desc">Alternative form jahan C = n<sub>B</sub>/V (V liters me).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Isotonic Solutions</h3>
+  <div class="formula-content">π<sub>1</sub> = π<sub>2</sub> (same T)</div>
+  <p class="formula-desc">Jin solutions ka osmotic pressure barabar ho unhe isotonic kehte hain.</p>
+</div>
+<!-- van’t Hoff Factor -->
+<div class="formula-card">
+  <h3 class="formula-title">van’t Hoff Factor (definition)</h3>
+  <div class="formula-content">i = (experimental colligative value) / (calculated for nonelectrolyte)</div>
+  <p class="formula-desc">Association/dissociation ke effect ko colligative properties me correct karta hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">van’t Hoff Factor via Molar Mass</h3>
+  <div class="formula-content">i = (normal molar mass) / (abnormal molar mass)</div>
+  <p class="formula-desc">Observed molar mass me deviation particle number change dikhata hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">i for Dissociation</h3>
+  <div class="formula-content">i = 1 + α(ν − 1)</div>
+  <p class="formula-desc">Electrolyte jo ν ions banata hai aur degree of dissociation α ho.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">i for Association</h3>
+  <div class="formula-content">i = 1 − α(1 − 1/ν)</div>
+  <p class="formula-desc">Associating solutes me aggregation se effective particles kam hote hain.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Corrected ΔT<sub>b</sub> with i</h3>
+  <div class="formula-content">ΔT<sub>b</sub> = i K<sub>b</sub> m</div>
+  <p class="formula-desc">Electrolytes/associating solutes ke liye boiling point elevation corrected.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Corrected ΔT<sub>f</sub> with i</h3>
+  <div class="formula-content">ΔT<sub>f</sub> = i K<sub>f</sub> m</div>
+  <p class="formula-desc">Freezing point depression me van’t Hoff factor ka effect include hota hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Corrected Osmotic Pressure with i</h3>
+  <div class="formula-content">π = i C R T</div>
+  <p class="formula-desc">Particle count change ke hisaab se osmotic pressure adjust hota hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Corrected RLVP with i</h3>
+  <div class="formula-content">(p<sup>°</sup> − p) / p<sup>°</sup> = i x<sub>solute</sub> (dilute)</div>
+  <p class="formula-desc">Relative lowering me van’t Hoff factor ka scaling.</p>
+</div>
+<!-- Molar Mass via Colligative Properties -->
+<div class="formula-card">
+  <h3 class="formula-title">Molar Mass from RLVP</h3>
+  <div class="formula-content">M<sub>B</sub> = (w<sub>B</sub> M<sub>A</sub>) / (w<sub>A</sub> × [(p<sup>°</sup> − p)/p<sup>°</sup>])</div>
+  <p class="formula-desc">Vapor pressure lowering se solute ka molar mass nikalna (dilute solution).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Molar Mass from ΔT<sub>b</sub></h3>
+  <div class="formula-content">M<sub>B</sub> = (1000 K<sub>b</sub> w<sub>B</sub>) / (ΔT<sub>b</sub> w<sub>A</sub>)</div>
+  <p class="formula-desc">Elevation in boiling point data se molar mass evaluate karein (w in g).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Molar Mass from ΔT<sub>f</sub></h3>
+  <div class="formula-content">M<sub>B</sub> = (1000 K<sub>f</sub> w<sub>B</sub>) / (ΔT<sub>f</sub> w<sub>A</sub>)</div>
+  <p class="formula-desc">Freezing point depression method se non-electrolytes ka molar mass.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Molar Mass from Osmotic Pressure</h3>
+  <div class="formula-content">M<sub>B</sub> = (w<sub>B</sub> R T) / (π V)</div>
+  <p class="formula-desc">Macromolecules ke liye low concentration par accurate (V in L).</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Include i for Molar Mass</h3>
+  <div class="formula-content">Use ΔT / i ya π / i upar waali formulas me</div>
+  <p class="formula-desc">Ionization/association hone par apparent molar mass correct karein.</p>
+</div>
+<!-- Temperature Dependence Constants -->
+<div class="formula-card">
+  <h3 class="formula-title">Ebullioscopic Constant (K<sub>b</sub>)</h3>
+  <div class="formula-content">K<sub>b</sub> = (R (T<sub>b</sub><sup>°</sup>)<sup>2</sup> M<sub>A</sub>) / ΔH<sub>vap</sub></div>
+  <p class="formula-desc">Solvent properties (T<sub>b</sub><sup>°</sup>, M<sub>A</sub>, ΔH<sub>vap</sub>) se K<sub>b</sub> relate hota hai.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Cryoscopic Constant (K<sub>f</sub>)</h3>
+  <div class="formula-content">K<sub>f</sub> = (R (T<sub>f</sub><sup>°</sup>)<sup>2</sup> M<sub>A</sub>) / ΔH<sub>fus</sub></div>
+  <p class="formula-desc">Solvent properties (T<sub>f</sub><sup>°</sup>, M<sub>A</sub>, ΔH<sub>fus</sub>) se K<sub>f</sub> relate hota hai.</p>
+</div>
+<!-- Useful Relations and Units -->
+<div class="formula-card">
+  <h3 class="formula-title">Osmotic Pressure (Ideal Gas Analogy)</h3>
+  <div class="formula-content">π V = n<sub>B</sub> R T</div>
+  <p class="formula-desc">Solute particles ka colligative behavior ideal gas jaisa.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Raoult’s Law (Volatile Solute & Solvent)</h3>
+  <div class="formula-content">p<sub>A</sub> = x<sub>A</sub> p<sub>A</sub><sup>°</sup>, p<sub>B</sub> = x<sub>B</sub> p<sub>B</sub><sup>°</sup></div>
+  <p class="formula-desc">Dono components vapor me contribute karte hain; total pressure additive.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Non-ideal: Positive Deviation</h3>
+  <div class="formula-content">p &gt; x<sub>A</sub> p<sub>A</sub><sup>°</sup> + x<sub>B</sub> p<sub>B</sub><sup>°</sup></div>
+  <p class="formula-desc">A–B interactions weak hone par vapor pressure ideal se zyada.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Non-ideal: Negative Deviation</h3>
+  <div class="formula-content">p &lt; x<sub>A</sub> p<sub>A</sub><sup>°</sup> + x<sub>B</sub> p<sub>B</sub><sup>°</sup></div>
+  <p class="formula-desc">A–B interactions strong hone par vapor pressure ideal se kam.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Henry’s Law (Alternate)</h3>
+  <div class="formula-content">x = p / K<sub>H</sub></div>
+  <p class="formula-desc">Rearranged form; K<sub>H</sub> ke units consistent rakhna zaroori.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Gas Constant (R)</h3>
+  <div class="formula-content">R = 0.082057 L·atm·mol<sup>−1</sup>·K<sup>−1</sup> = 8.314 J·mol<sup>−1</sup>·K<sup>−1</sup></div>
+  <p class="formula-desc">Units ko pressure ke hisaab se choose karein (atm ya Pa) in π calculations.</p>
+</div>
+<div class="formula-card">
+  <h3 class="formula-title">Unit Conversions</h3>
+  <div class="formula-content">1 L = 1000 mL; 1 kg = 1000 g; 1 atm ≈ 1.013×10<sup>5</sup> Pa</div>
+  <p class="formula-desc">Consistent units use karne se ΔT aur π calculations me error nahi aata.</p>
+</div>
+
+
+            </div>
+        </section>
+
+        <!-- Lectures Section -->
+        <section class="content-section" id="lectures">
+            <h2 class="section-title" id="lectures-title">Recommended Lecture Videos</h2>
+            <div class="lectures-grid">
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Solution - One Shot(Hindi)</h3>
+                        <div class="lecture-meta">
+                            <span>Vivek Sir(Taget Board)</span>
+                            <span>4:18:05</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/CVWybOQoaYw?si=gENs3yOsLvgYQPaW" title="Watch Lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Solid State - One Shot(English)</h3>
+                        <div class="lecture-meta">
+                            <span>(Pw)</span>
+                            <span>1:46:30</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/V7IhNvWMO0A?si=nka7be_IYbBqeCsb" title = "Watch lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title"></h3>
+                        <div class="lecture-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="" class="lecture-btn" target="_blank" rel="noopener noreferrer" onclick="alert('coming soon...')">Watch Lecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="content-section" id="objectives">
+            <h2 class="section-title" id="objectives-title" title="Practice Questions" style="cursor: default;">Practice Questions</h2>
+            <div class="questions-container">
+                <!-- Q1 -->
+<div class="question-card">
+    <h3 class="question-text" id="q1">0.01M ग्लूकोज विलयन की तुलना में 0.01M MgCl₂ विलयन के हिमांक में अवनमन है [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q1" value="A" class="option-input">
+            <span id="q1a">A) समान</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q1" value="B" class="option-input">
+            <span id="q1b">B) लगभग दुगुना</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q1" value="C" class="option-input">
+            <span id="q1c">C) लगभग तिगुना</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q1" value="D" class="option-input">
+            <span id="q1d">D) लगभग छः गुना</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q1">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card">
+    <h3 class="question-text" id="q2">निम्न में से कौन अणुसंख्यक गुणधर्म हैं? [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q2" value="A" class="option-input">
+            <span id="q2a">A) श्यानता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q2" value="B" class="option-input">
+            <span id="q2b">B) पृष्ठ तनाव</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q2" value="C" class="option-input">
+            <span id="q2c">C) अपवर्तनांक</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q2" value="D" class="option-input">
+            <span id="q2d">D) परासरण दाब</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q2">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card">
+    <h3 class="question-text" id="q3">Ca(NO₃)₂ में वान्ट हॉफ गुणक होता है [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q3" value="A" class="option-input">
+            <span id="q3a">A) 1</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q3" value="B" class="option-input">
+            <span id="q3b">B) 2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q3" value="C" class="option-input">
+            <span id="q3c">C) 3</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q3" value="D" class="option-input">
+            <span id="q3d">D) 4</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q3">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card">
+    <h3 class="question-text" id="q4">पहाड़ों पर जल का क्वथनांक कम हो जाता है, क्योंकि [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q4" value="A" class="option-input">
+            <span id="q4a">A) वहाँ वायुमंडलीय दाब कम है</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q4" value="B" class="option-input">
+            <span id="q4b">B) वहाँ ताप कम है</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q4" value="C" class="option-input">
+            <span id="q4c">C) वहाँ दाब ज्यादा है</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q4" value="D" class="option-input">
+            <span id="q4d">D) वहाँ हवा ज्यादा है</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q4">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card">
+    <h3 class="question-text" id="q5">निम्न में से विलयन के लिये कौन अणुसंख्यक गुण है? [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q5" value="A" class="option-input">
+            <span id="q5a">A) परासरण</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q5" value="B" class="option-input">
+            <span id="q5b">B) पृष्ठ तनाव</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q5" value="C" class="option-input">
+            <span id="q5c">C) चालकता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q5" value="D" class="option-input">
+            <span id="q5d">D) अर्द्ध-आयु</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q5">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card">
+    <h3 class="question-text" id="q6">परासरण दाब निम्नलिखत में से किस समीकरण द्वारा व्यक्त होते हैं? [2020A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q6" value="A" class="option-input">
+            <span id="q6a">A) P = CRT</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q6" value="B" class="option-input">
+            <span id="q6b">B) P = CT/R</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q6" value="C" class="option-input">
+            <span id="q6c">C) P = RC/T</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q6" value="D" class="option-input">
+            <span id="q6d">D) P = RT/C</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q6">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card">
+    <h3 class="question-text" id="q7">अर्द्धपारगम्य झिल्ली से परासरण क्रिया में निकल पाते हैं [2020A, 2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q7" value="A" class="option-input">
+            <span id="q7a">A) विलेय के अणु</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q7" value="B" class="option-input">
+            <span id="q7b">B) विलायक के अणु</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q7" value="C" class="option-input">
+            <span id="q7c">C) जटिल आयन</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q7" value="D" class="option-input">
+            <span id="q7d">D) सरल आयन</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q7">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card">
+    <h3 class="question-text" id="q8">0.1M Ba(NO₂)₂ घोल का वान्ट हॉफ गुणक 2.74 है। तो विघटन स्तर है [2018A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q8" value="A" class="option-input">
+            <span id="q8a">A) 91.3%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q8" value="B" class="option-input">
+            <span id="q8b">B) 87%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q8" value="C" class="option-input">
+            <span id="q8c">C) 100%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q8" value="D" class="option-input">
+            <span id="q8d">D) 74%</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q8">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card">
+    <h3 class="question-text" id="q9">निम्नलिखित जलीय घोल में किसका क्वथनांक अधिकतम होगा? [2017A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q9" value="A" class="option-input">
+            <span id="q9a">A) 1.0 M NaOH</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q9" value="B" class="option-input">
+            <span id="q9b">B) 1.0 M Na₂SO₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q9" value="C" class="option-input">
+            <span id="q9c">C) 1.0 M NH₄NO₃</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q9" value="D" class="option-input">
+            <span id="q9d">D) 1.0 M KNO₃</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q9">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card">
+    <h3 class="question-text" id="q10">एक घोल जिसका परासरण दाब 300 K पर 0.0821 वायुमंडल है। इस घोल का सांद्रण क्या होगा? [2017A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q10" value="A" class="option-input">
+            <span id="q10a">A) 0.66 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q10" value="B" class="option-input">
+            <span id="q10b">B) 0.32 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q10" value="C" class="option-input">
+            <span id="q10c">C) 0.066 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q10" value="D" class="option-input">
+            <span id="q10d">D) 0.033 M</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q10">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card">
+    <h3 class="question-text" id="q11">निम्नलिखित में किसका हिमांक अवनमन होगा? [2013A, 2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q11" value="A" class="option-input">
+            <span id="q11a">A) K₂SO₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q11" value="B" class="option-input">
+            <span id="q11b">B) NaCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q11" value="C" class="option-input">
+            <span id="q11c">C) यूरिया</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q11" value="D" class="option-input">
+            <span id="q11d">D) ग्लूकोज</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q11">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card">
+    <h3 class="question-text" id="q12">विलयन के अनुसंख्यक गुणधर्म का उदाहरण है [2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q12" value="A" class="option-input">
+            <span id="q12a">A) घनत्व</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q12" value="B" class="option-input">
+            <span id="q12b">B) द्रव्यमान</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q12" value="C" class="option-input">
+            <span id="q12c">C) क्वथनांक उन्नयन</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q12" value="D" class="option-input">
+            <span id="q12d">D) ताप</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q12">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card">
+    <h3 class="question-text" id="q13">निम्नलिखित में से किसका क्वथनांक सबसे अधिक होगा? [2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q13" value="A" class="option-input">
+            <span id="q13a">A) जल में 1% ग्लूकोस</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q13" value="B" class="option-input">
+            <span id="q13b">B) जल में 1% सूक्रोस</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q13" value="C" class="option-input">
+            <span id="q13c">C) जल में 1% NaCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q13" value="D" class="option-input">
+            <span id="q13d">D) जल में 1% यूरिया</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q13">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card">
+    <h3 class="question-text" id="q14">समपरासरणी विलयन के बराबर होते हैं। [2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q14" value="A" class="option-input">
+            <span id="q14a">A) घनत्व</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q14" value="B" class="option-input">
+            <span id="q14b">B) नार्मलता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q14" value="C" class="option-input">
+            <span id="q14c">C) शक्ति</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q14" value="D" class="option-input">
+            <span id="q14d">D) मोलर सांद्रण</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q14">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q15 -->
+<div class="question-card">
+    <h3 class="question-text" id="q15">234.2 ग्राम घोल में 34.2 ग्राम चीनी है। घोल का मोलर सान्द्रण क्या होगा? [2011A, 2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q15" value="A" class="option-input">
+            <span id="q15a">A) 0.1</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q15" value="B" class="option-input">
+            <span id="q15b">B) 2.0</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q15" value="C" class="option-input">
+            <span id="q15c">C) 3.0</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q15" value="D" class="option-input">
+            <span id="q15d">D) 4.0</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q15">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q16 -->
+<div class="question-card">
+    <h3 class="question-text" id="q16">किसी विलयन के सांद्रण को व्यक्त करने का कौन-सा तरीका तापक्रम से निर्भर नहीं करता है? [2011A, 2021A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q16" value="A" class="option-input">
+            <span id="q16a">A) नार्मलता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q16" value="B" class="option-input">
+            <span id="q16b">B) मोललता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q16" value="C" class="option-input">
+            <span id="q16c">C) मोलरता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q16" value="D" class="option-input">
+            <span id="q16d">D) फार्मलता</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q16">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q17 -->
+<div class="question-card">
+    <h3 class="question-text" id="q17">केन सुगर (अणुभार=342) के 5% घोल पदार्थ X के 1% घोल के साथ आइसोटॉनिक है। X का अणुभार है— [2012A, 2018A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q17" value="A" class="option-input">
+            <span id="q17a">A) 68.4</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q17" value="B" class="option-input">
+            <span id="q17b">B) 34.2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q17" value="C" class="option-input">
+            <span id="q17c">C) 171.2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q17" value="D" class="option-input">
+            <span id="q17d">D) 136.8</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q17">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q18 -->
+<div class="question-card">
+    <h3 class="question-text" id="q18">किसी विलयन के 200 mL में 2 ग्राम NaOH घुले हैं। विलयन की मोलरता क्या है? [2013A, 2015A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q18" value="A" class="option-input">
+            <span id="q18a">A) 0.25</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q18" value="B" class="option-input">
+            <span id="q18b">B) 0.5</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q18" value="C" class="option-input">
+            <span id="q18c">C) 5</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q18" value="D" class="option-input">
+            <span id="q18d">D) 10</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q18">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q19 -->
+<div class="question-card">
+    <h3 class="question-text" id="q19">घोलक के 1 kg में उपस्थित घुल्य के मोलों की संख्या को कहते हैं—</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q19" value="A" class="option-input">
+            <span id="q19a">A) मोलरता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q19" value="B" class="option-input">
+            <span id="q19b">B) मोललता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q19" value="C" class="option-input">
+            <span id="q19c">C) नार्मलता</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q19" value="D" class="option-input">
+            <span id="q19d">D) मोल भाग</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q19">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q20 -->
+<div class="question-card">
+    <h3 class="question-text" id="q20">आदर्श विलयन का निम्न में से कौन गुण है? [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q20" value="A" class="option-input">
+            <span id="q20a">A) यह रॉउल्ट के नियम का पालन करता है।</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q20" value="B" class="option-input">
+            <span id="q20b">B) यह रॉउल्ट के नियम का पालन नहीं करता है।</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q20" value="C" class="option-input">
+            <span id="q20c">C) (A) और (B) दोनों</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q20" value="D" class="option-input">
+            <span id="q20d">D) इनमें से कोई नहीं</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q20">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q21 -->
+<div class="question-card">
+    <h3 class="question-text" id="q21">HCl तथा H₂O के स्थिरक्वाथी (एजियोट्रोपिक) मिश्रण में होगा— [2017A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q21" value="A" class="option-input">
+            <span id="q21a">A) 48% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q21" value="B" class="option-input">
+            <span id="q21b">B) 22.2% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q21" value="C" class="option-input">
+            <span id="q21c">C) 36% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q21" value="D" class="option-input">
+            <span id="q21d">D) 20.2% HCl</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q21">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q22 -->
+<div class="question-card">
+    <h3 class="question-text" id="q22">वैसा घोल जो एक निश्चित ताप पर संयोजन में बिना किसी प्रकार के परिवर्तन के उबलता है, उसे कहते हैं— [2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q22" value="A" class="option-input">
+            <span id="q22a">A) एजियोट्रोपिक मिश्रण</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q22" value="B" class="option-input">
+            <span id="q22b">B) असंतृप्त</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q22" value="C" class="option-input">
+            <span id="q22c">C) अतिसंतृप्त</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q22" value="D" class="option-input">
+            <span id="q22d">D) आदर्श</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q22">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q23 -->
+<div class="question-card">
+    <h3 class="question-text" id="q23">निम्नलिखित में से कौन आदर्श घोल नहीं है? [2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q23" value="A" class="option-input">
+            <span id="q23a">A) बेंजीन + टोल्यूइन</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q23" value="B" class="option-input">
+            <span id="q23b">B) मिथाइल अल्कोहल + एथाइल अल्कोहल</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q23" value="C" class="option-input">
+            <span id="q23c">C) क्लोरोफॉर्म + एसीटोन</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q23" value="D" class="option-input">
+            <span id="q23d">D) कार्बन टेट्राक्लोराइड + सिलिकॉन टेट्राक्लोराइड</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q23">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q24 -->
+<div class="question-card">
+    <h3 class="question-text" id="q24">निम्नलिखित में कौन राउल्ट नियम से धनात्मक विचलन दर्शाता है? [2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q24" value="A" class="option-input">
+            <span id="q24a">A) C₂H₆ तथा C₂H₅CH₃</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q24" value="B" class="option-input">
+            <span id="q24b">B) C₆H₆ तथा CCl₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q24" value="C" class="option-input">
+            <span id="q24c">C) CHCl₃ तथा C₂H₅OH</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q24" value="D" class="option-input">
+            <span id="q24d">D) CHCl₃ तथा CH₃COCH₃</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q24">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+            <div id="Hindi">In English</div>
+<div class="question-card">
+    <h3 class="question-text" id="q25">Compared to 0.01M glucose solution, the depression in freezing point of 0.01M MgCl₂ solution is [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q25" value="A" class="option-input">
+            <span id="q25a">A) Same</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q25" value="B" class="option-input">
+            <span id="q25b">B) Approximately double</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q25" value="C" class="option-input">
+            <span id="q25c">C) Approximately triple</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q25" value="D" class="option-input">
+            <span id="q25d">D) Approximately six times</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q25">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q26 -->
+<div class="question-card">
+    <h3 class="question-text" id="q26">Which of the following are colligative properties? [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q26" value="A" class="option-input">
+            <span id="q26a">A) Viscosity</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q26" value="B" class="option-input">
+            <span id="q26b">B) Surface tension</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q26" value="C" class="option-input">
+            <span id="q26c">C) Refractive index</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q26" value="D" class="option-input">
+            <span id="q26d">D) Osmotic pressure</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q26">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q27 -->
+<div class="question-card">
+    <h3 class="question-text" id="q27">The van’t Hoff factor in Ca(NO₃)₂ is [2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q27" value="A" class="option-input">
+            <span id="q27a">A) 1</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q27" value="B" class="option-input">
+            <span id="q27b">B) 2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q27" value="C" class="option-input">
+            <span id="q27c">C) 3</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q27" value="D" class="option-input">
+            <span id="q27d">D) 4</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q27">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q28 -->
+<div class="question-card">
+    <h3 class="question-text" id="q28">The boiling point of water decreases at high altitudes because [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q28" value="A" class="option-input">
+            <span id="q28a">A) Atmospheric pressure is lower there</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q28" value="B" class="option-input">
+            <span id="q28b">B) Temperature is low there</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q28" value="C" class="option-input">
+            <span id="q28c">C) Pressure is higher there</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q28" value="D" class="option-input">
+            <span id="q28d">D) Wind is stronger there</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q28">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q29 -->
+<div class="question-card">
+    <h3 class="question-text" id="q29">Which among the following is a colligative property for solutions? [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q29" value="A" class="option-input">
+            <span id="q29a">A) Osmosis</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q29" value="B" class="option-input">
+            <span id="q29b">B) Surface tension</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q29" value="C" class="option-input">
+            <span id="q29c">C) Conductivity</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q29" value="D" class="option-input">
+            <span id="q29d">D) Half-life</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q29">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q30 -->
+<div class="question-card">
+    <h3 class="question-text" id="q30">Osmotic pressure is expressed by which of the following equations? [2020A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q30" value="A" class="option-input">
+            <span id="q30a">A) P = CRT</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q30" value="B" class="option-input">
+            <span id="q30b">B) P = CT/R</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q30" value="C" class="option-input">
+            <span id="q30c">C) P = RC/T</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q30" value="D" class="option-input">
+            <span id="q30d">D) P = RT/C</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q30">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q31 -->
+<div class="question-card">
+    <h3 class="question-text" id="q31">In osmosis through a semipermeable membrane, which particles pass through? [2020A, 2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q31" value="A" class="option-input">
+            <span id="q31a">A) Solute molecules</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q31" value="B" class="option-input">
+            <span id="q31b">B) Solvent molecules</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q31" value="C" class="option-input">
+            <span id="q31c">C) Complex ions</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q31" value="D" class="option-input">
+            <span id="q31d">D) Simple ions</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q31">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q32 -->
+<div class="question-card">
+    <h3 class="question-text" id="q32">The van’t Hoff factor of 0.1M Ba(NO₂)₂ solution is 2.74. The degree of dissociation is [2018A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q32" value="A" class="option-input">
+            <span id="q32a">A) 91.3%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q32" value="B" class="option-input">
+            <span id="q32b">B) 87%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q32" value="C" class="option-input">
+            <span id="q32c">C) 100%</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q32" value="D" class="option-input">
+            <span id="q32d">D) 74%</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q32">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q33 -->
+<div class="question-card">
+    <h3 class="question-text" id="q33">Among the following aqueous solutions, which will have the highest boiling point? [2017A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q33" value="A" class="option-input">
+            <span id="q33a">A) 1.0 M NaOH</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q33" value="B" class="option-input">
+            <span id="q33b">B) 1.0 M Na₂SO₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q33" value="C" class="option-input">
+            <span id="q33c">C) 1.0 M NH₄NO₃</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q33" value="D" class="option-input">
+            <span id="q33d">D) 1.0 M KNO₃</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q33">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q34 -->
+<div class="question-card">
+    <h3 class="question-text" id="q34">A solution has osmotic pressure 0.0821 atm at 300 K. What is its concentration? [2017A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q34" value="A" class="option-input">
+            <span id="q34a">A) 0.66 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q34" value="B" class="option-input">
+            <span id="q34b">B) 0.32 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q34" value="C" class="option-input">
+            <span id="q34c">C) 0.066 M</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q34" value="D" class="option-input">
+            <span id="q34d">D) 0.033 M</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q34">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q35 -->
+<div class="question-card">
+    <h3 class="question-text" id="q35">Which of the following will show maximum depression in freezing point? [2013A, 2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q35" value="A" class="option-input">
+            <span id="q35a">A) K₂SO₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q35" value="B" class="option-input">
+            <span id="q35b">B) NaCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q35" value="C" class="option-input">
+            <span id="q35c">C) Urea</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q35" value="D" class="option-input">
+            <span id="q35d">D) Glucose</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q35">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q36 -->
+<div class="question-card">
+    <h3 class="question-text" id="q36">An example of a colligative property of solutions is [2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q36" value="A" class="option-input">
+            <span id="q36a">A) Density</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q36" value="B" class="option-input">
+            <span id="q36b">B) Mass</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q36" value="C" class="option-input">
+            <span id="q36c">C) Elevation in boiling point</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q36" value="D" class="option-input">
+            <span id="q36d">D) Temperature</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q36">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q37 -->
+<div class="question-card">
+    <h3 class="question-text" id="q37">Which of the following will have the highest boiling point? [2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q37" value="A" class="option-input">
+            <span id="q37a">A) 1% Glucose in water</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q37" value="B" class="option-input">
+            <span id="q37b">B) 1% Sucrose in water</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q37" value="C" class="option-input">
+            <span id="q37c">C) 1% NaCl in water</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q37" value="D" class="option-input">
+            <span id="q37d">D) 1% Urea in water</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q37">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q38 -->
+<div class="question-card">
+    <h3 class="question-text" id="q38">Isotonic solutions have equal [2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q38" value="A" class="option-input">
+            <span id="q38a">A) Density</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q38" value="B" class="option-input">
+            <span id="q38b">B) Normality</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q38" value="C" class="option-input">
+            <span id="q38c">C) Strength</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q38" value="D" class="option-input">
+            <span id="q38d">D) Molar concentration</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q38">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q39 -->
+<div class="question-card">
+    <h3 class="question-text" id="q39">A solution contains 34.2 g sugar in 234.2 g of solution. What is the molar concentration of the solution? [2011A, 2021A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q39" value="A" class="option-input">
+            <span id="q39a">A) 0.1</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q39" value="B" class="option-input">
+            <span id="q39b">B) 2.0</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q39" value="C" class="option-input">
+            <span id="q39c">C) 3.0</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q39" value="D" class="option-input">
+            <span id="q39d">D) 4.0</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q39">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q40 -->
+<div class="question-card">
+    <h3 class="question-text" id="q40">Which method of expressing concentration is independent of temperature? [2011A, 2021A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q40" value="A" class="option-input">
+            <span id="q40a">A) Normality</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q40" value="B" class="option-input">
+            <span id="q40b">B) Molality</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q40" value="C" class="option-input">
+            <span id="q40c">C) Molarity</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q40" value="D" class="option-input">
+            <span id="q40d">D) Formality</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q40">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q41 -->
+<div class="question-card">
+    <h3 class="question-text" id="q41">A 5% solution of cane sugar (M = 342) is isotonic with a 1% solution of substance X. The molecular mass of X is— [2012A, 2018A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q41" value="A" class="option-input">
+            <span id="q41a">A) 68.4</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q41" value="B" class="option-input">
+            <span id="q41b">B) 34.2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q41" value="C" class="option-input">
+            <span id="q41c">C) 171.2</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q41" value="D" class="option-input">
+            <span id="q41d">D) 136.8</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q41">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q42 -->
+<div class="question-card">
+    <h3 class="question-text" id="q42">In 200 mL of a solution, 2 g of NaOH is dissolved. What is the molarity of the solution? [2013A, 2015A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q42" value="A" class="option-input">
+            <span id="q42a">A) 0.25</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q42" value="B" class="option-input">
+            <span id="q42b">B) 0.5</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q42" value="C" class="option-input">
+            <span id="q42c">C) 5</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q42" value="D" class="option-input">
+            <span id="q42d">D) 10</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q42">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q43 -->
+<div class="question-card">
+    <h3 class="question-text" id="q43">The number of moles of solute present in 1 kg of solvent is called—</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q43" value="A" class="option-input">
+            <span id="q43a">A) Molarity</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q43" value="B" class="option-input">
+            <span id="q43b">B) Molality</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q43" value="C" class="option-input">
+            <span id="q43c">C) Normality</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q43" value="D" class="option-input">
+            <span id="q43d">D) Mole fraction</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q43">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q44 -->
+<div class="question-card">
+    <h3 class="question-text" id="q44">Which of the following is a property of an ideal solution? [2020A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q44" value="A" class="option-input">
+            <span id="q44a">A) It obeys Raoult’s law.</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q44" value="B" class="option-input">
+            <span id="q44b">B) It does not obey Raoult’s law.</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q44" value="C" class="option-input">
+            <span id="q44c">C) Both (A) and (B)</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q44" value="D" class="option-input">
+            <span id="q44d">D) None of these</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q44">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q45 -->
+<div class="question-card">
+    <h3 class="question-text" id="q45">In the constant-boiling (azeotropic) mixture of HCl and H₂O, the composition is— [2017A, 2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q45" value="A" class="option-input">
+            <span id="q45a">A) 48% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q45" value="B" class="option-input">
+            <span id="q45b">B) 22.2% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q45" value="C" class="option-input">
+            <span id="q45c">C) 36% HCl</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q45" value="D" class="option-input">
+            <span id="q45d">D) 20.2% HCl</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="B" data-question="q45">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q46 -->
+<div class="question-card">
+    <h3 class="question-text" id="q46">A solution that boils at a constant temperature without any change in composition at a given temperature is called— [2022A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q46" value="A" class="option-input">
+            <span id="q46a">A) Azeotropic mixture</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q46" value="B" class="option-input">
+            <span id="q46b">B) Unsaturated</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q46" value="C" class="option-input">
+            <span id="q46c">C) Supersaturated</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q46" value="D" class="option-input">
+            <span id="q46d">D) Ideal</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="A" data-question="q46">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q47 -->
+<div class="question-card">
+    <h3 class="question-text" id="q47">Which of the following is not an ideal solution? [2023A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q47" value="A" class="option-input">
+            <span id="q47a">A) Benzene + Toluene</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q47" value="B" class="option-input">
+            <span id="q47b">B) Methyl alcohol + Ethyl alcohol</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q47" value="C" class="option-input">
+            <span id="q47c">C) Chloroform + Acetone</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q47" value="D" class="option-input">
+            <span id="q47d">D) Carbon tetrachloride + Silicon tetrachloride</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="C" data-question="q47">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+<!-- Q48 -->
+<div class="question-card">
+    <h3 class="question-text" id="q48">Which of the following shows positive deviation from Raoult’s law? [2024A]</h3>
+    <div class="options-grid">
+        <label class="option-label">
+            <input type="radio" name="q48" value="A" class="option-input">
+            <span id="q48a">A) C₂H₆ and C₂H₅CH₃</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q48" value="B" class="option-input">
+            <span id="q48b">B) C₆H₆ and CCl₄</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q48" value="C" class="option-input">
+            <span id="q48c">C) CHCl₃ and C₂H₅OH</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="q48" value="D" class="option-input">
+            <span id="q48d">D) CHCl₃ and CH₃COCH₃</span>
+        </label>
+    </div>
+    <button class="check-btn" data-answer="D" data-question="q48">Check Answer</button>
+    <div class="feedback"></div>
+</div>
+
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">Chemistry Exam Essentials - Solution Chapter | Created for Class 12 Students</p>
+        <p class="footer-text">All content is for educational purposes only</p>
+    </footer>
+    
+  <script src="Chemistry Lesson-1.js"></script>
+  <script>
+    
+  </script>
+
+    <script>
+        // ====== Language Translations ======
+        const translations = {
+            en: {
+                "page-title": "Chemistry — Chapter 2 (Solution) — Exam Essentials",
+                "topics-title": "Key Topics - Solution",
+                "formulas-title": "Essential Formulas - Solution",
+                "lectures-title": "Recommended Lecture Videos",
+                "objectives-title": "Practice Questions",
+                "nav-topics": "Topics",
+                "nav-formulas": "Formulas",
+                "nav-lectures": "Lectures",
+                "nav-objectives": "Objectives",
+                "lang-toggle": "English",
+                "q1": "1. Which crystal system does Sodium chloride (NaCl) follow?",
+                "q1a": "A) Simple Cubic (SC)",
+                "q1b": "B) Body-Centered Cubic (BCC)",
+                "q1c": "C) Face-Centered Cubic (FCC)",
+                "q1d": "D) Hexagonal Close Packing (HCP)",
+                "q2": "2. Packing efficiency of FCC is approximately:",
+                "q2a": "A) 52%",
+                "q2b": "B) 68%",
+                "q2c": "C) 74%",
+                "q2d": "D) 42%",
+                "q3": "3. Bragg's law relates:",
+                "q3a": "A) wavelength & interplanar spacing",
+                "q3b": "B) density & mass",
+                "q3c": "C) radius & lattice parameter",
+                "q3d": "D) none of these"
+            },
+            hi: {
+                "page-title": "रसायन विज्ञान — अध्याय 1 (विलयन) — परीक्षा आवश्यक सामग्री",
+                "topics-title": "मुख्य विषय - विलयन रसायन",
+                "formulas-title": "आवश्यक सूत्र - विलयन",
+                "lectures-title": "अनुशंसित व्याख्यान वीडियो",
+                "objectives-title": "अभ्यास प्रश्न",
+                "nav-topics": "विषय",
+                "nav-formulas": "सूत्र",
+                "nav-lectures": "व्याख्यान",
+                "nav-objectives": "प्रश्न",
+                "lang-toggle": "English",
+                "q1": "1. सोडियम क्लोराइड (NaCl) किस क्रिस्टल प्रणाली का अनुसरण करता है?",
+                "q1a": "क) सरल घनीय (SC)",
+                "q1b": "ख) अंत: केन्द्रित घनीय (BCC)",
+                "q1c": "ग) फलक केन्द्रित घनीय (FCC)",
+                "q1d": "घ) षट्कोणीय निविड संकुलन (HCP)",
+                "q2": "2. FCC की संकुलन दक्षता लगभग है:",
+                "q2a": "क) 52%",
+                "q2b": "ख) 68%",
+                "q2c": "ग) 74%",
+                "q2d": "घ) 42%",
+                "q3": "3. ब्रैग का नियम संबंधित है:",
+                "q3a": "क) तरंगदैर्ध्य और अंतरतलीय दूरी से",
+                "q3b": "ख) घनत्व और द्रव्यमान से",
+                "q3c": "ग) त्रिज्या और जालक मापदंड से",
+                "q3d": "घ) इनमें से कोई नहीं"
+            }
+        };
+
+        // ====== Initial Setup ======
+        let currentLang = 'en';
+
+        // ====== DOM Elements ======
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const langToggle = document.getElementById('langToggle');
+        const langToggleText = langToggle.querySelector('span');
+
+        // ====== Navigation Functionality ======
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ====== Language Toggle Functionality ======
+        langToggle.addEventListener('click', () => {
+            // Toggle language
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            // Update all translatable elements
+            Object.keys(translations[currentLang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT') {
+                        // For radio buttons, update the next span
+                        el.nextElementSibling.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+            
+            // Update toggle button text
+            langToggleText.textContent = translations[currentLang]['lang-toggle'];
+        });
+
+        // ====== Question Checking Functionality ======
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('check-btn')) {
+                const button = e.target;
+                const questionId = button.getAttribute('data-question');
+                const correctAnswer = button.getAttribute('data-answer');
+                const questionCard = button.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                // Get selected option
+                const selectedOption = questionCard.querySelector(`input[name="${questionId}"]:checked`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Please select an answer!';
+                    feedback.className = 'feedback incorrect';
+                    return;
+                }
+                
+                if (selectedOption.value === correctAnswer) {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+        });
+
+        // ====== Accessibility Features ======
+        // Keyboard navigation for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Focus styles for better keyboard navigation
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab') {
+                document.documentElement.classList.add('keyboard-focus');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.documentElement.classList.remove('keyboard-focus');
+        });
+    </script>
+   
+</body>
+</html>

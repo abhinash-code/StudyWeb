@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry — Chapter 3 (Electrochemistry) — Exam Essentials</title>
+    <style>
+        /* ===== CSS Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Root Variables ===== */
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #ffab00;
+            --secondary-light: #ffdd4b;
+            --secondary-dark: #c67c00;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --bg-light: #ffffff;
+            --bg-dark: #e0e0e0;
+            --success: #2e7d32;
+            --error: #c62828;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== Base Styles ===== */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-light);
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        /* ===== Language Toggle ===== */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 171, 0, 0.1);
+        }
+
+        /* ===== Main Content ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* ===== Topics Section ===== */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Formulas Section ===== */
+        .formulas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formula-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .formula-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-desc {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Lectures Section ===== */
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-thumbnail {
+            height: 160px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .lecture-body {
+            padding: 1.5rem;
+        }
+
+        .lecture-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lecture-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .lecture-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== Objectives Section ===== */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .option-input {
+            accent-color: var(--primary);
+        }
+
+        .check-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .check-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(198, 40, 40, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .navbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .topics-grid,
+            .formulas-container,
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #Hindi {
+            color: rgb(250, 15, 15);
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgb(129, 118, 118);
+            margin-left: 50%;
+            margin-top: 50px;
+        }
+        #hide {
+            visibility: hidden;
+        }
+       /* -------------------------
+   .Btn0 — Duniya ka sundar button
+   ------------------------- */
+
+/* Theme variables (aap badal sakte ho) */
+.Btn0 {
+  --btn-bg-1: #6a8cff;        /* primary gradient start */
+  --btn-bg-2: #4f6ef6;        /* primary gradient end */
+  --btn-accent: #ffd166;      /* accent / glow */
+  --btn-text: #ffffff;
+  --btn-shadow-1: 0 6px 20px rgba(79,110,246,0.28);
+  --btn-shadow-2: 0 2px 6px rgba(44,52,80,0.12);
+  --btn-radius: 14px;
+  --btn-padding-y: 12px;
+  --btn-padding-x: 20px;
+  --btn-font-size: 15px;
+  --btn-font-weight: 700;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  color: var(--btn-text);
+  background: linear-gradient(135deg, var(--btn-bg-1), var(--btn-bg-2));
+  box-shadow: var(--btn-shadow-1), var(--btn-shadow-2), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:
+    transform 240ms cubic-bezier(.2,.9,.2,1),
+    box-shadow 240ms cubic-bezier(.2,.9,.2,1),
+    filter 240ms cubic-bezier(.2,.9,.2,1),
+    opacity 200ms linear;
+  transform: translateZ(0);
+  outline: none;
+  overflow: hidden; /* shine pseudo-element stays clipped */
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.12);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* subtle glossy highlight */
+.Btn0::before{
+  content: "";
+  position: absolute;
+  left: -30%;
+  top: -60%;
+  width: 160%;
+  height: 220%;
+  background: radial-gradient(600px 200px at 20% 10%, rgba(255,255,255,0.18), rgba(255,255,255,0) 25%),
+              linear-gradient(120deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  transform: rotate(-18deg) translateY(0);
+  transition: transform 600ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+/* small accent glow under the button (neat depth) */
+.Btn0::after{
+  content: "";
+  position: absolute;
+  inset: auto 8% -18% 8%;
+  height: 18px;
+  filter: blur(18px);
+  background: linear-gradient(90deg, rgba(255,209,102,0.16), rgba(79,110,246,0.12));
+  opacity: 1;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+}
+
+/* icon styling */
+.Btn0__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 0;
+  transform-origin: center;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1);
+  color: rgba(255,255,255,0.95);
+}
+
+/* text */
+.Btn0__text{
+  display: inline-block;
+  transform-origin: left center;
+  letter-spacing: 0.2px;
+}
+
+/* Hover — lift + stronger glow + subtle slide of gloss */
+.Btn0:hover{
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(79,110,246,0.22), 0 6px 14px rgba(44,52,80,0.14);
+  filter: saturate(1.06) contrast(1.02);
+}
+.Btn0:hover::before{
+  transform: rotate(-18deg) translateY(-6%);
+  opacity: 1;
+}
+.Btn0:hover::after{
+  transform: translateY(-4px);
+  opacity: 1;
+}
+.Btn0:hover .Btn0__icon{
+  transform: translateY(-2px) rotate(-6deg) scale(1.03);
+}
+
+/* Active / pressed state — tactile feedback */
+.Btn0:active{
+  transform: translateY(0) scale(0.995);
+  box-shadow: 0 6px 12px rgba(44,52,80,0.12), inset 0 2px 6px rgba(0,0,0,0.12);
+}
+.Btn0:active::before{
+  transform: rotate(-18deg) translateY(2%);
+  opacity: 0.9;
+}
+.Btn0:active .Btn0__icon{
+  transform: translateY(0) scale(0.98);
+}
+
+/* Focus-visible for keyboard users (accessibility) */
+.Btn0:focus-visible{
+  box-shadow: 0 20px 40px rgba(79,110,246,0.18), 0 0 0 6px rgba(79,110,246,0.12);
+  outline: none;
+}
+.Btn0:focus-visible::after{
+  opacity: 0.85;
+}
+
+/* Disabled state */
+.Btn0[disabled],
+.Btn0:disabled{
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.62;
+  filter: grayscale(0.15) saturate(0.9);
+  box-shadow: 0 6px 14px rgba(25,30,40,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.Btn0[disabled]::before,
+.Btn0[disabled]::after{
+  opacity: 0.0;
+}
+
+/* Size variants */
+.Btn0.sm{
+  --btn-padding-y: 8px;
+  --btn-padding-x: 12px;
+  --btn-font-size: 13px;
+  border-radius: 10px;
+}
+.Btn0.lg{
+  --btn-padding-y: 16px;
+  --btn-padding-x: 26px;
+  --btn-font-size: 16px;
+  border-radius: 16px;
+}
+.Btn0.xl{
+  --btn-padding-y: 20px;
+  --btn-padding-x: 32px;
+  --btn-font-size: 18px;
+  border-radius: 20px;
+}
+
+/* Variant: outline / ghost */
+.Btn0.ghost{
+  background: transparent;
+  color: var(--btn-bg-1);
+  box-shadow: none;
+  border: 1.5px solid rgba(79,110,246,0.12);
+}
+.Btn0.ghost:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(79,110,246,0.08);
+}
+
+/* Variant: secondary (dark) */
+.Btn0.secondary{
+  --btn-bg-1: #1f2a44;
+  --btn-bg-2: #273556;
+  --btn-accent: #7de4ff;
+  color: #e6f0ff;
+  box-shadow: 0 12px 28px rgba(15,20,40,0.36);
+}
+.Btn0.secondary::after{
+  background: linear-gradient(90deg, rgba(125,228,255,0.06), rgba(35,50,90,0.08));
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce){
+  .Btn0,
+  .Btn0::before,
+  .Btn0::after,
+  .Btn0__icon{
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* small responsive tweak */
+@media (max-width:420px){
+  .Btn0{
+    --btn-padding-y: 10px;
+    --btn-padding-x: 16px;
+    --btn-font-size: 14px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8s-1.5-2-4-2-4 2-4 2"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    <path d="M10 16s1.5 2 4 2 4-2 4-2"></path>
+                </svg>
+            </div>
+            <h1 class="logo-text" id="page-title" title="Chapter 3 (Electrochemistry)" style="cursor: default;">Chemistry — Chapter 3 (Electrochemistry) — Exam Essentials</h1>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="topics" title="Topics">Topics</a></li>
+                <li><a href="#" class="nav-link" data-target="formulas" title="Formulas">Formulas</a></li>
+                <li><a href="#" class="nav-link" data-target="lectures" title="Lectures">Lectures</a></li>
+                <li><a href="#" class="nav-link" data-target="objectives" title="Objectives">Objectives</a></li>
+            </ul>
+            <button class="lang-toggle" id="langToggle">
+                <span>हिंदी</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Topics Section (Default Active) -->
+        <section class="content-section active" id="topics">
+            <h2 class="section-title" id="topics-title" title="Lesson 3 - Electrochemistry" style="cursor: default;">Lesson 3 - Electrochemistry </h2>
+            <div class="topics-grid">
+                <!-- Chapter 3: Electrochemistry (English) -->
+<div class="topic-card">
+  <h3 class="topic-title">1) Electrochemistry</h3>
+  <p class="topic-desc">The branch of chemistry that deals with the interconversion of chemical energy and electrical energy via redox reactions.</p><br>
+  <button class="Btn0" id="openWinE1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) Redox Reaction</h3>
+  <p class="topic-desc">A chemical reaction involving simultaneous oxidation and reduction, characterized by electron transfer between species.</p><br>
+  <button class="Btn0" id="openWinE2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) Oxidation</h3>
+  <p class="topic-desc">Loss of electrons or increase in oxidation number by a species in a reaction.</p><br>
+  <button class="Btn0" id="openWinE3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) Reduction</h3>
+  <p class="topic-desc">Gain of electrons or decrease in oxidation number by a species in a reaction.</p><br>
+  <button class="Btn0" id="openWinE4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) Oxidizing Agent (Oxidant)</h3>
+  <p class="topic-desc">A species that causes oxidation of another by accepting electrons and itself gets reduced.</p><br>
+  <button class="Btn0" id="openWinE5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) Reducing Agent (Reductant)</h3>
+  <p class="topic-desc">A species that causes reduction of another by donating electrons and itself gets oxidized.</p><br>
+  <button class="Btn0" id="openWinE6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) Electrochemical Cell</h3>
+  <p class="topic-desc">A device that either generates electrical energy from a spontaneous redox reaction (galvanic cell) or uses electrical energy to drive a non-spontaneous reaction (electrolytic cell).</p><br>
+  <button class="Btn0" id="openWinE7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) Galvanic (Voltaic) Cell</h3>
+  <p class="topic-desc">An electrochemical cell in which a spontaneous redox reaction produces electrical energy.</p><br>
+  <button class="Btn0" id="openWinE8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) Electrolytic Cell</h3>
+  <p class="topic-desc">A cell in which electrical energy is supplied to drive a non-spontaneous chemical reaction.</p><br>
+  <button class="Btn0" id="openWinE9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) Electrode</h3>
+  <p class="topic-desc">A conductor (metal or other) that allows electron transfer between the external circuit and the electrolyte.</p><br>
+  <button class="Btn0" id="openWinE10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) Anode</h3>
+  <p class="topic-desc">The electrode where oxidation occurs; in galvanic cells it is negative, in electrolytic cells it is positive.</p><br>
+  <button class="Btn0" id="openWinE11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) Cathode</h3>
+  <p class="topic-desc">The electrode where reduction occurs; in galvanic cells it is positive, in electrolytic cells it is negative.</p><br>
+  <button class="Btn0" id="openWinE12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) Electrode Potential</h3>
+  <p class="topic-desc">The potential difference developed at an electrode due to a redox equilibrium between the electrode and ions in solution.</p><br>
+  <button class="Btn0" id="openWinE13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) Standard Electrode Potential (E°)</h3>
+  <p class="topic-desc">The electrode potential measured under standard conditions (1 M, 1 bar, 25°C) relative to the standard hydrogen electrode.</p><br>
+  <button class="Btn0" id="openWinE14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) Standard Hydrogen Electrode (SHE)</h3>
+  <p class="topic-desc">A reference electrode with E° defined as 0.000 V, consisting of H2 gas (1 bar) and 1 M H+ in contact with a platinum electrode at 25°C.</p><br>
+  <button class="Btn0" id="openWinE15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) Cell Potential (EMF)</h3>
+  <p class="topic-desc">The potential difference between the two electrodes of a cell when no current flows; equals E°cell or Ecell depending on conditions.</p><br>
+  <button class="Btn0" id="openWinE16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) Cell Notation</h3>
+  <p class="topic-desc">A shorthand representation of a cell indicating phases and species, with anode on the left and cathode on the right.</p><br>
+  <button class="Btn0" id="openWinE17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) Salt Bridge</h3>
+  <p class="topic-desc">A device (often a gel containing inert electrolyte) that completes the circuit and maintains electrical neutrality by ion flow.</p><br>
+  <button class="Btn0" id="openWinE18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) Gibbs Free Energy and EMF</h3>
+  <p class="topic-desc">The maximum non-expansion work from a cell: ΔG = −nFEcell; at standard state ΔG° = −nFE°cell.</p><br>
+  <button class="Btn0" id="openWinE19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) Nernst Equation</h3>
+  <p class="topic-desc">Relates cell/electrode potential to concentrations: E = E° − (0.0591/n) log Q at 25°C.</p><br>
+  <button class="Btn0" id="openWinE20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) Reaction Quotient (Q)</h3>
+  <p class="topic-desc">The ratio of activities (or effective concentrations) of products to reactants at any state, used in the Nernst equation.</p><br>
+  <button class="Btn0" id="openWinE21">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) Equilibrium Constant (K)</h3>
+  <p class="topic-desc">The value of Q at equilibrium; related to standard EMF by ΔG° = −RT ln K = −nFE°cell.</p><br>
+  <button class="Btn0" id="openWinE22">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) Conductance (G)</h3>
+  <p class="topic-desc">The ease with which electric current flows through a conductor; G = 1/R, measured in siemens (S).</p><br>
+  <button class="Btn0" id="openWinE23">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) Specific Conductance (Conductivity, κ)</h3>
+  <p class="topic-desc">Conductance of a solution of 1 cm length and 1 cm² cross-sectional area; depends on concentration and temperature.</p><br>
+  <button class="Btn0" id="openWinE24">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) Molar Conductance (Λ_m)</h3>
+  <p class="topic-desc">Conductance of all ions produced by 1 mole of electrolyte placed between two electrodes 1 cm apart; Λ_m = κ × (1000/c).</p><br>
+  <button class="Btn0" id="openWinE25">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) Equivalent Conductance (Λ_eq)</h3>
+  <p class="topic-desc">Conductance of all ions produced by 1 gram-equivalent of electrolyte in solution; Λ_eq = κ × (1000/N).</p><br>
+  <button class="Btn0" id="openWinE26">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) Cell Constant</h3>
+  <p class="topic-desc">A geometric factor of a conductivity cell, defined as l/A; conductivity κ = (cell constant) × (observed conductance).</p><br>
+  <button class="Btn0" id="openWinE27">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">28) Kohlrausch’s Law</h3>
+  <p class="topic-desc">At infinite dilution, the molar conductivity of an electrolyte equals the sum of the individual ionic conductivities.</p><br>
+  <button class="Btn0" id="openWinE28">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">29) Transport Number (Transference Number)</h3>
+  <p class="topic-desc">The fraction of total current carried by a given ion in an electrolyte.</p><br>
+  <button class="Btn0" id="openWinE29">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">30) Faraday’s First Law of Electrolysis</h3>
+  <p class="topic-desc">The mass of a substance deposited or liberated is directly proportional to the quantity of electricity passed.</p><br>
+  <button class="Btn0" id="openWinE30">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">31) Faraday’s Second Law of Electrolysis</h3>
+  <p class="topic-desc">When the same quantity of electricity passes through different electrolytes, the masses deposited are proportional to their equivalent weights.</p><br>
+  <button class="Btn0" id="openWinE31">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">32) Faraday (F)</h3>
+  <p class="topic-desc">The charge of one mole of electrons, approximately 96,500 C mol^-1 (exactly 96,485 C mol^-1).</p><br>
+  <button class="Btn0" id="openWinE32">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">33) Electrolyte</h3>
+  <p class="topic-desc">A substance that produces ions in solution or molten state and conducts electricity.</p><br>
+  <button class="Btn0" id="openWinE33">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">34) Strong Electrolyte</h3>
+  <p class="topic-desc">An electrolyte that dissociates almost completely in solution, producing many ions.</p><br>
+  <button class="Btn0" id="openWinE34">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">35) Weak Electrolyte</h3>
+  <p class="topic-desc">An electrolyte that partially dissociates in solution, producing relatively few ions.</p><br>
+  <button class="Btn0" id="openWinE35">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">36) Primary Cell</h3>
+  <p class="topic-desc">A galvanic cell designed for single use; not rechargeable (e.g., dry cell).</p><br>
+  <button class="Btn0" id="openWinE36">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">37) Secondary Cell</h3>
+  <p class="topic-desc">A rechargeable cell in which the reaction can be reversed by applying an external potential (e.g., lead–acid battery, Li-ion).</p><br>
+  <button class="Btn0" id="openWinE37">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">38) Fuel Cell</h3>
+  <p class="topic-desc">An electrochemical device that converts chemical energy of a continuously supplied fuel and oxidant directly into electricity.</p><br>
+  <button class="Btn0" id="openWinE38">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">39) Corrosion (Electrochemical Corrosion)</h3>
+  <p class="topic-desc">Deterioration of a metal by electrochemical reactions with the environment, often forming oxides/hydroxides.</p><br>
+  <button class="Btn0" id="openWinE39">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">40) Polarization/Overpotential</h3>
+  <p class="topic-desc">Extra potential required to drive an electrode reaction at a finite rate beyond the thermodynamic potential.</p><br>
+  <button class="Btn0" id="openWinE40">View More</button>
+</div>
+
+                <br><br>
+                <div id="Hindi"><U style="color: blue;"> हिंदी में</U></div><br>
+                <div class="topic-card" id="hide">
+                    <h3 class="topic-title" ></h3>
+                    <p class="topic-desc"></p><br><button class = "Btn0" id="openWin15">View More</button>
+                </div>
+               <!-- Chapter 3: विद्युत रसायन (Hindi) -->
+<div class="topic-card">
+  <h3 class="topic-title">1) विद्युत रसायन (Electrochemistry)</h3>
+  <p class="topic-desc">रसायन की वह शाखा जिसमें रेडॉक्स अभिक्रियाओं द्वारा रासायनिक ऊर्जा और विद्युत ऊर्जा का परस्पर रूपांतरण अध्ययन किया जाता है।</p><br>
+  <button class="Btn0" id="openWinHn1">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">2) रेडॉक्स अभिक्रिया</h3>
+  <p class="topic-desc">ऐसी रासायनिक अभिक्रिया जिसमें एक साथ ऑक्सीकरण और अपचयन होते हैं तथा प्रजातियों के बीच इलेक्ट्रॉनों का स्थानांतरण होता है।</p><br>
+  <button class="Btn0" id="openWinHn2">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">3) ऑक्सीकरण</h3>
+  <p class="topic-desc">किसी प्रजाति द्वारा इलेक्ट्रॉनों का ह्रास या ऑक्सीकरण संख्या का बढ़ना।</p><br>
+  <button class="Btn0" id="openWinHn3">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">4) अपचयन</h3>
+  <p class="topic-desc">किसी प्रजाति द्वारा इलेक्ट्रॉनों का ग्रहण या ऑक्सीकरण संख्या का घटना।</p><br>
+  <button class="Btn0" id="openWinHn4">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">5) ऑक्सीकारक (Oxidizing Agent)</h3>
+  <p class="topic-desc">ऐसी प्रजाति जो दूसरों का ऑक्सीकरण कराती है, इलेक्ट्रॉन स्वीकार करती है और स्वयं अपचयित होती है।</p><br>
+  <button class="Btn0" id="openWinHn5">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">6) अपचायक (Reducing Agent)</h3>
+  <p class="topic-desc">ऐसी प्रजाति जो दूसरों का अपचयन कराती है, इलेक्ट्रॉन प्रदान करती है और स्वयं ऑक्सीकृत होती है।</p><br>
+  <button class="Btn0" id="openWinHn6">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">7) विद्युरासायनिक कोश (Electrochemical Cell)</h3>
+  <p class="topic-desc">ऐसा उपकरण जो स्वस्फूर्त रेडॉक्स अभिक्रिया से विद्युत ऊर्जा उत्पन्न करता है (गैल्वैनिक कोश) या विद्युत ऊर्जा से अनस्वस्फूर्त अभिक्रिया करवाता है (विद्युत अपघट्य कोश)।</p><br>
+  <button class="Btn0" id="openWinHn7">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">8) गैल्वैनिक (वोल्टाइक) कोश</h3>
+  <p class="topic-desc">वह कोश जिसमें स्वस्फूर्त रेडॉक्स अभिक्रिया से विद्युत ऊर्जा प्राप्त होती है।</p><br>
+  <button class="Btn0" id="openWinHn8">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">9) विद्युत अपघट्य कोश</h3>
+  <p class="topic-desc">वह कोश जिसमें बाह्य विद्युत ऊर्जा देकर अनस्वस्फूर्त रासायनिक अभिक्रिया कराई जाती है।</p><br>
+  <button class="Btn0" id="openWinHn9">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">10) इलेक्ट्रोड</h3>
+  <p class="topic-desc">ऐसा चालक (धातु आदि) जो बाह्य परिपथ और विलयन के बीच इलेक्ट्रॉनों के आदान-प्रदान की सुविधा देता है।</p><br>
+  <button class="Btn0" id="openWinHn10">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">11) एनोड</h3>
+  <p class="topic-desc">वह इलेक्ट्रोड जहाँ ऑक्सीकरण होता है; गैल्वैनिक कोश में ऋणाग्र तथा विद्युत अपघट्य कोश में धनाग्र होता है।</p><br>
+  <button class="Btn0" id="openWinHn11">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">12) कैथोड</h3>
+  <p class="topic-desc">वह इलेक्ट्रोड जहाँ अपचयन होता है; गैल्वैनिक कोश में धनाग्र तथा विद्युत अपघट्य कोश में ऋणाग्र होता है।</p><br>
+  <button class="Btn0" id="openWinHn12">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">13) इलेक्ट्रोड विभव</h3>
+  <p class="topic-desc">इलेक्ट्रोड और विलयन में आयनों के बीच स्थापित रेडॉक्स संतुलन से उत्पन्न विद्युत विभवांतर।</p><br>
+  <button class="Btn0" id="openWinHn13">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">14) मानक इलेक्ट्रोड विभव (E°)</h3>
+  <p class="topic-desc">मानक दशाओं (1 M, 1 bar, 25°C) में मानक हाइड्रोजन इलेक्ट्रोड की सापेक्षा मापा गया इलेक्ट्रोड विभव।</p><br>
+  <button class="Btn0" id="openWinHn14">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">15) मानक हाइड्रोजन इलेक्ट्रोड (SHE)</h3>
+  <p class="topic-desc">एक सन्दर्भ इलेक्ट्रोड जिसका E° = 0.000 V माना जाता है; 1 bar H2 गैस, 1 M H+ और प्लेटिनम इलेक्ट्रोड (25°C) से बना होता है।</p><br>
+  <button class="Btn0" id="openWinHn15">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">16) कोश विभव (EMF)</h3>
+  <p class="topic-desc">धारा न बहने पर दोनों इलेक्ट्रोडों के बीच विभवांतर; दशा अनुसार E°cell या Ecell द्वारा व्यक्त।</p><br>
+  <button class="Btn0" id="openWinHn16">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">17) कोश आलेखन (Cell Notation)</h3>
+  <p class="topic-desc">कोश का संक्षिप्त निरूपण जिसमें बाएँ एनोड और दाएँ कैथोड लिखे जाते हैं तथा अवस्थाएँ/प्रजातियाँ दर्शाई जाती हैं।</p><br>
+  <button class="Btn0" id="openWinHn17">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">18) साल्ट ब्रिज</h3>
+  <p class="topic-desc">ऐसा उपकरण (आम तौर पर जेली में निष्क्रिय इलेक्ट्रोलाइट) जो परिपथ को पूरा करता है और आयन प्रवाह द्वारा विद्युत तटस्थता बनाए रखता है।</p><br>
+  <button class="Btn0" id="openWinHn18">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">19) गिब्स मुक्त ऊर्जा और EMF</h3>
+  <p class="topic-desc">कोश से प्राप्त अधिकतम गैर-विस्तार कार्य: ΔG = −nFEcell; मानक दशा पर ΔG° = −nFE°cell।</p><br>
+  <button class="Btn0" id="openWinHn19">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">20) नेर्नस्ट समीकरण</h3>
+  <p class="topic-desc">विभव और सांद्रता का संबंध: 25°C पर E = E° − (0.0591/n) log Q।</p><br>
+  <button class="Btn0" id="openWinHn20">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">21) अभिक्रिया भागफल (Q)</h3>
+  <p class="topic-desc">किसी भी अवस्था में उत्पादों और अभिकारकों की क्रियाशीलताओं (या प्रभावी सांद्रताओं) का अनुपात; नेर्नस्ट समीकरण में प्रयुक्त।</p><br>
+  <button class="Btn0" id="openWinHn21">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">22) साम्यांक (K)</h3>
+  <p class="topic-desc">संतुलन पर Q का मान; मानक EMF से सम्बन्ध: ΔG° = −RT ln K = −nFE°cell।</p><br>
+  <button class="Btn0" id="openWinHn22">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">23) चालकता (G)</h3>
+  <p class="topic-desc">विद्युत धारा के प्रवाह की सरलता; G = 1/R, इकाई सीमेंस (S)।</p><br>
+  <button class="Btn0" id="openWinHn23">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">24) विशिष्ट चालकता (κ)</h3>
+  <p class="topic-desc">1 सेमी लंबाई और 1 सेमी² अनुप्रस्थ क्षेत्र वाले विलयन स्तम्भ की चालकता; सांद्रता और ताप पर निर्भर।</p><br>
+  <button class="Btn0" id="openWinHn24">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">25) मोलर चालकता (Λ_m)</h3>
+  <p class="topic-desc">1 मोल इलेक्ट्रोलाइट से बनने वाले सभी आयनों की चालकता; Λ_m = κ × (1000/c)।</p><br>
+  <button class="Btn0" id="openWinHn25">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">26) समतुल्य चालकता (Λ_eq)</h3>
+  <p class="topic-desc">1 ग्राम-समतुल्य इलेक्ट्रोलाइट से बनने वाले सभी आयनों की चालकता; Λ_eq = κ × (1000/N)।</p><br>
+  <button class="Btn0" id="openWinHn26">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">27) कोश नियतांक (Cell Constant)</h3>
+  <p class="topic-desc">चालकता कोश का ज्यामितीय गुणक l/A; κ = (कोश नियतांक) × (प्रेक्षित चालकता)।</p><br>
+  <button class="Btn0" id="openWinHn27">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">28) कोलरॉश का नियम</h3>
+  <p class="topic-desc">अनंत पतलीकरण पर किसी इलेक्ट्रोलाइट की मोलर चालकता उसके आयनिक चालकताओं के योग के बराबर होती है।</p><br>
+  <button class="Btn0" id="openWinHn28">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">29) परिवहन संख्या</h3>
+  <p class="topic-desc">कुल धारा का वह अंश जो किसी विशेष आयन द्वारा वहन किया जाता है।</p><br>
+  <button class="Btn0" id="openWinHn29">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">30) फैराडे का प्रथम विद्युत अपघटन नियम</h3>
+  <p class="topic-desc">जमने/मुक्त होने वाले पदार्थ का द्रव्यमान प्रवाहित विद्युत आवेश के समानुपाती होता है।</p><br>
+  <button class="Btn0" id="openWinHn30">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">31) फैराडे का द्वितीय विद्युत अपघटन नियम</h3>
+  <p class="topic-desc">समान विद्युत आवेश विभिन्न इलेक्ट्रोलाइटों से प्रवाहित करने पर जमने वाले द्रव्यमान उनके समतुल्य भार के समानुपाती होते हैं।</p><br>
+  <button class="Btn0" id="openWinHn31">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">32) फैराडे (F)</h3>
+  <p class="topic-desc">एक मोल इलेक्ट्रॉनों का आवेश; लगभग 96,500 C mol^-1 (सटीक 96,485 C mol^-1)।</p><br>
+  <button class="Btn0" id="openWinHn32">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">33) इलेक्ट्रोलाइट</h3>
+  <p class="topic-desc">ऐसा पदार्थ जो विलयन या द्रवित अवस्था में आयन उत्पन्न करता है और विद्युत का वहन करता है।</p><br>
+  <button class="Btn0" id="openWinHn33">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">34) प्रबल इलेक्ट्रोलाइट</h3>
+  <p class="topic-desc">जो विलयन में लगभग पूर्णतः आयनीकरण कर देता है और अधिक आयन उत्पन्न करता है।</p><br>
+  <button class="Btn0" id="openWinHn34">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">35) दुर्बल इलेक्ट्रोलाइट</h3>
+  <p class="topic-desc">जो विलयन में आंशिक आयनीकरण करता है और अपेक्षाकृत कम आयन देता है।</p><br>
+  <button class="Btn0" id="openWinHn35">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">36) प्राथमिक कोश</h3>
+  <p class="topic-desc">एक बार उपयोग हेतु बना गैल्वैनिक कोश; पुनर्भरणीय नहीं (जैसे ड्राई सेल)।</p><br>
+  <button class="Btn0" id="openWinHn36">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">37) द्वितीयक कोश</h3>
+  <p class="topic-desc">पुनर्भरणीय कोश जिसमें बाह्य विभव लगाने पर अभिक्रिया उलटी की जा सकती है (जैसे सीसा–अम्ल, लि-आयन)।</p><br>
+  <button class="Btn0" id="openWinHn37">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">38) इंधन कोश</h3>
+  <p class="topic-desc">ऐसा विद्युरासायनिक उपकरण जो सतत आपूर्ति किए गए ईंधन और ऑक्सीकृतक की रासायनिक ऊर्जा को सीधे विद्युत में बदलता है।</p><br>
+  <button class="Btn0" id="openWinHn38">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">39) क्षरण (संक्षारण)</h3>
+  <p class="topic-desc">धातु का पर्यावरण के साथ विद्युरासायनिक अभिक्रियाओं द्वारा बिगड़ना, प्रायः ऑक्साइड/हाइड्रॉक्साइड बनने से।</p><br>
+  <button class="Btn0" id="openWinHn39">View More</button>
+</div>
+
+<div class="topic-card">
+  <h3 class="topic-title">40) ध्रुवीकरण/अधिक-विभव</h3>
+  <p class="topic-desc">किसी इलेक्ट्रोड अभिक्रिया को सीमित दर पर चलाने हेतु ऊष्मागतिक विभव से अधिक आवश्यक अतिरिक्त विभव।</p><br>
+  <button class="Btn0" id="openWinHn40">View More</button>
+</div>
+
+                  
+            </div>
+        </section>
+
+        <!-- Formulas Section -->
+        <section class="content-section" id="formulas">
+            <h2 class="section-title" id="formulas-title" title="Essential Formulas - Electrochemistry" style="cursor: default;">Essential Formulas - Electrochemistry</h2>
+            <div class="formulas-container">
+                <!-- Keep your original card unchanged as requested -->
+<div class="formula-card">
+                    <h3 class="formula-title"></h3>
+                    <div class="formula-content"></div>
+                    <p class="formula-desc"></p>
+                </div>
+
+<!-- Class 12 Chemistry – Chapter 3: Electrochemistry (Formulas in your card format) -->
+
+<!-- Conductance Basics -->
+<div class="formula-card">
+  <h3 class="formula-title">Conductance (G) and Resistance (R)</h3>
+  <div class="formula-content">G = 1 / R</div>
+  <p class="formula-desc">Conductance resistance ka reciprocal hai; units: siemens (S) aur ohm (Ω).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Specific Conductance / Conductivity (κ)</h3>
+  <div class="formula-content">κ = G &times; (l / A)</div>
+  <p class="formula-desc">Cell geometry (length l, area A) ke saath conductance ko normalize karta hai; unit S m<sup>−1</sup>.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Cell Constant</h3>
+  <div class="formula-content">Cell Constant = l / A</div>
+  <p class="formula-desc">Electrode spacing/area ka ratio; κ nikalne me directly use hota hai (κ = G &times; l/A).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Molar Conductivity (Λ<sub>m</sub>)</h3>
+  <div class="formula-content">Λ<sub>m</sub> = κ &times; (1000 / C)</div>
+  <p class="formula-desc">Per mole solution conductance at concentration C (mol L<sup>−1</sup>); unit S cm<sup>2</sup> mol<sup>−1</sup>.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Equivalent Conductivity (Λ<sub>eq</sub>)</h3>
+  <div class="formula-content">Λ<sub>eq</sub> = κ &times; (1000 / N)</div>
+  <p class="formula-desc">Per equivalent conductance at normality N; unit S cm<sup>2</sup> eq<sup>−1</sup>.</p>
+</div>
+
+<!-- Kohlrausch and Dissociation -->
+<div class="formula-card">
+  <h3 class="formula-title">Kohlrausch’s Law (∞ dilution)</h3>
+  <div class="formula-content">Λ<sub>m</sub><sup>∞</sup>(AB) = λ<sub>A</sub><sup>∞</sup> + λ<sub>B</sub><sup>∞</sup></div>
+  <p class="formula-desc">Limiting molar conductivity strong electrolytes me ions ke individual contributions ka sum hota hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Degree of Dissociation (weak electrolyte)</h3>
+  <div class="formula-content">α = Λ<sub>m</sub> / Λ<sub>m</sub><sup>∞</sup></div>
+  <p class="formula-desc">Measured Λ<sub>m</sub> ko limiting Λ<sub>m</sub><sup>∞</sup> se compare karke α nikalte hain.</p>
+</div>
+
+<!-- Nernst Equation and EMF -->
+<div class="formula-card">
+  <h3 class="formula-title">Cell EMF (standard)</h3>
+  <div class="formula-content">E<sub>cell</sub><sup>°</sup> = E<sup>°</sup><sub>cathode</sub> − E<sup>°</sup><sub>anode</sub></div>
+  <p class="formula-desc">Standard electrode potentials ka difference; positive E<sub>cell</sub> spontaneous reaction batata hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Nernst Equation (general)</h3>
+  <div class="formula-content">E = E<sup>°</sup> − (RT / nF) ln Q</div>
+  <p class="formula-desc">Non-standard conditions me cell/electrode potential reaction quotient Q par depend karta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Nernst (25&nbsp;&deg;C, 298 K)</h3>
+  <div class="formula-content">E = E<sup>°</sup> − (0.0591 / n) log Q</div>
+  <p class="formula-desc">298 K par convenient decimal-log form; n electrons transferred.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Concentration Cell (same electrode)</h3>
+  <div class="formula-content">E = (0.0591 / n) log (C<sub>high</sub> / C<sub>low</sub>)</div>
+  <p class="formula-desc">Same metal/ion ke different concentrations se EMF generate hota hai (25&nbsp;&deg;C).</p>
+</div>
+
+<!-- Thermodynamic Relations -->
+<div class="formula-card">
+  <h3 class="formula-title">Gibbs Energy from EMF</h3>
+  <div class="formula-content">ΔG = − n F E<sub>cell</sub></div>
+  <p class="formula-desc">Cell potential se spontaneity aur maximum non-expansion work relate hota hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Equilibrium Constant and EMF</h3>
+  <div class="formula-content">E<sup>°</sup> = (0.0591 / n) log K</div>
+  <p class="formula-desc">Standard EMF ka relation equilibrium constant K se (298 K).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Standard Gibbs Energy and K</h3>
+  <div class="formula-content">ΔG<sup>°</sup> = − R T ln K</div>
+  <p class="formula-desc">Equilibrium par standard Gibbs energy change aur K directly linked hote hain.</p>
+</div>
+
+<!-- Faraday’s Laws of Electrolysis -->
+<div class="formula-card">
+  <h3 class="formula-title">Faraday’s First Law</h3>
+  <div class="formula-content">m = Z I t</div>
+  <p class="formula-desc">Deposited/dissolved mass current I aur time t ke proportional (Z electrochemical equivalent).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Total Charge and Moles e<sup>−</sup></h3>
+  <div class="formula-content">Q = I t = n<sub>e−</sub> F</div>
+  <p class="formula-desc">Q coulombs me; F &approx; 96485 C mol<sup>−1</sup> (1 faraday).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Faraday’s Second Law / Mass Formula</h3>
+  <div class="formula-content">m = (M I t) / (n F)</div>
+  <p class="formula-desc">Electrode par deposit/dissolve mass molar mass M, electrons n, current I, time t par depend karta hai.</p>
+</div>
+
+<!-- Conductivity vs Concentration -->
+<div class="formula-card">
+  <h3 class="formula-title">Strong Electrolyte (empirical)</h3>
+  <div class="formula-content">Λ<sub>m</sub> = Λ<sub>m</sub><sup>∞</sup> − A &sqrt;C</div>
+  <p class="formula-desc">Debye–Hückel–Onsager type behavior: C badhne par Λ<sub>m</sub> ghat-ta hai.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Ostwald’s Dilution Law (weak)</h3>
+  <div class="formula-content">K<sub>a</sub> = C α<sup>2</sup> / (1 − α), &nbsp; α = Λ<sub>m</sub> / Λ<sub>m</sub><sup>∞</sup></div>
+  <p class="formula-desc">Weak electrolytes ke liye dissociation constant K<sub>a</sub> aur α conductivity se nikalte hain.</p>
+</div>
+
+<!-- Electrode Potentials (single electrode) -->
+<div class="formula-card">
+  <h3 class="formula-title">Metal–Ion Electrode (M<sup>z+</sup>/M)</h3>
+  <div class="formula-content">E = E<sup>°</sup> − (0.0591 / z) log (1 / a<sub>M<sup>z+</sup></sub>)</div>
+  <p class="formula-desc">Single electrode potential ion activity (≈ concentration) par depend karta hai (25&nbsp;&deg;C).</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Hydrogen Electrode (SHE)</h3>
+  <div class="formula-content">E = 0 − 0.0591 &times; pH</div>
+  <p class="formula-desc">Standard hydrogen electrode ka E<sup>°</sup>=0 V; ideal case me potential pH se relate hota hai.</p>
+</div>
+
+<!-- Batteries and Cells (concise reactions) -->
+<div class="formula-card">
+  <h3 class="formula-title">Lead–Acid Cell (overall)</h3>
+  <div class="formula-content">Pb + PbO<sub>2</sub> + 2H<sub>2</sub>SO<sub>4</sub> &rarr; 2PbSO<sub>4</sub> + 2H<sub>2</sub>O</div>
+  <p class="formula-desc">Discharge ke dauran net reaction; rechargeable secondary battery.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">H<sub>2</sub>–O<sub>2</sub> Fuel Cell</h3>
+  <div class="formula-content">2H<sub>2</sub> + O<sub>2</sub> &rarr; 2H<sub>2</sub>O</div>
+  <p class="formula-desc">Continuous reactant feed se electrical energy; product water.</p>
+</div>
+
+<!-- Useful Constants -->
+<div class="formula-card">
+  <h3 class="formula-title">Faraday Constant (F)</h3>
+  <div class="formula-content">F = 96485 C mol<sup>−1</sup></div>
+  <p class="formula-desc">1 mol electrons dwara carried total charge; electrolysis calculations me essential.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">Gas Constant (R)</h3>
+  <div class="formula-content">R = 8.314 J mol<sup>−1</sup> K<sup>−1</sup> = 0.08206 L atm mol<sup>−1</sup> K<sup>−1</sup></div>
+  <p class="formula-desc">Nernst equation me unit consistency ke liye R ki suitable value choose karein.</p>
+</div>
+
+<div class="formula-card">
+  <h3 class="formula-title">298 K Coefficient</h3>
+  <div class="formula-content">(RT/F) ln 10 = 0.0591 V</div>
+  <p class="formula-desc">25&nbsp;&deg;C par Nernst me decimal log factor ka numeric value.</p>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Lectures Section -->
+        <section class="content-section" id="lectures">
+            <h2 class="section-title" id="lectures-title">Recommended Lecture Videos</h2>
+            <div class="lectures-grid">
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Electrochemistry - One Shot(Hindi)</h3>
+                        <div class="lecture-meta">
+                            <span>Vivek Sir(Taget Board)</span>
+                            <span>3:57:06</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/EAqHfXHAuC4?si=PskdaicINLPRix6n" title="Watch Lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Electrochemistry - One Shot(English)</h3>
+                        <div class="lecture-meta">
+                            <span>Ashu Sir</span>
+                            <span>2:57:18</span>
+                        </div>
+                        <a href="https://youtu.be/nPQ-mvIl_bQ?si=3_z_RDpsp3650f6P" title = "Watch lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title"></h3>
+                        <div class="lecture-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="" class="lecture-btn" target="_blank" rel="noopener noreferrer" onclick="alert('coming soon...')">Watch Lecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="content-section" id="objectives">
+            <h2 class="section-title" id="objectives-title" title="Practice Questions" style="cursor: default;">Practice Questions</h2>
+            <div class="questions-container">
+                <div class="question-card">
+  <h3 class="question-text" id="q1">1 मोल Al³⁺ को Al में अपचयन के लिए कितने आवेश की आवश्यकता होगी? [2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q1" value="A" class="option-input"><span id="q1a">A) 3.0 × 10⁵ C</span></label>
+    <label class="option-label"><input type="radio" name="q1" value="B" class="option-input"><span id="q1b">B) 28.95 × 10⁵ C</span></label>
+    <label class="option-label"><input type="radio" name="q1" value="C" class="option-input"><span id="q1c">C) 289.5 × 10³ C</span></label>
+    <label class="option-label"><input type="radio" name="q1" value="D" class="option-input"><span id="q1d">D) 2895 × 10³ C</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q1">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q2 -->
+<div class="question-card">
+  <h3 class="question-text" id="q2">बिजली की एक फैराडे बराबर होती है कितने कूलम्ब की? [2019A, 2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q2" value="A" class="option-input"><span id="q2a">A) 96550</span></label>
+    <label class="option-label"><input type="radio" name="q2" value="B" class="option-input"><span id="q2b">B) 96500</span></label>
+    <label class="option-label"><input type="radio" name="q2" value="C" class="option-input"><span id="q2c">C) 96000</span></label>
+    <label class="option-label"><input type="radio" name="q2" value="D" class="option-input"><span id="q2d">D) 95500</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q2">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q3 -->
+<div class="question-card">
+  <h3 class="question-text" id="q3">सोडियम फ्लोराइड (NaF) के जलीय घोल का विद्युत विच्छेदन कराने पर धनाग्र एवं ऋणाग्र पर प्राप्त प्रतिफल है—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q3" value="A" class="option-input"><span id="q3a">A) F₂, Na</span></label>
+    <label class="option-label"><input type="radio" name="q3" value="B" class="option-input"><span id="q3b">B) F₂, H₂</span></label>
+    <label class="option-label"><input type="radio" name="q3" value="C" class="option-input"><span id="q3c">C) O₂, Na</span></label>
+    <label class="option-label"><input type="radio" name="q3" value="D" class="option-input"><span id="q3d">D) O₂, H₂</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q3">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q4 -->
+<div class="question-card">
+  <h3 class="question-text" id="q4">निम्न में से कौन-सा ऑक्साइड धातु की तरह विद्युत चालकता दर्शाता है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q4" value="A" class="option-input"><span id="q4a">A) SiO₂</span></label>
+    <label class="option-label"><input type="radio" name="q4" value="B" class="option-input"><span id="q4b">B) MgO</span></label>
+    <label class="option-label"><input type="radio" name="q4" value="C" class="option-input"><span id="q4c">C) SO₂</span></label>
+    <label class="option-label"><input type="radio" name="q4" value="D" class="option-input"><span id="q4d">D) CrO₂</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q4">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q5 -->
+<div class="question-card">
+  <h3 class="question-text" id="q5">एक फैराडे विद्युत धारा प्रवाहित करने पर प्राप्त मात्रा बराबर होगी—[2017A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q5" value="A" class="option-input"><span id="q5a">A) एक ग्राम समतुल्य</span></label>
+    <label class="option-label"><input type="radio" name="q5" value="B" class="option-input"><span id="q5b">B) एक ग्राम मोल</span></label>
+    <label class="option-label"><input type="radio" name="q5" value="C" class="option-input"><span id="q5c">C) विद्युत-रासायनिक तुल्यांक</span></label>
+    <label class="option-label"><input type="radio" name="q5" value="D" class="option-input"><span id="q5d">D) आधा ग्राम समतुल्य</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q5">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q6 -->
+<div class="question-card">
+  <h3 class="question-text" id="q6">ऊष्मा और विद्युत का अच्छा चालक है—[2016A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q6" value="A" class="option-input"><span id="q6a">A) एन्थ्रासाइट कोक</span></label>
+    <label class="option-label"><input type="radio" name="q6" value="B" class="option-input"><span id="q6b">B) हीरा</span></label>
+    <label class="option-label"><input type="radio" name="q6" value="C" class="option-input"><span id="q6c">C) ग्रेफाइट</span></label>
+    <label class="option-label"><input type="radio" name="q6" value="D" class="option-input"><span id="q6d">D) चारकोल</span></label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q6">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q7 -->
+<div class="question-card">
+  <h3 class="question-text" id="q7">फैराडे का विद्युत-अपघटन नियम निम्न में से किससे संबंधित है—[2016A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q7" value="A" class="option-input"><span id="q7a">A) धनायन के परमाणु भार से</span></label>
+    <label class="option-label"><input type="radio" name="q7" value="B" class="option-input"><span id="q7b">B) धनायन की गति से</span></label>
+    <label class="option-label"><input type="radio" name="q7" value="C" class="option-input"><span id="q7c">C) ऋणायन की गति से</span></label>
+    <label class="option-label"><input type="radio" name="q7" value="D" class="option-input"><span id="q7d">D) इलेक्ट्रोलाइट के समतुल्य भार से</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q7">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q8 -->
+<div class="question-card">
+  <h3 class="question-text" id="q8">96500 कूलम्ब विद्युत CuSO₄ के विलयन से कितना तांबा मुक्त करता है? [2013A, 2015A, 2024A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q8" value="A" class="option-input"><span id="q8a">A) 63.5 ग्राम</span></label>
+    <label class="option-label"><input type="radio" name="q8" value="B" class="option-input"><span id="q8b">B) 31.76 ग्राम</span></label>
+    <label class="option-label"><input type="radio" name="q8" value="C" class="option-input"><span id="q8c">C) 96500 ग्राम</span></label>
+    <label class="option-label"><input type="radio" name="q8" value="D" class="option-input"><span id="q8d">D) 100 ग्राम</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q8">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q9 -->
+<div class="question-card">
+  <h3 class="question-text" id="q9">द्रवित NaCl के वैद्युत अपघटन से कैथोड पर क्या मुक्त होता है?</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q9" value="A" class="option-input"><span id="q9a">A) क्लोरीन</span></label>
+    <label class="option-label"><input type="radio" name="q9" value="B" class="option-input"><span id="q9b">B) सोडियम</span></label>
+    <label class="option-label"><input type="radio" name="q9" value="C" class="option-input"><span id="q9c">C) सोडियम अमलगम</span></label>
+    <label class="option-label"><input type="radio" name="q9" value="D" class="option-input"><span id="q9d">D) हाइड्रोजन</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q9">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q10 -->
+<div class="question-card">
+  <h3 class="question-text" id="q10">NaCl के जलीय घोल के वैद्युत अपघटन से कैथोड पर निम्न में से कौन मुक्त होता है?</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q10" value="A" class="option-input"><span id="q10a">A) क्लोरीन</span></label>
+    <label class="option-label"><input type="radio" name="q10" value="B" class="option-input"><span id="q10b">B) सोडियम</span></label>
+    <label class="option-label"><input type="radio" name="q10" value="C" class="option-input"><span id="q10c">C) सोडियम अमलगम</span></label>
+    <label class="option-label"><input type="radio" name="q10" value="D" class="option-input"><span id="q10d">D) हाइड्रोजन</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q10">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q11 -->
+<div class="question-card">
+  <h3 class="question-text" id="q11">LiCl, NaCl और KCl के विलयन की अनंत तनुता पर समतुल्य चालकता का सही क्रम है—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q11" value="A" class="option-input"><span id="q11a">A) LiCl &gt; NaCl &gt; KCl</span></label>
+    <label class="option-label"><input type="radio" name="q11" value="B" class="option-input"><span id="q11b">B) KCl &gt; NaCl &gt; LiCl</span></label>
+    <label class="option-label"><input type="radio" name="q11" value="C" class="option-input"><span id="q11c">C) NaCl &gt; KCl &gt; LiCl</span></label>
+    <label class="option-label"><input type="radio" name="q11" value="D" class="option-input"><span id="q11d">D) LiCl &gt; KCl &gt; NaCl</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q11">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q12 -->
+<div class="question-card">
+  <h3 class="question-text" id="q12">BaSO₄ के संतृप्त घोल की समतुल्य चालकता 400 Ω⁻¹ cm² eq⁻¹ तथा विशिष्ट चालकता 8 × 10⁻⁵ Ω⁻¹ cm⁻¹ है। BaSO₄ का Ksp है—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q12" value="A" class="option-input"><span id="q12a">A) 4 × 10⁻⁸ m²</span></label>
+    <label class="option-label"><input type="radio" name="q12" value="B" class="option-input"><span id="q12b">B) 10⁻⁸ m²</span></label>
+    <label class="option-label"><input type="radio" name="q12" value="C" class="option-input"><span id="q12c">C) 2 × 10⁻⁴ m²</span></label>
+    <label class="option-label"><input type="radio" name="q12" value="D" class="option-input"><span id="q12d">D) 10⁴ m²</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q12">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q13 -->
+<div class="question-card">
+  <h3 class="question-text" id="q13">कथन-आधारित: कथन I — किसी विद्युत-अपघट्य की विशिष्ट चालकता तनुता बढ़ने से घटती है। कथन II — तनु विलयन में आयन तेजी से गतिशील होता है। [2011A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q13" value="A" class="option-input"><span id="q13a">A) दोनों सही; II, I की सही व्याख्या है</span></label>
+    <label class="option-label"><input type="radio" name="q13" value="B" class="option-input"><span id="q13b">B) दोनों सही; पर II, I की सही व्याख्या नहीं</span></label>
+    <label class="option-label"><input type="radio" name="q13" value="C" class="option-input"><span id="q13c">C) I सही, II असत्य</span></label>
+    <label class="option-label"><input type="radio" name="q13" value="D" class="option-input"><span id="q13d">D) I असत्य, II सही</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q13">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q14 -->
+<div class="question-card">
+  <h3 class="question-text" id="q14">विलयन में विद्युत का संचालन कौन करते हैं? [2023A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q14" value="A" class="option-input"><span id="q14a">A) वैद्युत-अपघट्य (Electrolyte)</span></label>
+    <label class="option-label"><input type="radio" name="q14" value="B" class="option-input"><span id="q14b">B) वैद्युत-अनपघट्य (Non-electrolyte)</span></label>
+    <label class="option-label"><input type="radio" name="q14" value="C" class="option-input"><span id="q14c">C) H₂O अणु</span></label>
+    <label class="option-label"><input type="radio" name="q14" value="D" class="option-input"><span id="q14d">D) ताँबे के तार</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q14">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- HINDI: Q15 -->
+<div class="question-card">
+  <h3 class="question-text" id="q15">किसी सेल अभिक्रिया की साम्यावस्था पर सेल का विद्युत वाहक बल (EMF) होता है—[2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q15" value="A" class="option-input"><span id="q15a">A) धनात्मक</span></label>
+    <label class="option-label"><input type="radio" name="q15" value="B" class="option-input"><span id="q15b">B) शून्य</span></label>
+    <label class="option-label"><input type="radio" name="q15" value="C" class="option-input"><span id="q15c">C) ऋणात्मक</span></label>
+    <label class="option-label"><input type="radio" name="q15" value="D" class="option-input"><span id="q15d">D) इनमें से कोई नहीं</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q15">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+<div id="Hindi">in English</div>
+<div class="question-card">
+  <h3 class="question-text" id="q16">How much charge is required to reduce 1 mol of Al³⁺ to Al? [2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q16" value="A" class="option-input"><span id="q16a">A) 3.0 × 10⁵ C</span></label>
+    <label class="option-label"><input type="radio" name="q16" value="B" class="option-input"><span id="q16b">B) 28.95 × 10⁵ C</span></label>
+    <label class="option-label"><input type="radio" name="q16" value="C" class="option-input"><span id="q16c">C) 289.5 × 10³ C</span></label>
+    <label class="option-label"><input type="radio" name="q16" value="D" class="option-input"><span id="q16d">D) 2895 × 10³ C</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q16">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q17 -->
+<div class="question-card">
+  <h3 class="question-text" id="q17">One faraday of electricity is equal to how many coulombs? [2019A, 2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q17" value="A" class="option-input"><span id="q17a">A) 96550</span></label>
+    <label class="option-label"><input type="radio" name="q17" value="B" class="option-input"><span id="q17b">B) 96500</span></label>
+    <label class="option-label"><input type="radio" name="q17" value="C" class="option-input"><span id="q17c">C) 96000</span></label>
+    <label class="option-label"><input type="radio" name="q17" value="D" class="option-input"><span id="q17d">D) 95500</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q17">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q18 -->
+<div class="question-card">
+  <h3 class="question-text" id="q18">On electrolysis of aqueous sodium fluoride (NaF), products at anode and cathode are—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q18" value="A" class="option-input"><span id="q18a">A) F₂, Na</span></label>
+    <label class="option-label"><input type="radio" name="q18" value="B" class="option-input"><span id="q18b">B) F₂, H₂</span></label>
+    <label class="option-label"><input type="radio" name="q18" value="C" class="option-input"><span id="q18c">C) O₂, Na</span></label>
+    <label class="option-label"><input type="radio" name="q18" value="D" class="option-input"><span id="q18d">D) O₂, H₂</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q18">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q19 -->
+<div class="question-card">
+  <h3 class="question-text" id="q19">Which oxide shows metallic electrical behaviour (conductivity)? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q19" value="A" class="option-input"><span id="q19a">A) SiO₂</span></label>
+    <label class="option-label"><input type="radio" name="q19" value="B" class="option-input"><span id="q19b">B) MgO</span></label>
+    <label class="option-label"><input type="radio" name="q19" value="C" class="option-input"><span id="q19c">C) SO₂</span></label>
+    <label class="option-label"><input type="radio" name="q19" value="D" class="option-input"><span id="q19d">D) CrO₂</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q19">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q20 -->
+<div class="question-card">
+  <h3 class="question-text" id="q20">The amount deposited on passing one faraday of electricity is equal to—[2017A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q20" value="A" class="option-input"><span id="q20a">A) One gram equivalent</span></label>
+    <label class="option-label"><input type="radio" name="q20" value="B" class="option-input"><span id="q20b">B) One gram mole</span></label>
+    <label class="option-label"><input type="radio" name="q20" value="C" class="option-input"><span id="q20c">C) Electrochemical equivalent</span></label>
+    <label class="option-label"><input type="radio" name="q20" value="D" class="option-input"><span id="q20d">D) Half gram equivalent</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q20">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q21 -->
+<div class="question-card">
+  <h3 class="question-text" id="q21">Good conductor of heat and electricity is—[2016A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q21" value="A" class="option-input"><span id="q21a">A) Anthracite coke</span></label>
+    <label class="option-label"><input type="radio" name="q21" value="B" class="option-input"><span id="q21b">B) Diamond</span></label>
+    <label class="option-label"><input type="radio" name="q21" value="C" class="option-input"><span id="q21c">C) Graphite</span></label>
+    <label class="option-label"><input type="radio" name="q21" value="D" class="option-input"><span id="q21d">D) Charcoal</span></label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q21">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q22 -->
+<div class="question-card">
+  <h3 class="question-text" id="q22">Faraday’s law of electrolysis is related to—[2016A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q22" value="A" class="option-input"><span id="q22a">A) Atomic mass of cation</span></label>
+    <label class="option-label"><input type="radio" name="q22" value="B" class="option-input"><span id="q22b">B) Mobility of cation</span></label>
+    <label class="option-label"><input type="radio" name="q22" value="C" class="option-input"><span id="q22c">C) Mobility of anion</span></label>
+    <label class="option-label"><input type="radio" name="q22" value="D" class="option-input"><span id="q22d">D) Equivalent mass of electrolyte</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q22">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q23 -->
+<div class="question-card">
+  <h3 class="question-text" id="q23">96500 C of electricity liberates how much copper from CuSO₄ solution? [2013A, 2015A, 2024A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q23" value="A" class="option-input"><span id="q23a">A) 63.5 g</span></label>
+    <label class="option-label"><input type="radio" name="q23" value="B" class="option-input"><span id="q23b">B) 31.76 g</span></label>
+    <label class="option-label"><input type="radio" name="q23" value="C" class="option-input"><span id="q23c">C) 96500 g</span></label>
+    <label class="option-label"><input type="radio" name="q23" value="D" class="option-input"><span id="q23d">D) 100 g</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q23">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q24 -->
+<div class="question-card">
+  <h3 class="question-text" id="q24">Electrolysis of molten NaCl liberates at the cathode—</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q24" value="A" class="option-input"><span id="q24a">A) Chlorine</span></label>
+    <label class="option-label"><input type="radio" name="q24" value="B" class="option-input"><span id="q24b">B) Sodium</span></label>
+    <label class="option-label"><input type="radio" name="q24" value="C" class="option-input"><span id="q24c">C) Sodium amalgam</span></label>
+    <label class="option-label"><input type="radio" name="q24" value="D" class="option-input"><span id="q24d">D) Hydrogen</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q24">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q25 -->
+<div class="question-card">
+  <h3 class="question-text" id="q25">Electrolysis of aqueous NaCl at the cathode liberates—</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q25" value="A" class="option-input"><span id="q25a">A) Chlorine</span></label>
+    <label class="option-label"><input type="radio" name="q25" value="B" class="option-input"><span id="q25b">B) Sodium</span></label>
+    <label class="option-label"><input type="radio" name="q25" value="C" class="option-input"><span id="q25c">C) Sodium amalgam</span></label>
+    <label class="option-label"><input type="radio" name="q25" value="D" class="option-input"><span id="q25d">D) Hydrogen</span></label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q25">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q26 -->
+<div class="question-card">
+  <h3 class="question-text" id="q26">At infinite dilution, the correct order of equivalent conductance for LiCl, NaCl and KCl is—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q26" value="A" class="option-input"><span id="q26a">A) LiCl &gt; NaCl &gt; KCl</span></label>
+    <label class="option-label"><input type="radio" name="q26" value="B" class="option-input"><span id="q26b">B) KCl &gt; NaCl &gt; LiCl</span></label>
+    <label class="option-label"><input type="radio" name="q26" value="C" class="option-input"><span id="q26c">C) NaCl &gt; KCl &gt; LiCl</span></label>
+    <label class="option-label"><input type="radio" name="q26" value="D" class="option-input"><span id="q26d">D) LiCl &gt; KCl &gt; NaCl</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q26">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q27 -->
+<div class="question-card">
+  <h3 class="question-text" id="q27">For saturated BaSO₄ solution, Λeq = 400 Ω⁻¹ cm² eq⁻¹ and κ = 8 × 10⁻⁵ Ω⁻¹ cm⁻¹. The solubility product Ksp is—[2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q27" value="A" class="option-input"><span id="q27a">A) 4 × 10⁻⁸ m²</span></label>
+    <label class="option-label"><input type="radio" name="q27" value="B" class="option-input"><span id="q27b">B) 10⁻⁸ m²</span></label>
+    <label class="option-label"><input type="radio" name="q27" value="C" class="option-input"><span id="q27c">C) 2 × 10⁻⁴ m²</span></label>
+    <label class="option-label"><input type="radio" name="q27" value="D" class="option-input"><span id="q27d">D) 10⁴ m²</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q27">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q28 -->
+<div class="question-card">
+  <h3 class="question-text" id="q28">Assertion based: I—Specific conductance of an electrolyte decreases with dilution. II—Ions move faster in dilute solutions. [2011A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q28" value="A" class="option-input"><span id="q28a">A) Both true; II explains I</span></label>
+    <label class="option-label"><input type="radio" name="q28" value="B" class="option-input"><span id="q28b">B) Both true; II not explanation of I</span></label>
+    <label class="option-label"><input type="radio" name="q28" value="C" class="option-input"><span id="q28c">C) I true; II false</span></label>
+    <label class="option-label"><input type="radio" name="q28" value="D" class="option-input"><span id="q28d">D) I false; II true</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q28">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q29 -->
+<div class="question-card">
+  <h3 class="question-text" id="q29">Who conducts electricity in solutions? [2023A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q29" value="A" class="option-input"><span id="q29a">A) Electrolytes</span></label>
+    <label class="option-label"><input type="radio" name="q29" value="B" class="option-input"><span id="q29b">B) Non-electrolytes</span></label>
+    <label class="option-label"><input type="radio" name="q29" value="C" class="option-input"><span id="q29c">C) Water molecules</span></label>
+    <label class="option-label"><input type="radio" name="q29" value="D" class="option-input"><span id="q29d">D) Copper wire</span></label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q29">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- EN: Q30 -->
+<div class="question-card">
+  <h3 class="question-text" id="q30">At equilibrium of a cell reaction, the EMF of the cell is—[2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label"><input type="radio" name="q30" value="A" class="option-input"><span id="q30a">A) Positive</span></label>
+    <label class="option-label"><input type="radio" name="q30" value="B" class="option-input"><span id="q30b">B) Zero</span></label>
+    <label class="option-label"><input type="radio" name="q30" value="C" class="option-input"><span id="q30c">C) Negative</span></label>
+    <label class="option-label"><input type="radio" name="q30" value="D" class="option-input"><span id="q30d">D) None of these</span></label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q30">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">Chemistry Exam Essentials - Electrochemistry Chapter | Created for Class 12 Students</p>
+        <p class="footer-text">All content is for educational purposes only</p>
+    </footer>
+    
+  <script src="Chemistry Lesson-1.js"></script>
+  <script>
+    
+  </script>
+
+    <script>
+        // ====== Language Translations ======
+        const translations = {
+            en: {
+                "page-title": "Chemistry — Chapter 3 (Electrochemistry) — Exam Essentials",
+                "topics-title": "Key Topics - Electrochemistry Chemistry",
+                "formulas-title": "Essential Formulas - Electrochemistry",
+                "lectures-title": "Recommended Lecture Videos",
+                "objectives-title": "Practice Questions",
+                "nav-topics": "Topics",
+                "nav-formulas": "Formulas",
+                "nav-lectures": "Lectures",
+                "nav-objectives": "Objectives",
+                "lang-toggle": "English",
+                "q1": "1. Which crystal system does Sodium chloride (NaCl) follow?",
+                "q1a": "A) Simple Cubic (SC)",
+                "q1b": "B) Body-Centered Cubic (BCC)",
+                "q1c": "C) Face-Centered Cubic (FCC)",
+                "q1d": "D) Hexagonal Close Packing (HCP)",
+                "q2": "2. Packing efficiency of FCC is approximately:",
+                "q2a": "A) 52%",
+                "q2b": "B) 68%",
+                "q2c": "C) 74%",
+                "q2d": "D) 42%",
+                "q3": "3. Bragg's law relates:",
+                "q3a": "A) wavelength & interplanar spacing",
+                "q3b": "B) density & mass",
+                "q3c": "C) radius & lattice parameter",
+                "q3d": "D) none of these"
+            },
+            hi: {
+                "page-title": "रसायन विज्ञान — अध्याय 1 (विद्युत रसायन) — परीक्षा आवश्यक सामग्री",
+                "topics-title": "मुख्य विषय - विद्युत रसायन रसायन",
+                "formulas-title": "आवश्यक सूत्र - विद्युत रसायन",
+                "lectures-title": "अनुशंसित व्याख्यान वीडियो",
+                "objectives-title": "अभ्यास प्रश्न",
+                "nav-topics": "विषय",
+                "nav-formulas": "सूत्र",
+                "nav-lectures": "व्याख्यान",
+                "nav-objectives": "प्रश्न",
+                "lang-toggle": "English",
+                "q1": "1. सोडियम क्लोराइड (NaCl) किस क्रिस्टल प्रणाली का अनुसरण करता है?",
+                "q1a": "क) सरल घनीय (SC)",
+                "q1b": "ख) अंत: केन्द्रित घनीय (BCC)",
+                "q1c": "ग) फलक केन्द्रित घनीय (FCC)",
+                "q1d": "घ) षट्कोणीय निविड संकुलन (HCP)",
+                "q2": "2. FCC की संकुलन दक्षता लगभग है:",
+                "q2a": "क) 52%",
+                "q2b": "ख) 68%",
+                "q2c": "ग) 74%",
+                "q2d": "घ) 42%",
+                "q3": "3. ब्रैग का नियम संबंधित है:",
+                "q3a": "क) तरंगदैर्ध्य और अंतरतलीय दूरी से",
+                "q3b": "ख) घनत्व और द्रव्यमान से",
+                "q3c": "ग) त्रिज्या और जालक मापदंड से",
+                "q3d": "घ) इनमें से कोई नहीं"
+            }
+        };
+
+        // ====== Initial Setup ======
+        let currentLang = 'en';
+
+        // ====== DOM Elements ======
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const langToggle = document.getElementById('langToggle');
+        const langToggleText = langToggle.querySelector('span');
+
+        // ====== Navigation Functionality ======
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ====== Language Toggle Functionality ======
+        langToggle.addEventListener('click', () => {
+            // Toggle language
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            // Update all translatable elements
+            Object.keys(translations[currentLang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT') {
+                        // For radio buttons, update the next span
+                        el.nextElementSibling.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+            
+            // Update toggle button text
+            langToggleText.textContent = translations[currentLang]['lang-toggle'];
+        });
+
+        // ====== Question Checking Functionality ======
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('check-btn')) {
+                const button = e.target;
+                const questionId = button.getAttribute('data-question');
+                const correctAnswer = button.getAttribute('data-answer');
+                const questionCard = button.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                // Get selected option
+                const selectedOption = questionCard.querySelector(`input[name="${questionId}"]:checked`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Please select an answer!';
+                    feedback.className = 'feedback incorrect';
+                    return;
+                }
+                
+                if (selectedOption.value === correctAnswer) {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+        });
+
+        // ====== Accessibility Features ======
+        // Keyboard navigation for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Focus styles for better keyboard navigation
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab') {
+                document.documentElement.classList.add('keyboard-focus');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.documentElement.classList.remove('keyboard-focus');
+        });
+    </script>
+   
+</body>
+</html>

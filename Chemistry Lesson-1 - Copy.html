@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry — Chapter 1 (Solid State) — Exam Essentials</title>
+    <style>
+        /* ===== CSS Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Root Variables ===== */
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --primary-dark: #000051;
+            --secondary: #ffab00;
+            --secondary-light: #ffdd4b;
+            --secondary-dark: #c67c00;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --bg-light: #ffffff;
+            --bg-dark: #e0e0e0;
+            --success: #2e7d32;
+            --error: #c62828;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== Base Styles ===== */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== Navigation Bar ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-light);
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        /* ===== Language Toggle ===== */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 171, 0, 0.1);
+        }
+
+        /* ===== Main Content ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* ===== Topics Section ===== */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Formulas Section ===== */
+        .formulas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formula-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .formula-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-desc {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Lectures Section ===== */
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-thumbnail {
+            height: 160px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .lecture-body {
+            padding: 1.5rem;
+        }
+
+        .lecture-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lecture-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .lecture-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== Objectives Section ===== */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .option-input {
+            accent-color: var(--primary);
+        }
+
+        .check-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .check-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(198, 40, 40, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary);
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .navbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .topics-grid,
+            .formulas-container,
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #Hindi {
+            color: rgb(250, 15, 15);
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgb(129, 118, 118);
+            margin-left: 50%;
+            margin-top: 50px;
+        }
+        #hide {
+            visibility: hidden;
+        }
+       /* -------------------------
+   .Btn0 — Duniya ka sundar button
+   ------------------------- */
+
+/* Theme variables (aap badal sakte ho) */
+.Btn0 {
+  --btn-bg-1: #6a8cff;        /* primary gradient start */
+  --btn-bg-2: #4f6ef6;        /* primary gradient end */
+  --btn-accent: #ffd166;      /* accent / glow */
+  --btn-text: #ffffff;
+  --btn-shadow-1: 0 6px 20px rgba(79,110,246,0.28);
+  --btn-shadow-2: 0 2px 6px rgba(44,52,80,0.12);
+  --btn-radius: 14px;
+  --btn-padding-y: 12px;
+  --btn-padding-x: 20px;
+  --btn-font-size: 15px;
+  --btn-font-weight: 700;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  color: var(--btn-text);
+  background: linear-gradient(135deg, var(--btn-bg-1), var(--btn-bg-2));
+  box-shadow: var(--btn-shadow-1), var(--btn-shadow-2), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:
+    transform 240ms cubic-bezier(.2,.9,.2,1),
+    box-shadow 240ms cubic-bezier(.2,.9,.2,1),
+    filter 240ms cubic-bezier(.2,.9,.2,1),
+    opacity 200ms linear;
+  transform: translateZ(0);
+  outline: none;
+  overflow: hidden; /* shine pseudo-element stays clipped */
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.12);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* subtle glossy highlight */
+.Btn0::before{
+  content: "";
+  position: absolute;
+  left: -30%;
+  top: -60%;
+  width: 160%;
+  height: 220%;
+  background: radial-gradient(600px 200px at 20% 10%, rgba(255,255,255,0.18), rgba(255,255,255,0) 25%),
+              linear-gradient(120deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  transform: rotate(-18deg) translateY(0);
+  transition: transform 600ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+/* small accent glow under the button (neat depth) */
+.Btn0::after{
+  content: "";
+  position: absolute;
+  inset: auto 8% -18% 8%;
+  height: 18px;
+  filter: blur(18px);
+  background: linear-gradient(90deg, rgba(255,209,102,0.16), rgba(79,110,246,0.12));
+  opacity: 1;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1), opacity 240ms;
+  pointer-events: none;
+}
+
+/* icon styling */
+.Btn0__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 0;
+  transform-origin: center;
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1);
+  color: rgba(255,255,255,0.95);
+}
+
+/* text */
+.Btn0__text{
+  display: inline-block;
+  transform-origin: left center;
+  letter-spacing: 0.2px;
+}
+
+/* Hover — lift + stronger glow + subtle slide of gloss */
+.Btn0:hover{
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(79,110,246,0.22), 0 6px 14px rgba(44,52,80,0.14);
+  filter: saturate(1.06) contrast(1.02);
+}
+.Btn0:hover::before{
+  transform: rotate(-18deg) translateY(-6%);
+  opacity: 1;
+}
+.Btn0:hover::after{
+  transform: translateY(-4px);
+  opacity: 1;
+}
+.Btn0:hover .Btn0__icon{
+  transform: translateY(-2px) rotate(-6deg) scale(1.03);
+}
+
+/* Active / pressed state — tactile feedback */
+.Btn0:active{
+  transform: translateY(0) scale(0.995);
+  box-shadow: 0 6px 12px rgba(44,52,80,0.12), inset 0 2px 6px rgba(0,0,0,0.12);
+}
+.Btn0:active::before{
+  transform: rotate(-18deg) translateY(2%);
+  opacity: 0.9;
+}
+.Btn0:active .Btn0__icon{
+  transform: translateY(0) scale(0.98);
+}
+
+/* Focus-visible for keyboard users (accessibility) */
+.Btn0:focus-visible{
+  box-shadow: 0 20px 40px rgba(79,110,246,0.18), 0 0 0 6px rgba(79,110,246,0.12);
+  outline: none;
+}
+.Btn0:focus-visible::after{
+  opacity: 0.85;
+}
+
+/* Disabled state */
+.Btn0[disabled],
+.Btn0:disabled{
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.62;
+  filter: grayscale(0.15) saturate(0.9);
+  box-shadow: 0 6px 14px rgba(25,30,40,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.Btn0[disabled]::before,
+.Btn0[disabled]::after{
+  opacity: 0.0;
+}
+
+/* Size variants */
+.Btn0.sm{
+  --btn-padding-y: 8px;
+  --btn-padding-x: 12px;
+  --btn-font-size: 13px;
+  border-radius: 10px;
+}
+.Btn0.lg{
+  --btn-padding-y: 16px;
+  --btn-padding-x: 26px;
+  --btn-font-size: 16px;
+  border-radius: 16px;
+}
+.Btn0.xl{
+  --btn-padding-y: 20px;
+  --btn-padding-x: 32px;
+  --btn-font-size: 18px;
+  border-radius: 20px;
+}
+
+/* Variant: outline / ghost */
+.Btn0.ghost{
+  background: transparent;
+  color: var(--btn-bg-1);
+  box-shadow: none;
+  border: 1.5px solid rgba(79,110,246,0.12);
+}
+.Btn0.ghost:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(79,110,246,0.08);
+}
+
+/* Variant: secondary (dark) */
+.Btn0.secondary{
+  --btn-bg-1: #1f2a44;
+  --btn-bg-2: #273556;
+  --btn-accent: #7de4ff;
+  color: #e6f0ff;
+  box-shadow: 0 12px 28px rgba(15,20,40,0.36);
+}
+.Btn0.secondary::after{
+  background: linear-gradient(90deg, rgba(125,228,255,0.06), rgba(35,50,90,0.08));
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce){
+  .Btn0,
+  .Btn0::before,
+  .Btn0::after,
+  .Btn0__icon{
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* small responsive tweak */
+@media (max-width:420px){
+  .Btn0{
+    --btn-padding-y: 10px;
+    --btn-padding-x: 16px;
+    --btn-font-size: 14px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8s-1.5-2-4-2-4 2-4 2"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    <path d="M10 16s1.5 2 4 2 4-2 4-2"></path>
+                </svg>
+            </div>
+            <h1 class="logo-text" id="page-title" title="Chapter 1 (Solid State)" style="cursor: default;">Chemistry — Chapter 1 (Solid State) — Exam Essentials</h1>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="topics" title="Topics">Topics</a></li>
+                <li><a href="#" class="nav-link" data-target="formulas" title="Formulas">Formulas</a></li>
+                <li><a href="#" class="nav-link" data-target="lectures" title="Lectures">Lectures</a></li>
+                <li><a href="#" class="nav-link" data-target="objectives" title="Objectives">Objectives</a></li>
+            </ul>
+            <button class="lang-toggle" id="langToggle">
+                <span>हिंदी</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Topics Section (Default Active) -->
+        <section class="content-section active" id="topics">
+            <h2 class="section-title" id="topics-title" title="Lesson 1 - Solid State" style="cursor: default;">Lesson 1 - Solid State </h2>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    <h3 class="topic-title">1. Classification of Solids</h3>
+                    <p class="topic-desc">Crystalline vs amorphous solids, differences in structure, properties and examples of each type with real-world applications.</p><br><button class="Btn0" id="openWin1">View More</button> 
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">2. Crystalline Solid</h3>
+                    <p class="topic-desc">A solid in which particles are arranged in a regular, repeating, three-dimensional pattern known as long-range order. These solids have sharp melting points, well-defined geometric shapes,
+                         and diffract X-rays due to ordered arrangement. They are anisotropic, meaning their properties vary with direction.</p><br><button class = "Btn0" id="openWin2">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">3. Amorphous Solid</h3>
+                    <p class="topic-desc">Solids that lack long-range order; particles are randomly arranged with only short-range order. They are isotropic (properties same in all directions),
+                         lack sharp melting points, and soften gradually over a range of temperatures—behaving like “supercooled liquids.”</p><br><button class = "Btn0" id="openWin3">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">4. Crystal lattice</h3>
+                    <p class="topic-desc">The crystal lattice is an infinite array of points depicting the geometric positions in a crystalline solid. The crystal structure is formed when a specific motif or basis is placed at each lattice point 
+                        and repeated throughout space, defining the symmetry and properties of the material.</p><br><button class = "Btn0" id="openWin4">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">5. Unit Cell</h3>
+                    <p class="topic-desc">The smallest repeating unit of a crystal lattice that, when translated through space, reproduces the entire lattice.
+                         It reflects the full symmetry of the crystal and is defined by lattice parameters (edge lengths and angles).</p><br><button class = "Btn0" id="openWin5">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">6. Primitive and Non Primitive Cell</h3>
+                    <p class="topic-desc">A primitive unit cell contains only one lattice point (one basis) and is the smallest possible volume. 
+                        A non-primitive (conventional) unit cell may contain more than one lattice point, chosen for convenience to reflect symmetry.</p><br><button class = "Btn0" id="openWin6">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">7. Bravais Lattice</h3>
+                    <p class="topic-desc">A set of infinite discrete points in space having identical surroundings,
+                         generated by integer combinations of fundamental translation vectors. It’s the mathematical backbone of crystal structures.</p><br><button class = "Btn0" id="openWin7">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">8. Packing Efficiency</h3>
+                    <p class="topic-desc">The fraction of volume in a unit
+                         cell occupied by constituent particles, compared to the total cell volume. In solid state, SC ≈ 52.4%, BCC ≈ 68%, and FCC/CCP ≈ 74%.</p><br><button class = "Btn0" id="openWin8">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">9. Crystallographic Deffect</h3>
+                    <p class="topic-desc">Any disruption in the regular pattern of a crystal lattice, including point defects (vacancies, interstitials, substitutional impurities), line defects (dislocations),
+                         planar defects (grain boundaries), and bulk defects. These affect physical properties like conductivity and strength.</p><br><button class = "Btn0" id="openWin9">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">10. Vacancy</h3>
+                    <p class="topic-desc">A type of point defect where a lattice site that should be occupied is empty. 
+                        It causes local distortion and affects properties like density and diffusion.</p><br><button class = "Btn0" id="openWin10">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">11.interstitial Defect</h3>
+                    <p class="topic-desc">A defect where a particle occupies a normally unoccupied position between lattice sites.
+                         This can strain the crystal and alter its properties.</p><br><button class = "Btn0" id="openWin11">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">12. Color Center(F-Center)</h3>
+                    <p class="topic-desc">A point defect typically in ionic crystals where an anion vacancy traps an unpaired electron. 
+                        This defect absorbs visible light, giving the crystal color.</p><br><button class = "Btn0" id="openWin12">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">13. X-ray Diffraction</h3>
+                    <p class="topic-desc">X-ray diffraction is a non-destructive technique to determine crystal structure by measuring diffraction patterns from lattice planes.
+                         Bragg’s law (nλ = 2d sin θ) relates wavelength and interplanar spacing.</p><br><button class = "Btn0" id="openWin13">View More</button>
+                </div>
+                <div class="topic-card">
+                    <h3 class="topic-title">14. Crystallinity</h3>
+                    <p class="topic-desc">The measure of structural order in a solid. A higher degree of crystallinity means more regular
+                         periodic arrangement of particles, which significantly influences properties—hardness, density, transparency.</p><br><button class = "Btn0" id="openWin14">View More</button>
+                </div><br>
+                <br><br>
+                <div id="Hindi"><U style="color: blue;"> हिंदी में</U></div><br>
+                <div class="topic-card" id="hide">
+                    <h3 class="topic-title" ></h3>
+                    <p class="topic-desc"></p><br><button class = "Btn0" id="openWin15">View More</button>
+                </div>
+                <div class="topic-card">
+    <h3 class="topic-title">1. ठोस</h3>
+    <p class="topic-desc">वह पदार्थ जिसकी निश्चित आकृति और आयतन होता है, उसे ठोस कहते हैं। इसमें कण बहुत सघन रूप से जुड़े होते हैं और केवल कंपन कर सकते हैं।</p><br><button class = "Btn0" id="openWin16">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">2. ठोस के प्रकार</h3>
+    <p class="topic-desc">क्रिस्टलीय ठोस: जिनमें कण एक निश्चित क्रम में व्यवस्थित होते हैं।<br>अमॉर्फ ठोस: जिनमें कण अनियमित रूप से व्यवस्थित होते हैं।</p><br><button class = "Btn0" id="openWin17">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">3. क्रिस्टल लैटिस</h3>
+    <p class="topic-desc">त्रि-आयामी ज्यामितीय व्यवस्था जिसमें सभी बिंदु एक जैसे परिवेश में होते हैं, उसे क्रिस्टल लैटिस कहते हैं।</p><br><button class = "Btn0" id="openWin18">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">4. यूनिट सेल</h3>
+    <p class="topic-desc">क्रिस्टल लैटिस का सबसे छोटा भाग, जिसे दोहराने पर पूरा क्रिस्टल बनता है, यूनिट सेल कहलाता है।</p><br><button class = "Btn0" id="openWin19">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">5. यूनिट सेल के प्रकार</h3>
+    <p class="topic-desc">प्रिमिटिव: केवल कोनों पर कण।<br>बॉडी सेंटर्ड (BCC): कोनों के साथ केंद्र में कण।<br>फेस सेंटर्ड (FCC): कोनों और प्रत्येक फेस के केंद्र में कण।</p><br><button class = "Btn0" id="openWin20">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">6. समन्वय संख्या</h3>
+    <p class="topic-desc">किसी कण के सबसे नज़दीकी कणों की संख्या को समन्वय संख्या कहते हैं।</p><br><button class = "Btn0" id="openWin21">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">7. रिक्त स्थान / शून्य</h3>
+    <p class="topic-desc">किसी ठोस में पैकिंग के कारण बची हुई खाली जगह को रिक्त स्थान या void कहते हैं।</p><br><button class = "Btn0" id="openWin22">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">8. पैकिंग दक्षता</h3>
+    <p class="topic-desc">क्रिस्टल में उपलब्ध कुल स्थान की तुलना में कणों द्वारा घेर लिया गया स्थान पैकिंग दक्षता कहलाता है।</p><br><button class = "Btn0" id="openWin23">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">9. बिंदु दोष</h3>
+    <p class="topic-desc">क्रिस्टल के कुछ स्थानों पर कणों की कमी या अतिरिक्त उपस्थिति को बिंदु दोष कहते हैं।<br>प्रकार: स्टॉइकियोमेट्रिक दोष, गैर-स्टॉइकियोमेट्रिक दोष, अशुद्धि दोष।</p><br><button class = "Btn0" id="openWin24">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">10. विद्युत गुण</h3>
+    <p class="topic-desc">ठोस विद्युत चालक (metals), अर्धचालक (semiconductors) और कुचालक (insulators) हो सकते हैं।</p><br><button class = "Btn0" id="openWin25">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">11. चुम्बकीय गुण</h3>
+    <p class="topic-desc">ठोस को चुम्बकीय गुणों के आधार पर पाँच भागों में बाँटा जाता है: डायमैग्नेटिक, पैरामैग्नेटिक, फेरोमैग्नेटिक, एंटी-फेरोमैग्नेटिक और फेर्रीमैग्नेटिक।</p><br><button class = "Btn0" id="openWin26">View More</button>
+</div>
+
+<div class="topic-card">
+    <h3 class="topic-title">12. एक्स-रे विवर्तन विधि</h3>
+    <p class="topic-desc">क्रिस्टल की संरचना जानने के लिए एक्स-रे का प्रयोग किया जाता है। इसे ब्रैग का नियम द्वारा समझा जाता है: nλ = 2d sinθ</p><br><button class = "Btn0" id="openWin27">View More</button>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Formulas Section -->
+        <section class="content-section" id="formulas">
+            <h2 class="section-title" id="formulas-title" title="Essential Formulas - Solid State" style="cursor: default;">Essential Formulas - Solid State</h2>
+            <div class="formulas-container">
+                <div class="formula-card">
+                    <h3 class="formula-title">Density of Crystal</h3>
+                    <div class="formula-content">ρ = (Z × M) / (N<sub>A</sub> × a<sup>3</sup>)</div>
+                    <p class="formula-desc">Where Z = number of atoms per unit cell, M = molar mass (g/mol), N<sub>A</sub> = Avogadro's number (6.022×10<sup>23</sup>), a = lattice parameter (cm)</p>
+                </div>
+                <div class="formula-card">
+                    <h3 class="formula-title">Simple Cubic (SC)</h3>
+                    <div class="formula-content">a = 2r</div>
+                    <p class="formula-desc">Relation between atomic radius (r) and lattice parameter (a) in simple cubic structure with coordination number 6.</p>
+                </div>
+                <div class="formula-card">
+                    <h3 class="formula-title">Body-Centered Cubic (BCC)</h3>
+                    <div class="formula-content">a = 4r / √3</div>
+                    <p class="formula-desc">Relation in BCC structure (coordination number 8) where body diagonal contains 4 atomic radii.</p>
+                </div>
+                <div class="formula-card">
+                    <h3 class="formula-title">Face-Centered Cubic (FCC)</h3>
+                    <div class="formula-content">a = 2√2 r</div>
+                    <p class="formula-desc">Relation in FCC structure (coordination number 12) where face diagonal contains 4 atomic radii.</p>
+                </div>
+                <div class="formula-card">
+                    <h3 class="formula-title">Packing Efficiencies</h3>
+                    <div class="formula-content">
+                        SC ≈ 52.4%<br>
+                        BCC ≈ 68%<br>
+                        FCC ≈ 74%
+                    </div>
+                    <p class="formula-desc">Percentage of unit cell volume occupied by atoms. FCC has highest efficiency among cubic structures.</p>
+                </div>
+                <div class="formula-card">
+                    <h3 class="formula-title">Bragg's Law</h3>
+                    <div class="formula-content">nλ = 2d sinθ</div>
+                    <p class="formula-desc">For cubic crystals: d<sub>hkl</sub> = a / √(h² + k² + l²) where (hkl) are Miller indices of crystal planes.</p>
+                </div>
+                <div class="formula-card">
+    <h3 class="formula-title">Density of Unit Cell</h3>
+    <div class="formula-content">&rho; = (Z &times; M) / (N<sub>A</sub> &times; a<sup>3</sup>)</div>
+    <p class="formula-desc">Z = number of atoms per unit cell, M = molar mass, a = edge length, N<sub>A</sub> = Avogadro number</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Simple Cubic (SC)</h3>
+    <div class="formula-content">a = 2r</div>
+    <p class="formula-desc">Edge length is equal to 2 times the atomic radius.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Body Centered Cubic (BCC)</h3>
+    <div class="formula-content">a = 4r / &radic;3</div>
+    <p class="formula-desc">Derived from the body diagonal relation. A unit cell contains 2 atoms (Z = 2).</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Face Centered Cubic (FCC)</h3>
+    <div class="formula-content">a = 4r / &radic;2</div>
+    <p class="formula-desc">In FCC/CCP system, there are 4 atoms per unit cell (Z = 4).</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Packing Efficiency (SC)</h3>
+    <div class="formula-content">(π/6) × 100 = 52.4%</div>
+    <p class="formula-desc">Packing efficiency of simple cubic structure is 52.4%.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Packing Efficiency (BCC)</h3>
+    <div class="formula-content">68%</div>
+    <p class="formula-desc">Packing efficiency of body centered cubic cell.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Packing Efficiency (FCC/CCP)</h3>
+    <div class="formula-content">74%</div>
+    <p class="formula-desc">FCC/Cubic close packing has the highest packing efficiency.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Number of Atoms in Unit Cell</h3>
+    <div class="formula-content">SC = 1 &nbsp;&nbsp; BCC = 2 &nbsp;&nbsp; FCC = 4</div>
+    <p class="formula-desc">Number of atoms present in different cubic structures.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Voids in Close Packing</h3>
+    <div class="formula-content">Tetrahedral voids = 2N <br> Octahedral voids = N</div>
+    <p class="formula-desc">For N close packed spheres, the number of tetrahedral and octahedral voids formed.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Radius Ratio Rule</h3>
+    <div class="formula-content">r<sup>+</sup> / r<sup>-</sup></div>
+    <p class="formula-desc">The coordination number of an ionic crystal depends on the radius ratio of cation to anion.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Schottky Defect Effect</h3>
+    <div class="formula-content">Density ↓</div>
+    <p class="formula-desc">Due to missing ions, the density of the crystal decreases.</p>
+</div>
+
+<div class="formula-card">
+    <h3 class="formula-title">Frenkel Defect Effect</h3>
+    <div class="formula-content">Density constant</div>
+    <p class="formula-desc">Cations shift to interstitial positions. Density remains unchanged.</p>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Lectures Section -->
+        <section class="content-section" id="lectures">
+            <h2 class="section-title" id="lectures-title">Recommended Lecture Videos</h2>
+            <div class="lectures-grid">
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Solid State - One Shot(Hindi)</h3>
+                        <div class="lecture-meta">
+                            <span>Vivek Sir(Taget Board)</span>
+                            <span>3:44:00</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/mdlhkAkvOB0?si=xYwpBXC23NyqwhYt" title="Watch Lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title">Solid State - One Shot(English)</h3>
+                        <div class="lecture-meta">
+                            <span>Nirja Phogat Mam(Pw)</span>
+                            <span>2:19:21</span>
+                        </div>
+                        <a href="https://www.youtube.com/live/DABrGZ9KgPY?si=YIrJwJQAo2xgFbWV" title = "Watch lecture" class="lecture-btn" target="_blank" rel="noopener noreferrer">Watch Lecture</a>
+                    </div>
+                </div>
+                <div class="lecture-card">
+                    <div class="lecture-thumbnail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <div class="lecture-body">
+                        <h3 class="lecture-title"></h3>
+                        <div class="lecture-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <a href="" class="lecture-btn" target="_blank" rel="noopener noreferrer" onclick="alert('coming soon...')">Watch Lecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="content-section" id="objectives">
+            <h2 class="section-title" id="objectives-title" title="Practice Questions" style="cursor: default;">Practice Questions</h2>
+            <div class="questions-container">
+                <div class="question-card">
+                    <h3 class="question-text" id="q1">1. Which crystal system does Sodium chloride (NaCl) follow?</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="A" class="option-input">
+                            <span id="q1a">A) Simple Cubic (SC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="B" class="option-input">
+                            <span id="q1b">B) Body-Centered Cubic (BCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="C" class="option-input">
+                            <span id="q1c">C) Face-Centered Cubic (FCC)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="D" class="option-input">
+                            <span id="q1d">D) Hexagonal Close Packing (HCP)</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q1">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q2">2. Packing efficiency of FCC is approximately:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="A" class="option-input">
+                            <span id="q2a">A) 52%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="B" class="option-input">
+                            <span id="q2b">B) 68%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="C" class="option-input">
+                            <span id="q2c">C) 74%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="D" class="option-input">
+                            <span id="q2d">D) 42%</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="question-card">
+                    <h3 class="question-text" id="q3">3. Bragg's law relates:</h3>
+                    <div class="options-grid">
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="A" class="option-input">
+                            <span id="q3a">A) wavelength & interplanar spacing</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="B" class="option-input">
+                            <span id="q3b">B) density & mass</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="C" class="option-input">
+                            <span id="q3c">C) radius & lattice parameter</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="D" class="option-input">
+                            <span id="q3d">D) none of these</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-answer="A" data-question="q3">Check Answer</button>
+                    <div class="feedback"></div>
+                </div>
+                <!-- Q1 -->
+<div class="question-card">
+  <h3 class="question-text" id="q1">बेरवैदार (amorphous) ठोस का उदाहरण है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q1" value="A" class="option-input">
+      <span id="q1a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="B" class="option-input">
+      <span id="q1b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="C" class="option-input">
+      <span id="q1c">C) नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q1" value="D" class="option-input">
+      <span id="q1d">D) रबर</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q1">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card">
+  <h3 class="question-text" id="q2">निम्नलिखित में कौन क्रिस्टलीय (crystalline) ठोस का उदाहरण है? [2013A, 2021A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q2" value="A" class="option-input">
+      <span id="q2a">A) NaCl</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="B" class="option-input">
+      <span id="q2b">B) ZnS</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="C" class="option-input">
+      <span id="q2c">C) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q2" value="D" class="option-input">
+      <span id="q2d">D) SiC</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q2">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card">
+  <h3 class="question-text" id="q3">hcp इकाई सेल में परमाणुओं की संख्या है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q3" value="A" class="option-input">
+      <span id="q3a">A) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="B" class="option-input">
+      <span id="q3b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="C" class="option-input">
+      <span id="q3c">C) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q3" value="D" class="option-input">
+      <span id="q3d">D) 7</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q3">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card">
+  <h3 class="question-text" id="q4">‘खवार’ (cleavage/cleavable) ठोस है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q4" value="A" class="option-input">
+      <span id="q4a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="B" class="option-input">
+      <span id="q4b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="C" class="option-input">
+      <span id="q4c">C) रबर</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q4" value="D" class="option-input">
+      <span id="q4d">D) इनमें से कोई नहीं</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q4">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card">
+  <h3 class="question-text" id="q5">बेरवैदार ठोस पदार्थ है— [2018A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q5" value="A" class="option-input">
+      <span id="q5a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="B" class="option-input">
+      <span id="q5b">B) काँच</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="C" class="option-input">
+      <span id="q5c">C) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q5" value="D" class="option-input">
+      <span id="q5d">D) इनमें से सभी</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q5">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card">
+  <h3 class="question-text" id="q6">एक धातु का स्वरूपण हेक्सागोनल क्लोज़्ड पैक (hcp) संरचना में होता है, तो धातु की कोऑर्डिनेशन संख्या है— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q6" value="A" class="option-input">
+      <span id="q6a">A) 12</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="B" class="option-input">
+      <span id="q6b">B) 8</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="C" class="option-input">
+      <span id="q6c">C) 4</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q6" value="D" class="option-input">
+      <span id="q6d">D) 6</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q6">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card">
+  <h3 class="question-text" id="q7">निम्नलिखित में कौन-से जोड़े में क्रमशः: चतुर्भुजीय बंदन (tetrahedral voids) और अष्टफलककीय बंदन (octahedral voids) होते हैं? [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q7" value="A" class="option-input">
+      <span id="q7a">A) bcc और fcc</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="B" class="option-input">
+      <span id="q7b">B) hcp और simple cubic</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="C" class="option-input">
+      <span id="q7c">C) hcp और ccp</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q7" value="D" class="option-input">
+      <span id="q7d">D) bcc और hcp</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q7">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card">
+  <h3 class="question-text" id="q8">निम्नलिखित में कौन ‘बेरवैदार’ ठोस है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q8" value="A" class="option-input">
+      <span id="q8a">A) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="B" class="option-input">
+      <span id="q8b">B) क्वार्ट्ज़ ग्लास (SiO₂)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="C" class="option-input">
+      <span id="q8c">C) कोयला/कोक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q8" value="D" class="option-input">
+      <span id="q8d">D) सिलिकॉन कार्बाइड (SiC)</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q8">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card">
+  <h3 class="question-text" id="q9">धात्विक क्रिस्टल में सबसे अधिक चालकों की संख्या होती है— [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q9" value="A" class="option-input">
+      <span id="q9a">A) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="B" class="option-input">
+      <span id="q9b">B) 6</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="C" class="option-input">
+      <span id="q9c">C) 10</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q9" value="D" class="option-input">
+      <span id="q9d">D) 12</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="D" data-question="q9">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card">
+  <h3 class="question-text" id="q10">क्रिस्टलीय ठोस में स्पष्ट धारियाँ/तल होते हैं— [2019A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q10" value="A" class="option-input">
+      <span id="q10a">A) 1</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="B" class="option-input">
+      <span id="q10b">B) 2</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="C" class="option-input">
+      <span id="q10c">C) 3</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q10" value="D" class="option-input">
+      <span id="q10d">D) 4</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="C" data-question="q10">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card">
+  <h3 class="question-text" id="q11">निम्नलिखित में से कौन सहसंयोजक ठोस है? [2024A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q11" value="A" class="option-input">
+      <span id="q11a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="B" class="option-input">
+      <span id="q11b">B) सोडियम क्लोराइड</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="C" class="option-input">
+      <span id="q11c">C) धात्विक तांबा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q11" value="D" class="option-input">
+      <span id="q11d">D) बर्फ</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q11">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card">
+  <h3 class="question-text" id="q12">क्रिस्टलीय ठोस किस प्रकार का होता है? [2020A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q12" value="A" class="option-input">
+      <span id="q12a">A) समदैशिक (isotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="B" class="option-input">
+      <span id="q12b">B) विषमदैशिक (anisotropic)</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="C" class="option-input">
+      <span id="q12c">C) अमोर्फस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q12" value="D" class="option-input">
+      <span id="q12d">D) धात्विक</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q12">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card">
+  <h3 class="question-text" id="q13">NaCl-type ठोस किस वर्ग का है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q13" value="A" class="option-input">
+      <span id="q13a">A) आयनिक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="B" class="option-input">
+      <span id="q13b">B) धात्विक ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="C" class="option-input">
+      <span id="q13c">C) सहसंयोजक जालक (network) ठोस</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q13" value="D" class="option-input">
+      <span id="q13d">D) अणुगत ठोस</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="A" data-question="q13">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card">
+  <h3 class="question-text" id="q14">निम्न में से किसका चालकता व्यवहार अलग है? [2022A]</h3>
+  <div class="options-grid">
+    <label class="option-label">
+      <input type="radio" name="q14" value="A" class="option-input">
+      <span id="q14a">A) हीरा</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="B" class="option-input">
+      <span id="q14b">B) ग्रेफाइट</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="C" class="option-input">
+      <span id="q14c">C) सामान्य नमक</span>
+    </label>
+    <label class="option-label">
+      <input type="radio" name="q14" value="D" class="option-input">
+      <span id="q14d">D) काँच</span>
+    </label>
+  </div>
+  <button class="check-btn" data-answer="B" data-question="q14">Check Answer</button>
+  <div class="feedback"></div>
+</div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">Chemistry Exam Essentials - Solid State Chapter | Created for Class 12 Students</p>
+        <p class="footer-text">All content is for educational purposes only</p>
+    </footer>
+    
+  <script src="Chemistry Lesson-1.js"></script>
+  <script>
+    
+  </script>
+
+    <script>
+        // ====== Language Translations ======
+        const translations = {
+            en: {
+                "page-title": "Chemistry — Chapter 1 (Solid State) — Exam Essentials",
+                "topics-title": "Key Topics - Solid State Chemistry",
+                "formulas-title": "Essential Formulas - Solid State",
+                "lectures-title": "Recommended Lecture Videos",
+                "objectives-title": "Practice Questions",
+                "nav-topics": "Topics",
+                "nav-formulas": "Formulas",
+                "nav-lectures": "Lectures",
+                "nav-objectives": "Objectives",
+                "lang-toggle": "English",
+                "q1": "1. Which crystal system does Sodium chloride (NaCl) follow?",
+                "q1a": "A) Simple Cubic (SC)",
+                "q1b": "B) Body-Centered Cubic (BCC)",
+                "q1c": "C) Face-Centered Cubic (FCC)",
+                "q1d": "D) Hexagonal Close Packing (HCP)",
+                "q2": "2. Packing efficiency of FCC is approximately:",
+                "q2a": "A) 52%",
+                "q2b": "B) 68%",
+                "q2c": "C) 74%",
+                "q2d": "D) 42%",
+                "q3": "3. Bragg's law relates:",
+                "q3a": "A) wavelength & interplanar spacing",
+                "q3b": "B) density & mass",
+                "q3c": "C) radius & lattice parameter",
+                "q3d": "D) none of these"
+            },
+            hi: {
+                "page-title": "रसायन विज्ञान — अध्याय 1 (ठोस अवस्था) — परीक्षा आवश्यक सामग्री",
+                "topics-title": "मुख्य विषय - ठोस अवस्था रसायन",
+                "formulas-title": "आवश्यक सूत्र - ठोस अवस्था",
+                "lectures-title": "अनुशंसित व्याख्यान वीडियो",
+                "objectives-title": "अभ्यास प्रश्न",
+                "nav-topics": "विषय",
+                "nav-formulas": "सूत्र",
+                "nav-lectures": "व्याख्यान",
+                "nav-objectives": "प्रश्न",
+                "lang-toggle": "English",
+                "q1": "1. सोडियम क्लोराइड (NaCl) किस क्रिस्टल प्रणाली का अनुसरण करता है?",
+                "q1a": "क) सरल घनीय (SC)",
+                "q1b": "ख) अंत: केन्द्रित घनीय (BCC)",
+                "q1c": "ग) फलक केन्द्रित घनीय (FCC)",
+                "q1d": "घ) षट्कोणीय निविड संकुलन (HCP)",
+                "q2": "2. FCC की संकुलन दक्षता लगभग है:",
+                "q2a": "क) 52%",
+                "q2b": "ख) 68%",
+                "q2c": "ग) 74%",
+                "q2d": "घ) 42%",
+                "q3": "3. ब्रैग का नियम संबंधित है:",
+                "q3a": "क) तरंगदैर्ध्य और अंतरतलीय दूरी से",
+                "q3b": "ख) घनत्व और द्रव्यमान से",
+                "q3c": "ग) त्रिज्या और जालक मापदंड से",
+                "q3d": "घ) इनमें से कोई नहीं"
+            }
+        };
+
+        // ====== Initial Setup ======
+        let currentLang = 'en';
+
+        // ====== DOM Elements ======
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const langToggle = document.getElementById('langToggle');
+        const langToggleText = langToggle.querySelector('span');
+
+        // ====== Navigation Functionality ======
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ====== Language Toggle Functionality ======
+        langToggle.addEventListener('click', () => {
+            // Toggle language
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            // Update all translatable elements
+            Object.keys(translations[currentLang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT') {
+                        // For radio buttons, update the next span
+                        el.nextElementSibling.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+            
+            // Update toggle button text
+            langToggleText.textContent = translations[currentLang]['lang-toggle'];
+        });
+
+        // ====== Question Checking Functionality ======
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('check-btn')) {
+                const button = e.target;
+                const questionId = button.getAttribute('data-question');
+                const correctAnswer = button.getAttribute('data-answer');
+                const questionCard = button.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                // Get selected option
+                const selectedOption = questionCard.querySelector(`input[name="${questionId}"]:checked`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Please select an answer!';
+                    feedback.className = 'feedback incorrect';
+                    return;
+                }
+                
+                if (selectedOption.value === correctAnswer) {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+        });
+
+        // ====== Accessibility Features ======
+        // Keyboard navigation for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Focus styles for better keyboard navigation
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab') {
+                document.documentElement.classList.add('keyboard-focus');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.documentElement.classList.remove('keyboard-focus');
+        });
+    </script>
+   
+</body>
+</html>
