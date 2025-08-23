@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Sidebar — StudyWeb</title>
+    <title>StudyWeb Pro Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Dashboard.css">
@@ -29,8 +29,8 @@
             background-color: var(--background);
             color: var(--text-color);
             min-height: 100vh;
-            overflowX:hidden;
-            overflowY:auto;
+            overflow-x: hidden;
+            overflow-y: auto;
             background-attachment: fixed;
             
         }
@@ -57,24 +57,29 @@
 
         /* Container for buttons */
         .container {
-           
+           margin-top: 0;    
+           margin-left: 0;     
+           position: relative; 
+           top: 0;
+           left: 0;
+           transform: none;  
+            height: auto;   
             max-width: 910px;
             height: auto;
-           margin-top: -28%;
-           margin-left: -28%;
-            height: 800px;
             padding: 2rem;
             opacity: 1;
             transition: opacity 0.5s ease;
-            position: absolute;
-            top: 50%;
-            left: 50%;
             z-index: 2;
             width: 100%;
             background-color: transparent;
         }
 
-       
+       @media (max-width: 768px) {
+    .container {
+        width: 100%;    
+        padding: 1rem;  
+    }
+}
 
         .nav-buttons {
             display: flex;
@@ -206,10 +211,14 @@
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        nav.collapsed {
-            width: 80px;
-        }
-
+       @media (max-width: 992px) {
+    nav.collapsed {
+        width: 280px !important; /* Ab proper size mein dikhega */
+    }
+}
+.main-content {
+    padding-top: 70px; /* Content ab sidebar ke neeche dikhega */
+}
         /* Mobile Hamburger Button */
         .hamburger-btn {
             display: none;
@@ -751,7 +760,82 @@
         }
        
     </style>
-   
+   <style>
+    
+    .chapter-card-container {
+      display: flex;
+      transform: translateY(750px);
+      align-items: center;
+      height: auto;
+      margin-top: 3rem;
+      background: transparent;
+      gap: 3rem;
+    }
+
+    .chapter-card {
+      width: 350px;
+      padding: 2rem;
+      border-radius: 20px;
+      background: rgba(10, 25, 80, 0.85); /* Darker deep blue glass effect */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-align: center;
+      animation: fadeIn 1.2s ease-in-out;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chapter-card .icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: #6bb6ff;
+    }
+
+    .chapter-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .chapter-card p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .chapter-card button {
+      transform: translateY(10px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .chapter-card-container .chapter-card {
+  background: rgba(0, 0, 50, 0.7); /* dark blue glass */
+  border-radius: 16px;
+  padding: 30px;
+  width: 320px;
+  text-align: center;
+  color: white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Glowing blue bulb effect */
+  box-shadow: 0 0 20px rgba(0, 100, 255, 0.7),
+              0 0 40px rgba(0, 100, 255, 0.5),
+              0 0 80px rgba(0, 100, 255, 0.3);
+}
+
+  </style>
 </head>
 <body >
     <video id="bg-video" autoplay muted loop playsinline>
@@ -767,13 +851,13 @@
         </button>
 
         <!-- Sidebar -->
-        <nav id="appSidebar" role="navigation" aria-label="Primary">
+        <nav id="appSidebar" role="navigation" aria-label="Primary" style="cursor: default;">
             <div class="sb-top" role="presentation">
                 <div class="brand" aria-hidden="true">
                     <div class="logo">SW</div>
                     <div class="title">
-                        <div class="name">StudyWeb</div>
-                        <div class="tag">Learning Platform</div>
+                        <div class="name" title="StudyWeb">StudyWeb</div>
+                        <div class="tag" title="Platform">Learning Platform</div>
                     </div>
                 </div>
 
@@ -800,15 +884,15 @@
                     </button>
                 </div>
                 <div id="profileMenu" class="profile-menu" aria-hidden="true">
-                    <a class="pm-item" data-url="hire.html" id="btn" data-target="Hire-me.html" href="#">Hire</a>
-                    <a class="pm-item" data-url="about.html" id="btn" data-target="My_Portofolio.html" href="#">About</a>
-                    <a class="pm-item" data-url="contact.html" id="btn" data-target="ContactPage.html" href="#">Contact</a>
+                    <a class="pm-item" data-url="hire.html" id="btn" data-target="Hire-me.html" href="#" title="Hire">Hire</a>
+                    <a class="pm-item" data-url="about.html" id="btn" data-target="My_Portofolio.html" href="#" title="About">About</a>
+                    <a class="pm-item" data-url="contact.html" id="btn" data-target="ContactPage.html" href="#" title="Contact">Contact</a>
                     
                 </div>
             </div>
 
             <!-- Search -->
-            <div class="sb-search" role="search" aria-label="Search">
+            <div class="sb-search" role="search" aria-label="Search" title="Search">
                 <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
                 <input type="search" id="sbSearch" placeholder="Search modules, formulas..." aria-label="Search menu">
             </div>
@@ -818,52 +902,52 @@
                 <ul>
                     <li class="item active" data-target="home" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-house"></i></div>
-                        <div class="label">Home</div>
+                        <div class="label" title="Home">Home</div>
                     </li>
                     <li class="item" data-target="projects" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-diagram-project"></i></div>
-                        <div class="label" id="btn" data-target="MainProjects.html" >Projects</div>
+                        <div class="label" id="btn" data-target="MainProjects.html" title="Projects" >Projects</div>
                     </li>
 
                     <li class="item has-children" data-accordion="modules" tabindex="0" role="button" aria-expanded="false">
                         <div class="i"><i class="fa-solid fa-book"></i></div>
-                        <div class="label">Modules</div>
+                        <div class="label" title="Modules">Modules</div>
                         <div class="sub"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></div>
                     </li>
                     <div class="submenu" id="submenu-modules" role="region" aria-hidden="true">
-                        <div class="sub-item" data-target="module-physics"id="btn" data-target="modul.html" tabindex="0">Study</div>
-                        <div class="sub-item" data-target="module-maths" tabindex="0" onclick="alert('This Feaure is Coming Soon...')">Career</div>
-                        <div class="sub-item" data-target="module-programming" tabindex="0" onclick="alert('This Feature is Coming Soon...')">Programming</div>
+                        <div class="sub-item" data-target="module-physics"id="btn" data-target="modul.html" tabindex="0" title="Study">Study</div>
+                        <div class="sub-item" data-target="module-maths" tabindex="0" title="Career"  onclick="alert('This Feaure is Coming Soon...')">Career</div>
+                        <div class="sub-item" data-target="module-programming" tabindex="0" title="Programming" onclick="alert('This Feature is Coming Soon...')">Programming</div>
                     </div>
 
                     <li class="item" data-target="formulas" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-square-root-variable"></i></div>
-                        <div class="label" id="btn" data-target="FormulaChart.html">Formulas</div>
+                        <div class="label" id="btn" data-target="FormulaChart.html" title="Formulas">Formulas</div>
                     </li>
 
                     <li class="item" data-target="tools" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-toolbox"></i></div>
-                        <div class="label" id="btn" data-target="ToolsPage.html">Tools</div>
+                        <div class="label" id="btn" data-target="ToolsPage.html" title="Tools">Tools</div>
                     </li>
 
                     <li class="item" data-target="tests" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-vial"></i></div>
-                        <div class="label" id="btn" data-target="Test.html">Practice Tests</div>
+                        <div class="label" id="btn" data-target="Test.html" title="Test">Practice Tests</div>
                     </li>
 
                     <li class="item" data-target="settings" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-gear"></i></div>
-                        <div class="label" onclick="alert('This Feature is Coming soon... ')">Settings</div>
+                        <div class="label" title="Setting" onclick="alert('This Feature is Coming soon... ')">Setting</div>
                     </li>
 
                     <li class="item" data-target="contact" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-envelope"></i></div>
-                        <div class="label" id="btn" data-target="ContactPage.html">Contact</div>
+                        <div class="label" id="btn" title="Contact" data-target="ContactPage.html">Contact</div>
                     </li>
 
                     <li class="item danger" data-target="logout" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-right-from-bracket"></i></div>
-                        <div class="label" onclick="alert('This Feature is Coming Soon...')">Logout</div>
+                        <div class="label" title="Logout" onclick="alert('This Feature is Coming Soon...')">Logout</div>
                     </li>
                 </ul>
             </div>
@@ -887,14 +971,19 @@
 
 <!-- Top right navigation -->
  <div class="NavBar">
-    <ul type="none">
-<li><a href="#physics" class="sw-nav-link sw-anim" title="Physics" data-target="physics">Physics</a></li>
-<li><a href="#chemistry" class="sw-nav-link sw-anim" title="Chemistry" data-target="chemistry">Chemistry</a></li>
-<li><a href="#english" class="sw-nav-link sw-anim" title="English" data-target="english">English</a></li>
-<li><a href="#hindi" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">Hindi</a></li>
-</ul
-</div>
-
+            <ul type="none">
+                <li><a href="#physics" class="sw-nav-link sw-anim active" title="Physics" data-target="physics">Physics</a></li>
+                <li><a href="#chemistry" class="sw-nav-link sw-anim" title="Chemistry" data-target="chemistry">Chemistry</a></li>
+                <li><a href="#english" class="sw-nav-link sw-anim" title="English" data-target="english">English</a></li>
+                <li><a href="#hindi" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">Hindi</a></li>
+            </ul>
+            <div class="nav-actions">                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 <main id="sw-main">
 
 
@@ -921,18 +1010,161 @@
 </div>
 </div>
 </section>
-<section>
-<div class="container">
-    <div id="physics">
-     <table>
-        <tr>
-            <td>Chapter 1</td>
-            <td>chatper 2</td>
-            <td>chapter 3</td>
-        </tr>
-     </table>
+<section class="physics-section" style="cursor: default;">
+<h1 id="physics-heading">Physics</h1>
+<div class="container-2">
+    <div class="chapter-card-container" id="physics">
+    <div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-bolt"></i>
+      </div>
+      <h2>Chapter 1</h2>
+      <p>Study of charges, Coulomb’s law, electric field, flux, and Gauss’s law.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button"> 
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View" id="btn"><div id="btn" data-target="Physics Lesson-1.html">View</div></span>
+  </div>
+</button>
+</div>
+<div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-battery-full"></i>
+      </div>
+      <h2>Chapter 2</h2>
+      <p >Concepts of potential, potential energy, equipotential surfaces, and capacitors.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button">
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View"><div id="btn" data-target="Physics Lesson-2.html">View</div></span>
+  </div>
+</button>
+</div>
+<div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-plug"></i>
+      </div>
+      <h2>Chapter 3</h2>
+      <p>Ohm’s law, resistivity, drift velocity, Kirchhoff’s rules, and electric circuits.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button">
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View"><div id="btn" data-target="Physics Lesson-3.html">View</div></span>
+  </div>
+</button>
+</div>
+  </div>
+  <div class="chapter-card-container">
+    <div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-magnet"></i>
+      </div>
+      <h2>Chapter 4</h2>
+      <p>Magnetic effects of current, Biot-Savart law, Ampere’s law, and cyclotron.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button">
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+  </div>
+</button>
+</div>
+<div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-compass"></i>
+      </div>
+      <h2>Chapter 5</h2>
+      <p>Properties of bar magnets, earth’s magnetism, susceptibility, and magnetic materials.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button">
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+  </div>
+</button>
+</div>
+<div class="chapter-card">
+      <div class="icon">
+       <i class="fas fa-wave-square"></i>
+      </div>
+      <h2>Chapter 6</h2>
+      <p>Faraday’s laws, Lenz’s law, self & mutual induction, and AC generator.</p>
+      <!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="frutiger-button">
+  <div class="inner">
+    <div class="top-white"></div>
+    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+  </div>
+</button>
+</div>
+</div>
+<div class="container-3">
+    <div id="Chemistry-heading">Chemistry</div>
+<div class="chem-card-wrap" id="chemistry">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-flask"></i> 
     </div>
-
+    <h2 class="chem-card-title">Chapter 1 </h2>
+<p id="chemistry-paragraph">Study of crystal structure, unit cells, packing, and defects in solids.</p>
+    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-1.html">View</button>
+  </div>
+</div> 
+<div class="chem-card-wrap">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-water"></i>
+    </div>
+    <h2 class="chem-card-title" >Chapter 2</h2>
+    <p>Concepts of solubility, concentration, colligative properties and Raoult's law.</p>
+    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-2.html">View</button>
+  </div>
+</div>  
+<div class="chem-card-wrap">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-arrow-right-arrow-left"></i>
+    </div>
+    <h2 class="chem-card-title">Chapter 3</h2>
+    <p>Redox reactions, electrochemical cells, Nernst equation, and batteries.</p>
+    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-3.html">View</button>
+  </div>
+</div>  
+<br><br>
+<div class="chem-card-wrap">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-fire"></i>
+    </div>
+    <h2 class="chem-card-title">Chapter 4</h2>
+    <p>Rate of reaction, order, molecularity, and Arrhenius equation.</p>
+    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+  </div>
+</div>  
+<div class="chem-card-wrap">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-tower-broadcast"></i>
+    </div>
+    <h2 class="chem-card-title">Chapter 5</h2>
+    <p>Adsorption, catalysis, colloids, and emulsions with practical applications.</p>
+    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+  </div>
+</div>  
+<div class="chem-card-wrap">
+  <div class="chem-card" id="chem1">
+    <div class="chem-card-icon">
+      <i class="fa-solid fa-gem"></i>
+    </div>
+    <h2 class="chem-card-title">Chapter 6</h2>
+    <p>Metallurgy, extraction methods, refining and environmental issues.</p>
+    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+  </div>
+</div>
+</div>  
 </div>
 </section>
         </div>
