@@ -164,14 +164,14 @@
 :where(#studyweb-app) a:focus,:where(#studyweb-app) button:focus{outline:none}
 :where(#studyweb-app) a:focus-visible,:where(#studyweb-app) button:focus-visible{outline:3px solid rgba(15,123,255,0.12);border-radius:8px}
 .NavBar {
-  position: absolute;   /* fixed bhi kar sakte ho agar hamesha screen pe chahiye */
-  top: 20px;            /* jitna upar chahiye */
-  right: 20px;          /* bilkul right side chipka do */
-  background: transparent;     /* optional, navbar ke liye background */
+  position: absolute;   
+  top: 20px;            
+  right: 20px;          
+  background: transparent;     
   padding: 10px 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  z-index: 1000;        /* sabse upar rahe */
+  z-index: 1000;        
 }
 
 .NavBar ul {
@@ -179,26 +179,22 @@
   padding: 0;
   display: flex;
   gap: 20px;   
-  justify-content: flex-end;        /* links ke beech gap */
+  justify-content: flex-end;      
 }
 
 .NavBar li {
   list-style: none;
 }
 
+
+
 .NavBar ul a {
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: 600;
-  transition: 0.3s;
+  color: rgb(255, 24, 24);
+  font-weight: bolder;
+  font-size: 20px;
 }
-
-.NavBar ul a:hover {
-  color: #00ff40;
-}
-
     .container {
-  
+  position: relative;
   background: none; /* video hi background hai */
   filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.5)); /* base */
 }
@@ -278,6 +274,7 @@
     0px 5px 5px -1px rgba(58, 125, 233, 0.25),
     inset 4px 4px 8px rgba(175, 230, 255, 0.5),
     inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+    
 }
 
 .sw-cta:hover {
@@ -325,37 +322,21 @@
 }
 
 /* underline effect */
-.sw-nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  background: #00c6ff; /* underline color */
-  transition: width 0.3s ease;
-}
 
 /* active link underline */
-.sw-nav-link.active::after {
-  width: 100%;
-}
+
 
 /* hover effect (sirf color) */
 .sw-nav-link:hover {
   color: #fff;
 }
-@media (max-width: 768px) {
-  .NavBar ul {
-    flex-direction: column;
-    gap: 15px;
-  }
+
 
   .sw-sub {
     font-size: 14px;
     text-align: center;
   }
-}
+
 img {
   max-width: 100%;
   height: auto;
@@ -364,7 +345,271 @@ img {
 p, h1, h2, h3 {
   word-wrap: break-word;
 }
-table {
-    height: 1000px;
-    width: auto;
+#physics-heading {
+  font-size: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  font-style: initial;
+  color: whitesmoke;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  text-shadow: 0 4px 4px grey;
+  cursor: default;
+  transform: translateY(750px);
+  
 }
+
+
+/* From Uiverse.io by SelfMadeSystem */ 
+.frutiger-button {
+  cursor: pointer;
+  position: relative;
+  padding: 2px;
+  max-width:80px;
+  width:100%;
+  border-radius: 2rem;
+  border: 0;
+  text-shadow: 1px 1px #000a;
+  background: linear-gradient(#006caa, #00c3ff);
+  box-shadow: 0px 4px 6px 0px #0008;
+  transition: 0.3s all;
+}
+
+.frutiger-button:hover {
+  box-shadow: 0px 6px 12px 0px #0009;
+  
+}
+
+.frutiger-button:active {
+  box-shadow: 0px 0px 0px 0px #0000;
+}
+
+.inner {
+  position: relative;
+  inset: 0px;
+  padding: 1em;
+  border-radius: 2rem;
+  background: radial-gradient(circle at 50% 100%, #30f8f8 10%, #30f8f800 55%),
+    linear-gradient(#00526a, #009dcd);
+  overflow: hidden;
+  transition: inherit;
+}
+
+.inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-65deg, #0000 40%, #fff7 50%, #0000 70%);
+  background-size: 40px 20px;
+  background-repeat: no-repeat;
+  animation: thing 3s ease infinite;
+}
+
+@keyframes thing {
+  0% {
+    background-position: 130%;
+    opacity: 1;
+  }
+
+  to {
+    background-position: -166%;
+    opacity: 0;
+  }
+}
+
+.top-white {
+  position: absolute;
+  border-radius: inherit;
+  inset: 0 -8em;
+  background: radial-gradient(
+    circle at 50% -270%,
+    #fff6 60%,
+    #fff0 60%
+  );
+  transition: inherit;
+}
+
+.inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: inherit;
+  box-shadow: inset 0px 2px 8px -2px #0000;
+}
+
+.frutiger-button:active .inner::after {
+  box-shadow: inset 0px 2px 8px -2px #000a;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-weight: 550;
+  transition: inherit;
+}
+
+ .chem-card-wrap {
+    display: flex;
+    transform: translateY(900px);
+    align-items: center;
+    float: left;
+    margin-right: 2rem;
+    gap: 3rem;
+    margin-top: 3rem;
+    
+     
+  }
+  #Chemistry-heading {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    color: whitesmoke;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    text-shadow: 0 2px 2px grey;
+  }
+  
+  #Chemistry-heading {
+    position: absolute;   /* box ke flow se nikal jayega */
+    top: 50px;            /* jaha chahiye wahi set kar */
+    left: 50px;
+    padding: 10px 20px;
+    z-index: 9999;        /* sabke upar */
+    isolation: isolate;
+    transform: translateY(850px);
+       
+}
+
+
+#Chemistry-heading {
+    position: relative;   /* apne parent se bhi alag ho jaayega */
+    display: inline-block; /* box banega, par flow control hoga */
+    margin: 0 !important;  /* kisi ka margin effect na ho */
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    flex: none !important; /* parent ke flex rules ignore karega */
+    align-self: auto !important;
+    
+    
+}
+#Chemistry-heading {
+    width: 100%;              /* pura row lega */
+    text-align: center;       /* beech me aayega */
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 30px;         /* upar ke boxes se gap */
+    clear: both;              /* agar float use ho raha hai to niche chala jayega */
+    display: block;           /* ek nayi line me aayega */
+}
+
+
+  .chem-card {
+    width: 250px;
+    height: 300px;
+    border-radius: 20px;
+    background: rgba(144, 238, 144, 0.25); /* lightgreen transparent center */
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    animation: fadeIn 1.2s ease;
+  }
+  .chemistry-box {
+    width: 250px;
+    height: 150px;
+    background: rgba(144, 238, 144, 0.15); /* transparent lightgreen */
+    border: 1px solid #32cd32;
+    border-radius: 12px;
+    box-shadow: 0 0 25px #32cd32;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    backdrop-filter: blur(8px);
+}
+
+
+  .chem-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(0, 255, 0, 0.9);
+  }
+
+  .chem-card-icon {
+    font-size: 40px;
+    color: #00cc66;
+  }
+
+  .chem-card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #004d00;
+  }
+
+  
+
+/* CSS */
+.chem-card-btn {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0.7em 1.4em 0.7em 1.1em;
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+  letter-spacing: 0.05em;
+  border-radius: 20em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.chem-card-btn:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+  transform: scale(1.3s);
+}
+
+.chem-card-btn:active {
+  box-shadow: 0 0.3em 1em -0.5em #14a73e98;
+}
+#Chemistry-heading {
+    position: absolute;
+    inset: auto;            
+    margin: 0;
+}
+
+  .chem-card-btn:hover {
+    background: rgba(0, 204, 102, 1);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .chapter-card p {
+    font-size: 15px;
+    color: 2px solid black;
+  }
