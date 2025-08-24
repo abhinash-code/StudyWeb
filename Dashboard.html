@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyWeb Pro Version</title>
+    <title>Professional Sidebar — StudyWeb</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Dashboard.css">
@@ -52,18 +52,17 @@
             display: flex;
             width: 100%;
             position: relative;
-            min-height: 100vh;
+            
         }
 
         /* Container for buttons */
         .container {
            margin-top: 0;    
-           margin-left: 0;     
+           margin-left: 260px;     
            position: relative; 
            top: 0;
            left: 0;
-           transform: none;  
-            height: auto;   
+           transform: none;    
             max-width: 910px;
             height: auto;
             padding: 2rem;
@@ -205,12 +204,17 @@
             flex-direction: column;
             transition: all 0.3s ease;
             flex-shrink: 0;
-            position: relative;
+            position: fixed;
+            height: 100vh;
+            top: 0;
+            left: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+      
+  
+        
        @media (max-width: 992px) {
     nav.collapsed {
         width: 280px !important; /* Ab proper size mein dikhega */
@@ -758,6 +762,7 @@
                 
             }
         }
+     
        
     </style>
    <style>
@@ -984,7 +989,7 @@
                     <span></span>
                 </div>
             </div>
-<main id="sw-main">
+
 
 
 <!-- HERO -->
