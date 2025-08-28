@@ -3,1046 +3,500 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyWeb - Professional Learning Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Document Manager - Account Creation</title>
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-color: #374151;
+            --text-light: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #e5e7eb;
+                --text-light: #9ca3af;
+                --bg-color: #111827;
+                --card-bg: #1f2937;
+                --border-color: #374151;
+            }
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b, #0369a1, #0284c7);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 0;
+            margin: 0;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Advanced Animations */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes floatUp {
-            0% { 
-                transform: translateY(100vh) scale(0) rotate(0deg); 
-                opacity: 0;
-            }
-            10% { 
-                opacity: 0.6;
-            }
-            90% { 
-                opacity: 0.4;
-            }
-            100% { 
-                transform: translateY(-100px) scale(1.5) rotate(360deg); 
-                opacity: 0;
-            }
-        }
-
-        @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { 
-                box-shadow: 0 0 30px rgba(6, 182, 212, 0.4), 0 0 60px rgba(6, 182, 212, 0.2);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 50px rgba(6, 182, 212, 0.6), 0 0 100px rgba(6, 182, 212, 0.3);
-                transform: scale(1.02);
-            }
-        }
-
-        @keyframes slideInFromLeft {
-            0% { transform: translateX(-100px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideInFromRight {
-            0% { transform: translateX(100px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Watermark Background */
-        .watermark {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 0;
-            opacity: 0.06;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .watermark-text {
-            font-size: clamp(15vw, 25vw, 35vw);
-            font-weight: 900;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            transform: rotate(-25deg);
-            text-shadow: 0 0 100px rgba(255, 255, 255, 0.1);
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: floatUp 25s infinite ease-in-out;
-            backdrop-filter: blur(2px);
-        }
-        .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 320px;
-    height: 100vh;
-    background: #ffffff; /* Solid color for better performance */
-    border-right: 1px solid rgba(15, 23, 42, 0.1);
-    z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    transform: translateZ(0); /* GPU acceleration */
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem 2rem;
-    color: #0f172a;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    margin: 0.5rem 1rem;
-    border-radius: 12px;
-    position: relative;
-    will-change: transform; /* Performance hint */
-    backface-visibility: hidden; /* Prevent flickering */
-}
-
-/* Simplified hover effect */
-.menu-item:hover {
-    background: rgba(6, 182, 212, 0.1);
-    transform: translateX(8px);
-}
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .sidebar-header {
-            padding: 2rem;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
-            background: rgba(255, 255, 255, 0.8);
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-header:hover {
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #0f172a, #06b6d4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header:hover .logo {
-            transform: rotate(15deg) scale(1.1);
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0f172a, #06b6d4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .sidebar-menu {
-            padding: 1.5rem 0;
-        }
-
-        .menu-item.active {
-            background: rgba(6, 182, 212, 0.15);
-            border-left: 4px solid #0f172a;
-            transform: translateX(8px);
-        }
-
-        .menu-item i {
-            font-size: 1.2rem;
-            width: 35px;
-            margin-right: 1rem;
-            color: #06b6d4;
-            transition: all 0.3s ease;
-        }
-
-        .menu-item:hover i {
-            transform: scale(1.2);
-            color: #0f172a;
-        }
-
-        .menu-item span {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .menu-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(15, 23, 42, 0.1), transparent);
-            margin: 1rem 2rem;
-        }
-
-        .sidebar-footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            padding: 1.5rem;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            border-top: 1px solid rgba(15, 23, 42, 0.1);
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        /* Mobile Toggle */
-        .mobile-toggle {
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #0f172a, #06b6d4);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 1100;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-        }
-
-        .mobile-toggle:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4);
-        }
-
-        /* Top Navigation */
-        .top-nav {
-            position: fixed;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            transition: all 0.3s ease;
-        }
-
-        .nav-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            padding: 1rem 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            position: relative;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #06b6d4;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-links a:hover {
-            color: #06b6d4;
-            transform: translateY(-2px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 320px;
-            min-height: 100vh;
-            position: relative;
-            z-index: 10;
-            transition: margin-left 0.4s ease;
-        }
-
-        .main-content.full-width {
-            margin-left: 0;
-        }
-
-        /* Hero Section */
-        .hero-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
         }
 
-        .hero-content {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
-            padding: 4rem;
-            max-width: 1000px;
-            animation: gentleFloat 8s ease-in-out infinite;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
         }
 
-        .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            color: white;
-            margin-bottom: 2rem;
-            line-height: 1.1;
-            animation: slideInFromLeft 1s ease-out;
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px;
+            width: 100%;
         }
 
-        .hero-title .gradient-text {
-            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: block;
-            margin-top: 1rem;
-        }
-
-        .hero-description {
-            font-size: 1.4rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 3rem;
-            line-height: 1.6;
-            font-weight: 300;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: slideInFromRight 1s ease-out 0.3s both;
-        }
-
-        .cta-buttons {
+        .logo {
             display: flex;
-            gap: 2rem;
             justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.6s both;
+            margin-bottom: 24px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
-            color: white;
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
+        .logo svg {
+            width: 48px;
+            height: 48px;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 24px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            animation: pulseGlow 3s ease-in-out infinite;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            padding: 1.2rem 3rem;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.8);
-            transform: translateY(-3px);
-        }
-
-        /* Feature Cards */
-        .features-section {
-            padding: 5rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 5rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 2.5rem;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-wrapper {
             position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .toggle-password:hover {
+            color: var(--text-color);
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        .password-strength {
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            margin-top: 8px;
             overflow: hidden;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .password-strength-meter {
+            height: 100%;
+            width: 0;
+            transition: var(--transition);
         }
 
-        .feature-card:hover::before {
-            opacity: 1;
+        .password-feedback {
+            font-size: 14px;
+            margin-top: 6px;
+            min-height: 20px;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+        .feedback-error {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 6px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            color: white;
-            position: relative;
-            z-index: 1;
         }
 
-        .feature-icon.projects { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
-        .feature-icon.modules { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-        .feature-icon.formulas { background: linear-gradient(135deg, #10b981, #06b6d4); }
-        .feature-icon.tests { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
+        .feedback-error svg {
+            margin-right: 6px;
+            width: 16px;
+            height: 16px;
         }
 
-        .feature-description {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 25px;
-            padding: 3rem;
-            margin: 3rem auto;
-            max-width: 1000px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            position: relative;
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6, #10b981);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gentleFloat 6s ease-in-out infinite;
-        }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Overlay for mobile */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .button {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            padding: 12px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .button:hover {
+            background-color: var(--primary-hover);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .mobile-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .top-nav {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .nav-links {
-                gap: 1.5rem;
-            }
-
-            .nav-links a {
-                font-size: 1rem;
-            }
+        .button:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
         }
 
-        @media (max-width: 768px) {
-            .hero-content {
-                padding: 2.5rem;
-                margin: 1rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-
-            .nav-container {
-                padding: 0.8rem 1.5rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .nav-links a {
-                font-size: 0.9rem;
-            }
+        .button svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
         }
 
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-number {
-                font-size: 2.5rem;
-            }
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 32px 0;
+            position: relative;
         }
 
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
+        .divider-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--card-bg);
+            padding: 0 12px;
+            font-size: 14px;
+            color: var(--text-light);
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .text-button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
         }
-        /* Optional: unique icon look for Bookmarks */
-.menu-icon-bookmarks {
-    color: #8b5cf6;            /* purple-ish by default */
-    filter: drop-shadow(0 6px 18px rgba(139,92,246,0.12));
-    transition: transform .25s ease, color .25s ease;
-}
-.menu-item:hover .menu-icon-bookmarks {
-    transform: scale(1.15);
-    color: #06b6d4; /* hover color to match other icons */
-}
 
+        .text-button:hover {
+            color: var(--primary-hover);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            display: flex;
+        }
+
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .alert-warning svg {
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <!-- Watermark -->
-    <div class="watermark">
-        <div class="watermark-text">StudyWeb</div>
+    <div class="container">
+        <div class="card">
+            <div class="logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75 30H25C20 30 15 35 15 40V80C15 85 20 90 25 90H75C80 90 85 85 85 80V40C85 35 80 30 75 30Z" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M75 30V40C75 45 70 50 65 50H35C30 50 25 45 25 40V30" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M50 65H35" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M65 75H35" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <h1>Create New Account</h1>
+            <p class="subtitle">Set up a local encrypted vault for your documents</p>
+            
+            <div id="warningAlert" class="alert alert-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                    <strong>Local storage warning:</strong> Your data will only be stored in this browser. 
+                    Without a recovery file, lost passwords result in permanent data loss.
+                </div>
+            </div>
+            
+            <form id="accountForm">
+                <div class="form-group">
+                    <label for="accountName">Account Name</label>
+                    <input type="text" id="accountName" name="accountName" required autocomplete="off">
+                    <div id="nameError" class="feedback-error hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                        <span id="nameErrorText"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email (Optional)</label>
+                    <input type="email" id="email" name="email" autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="masterPassword">Master Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="masterPassword" name="masterPassword" required autocomplete="new-password">
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="password-strength-meter" id="passwordStrengthMeter"></div>
+                    </div>
+                    <div class="password-feedback" id="passwordFeedback"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password">
+                        <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Show password">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="confirmError" class="feedback-error hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                        <span>Passwords do not match</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="button" id="createButton" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Create Account
+                </button>
+            </form>
+            
+            <div class="divider">
+                <span class="divider-text">Or</span>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" class="text-button" id="importButton">
+                    Import existing account from backup
+                </button>
+            </div>
+        </div>
     </div>
-
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Mobile Toggle Button -->
-    <button class="mobile-toggle" id="mobileToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Overlay for mobile -->
-    <div class="overlay" id="overlay"></div>
-
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">ST</div>
-            <div class="logo-text">StudyWeb</div>
-        </div>
-
-        <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            <a href="MyProjects.html" class="menu-item">
-                <i class="fas fa-project-diagram"></i>
-                <span>Projects</span>
-            </a>
-            <a href="modul.html" class="menu-item">
-                <i class="fas fa-book"></i>
-                <span>Modules</span>
-            </a>
-           <a href="FormulaChart.html" class="menu-item">
-                 <i class="fas fa-square-root-alt menu-icon-formulas"></i>
-                 <span>Formulas</span>
-             </a>
-
-             
-           <a href="ToolsPage.html" class="menu-item">
-                <i class="fas fa-tools menu-icon-tools"></i>
-             <span>Tools</span>
-           </a>
-
-
-            <div class="menu-divider"></div>
-
-            <a href="Setting.html" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-            <a href="ContactPage.html" class="menu-item">
-                <i class="fas fa-user-shield"></i>
-                <span>Contact</span>
-            </a>
-
-            <div class="menu-divider"></div>
-
-            <a href="#" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-
-        <div class="sidebar-footer">
-            <p>v2.0.0 | © 2024 StudyWeb</p>
-        </div>
-    </nav>
-
-    <!-- Top Navigation -->
-    <div class="top-nav">
-        <nav class="nav-container">
-            <ul class="nav-links">
-                <li><a href="Notes.html" class="menu-item">Notes</a></li>
-                <li><a href="objective.html" class="menu-item">Objectives</a></li>
-                <li><a href="test.html" class="menu-item">Test</a></li>
-                <li><a href="Choose-Portfolio.html" class="menu-item">About</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Main Content -->
-    <main class="main-content" id="mainContent">
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Welcome to
-                    <span class="gradient-text">StudyWeb</span>
-                </h1>
-                <p class="hero-description">
-                    Your comprehensive platform for learning, innovation, and academic excellence. 
-                    Discover a world of knowledge at your fingertips with cutting-edge tools and resources.
-                </p>
-                <div class="cta-buttons">
-                    <a href="passwordPage.html" class="btn-primary">Get Started</a>
-                    <a href="Admission_Form.html" class="btn-secondary">Admission</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon projects">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <h3 class="feature-title">Projects</h3>
-                    <p class="feature-description">
-                        Explore innovative projects and build your professional portfolio with hands-on experience.
-                    </p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon modules">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3 class="feature-title">Modules</h3>
-                    <p class="feature-description">
-                        Comprehensive learning modules designed for every subject and skill level.
-                    </p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon formulas">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <h3 class="feature-title">Formulas</h3>
-                    <p class="feature-description">
-                        Quick access to essential formulas and calculations for all your academic needs.
-                    </p>
-                </div>
-
-                <div class="feature-card fade-in">
-                    <div class="feature-icon tests">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <h3 class="feature-title">Tests</h3>
-                    <p class="feature-description">
-                        Practice tests and assessments to evaluate and improve your knowledge.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="stats-section fade-in">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="500">0</div>
-                        <div class="stat-label">Study Materials</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="50">0</div>
-                        <div class="stat-label">Projects</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="100">0</div>
-                        <div class="stat-label">Formulas</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="1000">0</div>
-                        <div class="stat-label">Practice Tests</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
+   <script src="app.js"></script>
+   <script src="schema.js"></script>
+  <script src="core.js"></script>
+  <script src="server.js"></script>
     <script>
-        // Top Navigation के लिए नया Event Listener
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', (e) => {
-        // सिर्फ # से शुरू होने वाले लिंक्स को रोकें (अगर बाद में कभी स्क्रॉल इफेक्ट चाहिए)
-        if(link.getAttribute('href').startsWith('#')) {
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password visibility toggles
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const masterPassword = document.getElementById('masterPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
             
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-        // बाकी लिंक्स को नॉर्मल तरीके से काम करने दें
-    });
-});
-        // Mobile sidebar toggle
-        const mobileToggle = document.getElementById('mobileToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const mainContent = document.getElementById('mainContent');
-
-        mobileToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
-
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-       
-        const menuItems = document.querySelectorAll('.sidebar-menu .menu-item'); 
-menuItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-        const href = item.getAttribute('href');
-        
-        // Mobile पर साइडबार बंद करें
-        if (window.innerWidth <= 1024) {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-        
-        // सिर्फ # वाले लिंक्स को रोकें (जैसे Home)
-        if (href === '#') {
-            e.preventDefault();
-        }
-        
-        // Active स्टेट अपडेट करें
-        menuItems.forEach(mi => mi.classList.remove('active'));
-        item.classList.add('active');
-        
-        // अगर लिंक वैध है तो नेविगेट करें
-        if (href && href !== '#') {
-            window.location.href = href;
-        }
-    });
-});
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 40;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-
-                const size = Math.random() * 60 + 20;
-                const posX = Math.random() * 100;
-                const delay = Math.random() * 25;
-                const duration = Math.random() * 30 + 20;
-
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Animated counter for stats
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const increment = target / 100;
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        counter.textContent = target + '+';
-                        clearInterval(timer);
-                    } else {
-                        counter.textContent = Math.floor(current) + '+';
-                    }
-                }, 20);
+            togglePassword.addEventListener('click', function() {
+                const type = masterPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                masterPassword.setAttribute('type', type);
+                this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
             });
-        }
-
-        // Scroll animations
-        function handleScrollAnimations() {
-            const elements = document.querySelectorAll('.fade-in');
             
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassword.setAttribute('type', type);
+                this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
+            });
+            
+            // Password strength meter
+            const passwordStrengthMeter = document.getElementById('passwordStrengthMeter');
+            const passwordFeedback = document.getElementById('passwordFeedback');
+            
+            masterPassword.addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+                validateForm();
+            });
+            
+            confirmPassword.addEventListener('input', validateForm);
+            document.getElementById('accountName').addEventListener('input', validateForm);
+            
+            function checkPasswordStrength(password) {
+                // Simplified strength calculation (would use zxcvbn in production)
+                let strength = 0;
+                let message = '';
                 
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
+                if (password.length === 0) {
+                    passwordStrengthMeter.style.width = '0%';
+                    passwordStrengthMeter.style.backgroundColor = '';
+                    passwordFeedback.textContent = '';
+                    return;
                 }
-            });
-        }
-
-      
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            
-            // Trigger animations on scroll
-            window.addEventListener('scroll', handleScrollAnimations);
-            
-            // Initial check for visible elements
-            handleScrollAnimations();
-            
-            // Start counter animation after a delay
-            setTimeout(() => {
-                animateCounters();
-            }, 1000);
-        });
-
-        // Responsive sidebar handling
-        function handleResize() {
-            if (window.innerWidth > 1024) {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
+                
+                if (password.length < 8) {
+                    strength = 1;
+                    message = 'Too short';
+                } else {
+                    // Check for character variety
+                    const hasLower = /[a-z]/.test(password);
+                    const hasUpper = /[A-Z]/.test(password);
+                    const hasNumbers = /\d/.test(password);
+                    const hasSpecial = /[^A-Za-z0-9]/.test(password);
+                    
+                    const varietyCount = [hasLower, hasUpper, hasNumbers, hasSpecial].filter(Boolean).length;
+                    
+                    if (varietyCount < 2) {
+                        strength = 2;
+                        message = 'Weak';
+                    } else if (varietyCount < 4) {
+                        strength = 3;
+                        message = 'Medium';
+                    } else {
+                        strength = 4;
+                        message = 'Strong';
+                    }
+                }
+                
+                // Update UI
+                const percent = strength * 25;
+                passwordStrengthMeter.style.width = percent + '%';
+                
+                if (strength <= 1) {
+                    passwordStrengthMeter.style.backgroundColor = '#ef4444'; // red
+                } else if (strength <= 2) {
+                    passwordStrengthMeter.style.backgroundColor = '#f59e0b'; // orange
+                } else if (strength <= 3) {
+                    passwordStrengthMeter.style.backgroundColor = '#84cc16'; // lime
+                } else {
+                    passwordStrengthMeter.style.backgroundColor = '#10b981'; // green
+                }
+                
+                passwordFeedback.textContent = message;
             }
-        }
-
-        window.addEventListener('resize', handleResize);
-
-        // Add ripple effect to buttons
-        function addRippleEffect() {
-            const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
             
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.classList.add('ripple');
-                    
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
+            function validateForm() {
+                const name = document.getElementById('accountName').value;
+                const password = masterPassword.value;
+                const confirm = confirmPassword.value;
+                
+                // Check if passwords match
+                const passwordsMatch = password === confirm;
+                document.getElementById('confirmError').classList.toggle('hidden', passwordsMatch || confirm === '');
+                
+                // Enable button only if form is valid
+                const isValid = name.length > 0 && 
+                              password.length >= 8 && 
+                              passwordsMatch;
+                              
+                document.getElementById('createButton').disabled = !isValid;
+                
+                return isValid;
+            }
+            
+            // Form submission
+            document.getElementById('accountForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) return;
+                
+                // In a real implementation, this would:
+                // 1. Check if account name is unique in IndexedDB
+                // 2. Generate salt and derive master key
+                // 3. Create verifier and store user record
+                // 4. Prompt for recovery file creation
+                
+                alert('Account creation would proceed here. This is a frontend prototype.');
             });
-        }
-
-        // Initialize ripple effects
-        document.addEventListener('DOMContentLoaded', addRippleEffect);
+            
+            // Import button
+            document.getElementById('importButton').addEventListener('click', function() {
+                alert('Import functionality would be implemented here.');
+            });
+        });
     </script>
 </body>
 </html>
-
-
-
-
-
