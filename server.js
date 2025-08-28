@@ -36,3 +36,8 @@ app.post("/submit-form", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// Serve ContactPage.html as default
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "ContactPage.html"));
+});
+
