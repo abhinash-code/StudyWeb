@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinash — Contact | </title>
+    
+    <!-- SEO & Open Graph Meta Tags -->
+    <meta name="description" content="Get in touch with Abhinash - 12th class student passionate about coding, AI, and web development. Creator of '' YouTube channel.">
+    <meta name="keywords" content="Abhinash, contact, coding, AI, web development, student developer, ">
+    <meta name="author" content="Abhinash">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Abhinash — Contact | ">
+    <meta property="og:description" content="Connect with Abhinash - passionate student developer and YouTuber">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="[REPLACE_WITH_YOUR_DOMAIN]/contact">
+    <meta property="og:image" content="[REPLACE_WITH_OG_IMAGE_URL]">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Abhinash — Contact | ">
+    <meta name="twitter:description" content="Connect with Abhinash - passionate student developer and YouTuber">
+    <meta name="twitter:image" content="[REPLACE_WITH_TWITTER_IMAGE_URL]">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Abhinash",
+        "description": "12th class student passionate about coding, AI, and web development",
+        "url": "[REPLACE_WITH_YOUR_DOMAIN]",
+        "email": "kumarjhaabhinash68@gmail.com",
+        "telephone": "+91 7870109958",
+        "sameAs": [
+            "[REPLACE_WITH_YOUTUBE_URL]",
+            "[REPLACE_WITH_GITHUB_URL]",
+            "[REPLACE_WITH_LINKEDIN_URL]",
+            "[REPLACE_WITH_INSTAGRAM_URL]",
+            "[REPLACE_WITH_TWITTER_URL]"
+        ]
+    }
+    </script>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="data:font/woff2;base64,..." as="font" type="font/woff2" crossorigin>
+    
+    <!-- CSS Variables and Styles -->
+    <style>
+        /* START OF CONTACT PAGE - Abhinash */
+        
+        :root {
+            /* Color Palette - Modern & Professional */
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #a5b4fc;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow-lg: rgba(0, 0, 0, 0.25);
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            
+            /* Dark Mode Colors */
+            --dark-primary: #6366f1;
+            --dark-primary-hover: #7c3aed;
+            --dark-secondary: #10b981;
+            --dark-text-primary: #f9fafb;
+            --dark-text-secondary: #d1d5db;
+            --dark-text-muted: #9ca3af;
+            --dark-bg-primary: #111827;
+            --dark-bg-secondary: #1f2937;
+            --dark-bg-tertiary: #374151;
+            --dark-border: #374151;
+            --dark-shadow: rgba(0, 0, 0, 0.5);
+            --dark-glass: rgba(0, 0, 0, 0.3);
+            --dark-glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Animation Variables */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Spacing & Layout */
+            --container-max: 1200px;
+            --section-padding: 4rem 0;
+            --card-padding: 2rem;
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+        }
+        
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --primary: var(--dark-primary);
+            --primary-hover: var(--dark-primary-hover);
+            --secondary: var(--dark-secondary);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --text-muted: var(--dark-text-muted);
+            --bg-primary: var(--dark-bg-primary);
+            --bg-secondary: var(--dark-bg-secondary);
+            --bg-tertiary: var(--dark-bg-tertiary);
+            --border: var(--dark-border);
+            --shadow: var(--dark-shadow);
+            --glass: var(--dark-glass);
+            --glass-border: var(--dark-glass-border);
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+        
+        /* Background Video/Image */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.1;
+            transition: var(--transition);
+        }
+        
+        .bg-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(99, 102, 241, 0.05) 0%, 
+                rgba(16, 185, 129, 0.05) 50%, 
+                rgba(245, 158, 11, 0.05) 100%);
+            backdrop-filter: blur(1px);
+        }
+        
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--bg-primary);
+            opacity: 0.95;
+            transition: var(--transition);
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            padding: 2rem 0;
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .header-content {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+       .logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6e45e2, #88d3ce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  animation: bounce 1s ease-out 0.5s both, glowPulse 2s infinite alternate;
+  box-shadow: 
+    0 0 20px rgba(110, 69, 226, 0.5),
+    0 0 40px rgba(110, 69, 226, 0.3),
+    0 0 60px rgba(110, 69, 226, 0.1);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.logo::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(20px);
+  opacity: 0.7;
+  z-index: -1;
+  animation: lightSpread 3s infinite alternate;
+}
+
+.logo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 0 20px #fff,
+    inset 2px 0 30px rgba(110, 69, 226, 0.9),
+    inset -2px 0 30px rgba(136, 211, 206, 0.9),
+    inset 2px 0 100px rgba(110, 69, 226, 0.5),
+    inset -2px 0 100px rgba(136, 211, 206, 0.5);
+  animation: innerGlow 3s infinite alternate;
+}
+
+.logo:hover {
+  transform: scale(1.15) rotate(360deg);
+  box-shadow: 
+    0 0 30px rgba(110, 69, 226, 0.7),
+    0 0 60px rgba(110, 69, 226, 0.5),
+    0 0 100px rgba(110, 69, 226, 0.3),
+    0 0 150px rgba(110, 69, 226, 0.1);
+}
+
+.logo:hover::before {
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  filter: blur(30px);
+  opacity: 0.9;
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0) scale(1); }
+  40%, 43% { transform: translate3d(0, -30px, 0) scale(1.1); }
+  70% { transform: translate3d(0, -15px, 0) scale(1.05); }
+  90% { transform: translate3d(0, -4px, 0) scale(1.02); }
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 
+      0 0 20px rgba(110, 69, 226, 0.5),
+      0 0 40px rgba(110, 69, 226, 0.3),
+      0 0 60px rgba(110, 69, 226, 0.1);
+  }
+  100% {
+    box-shadow: 
+      0 0 30px rgba(110, 69, 226, 0.7),
+      0 0 60px rgba(110, 69, 226, 0.5),
+      0 0 90px rgba(110, 69, 226, 0.3);
+  }
+}
+
+@keyframes lightSpread {
+  0% {
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    opacity: 0.5;
+  }
+  100% {
+    top: -25px;
+    left: -25px;
+    right: -25px;
+    bottom: -25px;
+    opacity: 0.8;
+  }
+}
+
+@keyframes innerGlow {
+  0% {
+    box-shadow: 
+      inset 0 0 20px #fff,
+      inset 2px 0 30px rgba(110, 69, 226, 0.9),
+      inset -2px 0 30px rgba(136, 211, 206, 0.9),
+      inset 2px 0 100px rgba(110, 69, 226, 0.5),
+      inset -2px 0 100px rgba(136, 211, 206, 0.5);
+  }
+  100% {
+    box-shadow: 
+      inset 0 0 30px #fff,
+      inset 2px 0 40px rgba(110, 69, 226, 0.9),
+      inset -2px 0 40px rgba(136, 211, 206, 0.9),
+      inset 2px 0 120px rgba(110, 69, 226, 0.6),
+      inset -2px 0 120px rgba(136, 211, 206, 0.6);
+  }
+}
+
+/* Adding light rays that spread outward */
+.logo .light-ray {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: -2;
+}
+
+.logo .light-ray:nth-child(1) {
+  animation: rayAnimation 4s infinite linear;
+}
+
+.logo .light-ray:nth-child(2) {
+  animation: rayAnimation 4s infinite linear;
+  animation-delay: 1s;
+}
+
+.logo .light-ray:nth-child(3) {
+  animation: rayAnimation 4s infinite linear;
+  animation-delay: 2s;
+}
+
+.logo .light-ray:nth-child(4) {
+  animation: rayAnimation 4s infinite linear;
+  animation-delay: 3s;
+}
+
+@keyframes rayAnimation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(110, 69, 226, 0.5);
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 50px rgba(110, 69, 226, 0);
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Adding particle effects */
+.logo .particle {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.logo .particle:nth-child(1) {
+  width: 4px;
+  height: 4px;
+  top: 10%;
+  left: 50%;
+  animation: particleFloat 6s infinite linear;
+}
+
+.logo .particle:nth-child(2) {
+  width: 3px;
+  height: 3px;
+  top: 80%;
+  left: 20%;
+  animation: particleFloat 7s infinite linear;
+  animation-delay: 1s;
+}
+
+.logo .particle:nth-child(3) {
+  width: 5px;
+  height: 5px;
+  top: 30%;
+  left: 10%;
+  animation: particleFloat 5s infinite linear;
+  animation-delay: 2s;
+}
+
+.logo .particle:nth-child(4) {
+  width: 4px;
+  height: 4px;
+  top: 60%;
+  left: 80%;
+  animation: particleFloat 8s infinite linear;
+  animation-delay: 3s;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-20px, -40px);
+    opacity: 0;
+  }
+}
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+        
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: var(--section-padding) 1rem;
+            position: relative;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: slideInRight 0.8s ease-out 1s both;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Grid Layout */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out both;
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glass), transparent);
+            transition: left 0.5s;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow-lg);
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            transition: var(--transition);
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        /* Contact Form */
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group.half {
+            grid-column: span 1;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            transition: var(--transition);
+            pointer-events: none;
+            background: var(--bg-secondary);
+            padding: 0 0.5rem;
+        }
+        
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label,
+        .form-textarea:focus + .form-label,
+        .form-textarea:not(:placeholder-shown) + .form-label {
+            top: -0.5rem;
+            font-size: 0.875rem;
+            color: var(--primary);
+            transform: translateY(0);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .form-error.show {
+            display: block;
+            animation: slideInUp 0.3s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow-lg);
+        }
+        
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .submit-btn .loading {
+            display: none;
+        }
+        
+        .submit-btn.loading .loading {
+            display: block;
+            animation: spin 1s linear infinite;
+        }
+        
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Social Links */
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-sm);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+        
+        .social-link:hover::before {
+            left: 0;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+        
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover .social-icon {
+            transform: scale(1.2);
+        }
+        
+        .social-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .social-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+        
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Privacy Notice */
+        .privacy-notice {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .privacy-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .privacy-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Success Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+            margin: 1rem;
+            position: relative;
+            animation: slideInScale 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInScale {
+            from { transform: scale(0.8) translateY(50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            animation: confetti-fall 3s ease-out infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Accessibility Features */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus Styles */
+        .focus-visible:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .theme-toggle,
+            .bg-container,
+            .bg-overlay,
+            .modal { display: none !important; }
+            
+            body { background: white; color: black; }
+            .card { border: 1px solid #ccc; }
+        }
+        
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            :root {
+                --border: #000;
+                --shadow: rgba(0, 0, 0, 0.5);
+            }
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            :root {
+                --card-padding: 1.5rem;
+                --section-padding: 2rem 0;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .social-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--section-padding) 0.5rem;
+            }
+            
+            .header-content {
+                padding: 0 0.5rem;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+        
+        /* Selection Styles */
+        ::selection {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mt-2 { margin-top: 1rem; }
+        .hidden { display: none; }
+        .block { display: block; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+        
+        /* Animation Classes */
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Status Indicators */
+        .status-online {
+            position: relative;
+        }
+        
+        .status-online::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            top: -4px;
+            right: -4px;
+            border: 2px solid var(--bg-primary);
+            animation: pulse 2s infinite;
+        }
+        
+        /* Honeypot Field (Hidden) */
+        .honeypot {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Container -->
+    <div class="bg-container">
+        <!-- Background video will be added here via JS if supported -->
+        <div class="bg-fallback"></div>
+    </div>
+    <div class="bg-overlay"></div>
+    
+    <!-- Theme Toggle -->
+    <button class="theme-toggle focus-visible" aria-label="Toggle dark mode" title="Toggle Theme">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+        </svg>
+    </button>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo status-online" aria-label="Abhinash - Student Developer" style="cursor: pointer;" id="header-logo" title="View Profile">
+  A
+  <div class="light-ray"></div>
+  <div class="light-ray"></div>
+  <div class="light-ray"></div>
+  <div class="light-ray"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+            <h1 style="cursor: default;">Contact Abhinash</h1>
+            <p style="cursor: default;">12th class student passionate about coding, AI & web development. Always open for collaborations, projects, and mentoring! 🚀</p>
+        </div>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Contact Grid -->
+        <div class="contact-grid">
+            <!-- Contact Form Card -->
+             <form action="/submit-form" method="POST">
+
+            <div class="card">
+                <h2>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    Let's Connect!
+                </h2>
+                
+                <form class="contact-form" id="contactForm" novalidate>
+                    <!-- Honeypot Field -->
+                    <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" class="form-input focus-visible" title="Your Name" placeholder=" " required>
+                            <label for="name" class="form-label">Your Name *</label>
+                            <div class="form-error" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" class="form-input focus-visible" title="Email id" placeholder=" " required>
+                            <label for="email" class="form-label">Email Address *</label>
+                            <div class="form-error" role="alert" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" class="form-input focus-visible" title="Phone" placeholder=" ">
+                        <label for="phone" class="form-label">Phone (Optional)</label>
+                        <div class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <select id="subject" name="subject" class="form-select focus-visible" required>
+                            <option value="">Select Subject *</option>
+                            <option value="collaboration">Collaboration Opportunity</option>
+                            <option value="mentoring">Mentoring Request</option>
+                            <option value="project">Project Discussion</option>
+                            <option value="youtube">YouTube Channel Related</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea id="message" name="message" class="form-textarea focus-visible" placeholder=" " required rows="5"></textarea>
+                        <label for="message" class="form-label">Your Message *</label>
+                        <div class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <div class="privacy-notice">
+                        <p><strong>Privacy Notice:</strong> Your contact information will only be used to respond to your inquiry. I respect your privacy and won't share your data with third parties.</p>
+                        <div class="privacy-checkbox">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <label for="privacy">I agree to the <span style="color: blue; cursor: pointer; font-weight: 800;" onclick="openPrivacy()">
+    privacy policy and terms.
+  </span></label>
+                        </div>
+                        <div class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn focus-visible" id="submitBtn">
+                        <span class="btn-text">Send Message</span>
+                        <svg class="loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12a9 9 0 11-6.219-8.56"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            </form>
+            
+            <!-- Quick Contact Info Card -->
+            <div class="card">
+                <h2>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+                    </svg>
+                    Quick Contact
+                </h2>
+                
+                <div class="action-buttons">
+                    <button class="action-btn focus-visible" id="copyEmail" title="Copy email to clipboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                        </svg>
+                        Copy Email
+                    </button>
+                    
+                    <button class="action-btn focus-visible" id="copyPhone" title="Copy phone to clipboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+                        </svg>
+                        Copy Phone
+                    </button>
+                    
+                    <button class="action-btn focus-visible" id="downloadVCard" title="Download contact card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download vCard
+                    </button>
+                    
+                    <a href="mailto:kumarjhaabhinash68@gmail.com" class="action-btn focus-visible" title="Send email directly">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        Direct Email
+                    </a>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Contact Details</h3>
+                    <p><strong>Email:</strong> kumarjhaabhinash68@gmail.com</p>
+                    <p><strong>Phone:</strong> +91 7870109958</p>
+                    <p><strong>Response Time:</strong> Usually within 24 hours</p>
+                    <p><strong>Best Time:</strong> 9 AM - 8 PM IST</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Links Section -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+                Connect on Social
+            </h2>
+            
+            <div class="social-links">
+                <a href="[REPLACE_WITH_YOUTUBE_URL]" title="Youtube" class="social-link focus-visible" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="#ff0000">
+                        <path d="M23 12s0-3.85-.46-5.58c-.25-.95-.98-1.69-1.93-1.93C18.88 4 12 4 12 4s-6.88 0-8.61.49c-.95.24-1.68.98-1.93 1.93C1 8.15 1 12 1 12s0 3.85.46 5.58c.25.95.98 1.69 1.93 1.93C5.12 20 12 20 12 20s6.88 0 8.61-.49c.95-.24 1.68-.98 1.93-1.93C23 15.85 23 12 23 12z"></path>
+                        <polygon points="10,15 15,12 10,9" fill="#ffffff"></polygon>
+                    </svg>
+                    <div class="social-info">
+                        <h4></h4>
+                        <p>Coding Related content for students</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/abhinash-code" title="Github" class="social-link focus-visible" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <div class="social-info">
+                        <h4>GitHub</h4>
+                        <p>Code repositories & projects</p>
+                    </div>
+                </a>
+                
+                <a href="[REPLACE_WITH_LINKEDIN_URL]" title="LinkedIn" class="social-link focus-visible" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="#0077b5">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    <div class="social-info">
+                        <h4>LinkedIn</h4>
+                        <p>Professional network</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.instagram.com/kineticx_edits?igsh=ZXVkeGdleGk2NWs=" title="Instagram" class="social-link focus-visible" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
+                        <defs>
+                            <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#833ab4"/>
+                                <stop offset="50%" style="stop-color:#fd1d1d"/>
+                                <stop offset="100%" style="stop-color:#fcb045"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#ffffff" stroke-width="2"/>
+                    </svg>
+                    <div class="social-info">
+                        <h4>Instagram</h4>
+                        <p>Daily updates & stories</p>
+                    </div>
+                </a>
+                
+                <a href="[REPLACE_WITH_TWITTER_URL]" class="social-link focus-visible" title="X" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    <div class="social-info">
+                        <h4>X (Twitter)</h4>
+                        <p>Quick updates & thoughts</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Map Section (Optional) -->
+        <!-- Map Section -->
+<div class="card text-center">
+  <h2>
+    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+      <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+    Location
+  </h2>
+  <p class="text-secondary mb-2">Currently based near Baba Bhoothnath Temple 🇮🇳</p>
+
+  <!-- Embedded Google Map -->
+  <div style="width: 100%; height: 250px; border-radius: var(--border-radius-sm); overflow: hidden;">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2983.0958350461133!2d86.16292372615017!3d26.386973711029338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sBaba%20Bhoothnath%20temple!5e1!3m2!1sen!2sin!4v1756198209201!5m2!1sen!2sin"
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</div>
+
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-desc">
+        <div class="modal-content">
+            <div id="confetti-container"></div>
+            <h3 id="modal-title" style="color: var(--primary); margin-bottom: 1rem;">Message Sent Successfully! 🎉</h3>
+            <p id="modal-desc" style="color: var(--text-secondary); margin-bottom: 1.5rem;">Thank you for reaching out! I'll get back to you within 24 hours.</p>
+            <button class="action-btn focus-visible" onclick="closeModal()" style="border-color: var(--primary);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,11 12,14 22,4"></polyline>
+                    <path d="M21,12v7a2,2 0 01-2,2H5a2,2 0 01-2-2V5a2,2 0 012-2h11"></path>
+                </svg>
+                Awesome!
+            </button>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        /* CONTACT PAGE JAVASCRIPT - Abhinash */
+        
+        // Configuration - REPLACE WITH YOUR ACTUAL KEYS
+        const CONFIG = {
+            // EmailJS Configuration (Replace with your actual keys)
+            emailjs: {
+                serviceId: 'YOUR_EMAILJS_SERVICE_ID', // Replace with your EmailJS service ID
+                templateId: 'YOUR_EMAILJS_TEMPLATE_ID', // Replace with your EmailJS template ID
+                publicKey: 'YOUR_EMAILJS_PUBLIC_KEY' // Replace with your EmailJS public key
+            },
+            
+            // Formspree Configuration (Alternative)
+            formspree: {
+                endpoint: 'YOUR_FORMSPREE_ENDPOINT' // Replace with your Formspree form endpoint
+            },
+            
+            // Rate limiting
+            rateLimitDelay: 30000, // 30 seconds between submissions
+            
+            // Contact details
+            contact: {
+                email: 'kumarjhaabhinash68@gmail.com',
+                phone: '+91 7870109958',
+                name: 'Abhinash',
+                website: '[REPLACE_WITH_YOUR_DOMAIN]'
+            }
+        };
+        
+        // State management
+        let lastSubmissionTime = 0;
+        let isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        
+        // DOM Elements
+        const Profile = document.querySelector('#header-logo');
+        const themeToggle = document.querySelector('.theme-toggle');
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successModal = document.getElementById('successModal');
+        const copyEmailBtn = document.getElementById('copyEmail');
+        const copyPhoneBtn = document.getElementById('copyPhone');
+        const downloadVCardBtn = document.getElementById('downloadVCard');
+        
+        //Profile page location 
+        Profile.addEventListener('click' , () => {
+            window.location.href = "Advance_Portfolio.html";
+                })
+        // Initialize theme
+        function initTheme() {
+            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+        
+        // Update theme toggle icon
+        function updateThemeIcon() {
+  const icon = themeToggle.querySelector('svg');
+
+  if (isDarkMode) {
+    // Dark Mode ON -> Sun icon dikhna chahiye
+    icon.innerHTML = `
+      <circle cx="12" cy="12" r="5" fill="#fff"></circle>
+      <path d="M12 1v2M12 21v2M4.2 4.21l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="#fff"></path>
+    `;
+  } else {
+    // Light Mode ON -> Moon icon dikhna chahiye
+    icon.innerHTML = `
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="black"></path>
+    `;
+  }
+}
+        
+        
+        // Toggle theme
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            updateThemeIcon();
+            
+            // Add smooth transition effect
+            document.body.style.transition = 'all 0.3s ease';
+            setTimeout(() => {
+                document.body.style.transition = '';
+            }, 300);
+        }
+        
+        // Initialize background video
+        function initBackgroundVideo() {
+            const bgContainer = document.querySelector('.bg-container');
+            
+            // Create video element (fallback to CSS background if video fails)
+            const video = document.createElement('video');
+            video.className = 'bg-video';
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            
+            // Add video sources - REPLACE WITH YOUR VIDEO URLs
+            video.innerHTML = `
+                <source src="[REPLACE_WITH_VIDEO_MP4_URL]" type="video/mp4">
+                <source src="[REPLACE_WITH_VIDEO_WEBM_URL]" type="video/webm">
+            `;
+            
+            // Handle video load success
+            video.addEventListener('loadeddata', () => {
+                bgContainer.appendChild(video);
+                video.play().catch(() => {
+                    // Video autoplay failed, keep fallback
+                    console.log('Video autoplay failed, using fallback background');
+                });
+            });
+            
+            // Handle video load error
+            video.addEventListener('error', () => {
+                console.log('Video failed to load, using fallback background');
+            });
+            
+            // Pause video on mobile to save battery
+            if (window.innerWidth < 768) {
+                video.pause();
+            }
+        }
+        
+        // Form validation
+        function validateField(field) {
+            const value = field.value.trim();
+            const type = field.type;
+            const required = field.hasAttribute('required');
+            const errorElement = field.parentNode.querySelector('.form-error');
+            
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Required field validation
+            if (required && !value) {
+                isValid = false;
+                errorMessage = `${field.labels[0].textContent.replace(' *', '')} is required`;
+            }
+            
+            // Email validation
+            else if (type === 'email' && value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid email address';
+                }
+            }
+            
+            // Phone validation (optional but if provided, should be valid)
+            else if (type === 'tel' && value) {
+                const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+                if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid phone number';
+                }
+            }
+            
+            // Select validation
+            else if (field.tagName === 'SELECT' && required && !value) {
+                isValid = false;
+                errorMessage = 'Please select a subject';
+            }
+            
+            // Checkbox validation (privacy policy)
+            else if (field.type === 'checkbox' && required && !field.checked) {
+                isValid = false;
+                errorMessage = 'You must agree to the privacy policy';
+            }
+            
+            // Update UI
+            if (!isValid) {
+                field.style.borderColor = '#ef4444';
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('show');
+            } else {
+                field.style.borderColor = '#10b981';
+                errorElement.textContent = '';
+                errorElement.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Validate entire form
+        function validateForm() {
+            const fields = contactForm.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            fields.forEach(field => {
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
+            
+            return isValid;
+        }
+        
+        // Rate limiting check
+        function canSubmitForm() {
+            const now = Date.now();
+            if (now - lastSubmissionTime < CONFIG.rateLimitDelay) {
+                const remainingTime = Math.ceil((CONFIG.rateLimitDelay - (now - lastSubmissionTime)) / 1000);
+                showNotification(`Please wait ${remainingTime} seconds before submitting again`, 'warning');
+                return false;
+            }
+            return true;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#10b981'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 3000;
+                animation: slideInRight 0.3s ease-out;
+                max-width: 300px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+        
+        // Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Check rate limiting
+            if (!canSubmitForm()) return;
+            
+            // Validate form
+            if (!validateForm()) {
+                showNotification('Please fix the errors in the form', 'error');
+                return;
+            }
+            
+            // Check honeypot
+            if (contactForm.website.value) {
+                showNotification('Spam detected. Please try again.', 'error');
+                return;
+            }
+            
+            // Update button state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            try {
+                const formData = new FormData(contactForm);
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message')
+                };
+                
+                let success = false;
+                
+                // Try EmailJS first if configured
+                if (CONFIG.emailjs.serviceId !== 'YOUR_EMAILJS_SERVICE_ID') {
+                    success = await sendWithEmailJS(data);
+                }
+                
+                // Try Formspree as fallback if EmailJS failed and configured
+                if (!success && CONFIG.formspree.endpoint !== 'YOUR_FORMSPREE_ENDPOINT') {
+                    success = await sendWithFormspree(data);
+                }
+                
+                // If both services fail, create downloadable email
+                if (!success) {
+                    createDownloadableEmail(data);
+                    success = true; // Treat as success since we provided alternative
+                }
+                
+                if (success) {
+                    lastSubmissionTime = Date.now();
+                    showSuccessModal();
+                    contactForm.reset();
+                    
+                    // Reset form validation styles
+                    const fields = contactForm.querySelectorAll('input, select, textarea');
+                    fields.forEach(field => {
+                        field.style.borderColor = '';
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showNotification('Something went wrong. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        }
+        
+        // Send via EmailJS
+        async function sendWithEmailJS(data) {
+            try {
+                if (typeof emailjs === 'undefined') {
+                    // Load EmailJS if not already loaded
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+                    document.head.appendChild(script);
+                    
+                    await new Promise((resolve) => {
+                        script.onload = resolve;
+                    });
+                    
+                    emailjs.init(CONFIG.emailjs.publicKey);
+                }
+                
+                await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateId, {
+                    from_name: data.name,
+                    from_email: data.email,
+                    phone: data.phone,
+                    subject: data.subject,
+                    message: data.message,
+                    to_email: CONFIG.contact.email
+                });
+                
+                return true;
+            } catch (error) {
+                console.error('EmailJS error:', error);
+                return false;
+            }
+        }
+        
+        // Send via Formspree
+        async function sendWithFormspree(data) {
+            try {
+                const response = await fetch(CONFIG.formspree.endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                return response.ok;
+            } catch (error) {
+                console.error('Formspree error:', error);
+                return false;
+            }
+        }
+        
+        // Create downloadable email (.eml file)
+        function createDownloadableEmail(data) {
+            const emailContent = `From: ${data.name} <${data.email}>
+To: ${CONFIG.contact.name} <${CONFIG.contact.email}>
+Subject: ${data.subject} - Contact Form
+Date: ${new Date().toUTCString()}
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+Contact Form Submission
+
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+Subject: ${data.subject}
+
+Message:
+${data.message}
+
+---
+Sent via contact form from ${CONFIG.contact.website}
+`;
+            
+            const blob = new Blob([emailContent], { type: 'message/rfc822' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `contact-${data.name.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.eml`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Email file downloaded! Please send it manually.', 'info');
+        }
+        
+        // Show success modal
+        function showSuccessModal() {
+            successModal.classList.add('show');
+            createConfetti();
+            
+            // Focus management for accessibility
+            const closeButton = successModal.querySelector('button');
+            closeButton.focus();
+        }
+        
+        // Close modal
+        function closeModal() {
+            successModal.classList.remove('show');
+            
+            // Return focus to submit button
+            submitBtn.focus();
+        }
+        
+        // Copy to clipboard
+        async function copyToClipboard(text, successMessage) {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    textArea.remove();
+                }
+                
+                showNotification(successMessage, 'info');
+            } catch (error) {
+                console.error('Copy failed:', error);
+                showNotification('Copy failed. Please try again.', 'error');
+            }
+        }
+        
+        // Generate vCard
+        function generateVCard() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${CONFIG.contact.name}
+N:;${CONFIG.contact.name};;;
+EMAIL;TYPE=INTERNET:${CONFIG.contact.email}
+TEL;TYPE=CELL:${CONFIG.contact.phone}
+URL:${CONFIG.contact.website}
+TITLE:Student Developer & YouTuber
+ORG:
+NOTE:12th class student passionate about coding, AI, and web development. Creator of "" YouTube channel.
+END:VCARD`;
+            
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${CONFIG.contact.name.toLowerCase()}-contact.vcf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Contact card downloaded!', 'info');
+        }
+        
+        // Keyboard navigation enhancement
+        function enhanceKeyboardNavigation() {
+            // Add keyboard support for custom elements
+            const customButtons = document.querySelectorAll('.action-btn, .social-link');
+            
+            customButtons.forEach(button => {
+                button.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        button.click();
+                    }
+                });
+            });
+            
+            // Modal keyboard handling
+            successModal.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+            
+            // Trap focus in modal
+            const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+            
+            successModal.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    const focusable = Array.from(successModal.querySelectorAll(focusableElements));
+                    const firstFocusable = focusable[0];
+                    const lastFocusable = focusable[focusable.length - 1];
+                    
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstFocusable) {
+                            lastFocusable.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (document.activeElement === lastFocusable) {
+                            firstFocusable.focus();
+                            e.preventDefault();
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Performance optimization
+        function optimizePerformance() {
+            // Lazy load background video
+            const bgContainer = document.querySelector('.bg-container');
+            
+            // Use Intersection Observer for animations
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe animated elements
+            const animatedElements = document.querySelectorAll('.card');
+            animatedElements.forEach(el => {
+                el.style.animationPlayState = 'paused';
+                animationObserver.observe(el);
+            });
+            
+            // Debounce resize events
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Handle responsive changes
+                    if (window.innerWidth < 768) {
+                        const video = document.querySelector('.bg-video');
+                        if (video) video.pause();
+                    }
+                }, 250);
+            });
+        }
+        
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme
+            initTheme();
+            
+            // Initialize background
+            initBackgroundVideo();
+            
+            // Enhance keyboard navigation
+            enhanceKeyboardNavigation();
+            
+            // Optimize performance
+            optimizePerformance();
+            
+            // Event listeners
+            themeToggle.addEventListener('click', toggleTheme);
+            contactForm.addEventListener('submit', handleFormSubmit);
+            
+            // Real-time validation
+            const formFields = contactForm.querySelectorAll('input, select, textarea');
+            formFields.forEach(field => {
+                field.addEventListener('blur', () => validateField(field));
+                field.addEventListener('input', () => {
+                    // Clear error on input
+                    if (field.style.borderColor === 'rgb(239, 68, 68)') {
+                        field.style.borderColor = '';
+                        const errorElement = field.parentNode.querySelector('.form-error');
+                        errorElement.classList.remove('show');
+                    }
+                });
+            });
+            
+            // Action button handlers
+            copyEmailBtn.addEventListener('click', () => 
+                copyToClipboard(CONFIG.contact.email, 'Email copied to clipboard!')
+            );
+            
+            copyPhoneBtn.addEventListener('click', () => 
+                copyToClipboard(CONFIG.contact.phone, 'Phone number copied to clipboard!')
+            );
+            
+            downloadVCardBtn.addEventListener('click', generateVCard);
+            
+            // Close modal on backdrop click
+            successModal.addEventListener('click', (e) => {
+                if (e.target === successModal) {
+                    closeModal();
+                }
+            });
+            
+            // Add CSS animations via JavaScript for better performance
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideOutRight {
+                    to { transform: translateX(100px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            console.log('🚀 Contact page initialized successfully!');
+        });
+        
+        // Service Worker registration for PWA capabilities (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Register service worker if available
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
+        
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            showNotification('Something went wrong. Please refresh the page.', 'error');
+        });
+        
+        // Expose functions for inline event handlers
+        window.closeModal = closeModal;
+        window.toggleTheme = toggleTheme;
+    </script>
+    <script>
+function openPrivacy() {
+  let newWin = window.open("", "_blank", "width=1000,height=1000");
+  newWin.document.write(`
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7fb;
+      color: #333;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul {
+      margin: 15px 0;
+      padding-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #2c3e50;
+      color: white;
+      margin-top: 30px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Privacy Policy</h1>
+  </header>
+
+  <div class="container">
+    <h2>Introduction</h2>
+    <p>
+      We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website. Please read this privacy policy carefully. If you do not agree with the terms of this policy, please do not use our site.
+    </p>
+
+    <h2>Information We Collect</h2>
+    <p>We may collect information about you in a variety of ways. The information we may collect on the website includes:</p>
+    <ul>
+      <li><strong>Personal Data:</strong> Personally identifiable information, such as your name, email address, and contact details, that you voluntarily give to us when you register on the site or contact us.</li>
+      <li><strong>Derivative Data:</strong> Information our servers automatically collect when you access the site, such as IP address, browser type, operating system, access times, and pages viewed.</li>
+      <li><strong>Cookies:</strong> We may use cookies and tracking technologies to improve your experience and analyze website traffic.</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <p>Your data is used for purposes such as:</p>
+    <ul>
+      <li>Providing and maintaining our services</li>
+      <li>Improving user experience and website functionality</li>
+      <li>Sending updates, newsletters, or promotional materials</li>
+      <li>Ensuring compliance with legal obligations</li>
+    </ul>
+
+    <h2>Data Sharing</h2>
+    <p>
+      We do not sell or rent your personal information to third parties. However, we may share your information with trusted partners, service providers, or when required by law.
+    </p>
+
+    <h2>Data Security</h2>
+    <p>
+      We use administrative, technical, and physical security measures to protect your personal data. While we take reasonable steps to protect the information you provide to us, please be aware that no method of transmission over the internet is 100% secure.
+    </p>
+
+    <h2>Your Rights</h2>
+    <p>
+      Depending on your location, you may have the right to access, correct, or delete the personal data we hold about you. You may also have the right to object to certain processing activities or withdraw consent.
+    </p>
+
+    <h2>Third-Party Links</h2>
+    <p>
+      Our website may contain links to third-party websites. We are not responsible for the privacy practices of such external sites. We encourage you to review their privacy policies when you visit them.
+    </p>
+
+    <h2>Policy Updates</h2>
+    <p>
+      We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. Updates will be posted on this page with the “Last Updated” date.
+    </p>
+
+    <h2>Contact Us</h2>
+    <p>
+      If you have any questions or concerns about this Privacy Policy, please contact us at <strong>support@example.com</strong>.
+    </p>
+  </div>
+
+  <footer>
+    <p>© 2025 Your Website Name. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
+
+  `);
+  newWin.document.close();
+}
+</script>
+</body>
+</html>
+        
+    
+   
