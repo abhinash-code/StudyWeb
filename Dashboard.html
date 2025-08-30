@@ -6,7 +6,6 @@
     <title>Dashboard(StudyWeb)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Dashboard.css">
     <style>
         * {
             margin: 0;
@@ -23,6 +22,11 @@
             --button-bg: #4a90e2;
             --button-hover: #3a7bc8;
             --loader-color: #fff;
+            --z-video: 0;
+            --z-content: 10;
+            --z-sidebar: 20;
+            --z-panel: 30;
+            --z-loader: 40;
         }
 
         body {
@@ -32,53 +36,51 @@
             overflow-x: hidden;
             overflow-y: auto;
             background-attachment: fixed;
-            
         }
 
         /* Background video styling */
-       video#bg-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;       /* poora screen cover kare */
-    height: 100%;
-    object-fit: cover; /* stretch ya gap na aaye */
-    z-index: -1;       /* content ke niche rahe */
-}
-
+        video#bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: var(--z-video);
+        }
 
         /* App Layout */
         .app {
             display: flex;
             width: 100%;
             position: relative;
-            
         }
 
         /* Container for buttons */
         .container {
-           margin-top: 0;    
-           margin-left: 260px;     
-           position: relative; 
-           top: 0;
-           left: 0;
-           transform: none;    
+            margin-top: 0;
+            margin-left: 280px;
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: none;
             max-width: 910px;
             height: auto;
             padding: 2rem;
             opacity: 1;
             transition: opacity 0.5s ease;
-            z-index: 2;
+            z-index: var(--z-content);
             width: 100%;
             background-color: transparent;
         }
 
-       @media (max-width: 768px) {
-    .container {
-        width: 100%;    
-        padding: 1rem;  
-    }
-}
+        @media (max-width: 992px) {
+            .container {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+        }
 
         .nav-buttons {
             display: flex;
@@ -121,7 +123,7 @@
             width: 100%;
             height: 50%;
             background-color: #000;
-            z-index: 10;
+            z-index: var(--z-panel);
             transition: transform var(--animation-duration) ease-in-out;
             will-change: transform;
         }
@@ -150,6 +152,13 @@
             border: none;
         }
 
+        /* Hide sidebar during panel animation */
+        .panels-active nav,
+        .panels-merged nav {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         /* Loader Styles */
         .loader {
             position: fixed;
@@ -158,7 +167,7 @@
             transform: translate(-50%, -50%);
             display: flex;
             opacity: 0;
-            z-index: 15;
+            z-index: var(--z-loader);
             transition: opacity 0.3s ease;
         }
 
@@ -208,28 +217,20 @@
             height: 100vh;
             top: 0;
             left: 0;
-            z-index: 1000;
+            z-index: var(--z-sidebar);
             backdrop-filter: blur(10px);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
-      
-  
-        
-       @media (max-width: 992px) {
-    nav.collapsed {
-        width: 280px !important; /* Ab proper size mein dikhega */
-    }
-}
-.main-content {
-    padding-top: 70px; /* Content ab sidebar ke neeche dikhega */
-}
+
         /* Mobile Hamburger Button */
         .hamburger-btn {
             display: none;
             position: fixed;
             top: 20px;
             left: 20px;
-            z-index: 1001;
+            z-index: calc(var(--z-sidebar) + 1);
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
@@ -594,7 +595,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: calc(var(--z-sidebar) - 1);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -683,16 +684,12 @@
         @media (max-width: 992px) {
             .app {
                 flex-direction: column;
-                min-height: 90vh;
+                min-height: 100vh;
             }
             
             nav {
-                position: relative;
-                left: 0;
-                top: 0;
-                bottom: 0;
                 transform: translateX(-100%);
-                z-index: 1000;
+                transition: transform 0.3s ease;
             }
             
             nav.show {
@@ -714,6 +711,12 @@
             
             #mobileCloseBtn {
                 display: flex !important;
+            }
+
+            /* Lock body scroll when sidebar is open */
+            body.sidebar-open {
+                overflow: hidden;
+                height: 100%;
             }
         }
 
@@ -744,6 +747,11 @@
             .btn {
                 width: 100%;
             }
+
+            nav {
+                width: 85%;
+                max-width: 320px;
+            }
         }
 
         /* Fallback for reduced motion */
@@ -759,95 +767,449 @@
             .dot {
                 animation: none;
                 opacity: 1;
-                
             }
         }
      
-       
+        /* Chapter cards */
+        .chapter-card-container {
+            display: flex;
+            transform: translateY(750px);
+            align-items: center;
+            height: auto;
+            margin-top: 3rem;
+            background: transparent;
+            gap: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chapter-card {
+            width: 350px;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(10, 25, 80, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 1.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .chapter-card .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #6bb6ff;
+        }
+
+        .chapter-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .chapter-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .chapter-card button {
+            transform: translateY(10px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .chapter-card-container .chapter-card {
+            background: rgba(0, 0, 50, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            width: 320px;
+            text-align: center;
+            color: white;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(0, 100, 255, 0.7),
+                        0 0 40px rgba(0, 100, 255, 0.5),
+                        0 0 80px rgba(0, 100, 255, 0.3);
+        }
+
+        /* Chemistry cards */
+        .chem-card-wrap {
+            display: flex;
+            transform: translateY(900px);
+            align-items: center;
+            float: left;
+            margin-right: 2rem;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        #Chemistry-heading {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            color: whitesmoke;
+            font-size: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bolder;
+            text-shadow: 0 2px 2px grey;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            clear: both;
+        }
+        
+        .chem-card {
+            width: 250px;
+            height: 300px;
+            border-radius: 20px;
+            background: rgba(144, 238, 144, 0.25);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeIn 1.2s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .chem-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(0, 255, 0, 0.9);
+        }
+
+        .chem-card-icon {
+            font-size: 40px;
+            color: #00cc66;
+        }
+
+        .chem-card-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #004d00;
+        }
+
+        /* Navigation bar */
+        .NavBar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: calc(var(--z-content) + 1);
+        }
+
+        .NavBar ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+        }
+
+        .NavBar li {
+            list-style: none;
+        }
+
+        .NavBar ul a {
+            color: rgb(255, 24, 24);
+            font-weight: bolder;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        /* Hero section */
+        .sw-hero {
+            display: grid;
+            grid-template-columns: 1fr 440px;
+            gap: 40px;
+            align-items: center;
+            padding: 80px 24px;
+            min-height: 70vh;
+            position: relative;
+        }
+
+        @media (max-width: 900px) {
+            .sw-hero {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+        }
+
+        .sw-hero-title {
+            max-width: 760px;
+        }
+
+        .sw-title {
+            font-size: clamp(34px, 5vw, 56px);
+            line-height: 1.02;
+            margin-top: -20%;
+            font-weight: 700;
+        }
+
+        .sw-sub {
+            display: inline-block;
+            transform: translateY(12px);
+            transition: transform 0.3s ease;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 6px rgba(0, 170, 255, 0.4);
+            max-width: 550px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .sw-sub:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.7);
+        }
+
+        .sw-hero-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sw-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            transform: translateX(50px);
+            animation: fadeInUp 1s ease forwards, floatUpDown 3s ease-in-out infinite;
+            animation-delay: var(--delay, 0ms), 1s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .sw-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transform: translateY(35px);
+        }
+
+        .sw-cta {
+            --clr-font-main: hsla(0 0% 20% / 100);
+            --btn-bg-1: hsla(194 100% 69% / 1);
+            --btn-bg-2: hsla(217 100% 56% / 1);
+            --btn-bg-color: hsla(360 100% 100% / 1);
+            --radii: 0.5em;
+            cursor: pointer;
+            padding: 0.9em 1.4em;
+            min-width: 120px;
+            min-height: 44px;
+            font-size: var(--size, 1rem);
+            font-weight: 500;
+            transition: 0.8s;
+            background-size: 280% auto;
+            background-image: linear-gradient(
+                325deg,
+                var(--btn-bg-2) 0%,
+                var(--btn-bg-1) 55%,
+                var(--btn-bg-2) 90%
+            );
+            border: none;
+            border-radius: var(--radii);
+            color: var(--btn-bg-color);
+            box-shadow: 0px 0px 20px rgba(71, 184, 255, 0.5),
+                        0px 5px 5px -1px rgba(58, 125, 233, 0.25),
+                        inset 4px 4px 8px rgba(175, 230, 255, 0.5),
+                        inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+            text-decoration: none;
+        }
+
+        .sw-cta:hover {
+            background-position: right top;
+        }
+
+        .sw-cta:is(:focus, :focus-visible, :active) {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--btn-bg-color),
+                        0 0 0 6px var(--btn-bg-2);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .sw-cta {
+                transition: linear;
+            }
+        }
+
+        /* Physics heading */
+        #physics-heading {
+            font-size: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 900;
+            font-style: initial;
+            color: whitesmoke;
+            justify-content: center;
+            display: flex;
+            flex-direction: row;
+            text-shadow: 0 4px 4px grey;
+            cursor: default;
+            transform: translateY(750px);
+        }
+
+        /* Frutiger button */
+        .frutiger-button {
+            cursor: pointer;
+            position: relative;
+            padding: 2px;
+            max-width: 80px;
+            width: 100%;
+            border-radius: 2rem;
+            border: 0;
+            text-shadow: 1px 1px #000a;
+            background: linear-gradient(#006caa, #00c3ff);
+            box-shadow: 0px 4px 6px 0px #0008;
+            transition: 0.3s all;
+        }
+
+        .frutiger-button:hover {
+            box-shadow: 0px 6px 12px 0px #0009;
+        }
+
+        .frutiger-button:active {
+            box-shadow: 0px 0px 0px 0px #0000;
+        }
+
+        .inner {
+            position: relative;
+            inset: 0px;
+            padding: 1em;
+            border-radius: 2rem;
+            background: radial-gradient(circle at 50% 100%, #30f8f8 10%, #30f8f800 55%),
+                        linear-gradient(#00526a, #009dcd);
+            overflow: hidden;
+            transition: inherit;
+        }
+
+        .inner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(-65deg, #0000 40%, #fff7 50%, #0000 70%);
+            background-size: 40px 20px;
+            background-repeat: no-repeat;
+            animation: thing 3s ease infinite;
+        }
+
+        @keyframes thing {
+            0% {
+                background-position: 130%;
+                opacity: 1;
+            }
+            to {
+                background-position: -166%;
+                opacity: 0;
+            }
+        }
+
+        .top-white {
+            position: absolute;
+            border-radius: inherit;
+            inset: 0 -8em;
+            background: radial-gradient(
+                circle at 50% -270%,
+                #fff6 60%,
+                #fff0 60%
+            );
+            transition: inherit;
+        }
+
+        .inner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            transition: inherit;
+            box-shadow: inset 0px 2px 8px -2px #0000;
+        }
+
+        .frutiger-button:active .inner::after {
+            box-shadow: inset 0px 2px 8px -2px #000a;
+        }
+
+        .text {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-weight: 550;
+            transition: inherit;
+        }
+
+        /* Chemistry card button */
+        .chem-card-btn {
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 0.7em 1.4em 0.7em 1.1em;
+            color: white;
+            background: #ad5389;
+            background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
+            border: none;
+            box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+            letter-spacing: 0.05em;
+            border-radius: 20em;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .chem-card-btn:hover {
+            box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+        }
+
+        .chem-card-btn:active {
+            box-shadow: 0 0.3em 1em -0.5em #14a73e98;
+        }
     </style>
-   <style>
-    
-    .chapter-card-container {
-      display: flex;
-      transform: translateY(750px);
-      align-items: center;
-      height: auto;
-      margin-top: 3rem;
-      background: transparent;
-      gap: 3rem;
-    }
-
-    .chapter-card {
-      width: 350px;
-      padding: 2rem;
-      border-radius: 20px;
-      background: rgba(10, 25, 80, 0.85); /* Darker deep blue glass effect */
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      color: #fff;
-      text-align: center;
-      animation: fadeIn 1.2s ease-in-out;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .chapter-card .icon {
-      font-size: 50px;
-      margin-bottom: 15px;
-      color: #6bb6ff;
-    }
-
-    .chapter-card h2 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-    }
-
-    .chapter-card p {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-
-    .chapter-card button {
-      transform: translateY(10px);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .chapter-card-container .chapter-card {
-  background: rgba(0, 0, 50, 0.7); /* dark blue glass */
-  border-radius: 16px;
-  padding: 30px;
-  width: 320px;
-  text-align: center;
-  color: white;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  /* Glowing blue bulb effect */
-  box-shadow: 0 0 20px rgba(0, 100, 255, 0.7),
-              0 0 40px rgba(0, 100, 255, 0.5),
-              0 0 80px rgba(0, 100, 255, 0.3);
-}
-
-  </style>
 </head>
-<body >
+<body>
     <video id="bg-video" autoplay muted loop playsinline>
         <source src="Website background-4.mp4" type="video/mp4">
         Your browser does not support HTML5 video.
     </video>
-    
     
     <div class="app" id="appRoot">
         <!-- Mobile Hamburger Trigger -->
@@ -892,7 +1254,6 @@
                     <a class="pm-item" data-url="hire.html" id="btn" data-target="Hire-me.html" href="#" title="Hire">Hire</a>
                     <a class="pm-item" data-url="about.html" id="btn" data-target="My_Portofolio.html" href="#" title="About">About</a>
                     <a class="pm-item" data-url="contact.html" id="btn" data-target="ContactPage.html" href="#" title="Contact">Contact</a>
-                    
                 </div>
             </div>
 
@@ -911,7 +1272,7 @@
                     </li>
                     <li class="item" data-target="projects" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-diagram-project"></i></div>
-                        <div class="label" id="btn" data-target="MainProjects.html" title="Projects" >Projects</div>
+                        <div class="label" id="btn" data-target="MainProjects.html" title="Projects">Projects</div>
                     </li>
 
                     <li class="item has-children" data-accordion="modules" tabindex="0" role="button" aria-expanded="false">
@@ -920,8 +1281,8 @@
                         <div class="sub"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></div>
                     </li>
                     <div class="submenu" id="submenu-modules" role="region" aria-hidden="true">
-                        <div class="sub-item" data-target="module-physics"id="btn" data-target="modul.html" tabindex="0" title="Study">Study</div>
-                        <div class="sub-item" data-target="module-maths" tabindex="0" title="Career"  onclick="alert('This Feaure is Coming Soon...')">Career</div>
+                        <div class="sub-item" data-target="module-physics" id="btn" data-target="modul.html" tabindex="0" title="Study">Study</div>
+                        <div class="sub-item" data-target="module-maths" tabindex="0" title="Career" onclick="alert('This Feaure is Coming Soon...')">Career</div>
                         <div class="sub-item" data-target="module-programming" tabindex="0" title="Programming" onclick="alert('This Feature is Coming Soon...')">Programming</div>
                     </div>
 
@@ -969,241 +1330,218 @@
 
         <!-- Mobile dim -->
         <div class="mobile-dim" id="mobileDim" aria-hidden="true"></div>
-<div class="container">
-        <!-- Main Content -->
-        <div id="studyweb-app" aria-label="StudyWeb application">
 
-
-<!-- Top right navigation -->
- <div class="NavBar">
-            <ul type="none">
-                <li><a href="#physics" class="sw-nav-link sw-anim active" title="Physics" data-target="physics">Physics</a></li>
-                <li><a href="#chemistry" class="sw-nav-link sw-anim" title="Chemistry" data-target="chemistry">Chemistry</a></li>
-                <li><a href="#english" class="sw-nav-link sw-anim" title="English" data-target="english">English</a></li>
-                <li><a href="#hindi" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">Hindi</a></li>
-            </ul>
-            <div class="nav-actions">                
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        <div class="container">
+            <!-- Main Content -->
+            <div id="studyweb-app" aria-label="StudyWeb application">
+                <!-- Top right navigation -->
+                <div class="NavBar">
+                    <ul type="none">
+                        <li><a href="#physics" class="sw-nav-link sw-anim active" title="Physics" data-target="physics">Physics</a></li>
+                        <li><a href="#chemistry" class="sw-nav-link sw-anim" title="Chemistry" data-target="chemistry">Chemistry</a></li>
+                        <li><a href="#english" class="sw-nav-link sw-anim" title="English" data-target="english">English</a></li>
+                        <li><a href="#hindi" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">Hindi</a></li>
+                    </ul>
+                    <div class="nav-actions">                
+                        <div class="hamburger" id="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- HERO -->
+                <section id="sw-hero" class="sw-section sw-hero" role="region" aria-labelledby="hero-heading">
+                    <div class="sw-container sw-hero-left">
+                        <div class="sw-hero-title sw-anim" style="--delay:0ms">
+                            <!-- Wrapper ensure karta hai isolation aur confined painting -->
+                            <div class="hero-heading-wrap">
+                                <h1 id="hero-heading" class="sw-title"><span class="sw-title-inner" style="cursor: default;">StudyWeb</span></h1>
+                            </div>
+
+                            <p class="sw-sub" style="cursor: default;">A premium study hub for students — important pre-exam notes, curated study resources, and concise chapter summaries. Built for focus, performance and speed.</p>
+                            <div class="sw-row">
+                                <a href="#" class="sw-cta sw-anim" title="Explore Physics">Explore More</a>
+                                <button class="sw-cta" id="btn" data-target="ContactPage.html" style="background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--sw-text);margin-left:12px" data-title="ContactPage.html" title="Contact">Contact</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sw-hero-right sw-anim" style="--delay:120ms">
+                        <img class="sw-hero-img" src="DashBoard-Image-2.png" alt="Students studying together" loading="eager">
+                    </div>
+                </section>
+
+                <section class="physics-section" style="cursor: default;">
+                    <h1 id="physics-heading">Physics</h1>
+                    <div class="container-2">
+                        <div class="chapter-card-container" id="physics">
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h2>Chapter 1</h2>
+                                <p>Study of charges, Coulomb’s law, electric field, flux, and Gauss’s law.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button"> 
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View" id="btn"><div id="btn" data-target="Physics Lesson-1.html">View</div></span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-battery-full"></i>
+                                </div>
+                                <h2>Chapter 2</h2>
+                                <p>Concepts of potential, potential energy, equipotential surfaces, and capacitors.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button">
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View"><div id="btn" data-target="Physics Lesson-2.html">View</div></span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-plug"></i>
+                                </div>
+                                <h2>Chapter 3</h2>
+                                <p>Ohm’s law, resistivity, drift velocity, Kirchhoff’s rules, and electric circuits.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button">
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View"><div id="btn" data-target="Physics Lesson-3.html">View</div></span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chapter-card-container">
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-magnet"></i>
+                                </div>
+                                <h2>Chapter 4</h2>
+                                <p>Magnetic effects of current, Biot-Savart law, Ampere’s law, and cyclotron.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button">
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-compass"></i>
+                                </div>
+                                <h2>Chapter 5</h2>
+                                <p>Properties of bar magnets, earth’s magnetism, susceptibility, and magnetic materials.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button">
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="chapter-card">
+                                <div class="icon">
+                                    <i class="fas fa-wave-square"></i>
+                                </div>
+                                <h2>Chapter 6</h2>
+                                <p>Faraday’s laws, Lenz’s law, self & mutual induction, and AC generator.</p>
+                                <!-- From Uiverse.io by SelfMadeSystem --> 
+                                <button class="frutiger-button">
+                                    <div class="inner">
+                                        <div class="top-white"></div>
+                                        <span class="text" title="View" onclick="alert('coming soon...')">View</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="container-3">
+                            <div id="Chemistry-heading">Chemistry</div>
+                            <div class="chem-card-wrap" id="chemistry">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-flask"></i> 
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 1 </h2>
+                                    <p id="chemistry-paragraph">Study of crystal structure, unit cells, packing, and defects in solids.</p>
+                                    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-1.html">View</button>
+                                </div>
+                            </div> 
+                            <div class="chem-card-wrap">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-water"></i>
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 2</h2>
+                                    <p>Concepts of solubility, concentration, colligative properties and Raoult's law.</p>
+                                    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-2.html">View</button>
+                                </div>
+                            </div>  
+                            <div class="chem-card-wrap">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 3</h2>
+                                    <p>Redox reactions, electrochemical cells, Nernst equation, and batteries.</p>
+                                    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-3.html">View</button>
+                                </div>
+                            </div>  
+                            <br><br>
+                            <div class="chem-card-wrap">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-fire"></i>
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 4</h2>
+                                    <p>Rate of reaction, order, molecularity, and Arrhenius equation.</p>
+                                    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+                                </div>
+                            </div>  
+                            <div class="chem-card-wrap">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-tower-broadcast"></i>
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 5</h2>
+                                    <p>Adsorption, catalysis, colloids, and emulsions with practical applications.</p>
+                                    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+                                </div>
+                            </div>  
+                            <div class="chem-card-wrap">
+                                <div class="chem-card" id="chem1">
+                                    <div class="chem-card-icon">
+                                        <i class="fa-solid fa-gem"></i>
+                                    </div>
+                                    <h2 class="chem-card-title">Chapter 6</h2>
+                                    <p>Metallurgy, extraction methods, refining and environmental issues.</p>
+                                    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </section>
             </div>
-
-
-
-<!-- HERO -->
-<section id="sw-hero" class="sw-section sw-hero" role="region" aria-labelledby="hero-heading">
-<div class="sw-container sw-hero-left">
-<div class="sw-hero-title sw-anim" style="--delay:0ms">
-<!-- Wrapper ensure karta hai isolation aur confined painting -->
-<div class="hero-heading-wrap">
-  <h1 id="hero-heading" class="sw-title"><span class="sw-title-inner"; style="cursor: default;">StudyWeb</span></h1>
-</div>
-
-<p class="sw-sub" style="cursor: default;">A premium study hub for students — important pre-exam notes, curated study resources, and concise chapter summaries. Built for focus, performance and speed.</p>
-<div class="sw-row">
-<a href="#"  class="sw-cta sw-anim" title="Explore Physics">Explore More</a>
-<button class="sw-cta" id="btn" data-target="ContactPage.html"  style="background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--sw-text);margin-left:12px" data-title="ContactPage.html"  title="Contact">Contact</button>
-</div>
-</div>
-</div>
-
-
-<div class="sw-hero-right sw-anim" style="--delay:120ms">
-<img class="sw-hero-img" src="DashBoard-Image-2.png" alt="Students studying together" loading="eager">
-</div>
-</div>
-</section>
-<section class="physics-section" style="cursor: default;">
-<h1 id="physics-heading">Physics</h1>
-<div class="container-2">
-    <div class="chapter-card-container" id="physics">
-    <div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-bolt"></i>
-      </div>
-      <h2>Chapter 1</h2>
-      <p>Study of charges, Coulomb’s law, electric field, flux, and Gauss’s law.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button"> 
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View" id="btn"><div id="btn" data-target="Physics Lesson-1.html">View</div></span>
-  </div>
-</button>
-</div>
-<div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-battery-full"></i>
-      </div>
-      <h2>Chapter 2</h2>
-      <p >Concepts of potential, potential energy, equipotential surfaces, and capacitors.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button">
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View"><div id="btn" data-target="Physics Lesson-2.html">View</div></span>
-  </div>
-</button>
-</div>
-<div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-plug"></i>
-      </div>
-      <h2>Chapter 3</h2>
-      <p>Ohm’s law, resistivity, drift velocity, Kirchhoff’s rules, and electric circuits.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button">
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View"><div id="btn" data-target="Physics Lesson-3.html">View</div></span>
-  </div>
-</button>
-</div>
-  </div>
-  <div class="chapter-card-container">
-    <div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-magnet"></i>
-      </div>
-      <h2>Chapter 4</h2>
-      <p>Magnetic effects of current, Biot-Savart law, Ampere’s law, and cyclotron.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button">
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
-  </div>
-</button>
-</div>
-<div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-compass"></i>
-      </div>
-      <h2>Chapter 5</h2>
-      <p>Properties of bar magnets, earth’s magnetism, susceptibility, and magnetic materials.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button">
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
-  </div>
-</button>
-</div>
-<div class="chapter-card">
-      <div class="icon">
-       <i class="fas fa-wave-square"></i>
-      </div>
-      <h2>Chapter 6</h2>
-      <p>Faraday’s laws, Lenz’s law, self & mutual induction, and AC generator.</p>
-      <!-- From Uiverse.io by SelfMadeSystem --> 
-<button class="frutiger-button">
-  <div class="inner">
-    <div class="top-white"></div>
-    <span class="text" title="View" onclick="alert('coming soon...')">View</span>
-  </div>
-</button>
-</div>
-</div>
-<div class="container-3">
-    <div id="Chemistry-heading">Chemistry</div>
-<div class="chem-card-wrap" id="chemistry">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-flask"></i> 
-    </div>
-    <h2 class="chem-card-title">Chapter 1 </h2>
-<p id="chemistry-paragraph">Study of crystal structure, unit cells, packing, and defects in solids.</p>
-    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-1.html">View</button>
-  </div>
-</div> 
-<div class="chem-card-wrap">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-water"></i>
-    </div>
-    <h2 class="chem-card-title" >Chapter 2</h2>
-    <p>Concepts of solubility, concentration, colligative properties and Raoult's law.</p>
-    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-2.html">View</button>
-  </div>
-</div>  
-<div class="chem-card-wrap">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-arrow-right-arrow-left"></i>
-    </div>
-    <h2 class="chem-card-title">Chapter 3</h2>
-    <p>Redox reactions, electrochemical cells, Nernst equation, and batteries.</p>
-    <button class="chem-card-btn" title="View" id="btn" data-target="Chemistry Lesson-3.html">View</button>
-  </div>
-</div>  
-<br><br>
-<div class="chem-card-wrap">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-fire"></i>
-    </div>
-    <h2 class="chem-card-title">Chapter 4</h2>
-    <p>Rate of reaction, order, molecularity, and Arrhenius equation.</p>
-    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
-  </div>
-</div>  
-<div class="chem-card-wrap">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-tower-broadcast"></i>
-    </div>
-    <h2 class="chem-card-title">Chapter 5</h2>
-    <p>Adsorption, catalysis, colloids, and emulsions with practical applications.</p>
-    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
-  </div>
-</div>  
-<div class="chem-card-wrap">
-  <div class="chem-card" id="chem1">
-    <div class="chem-card-icon">
-      <i class="fa-solid fa-gem"></i>
-    </div>
-    <h2 class="chem-card-title">Chapter 6</h2>
-    <p>Metallurgy, extraction methods, refining and environmental issues.</p>
-    <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
-  </div>
-</div>
-</div>  
-</div>
-</section>
         </div>
-    </div>
     
-   
-    <div class="panel panel-top"></div>
-    <div class="panel panel-bottom"></div>
+        <div class="panel panel-top"></div>
+        <div class="panel panel-bottom"></div>
 
-    <div class="loader" id="loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div> 
-    <script src="Dashboard.js"></script>
-  <script>
-  const searchInput = document.getElementById("sbSearch");
-  const menuItems = document.querySelectorAll("#sbMenu .item, #submenu-modules .sub-item");
-
-  searchInput.addEventListener("keyup", () => {
-    let value = searchInput.value.toLowerCase().trim();
-
-    menuItems.forEach(item => {
-      let text = item.textContent.toLowerCase();
-
-      if (text.includes(value)) {
-        item.style.display = "flex";   // normal dikhega
-        item.style.background = value ? "rgb(83, 79, 119)" : ""; 
-      } else {
-        item.style.display = "none";  // match nahi to hide
-      }
-    });
-  });
-</script>
+        <div class="loader" id="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div> 
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1243,14 +1581,14 @@
             hamburgerBtn.addEventListener('click', function() {
                 sidebar.classList.add('show');
                 mobileDim.classList.add('show');
-                document.body.style.overflow = 'hidden';
+                body.classList.add('sidebar-open');
             });
             
             // Close mobile sidebar
             function closeSidebar() {
                 sidebar.classList.remove('show');
                 mobileDim.classList.remove('show');
-                document.body.style.overflow = '';
+                body.classList.remove('sidebar-open');
             }
             
             mobileCloseBtn.addEventListener('click', closeSidebar);
@@ -1366,6 +1704,25 @@
                         setTimeout(resetAnimation, 3500);
                     }
                 });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById("sbSearch");
+        const menuItems = document.querySelectorAll("#sbMenu .item, #submenu-modules .sub-item");
+
+        searchInput.addEventListener("keyup", () => {
+            let value = searchInput.value.toLowerCase().trim();
+
+            menuItems.forEach(item => {
+                let text = item.textContent.toLowerCase();
+
+                if (text.includes(value)) {
+                    item.style.display = "flex";
+                    item.style.background = value ? "rgb(83, 79, 119)" : ""; 
+                } else {
+                    item.style.display = "none";
+                }
             });
         });
     </script>
