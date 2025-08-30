@@ -320,68 +320,7 @@
         }
 
         /* Hero Image */
-        .hero-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: slideInRight 1s ease-out;
-        }
-
-        .image-container {
-            position: relative;
-            width: 400px;
-            height: 400px;
-        }
-
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            transition: transform 0.3s ease;
-            border: 4px solid rgba(100, 255, 218, 0.3);
-        }
-
-        .image-container::before,
-        .image-container::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            animation: spin 20s linear infinite;
-        }
-
-        .image-container::before {
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            background: var(--accent-gradient);
-            opacity: 0.3;
-            z-index: 1;
-        }
-
-        .image-container::after {
-            top: -40px;
-            left: -40px;
-            right: -40px;
-            bottom: -40px;
-            background: var(--primary-gradient);
-            opacity: 0.2;
-            z-index: 0;
-            animation-direction: reverse;
-            animation-duration: 25s;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .image-container:hover .profile-image {
-            transform: scale(1.05);
-        }
+       
 
         /* Skills Section */
         .skills {
@@ -733,6 +672,170 @@
             opacity: 1;
             transform: translateY(0);
         }
+    </style>
+    <style>
+        :root {
+    --size: 400px;
+    --neon-blur: 150px;
+    --glow-spread: 250px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --size: 250px;
+        --neon-blur: 80px;
+        --glow-spread: 150px;
+    }
+}
+
+.hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slideInRight 1s ease-out;
+    padding: calc(var(--glow-spread) / 2);
+}
+
+.image-container {
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    will-change: transform;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    border: 4px solid rgba(100, 255, 218, 0.3);
+    will-change: transform;
+}
+
+.image-container::before,
+.image-container::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Primary rainbow ring - close to image */
+.image-container::before {
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: conic-gradient(
+        from 0deg,
+        #ff0080, #ff0040, #ff0000, #ff4000, #ff8000, #ffbf00,
+        #ffff00, #bfff00, #80ff00, #40ff00, #00ff00, #00ff40,
+        #00ff80, #00ffbf, #00ffff, #00bfff, #0080ff, #0040ff,
+        #0000ff, #4000ff, #8000ff, #bf00ff, #ff00ff, #ff00bf, #ff0080
+    );
+    animation: spin 15s linear infinite;
+    z-index: 1;
+    filter: blur(3px) brightness(1.5);
+    box-shadow: 
+        0 0 60px #ff0080,
+        0 0 100px #ff8000,
+        0 0 140px #ffff00,
+        0 0 180px #00ff00,
+        0 0 220px #00ffff,
+        0 0 260px #0080ff,
+        0 0 300px #8000ff,
+        0 0 340px #ff00ff,
+        inset 0 0 50px rgba(255, 255, 255, 0.3);
+}
+
+/* Outer rainbow glow - spreads far */
+.image-container::after {
+    top: calc(-1 * var(--glow-spread) / 2);
+    left: calc(-1 * var(--glow-spread) / 2);
+    right: calc(-1 * var(--glow-spread) / 2);
+    bottom: calc(-1 * var(--glow-spread) / 2);
+    background: conic-gradient(
+        from 0deg at center,
+        rgba(255, 0, 128, 0.4),
+        rgba(255, 64, 0, 0.4),
+        rgba(255, 128, 0, 0.4),
+        rgba(255, 191, 0, 0.4),
+        rgba(255, 255, 0, 0.4),
+        rgba(191, 255, 0, 0.4),
+        rgba(128, 255, 0, 0.4),
+        rgba(64, 255, 0, 0.4),
+        rgba(0, 255, 0, 0.4),
+        rgba(0, 255, 64, 0.4),
+        rgba(0, 255, 128, 0.4),
+        rgba(0, 255, 191, 0.4),
+        rgba(0, 255, 255, 0.4),
+        rgba(0, 191, 255, 0.4),
+        rgba(0, 128, 255, 0.4),
+        rgba(0, 64, 255, 0.4),
+        rgba(0, 0, 255, 0.4),
+        rgba(64, 0, 255, 0.4),
+        rgba(128, 0, 255, 0.4),
+        rgba(191, 0, 255, 0.4),
+        rgba(255, 0, 255, 0.4),
+        rgba(255, 0, 191, 0.4),
+        rgba(255, 0, 128, 0.4)
+    );
+    animation: spin 20s linear infinite reverse, pulse 2s ease-in-out infinite;
+    z-index: 0;
+    filter: blur(calc(var(--neon-blur) / 1.5));
+    mix-blend-mode: screen;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.image-container:hover .profile-image {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .image-container::before,
+    .image-container::after {
+        animation: none;
+    }
+    .profile-image,
+    .image-container:hover .profile-image {
+        transition: none;
+        transform: none;
+    }
+    .hero-image {
+        animation: none;
+    }
+}
+
+/* Fallback for browsers without conic-gradient support */
+@supports not (background: conic-gradient(from 0deg, red, blue)) {
+    .image-container::before {
+        background: linear-gradient(45deg, 
+            #ff0080, #ff8000, #ffff00, #80ff00, 
+            #00ffff, #0080ff, #8000ff, #ff00ff);
+        box-shadow: 
+            0 0 100px rgba(255, 0, 128, 0.8),
+            0 0 200px rgba(128, 0, 255, 0.6);
+    }
+}
     </style>
 </head>
 <body>
