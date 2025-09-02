@@ -493,6 +493,10 @@
     </style>
 </head>
 <body>
+    <audio id="backgroundMusic" loop preload="auto" autoplay style="display: none;">
+    <source src="Tum hi ho song.mp3" type="audio/mpeg">
+</audio>
+    
     <!-- Background Animation Layers -->
     <div class="background-layer hearts-layer" id="heartsLayer"></div>
     <div class="background-layer balloons-layer" id="balloonsLayer"></div>
@@ -1139,5 +1143,130 @@
             makeButtonRunaway: (e) => makeButtonRunaway({target: document.getElementById('runawayBtn')})
         };
     </script>
+    <script>
+        // AUTO-START MUSIC CONFIGURATION
+const MUSIC_CONFIG = {
+    AUTO_START_MUSIC: true,         // Page load pe music start
+    MUSIC_VOLUME: 0.4,              // Volume level (0.0 to 1.0)
+    FORCE_MUSIC_PLAY: true,         // Any click pe force start
+    RESTART_ON_PAUSE: true          // Agar pause ho jaye to restart
+};
+
+// Global music variables
+let backgroundMusic = null;
+let isMusicPlaying = false;
+
+// Initialize AUTO-START music when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeAutoStartMusic();
+});
+
+/*
+AUTO-START BACKGROUND MUSIC SYSTEM
+🎵 Automatically starts music when page loads - COMPLETELY INVISIBLE!
+*/
+function initializeAutoStartMusic() {
+    backgroundMusic = document.getElementById('backgroundMusic');
+    
+    if (!backgroundMusic) {
+        console.log('No background music element found');
+        return;
+    }
+    
+    // Set volume
+    backgroundMusic.volume = MUSIC_CONFIG.MUSIC_VOLUME;
+    
+    // Check if music source is provided
+    const audioSources = backgroundMusic.querySelectorAll('source');
+    if (audioSources.length === 0) {
+        console.log('No music files provided - add your song in the HTML <source> tags');
+        return;
+    }
+    
+    // Multiple attempts to start music automatically
+    attemptAutoStartMusic();
+    
+    // Backup: Force start on ANY user interaction
+    if (MUSIC_CONFIG.FORCE_MUSIC_PLAY) {
+        const forceStartEvents = ['click', 'touchstart', 'keydown', 'mousemove'];
+        forceStartEvents.forEach(event => {
+            document.addEventListener(event, forceStartMusic, { once: true });
+        });
+    }
+    
+    // Handle music events
+    backgroundMusic.addEventListener('play', function() {
+        isMusicPlaying = true;
+        console.log('🎵 Background music started successfully!');
+    });
+    
+    backgroundMusic.addEventListener('pause', function() {
+        isMusicPlaying = false;
+        // Auto-restart if paused accidentally
+        if (MUSIC_CONFIG.RESTART_ON_PAUSE) {
+            setTimeout(() => {
+                if (!isMusicPlaying) {
+                    backgroundMusic.play().catch(e => console.log('Restart failed:', e));
+                }
+            }, 1000);
+        }
+    });
+    
+    backgroundMusic.addEventListener('error', function(e) {
+        console.log('Music file could not be loaded:', e);
+        console.log('Make sure to add your music file and uncomment the <source> tag in HTML');
+    });
+    
+    backgroundMusic.addEventListener('ended', function() {
+        // This shouldn't happen with loop=true, but just in case
+        if (MUSIC_CONFIG.AUTO_START_MUSIC) {
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play().catch(e => console.log('Loop restart failed:', e));
+        }
+    });
+}
+
+function attemptAutoStartMusic() {
+    if (!backgroundMusic) return;
+    
+    // Method 1: Direct autoplay attempt
+    backgroundMusic.play().then(() => {
+        isMusicPlaying = true;
+        console.log('🎵 Music auto-started on page load!');
+    }).catch(e => {
+        console.log('Autoplay blocked by browser, will try on user interaction');
+        
+        // Method 2: Try after a short delay
+        setTimeout(() => {
+            backgroundMusic.play().catch(() => {
+                console.log('Delayed autoplay also failed, waiting for user interaction');
+            });
+        }, 1000);
+    });
+}
+
+function forceStartMusic() {
+    if (!backgroundMusic || isMusicPlaying) return;
+    
+    backgroundMusic.play().then(() => {
+        isMusicPlaying = true;
+        console.log('🎵 Music force-started on user interaction!');
+    }).catch(e => {
+        console.log('Force start also failed:', e);
+    });
+}
+
+// Optional: Function to manually control music (if needed later)
+function toggleBackgroundMusic() {
+    if (!backgroundMusic) return;
+    
+    if (isMusicPlaying) {
+        backgroundMusic.pause();
+    } else {
+        backgroundMusic.play().catch(e => console.log('Manual play failed:', e));
+    }
+}
+    </script>
 </body>
+
 </html>
