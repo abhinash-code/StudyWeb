@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me? 💕</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /*
+        Professional Brief (Romantic Themed Website)
+        Create a polished, romantic website that immediately feels like the work of a seasoned professional 
+        and delights the viewer. The website must look fully romantic and feel like a professional developer 
+        build — extremely attractive and emotional. The whole page must use pink/red color palette, 
+        background should have many hearts and animated balloons, heavy but tasteful animations so the 
+        site instantly makes a girlfriend happy from first sight.
+        
+        Hindi text included as requested: "Maan jao na baby kitna bhav khati ho 😭🙏"
+        */
+        
+        :root {
+            /* Romantic Color Palette */
+            --primary-pink: #ff69b4;
+            --rose-pink: #ff1493;
+            --deep-red: #dc143c;
+            --light-pink: #ffb6c1;
+            --blush: #ffe4e6;
+            --white: #ffffff;
+            --shadow: rgba(220, 20, 60, 0.2);
+            --glass: rgba(255, 255, 255, 0.1);
+            
+            /* Typography */
+            --font-romantic: 'Dancing Script', cursive;
+            --font-body: 'Poppins', sans-serif;
+            
+            /* Animations */
+            --animation-duration: 0.6s;
+            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--light-pink) 0%, var(--primary-pink) 50%, var(--rose-pink) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background Layers */
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Layer 1: Floating Hearts */
+        .hearts-layer {
+            z-index: -3;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            color: var(--rose-pink);
+            font-size: 20px;
+            opacity: 0.3;
+            animation: floatHeart 15s infinite linear;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Layer 2: Balloon Animation */
+        .balloons-layer {
+            z-index: -2;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: floatBalloon 20s infinite linear;
+        }
+        
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: var(--deep-red);
+            transform: translateX(-50%);
+        }
+        
+        .balloon-pink {
+            background: linear-gradient(145deg, var(--primary-pink), var(--rose-pink));
+        }
+        
+        .balloon-red {
+            background: linear-gradient(145deg, var(--rose-pink), var(--deep-red));
+        }
+        
+        @keyframes floatBalloon {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(-5deg);
+            }
+            25% {
+                transform: translateY(75vh) translateX(20px) rotate(5deg);
+            }
+            50% {
+                transform: translateY(50vh) translateX(-10px) rotate(-3deg);
+            }
+            75% {
+                transform: translateY(25vh) translateX(15px) rotate(4deg);
+            }
+            100% {
+                transform: translateY(-100px) translateX(0) rotate(-5deg);
+            }
+        }
+        
+        /* Layer 3: Sparkles */
+        .sparkles-layer {
+            z-index: -1;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--white);
+            border-radius: 50%;
+            animation: sparkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Main Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Question Cards */
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px var(--shadow);
+            transform: scale(0);
+            opacity: 0;
+            transition: all var(--animation-duration) var(--bounce);
+        }
+        
+        .question-card.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* Video/GIF Container */
+        .video-container {
+            margin-bottom: 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--blush);
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .video-placeholder {
+            color: var(--rose-pink);
+            font-size: 18px;
+            font-family: var(--font-romantic);
+        }
+        
+        /*
+        VIDEO PLACEHOLDER INSTRUCTIONS:
+        Replace the commented video tags below with your own MP4/GIF files.
+        
+        For each question (q1, q2, q3, q4), uncomment the appropriate video tag
+        and replace src with your file path, for example:
+        - assets/videos/q1.mp4
+        - assets/videos/q2.mp4
+        - etc.
+        
+        Example usage:
+        <video class="q-video" autoplay loop muted playsinline>
+            <source src="assets/videos/q1.mp4" type="video/mp4">
+        </video>
+        
+        Or use GIF fallback:
+        <img class="q-video" src="assets/gifs/q1.gif" alt="cute animation">
+        */
+        
+        .q-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        
+        /* Typography */
+        .question-text {
+            font-family: var(--font-romantic);
+            font-size: 2.5rem;
+            color: var(--deep-red);
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+        
+        /* Buttons */
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:focus {
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.4);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Yes Button */
+        .btn-yes {
+            background: linear-gradient(135deg, var(--primary-pink), var(--rose-pink));
+            color: var(--white);
+            padding: 15px 40px;
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3);
+        }
+        
+        .btn-yes:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4);
+        }
+        
+        /* No Button */
+        .btn-no {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--deep-red);
+            padding: 12px 30px;
+            border: 2px solid var(--light-pink);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-no:hover {
+            background: var(--light-pink);
+            transform: translateY(-2px);
+        }
+        
+        /* Runaway No Button Animation */
+        .btn-no.runaway {
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+        
+        /* Final Screen */
+        .final-screen {
+            background: linear-gradient(135deg, var(--blush), var(--white));
+            border: 3px solid var(--primary-pink);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-pink) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: sparkleBackground 10s linear infinite;
+            opacity: 0.1;
+        }
+        
+        @keyframes sparkleBackground {
+            0% { transform: rotate(0deg) translate(0, 0); }
+            100% { transform: rotate(360deg) translate(20px, 20px); }
+        }
+        
+        .celebration-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .celebration-heart {
+            position: absolute;
+            color: var(--rose-pink);
+            font-size: 30px;
+            animation: celebrateHeart 2s ease-out forwards;
+        }
+        
+        @keyframes celebrateHeart {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(360deg) translateY(-100px);
+            }
+        }
+        
+        .share-button {
+            margin-top: 20px;
+            background: var(--white);
+            color: var(--rose-pink);
+            border: 2px solid var(--rose-pink);
+        }
+        
+        .share-button:hover {
+            background: var(--rose-pink);
+            color: var(--white);
+        }
+        
+        .reset-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--deep-red);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .reset-button:hover {
+            background: var(--rose-pink);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+        
+        /* JavaScript Disabled Fallback */
+        .no-js-fallback {
+            display: none;
+            text-align: center;
+            color: var(--deep-red);
+            font-family: var(--font-romantic);
+            font-size: 2rem;
+            margin-top: 50px;
+        }
+        
+        /* Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .floating-heart,
+            .balloon,
+            .sparkle {
+                animation: none;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .question-text {
+                font-size: 2rem;
+            }
+            
+            .question-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 1.8rem;
+            }
+            
+            .video-container {
+                aspect-ratio: 1/1;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .background-layer,
+            .reset-button {
+                display: none;
+            }
+        }
+        
+        /* Hidden State */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation Layers -->
+    <div class="background-layer hearts-layer" id="heartsLayer"></div>
+    <div class="background-layer balloons-layer" id="balloonsLayer"></div>
+    <div class="background-layer sparkles-layer" id="sparklesLayer"></div>
+    
+    <!-- Reset Button -->
+    <button class="reset-button" onclick="resetExperience()" aria-label="Reset experience">↻</button>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Question 1 -->
+        <div class="question-card" id="q1" role="main" aria-live="polite">
+            <div class="video-container">
+                <video class="q-video" autoplay loop muted playsinline style="aspect-ratio: 9\16;">
+    <source src="purpose animation.mp4" type="video/mp4">
+</video>
+                
+            </div>
+            <h1 class="question-text">Do you love me? <img src="https://twemoji.maxcdn.com/v/latest/svg/1f917.svg" width="40"></h1>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="handleYes()" aria-label="Yes, I love you">
+                    <img src="https://twemoji.maxcdn.com/v/latest/svg/2764.svg" width="20" alt="heart"> Yes
+                </button>
+                <button class="btn btn-no" onclick="handleNo()" aria-label="No, I don't love you">
+                    No
+                </button>
+            </div>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="question-card hidden" id="q2" role="main" aria-live="polite">
+            <div class="video-container">
+                <video class="q-video" autoplay loop muted playsinline style="aspect-ratio: 16/9;">
+    <source src="love video.mp4" type="video/mp4">
+</video>
+                
+            </div>
+            <h1 class="question-text">Please think again. <img src="https://twemoji.maxcdn.com/v/latest/svg/1f644.svg" width="40"></h1>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="handleYes()" aria-label="Yes, I love you">
+                    <img src="https://twemoji.maxcdn.com/v/latest/svg/2764.svg" width="20 alt="heart">  Yes
+                </button>
+                <button class="btn btn-no" onclick="handleNo()" aria-label="No, I don't love you">
+                    No
+                </button>
+            </div>
+        </div>
+        
+        <!-- Question 3 -->
+        <div class="question-card hidden" id="q3" role="main" aria-live="polite">
+            <div class="video-container">
+                <video class="q-video" autoplay loop muted playsinline style="aspect-ratio: 16/9;">
+    <source src="sad video animation.mp4" type="video/mp4">
+</video>
+                
+            </div>
+            <h1 class="question-text">Ek baar aur soch <img src="https://twemoji.maxcdn.com/v/latest/svg/1f623.svg" width="40"></h1>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="handleYes()" aria-label="Yes, I love you">
+                    <img src="https://twemoji.maxcdn.com/v/latest/svg/2764.svg" width="20 alt="heart"> Yes
+                </button>
+                <button class="btn btn-no" onclick="handleNo()" aria-label="No, I don't love you">
+                    No
+                </button>
+            </div>
+        </div>
+        
+        <!-- Question 4 -->
+        <div class="question-card hidden" id="q4" role="main" aria-live="polite">
+            <div class="video-container">
+               <video class="q-video" autoplay loop muted playsinline style="aspect-ratio: 16/9;">
+    <source src="crying animation.mp4" type="video/mp4">
+</video>
+                
+            </div>
+            <h1 class="question-text">Maan jao na baby kitna bhav khati ho <img src="https://twemoji.maxcdn.com/v/latest/svg/1f62d.svg" width="40"><img src="https://twemoji.maxcdn.com/v/latest/svg/1f64f.svg" width="40" alt="namaste"></h1>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="handleYes()" aria-label="Yes, I love you">
+                    <img src="https://twemoji.maxcdn.com/v/latest/svg/2764.svg" width="20" alt="heart"> Yes
+                </button>
+                <button class="btn btn-no" id="runawayBtn" onclick="handleNo()" 
+                        onmouseenter="makeButtonRunaway(event)" 
+                        ontouchstart="makeButtonRunaway(event)"
+                        aria-label="No, I don't love you">
+                    No
+                </button>
+            </div>
+        </div>
+        
+        <!-- Final Screen -->
+        <div class="question-card final-screen hidden" id="final" role="main" aria-live="assertive">
+            <div class="celebration-hearts" id="celebrationHearts"></div>
+            <h1 class="question-text">Hehehe, I knew it! Love you a lot baby <img src="https://twemoji.maxcdn.com/v/latest/svg/1f618.svg" width="40" alt="kiss"></h1>
+            <p style="font-size: 1.2rem; color: var(--deep-red); margin-top: 20px; font-family: var(--font-body);">
+                Thank you for playing along! <img src="https://twemoji.maxcdn.com/v/latest/svg/1f495.svg" width="40" alt="two-hearts">
+            </p>
+            <div class="button-container">
+                <button class="btn share-button" onclick="shareExperience()" aria-label="Share this experience">
+                    <img src="https://twemoji.maxcdn.com/v/latest/svg/1f4f1.svg" width="40" alt="mobile"> Share
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- No JavaScript Fallback -->
+    <noscript>
+        <div class="no-js-fallback">
+            <h2>This interactive experience requires JavaScript. Please enable JS to continue! <img src="https://twemoji.maxcdn.com/v/latest/svg/1f495.svg" width="40" alt="two-hearts"></h2>
+        </div>
+    </noscript>
+    
+    <script>
+        /*
+        PROFESSIONAL LOVE PROPOSAL/PRANK WEBSITE
+        
+        This code implements a multi-step romantic proposal prank with the following features:
+        - 5 distinct states with smooth transitions
+        - Animated background with hearts, balloons, and sparkles
+        - Runaway "No" button on final question
+        - Full accessibility support including keyboard navigation
+        - Responsive design for all devices
+        - Performance-optimized animations using requestAnimationFrame
+        
+        Configuration Variables:
+        */
+        
+        const CONFIG = {
+            RUNAWAY_ENABLED: true,          // Enable/disable runaway No button
+            RUNAWAY_DISTANCE: 500,          // Maximum distance No button moves
+            MOBILE_THRESHOLD: 800,          // Screen width threshold for mobile behavior
+            ANIMATION_HEART_COUNT: 15,      // Number of background hearts
+            ANIMATION_BALLOON_COUNT: 8,     // Number of background balloons
+            ANIMATION_SPARKLE_COUNT: 20,    // Number of background sparkles
+            CONFETTI_DURATION: 3000,        // Confetti animation duration (ms)
+            RUNAWAY_COOLDOWN: 300          // Minimum time between runaway movements (ms)
+        };
+        
+        // Global state management
+        let currentQuestion = 1;
+        let runawayTimeout = null;
+        let lastRunawayTime = 0;
+        
+        /*
+        INITIALIZATION FUNCTIONS
+        */
+        
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBackgroundAnimations();
+            showQuestion(1);
+            setupAccessibility();
+            
+            // Check for reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.body.classList.add('reduced-motion');
+            }
+        });
+        
+        /*
+        BACKGROUND ANIMATION SYSTEM
+        Creates layered animated background with hearts, balloons, and sparkles
+        */
+        
+        function initializeBackgroundAnimations() {
+            createFloatingHearts();
+            createFloatingBalloons();
+            createSparkles();
+        }
+        
+        // Layer 1: Floating hearts with parallax movement
+        function createFloatingHearts() {
+            const heartsLayer = document.getElementById('heartsLayer');
+           const hearts = [
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f496.svg" width="15" alt="sparkling-heart">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f495.svg" width="15" alt="two-hearts">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f497.svg" width="15" alt="growing-heart">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f498.svg" width="15" alt="heart-with-arrow">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f49d.svg" width="15" alt="heart-with-ribbon">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/2764.svg"   width="15" alt="red-heart">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f499.svg" width="15" alt="blue-heart">',
+  '<img src="https://twemoji.maxcdn.com/v/latest/svg/1f49c.svg" width="15" alt="purple-heart">'
+];
+
+            
+            for (let i = 0; i < CONFIG.ANIMATION_HEART_COUNT; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                
+                // Random positioning and animation delay
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = (15 + Math.random() * 10) + 's';
+                
+                heartsLayer.appendChild(heart);
+            }
+        }
+        
+        // Layer 2: Floating balloons with natural drift
+        function createFloatingBalloons() {
+            const balloonsLayer = document.getElementById('balloonsLayer');
+            
+            for (let i = 0; i < CONFIG.ANIMATION_BALLOON_COUNT; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = `balloon ${Math.random() > 0.5 ? 'balloon-pink' : 'balloon-red'}`;
+                
+                // Random positioning and timing
+                balloon.style.left = Math.random() * 100 + '%';
+                balloon.style.animationDelay = Math.random() * 20 + 's';
+                balloon.style.animationDuration = (20 + Math.random() * 10) + 's';
+                
+                balloonsLayer.appendChild(balloon);
+            }
+        }
+        
+        // Layer 3: Subtle sparkle effects
+        function createSparkles() {
+            const sparklesLayer = document.getElementById('sparklesLayer');
+            
+            for (let i = 0; i < CONFIG.ANIMATION_SPARKLE_COUNT; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                
+                // Random positioning and timing
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                
+                sparklesLayer.appendChild(sparkle);
+            }
+        }
+        
+        /*
+        QUESTION NAVIGATION SYSTEM
+        Handles smooth transitions between different question states
+        */
+        
+        function showQuestion(questionNumber) {
+            // Hide all questions first
+            const allQuestions = document.querySelectorAll('.question-card');
+            allQuestions.forEach(card => {
+                card.classList.remove('active');
+                setTimeout(() => card.classList.add('hidden'), 300);
+            });
+            
+            // Show target question after transition
+            setTimeout(() => {
+                const targetQuestion = document.getElementById(`q${questionNumber}`);
+                if (targetQuestion) {
+                    targetQuestion.classList.remove('hidden');
+                    setTimeout(() => targetQuestion.classList.add('active'), 50);
+                    
+                    // Update current state
+                    currentQuestion = questionNumber;
+                    
+                    // Focus management for accessibility
+                    targetQuestion.focus();
+                    
+                    // Initialize videos if they exist
+                    initializeVideos(targetQuestion);
+                }
+            }, 300);
+        }
+        
+        function showFinalScreen() {
+            // Hide all questions
+            const allQuestions = document.querySelectorAll('.question-card:not(.final-screen)');
+            allQuestions.forEach(card => {
+                card.classList.remove('active');
+                setTimeout(() => card.classList.add('hidden'), 300);
+            });
+            
+            // Show final screen with celebration
+            setTimeout(() => {
+                const finalScreen = document.getElementById('final');
+                finalScreen.classList.remove('hidden');
+                setTimeout(() => {
+                    finalScreen.classList.add('active');
+                    triggerFinalCelebration();
+                }, 50);
+            }, 300);
+        }
+        
+        /*
+        VIDEO MANAGEMENT SYSTEM
+        Handles video/GIF initialization and playback
+        */
+        
+        function initializeVideos(container) {
+            const videos = container.querySelectorAll('video');
+            videos.forEach(video => {
+                video.play().catch(e => {
+                    console.log('Video autoplay prevented:', e);
+                    // Fallback: show play button or handle gracefully
+                });
+            });
+        }
+        
+        /*
+        USER INTERACTION HANDLERS
+        */
+        
+        function handleYes() {
+            // Immediate jump to final screen regardless of current question
+            showFinalScreen();
+        }
+        
+        function handleNo() {
+            switch(currentQuestion) {
+                case 1:
+                    showQuestion(2);
+                    break;
+                case 2:
+                    showQuestion(3);
+                    break;
+                case 3:
+                    showQuestion(4);
+                    break;
+                case 4:
+                    // On Q4, the No button should run away, but this handler
+                    // serves as fallback for keyboard users
+                    if (confirm('Are you really sure? Think about it one more time! 💕')) {
+                        // Give them another chance
+                        return;
+                    } else {
+                        // Even if they insist, we'll be cheeky
+                        showFinalScreen();
+                    }
+                    break;
+                default:
+                    showFinalScreen();
+            }
+        }
+        
+        /*
+        RUNAWAY NO BUTTON SYSTEM
+        Implements the fun runaway behavior for the final question
+        */
+        
+        function makeButtonRunaway(event) {
+            // Only activate on question 4 and if runaway is enabled
+            if (currentQuestion !== 4 || !CONFIG.RUNAWAY_ENABLED) {
+                return;
+            }
+            
+            // Prevent too frequent movements
+            const now = Date.now();
+            if (now - lastRunawayTime < CONFIG.RUNAWAY_COOLDOWN) {
+                return;
+            }
+            lastRunawayTime = now;
+            
+            const button = event.target;
+            const container = button.closest('.question-card');
+            
+            if (!container) return;
+            
+            // Get container boundaries
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+            
+            // Calculate available movement space
+            const maxX = containerRect.width - buttonRect.width - 40; // 40px margin
+            const maxY = containerRect.height - buttonRect.height - 40; // 40px margin
+            
+            // Adjust for mobile devices
+            const isMobile = window.innerWidth < CONFIG.MOBILE_THRESHOLD;
+            const runawayDistance = isMobile ? CONFIG.RUNAWAY_DISTANCE / 2 : CONFIG.RUNAWAY_DISTANCE;
+            
+            // Calculate new position (avoid current position)
+            let newX, newY;
+            do {
+                newX = Math.random() * Math.min(maxX, runawayDistance * 2) - runawayDistance;
+                newY = Math.random() * Math.min(maxY, runawayDistance * 2) - runawayDistance;
+            } while (Math.abs(newX) < 20 && Math.abs(newY) < 20); // Ensure minimum movement
+            
+            // Apply movement with smooth animation
+            button.classList.add('runaway');
+            button.style.transform = `translate(${newX}px, ${newY}px)`;
+            
+            // Optional: Add a cheeky message
+            if (Math.random() > 0.7) {
+                showTemporaryMessage("Nope! Try again! 😜");
+            }
+        }
+        
+        function showTemporaryMessage(message) {
+            const existing = document.querySelector('.temp-message');
+            if (existing) existing.remove();
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = 'temp-message';
+            messageEl.textContent = message;
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--rose-pink);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 20px;
+                font-family: var(--font-romantic);
+                font-size: 1.2rem;
+                z-index: 10000;
+                animation: fadeInOut 2s ease-in-out forwards;
+            `;
+            
+            document.body.appendChild(messageEl);
+            setTimeout(() => messageEl.remove(), 2000);
+        }
+        
+        /*
+        CELEBRATION SYSTEM
+        Handles the final celebration with confetti and heart animations
+        */
+        
+        function triggerFinalCelebration() {
+            // Confetti celebration
+            if (window.confetti) {
+                // Multiple bursts for maximum effect
+                const duration = CONFIG.CONFETTI_DURATION;
+                const end = Date.now() + duration;
+                
+                (function frame() {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#ff69b4', '#ff1493', '#dc143c', '#ffb6c1']
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#ff69b4', '#ff1493', '#dc143c', '#ffb6c1']
+                    });
+                    
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                })();
+            }
+            
+            // Animated hearts around the message
+            createCelebrationHearts();
+            
+            // Optional: Play celebration sound (muted by default)
+            // playVictorySound();
+        }
+        
+        function createCelebrationHearts() {
+            const heartsContainer = document.getElementById('celebrationHearts');
+            const hearts = ['💖', '💕', '💗', '💘', '💝'];
+            
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'celebration-heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                
+                // Random positioning around the center
+                const angle = (i / 12) * 2 * Math.PI;
+                const radius = 100 + Math.random() * 50;
+                const x = 50 + Math.cos(angle) * (radius / 5);
+                const y = 50 + Math.sin(angle) * (radius / 5);
+                
+                heart.style.left = x + '%';
+                heart.style.top = y + '%';
+                heart.style.animationDelay = (i * 0.1) + 's';
+                
+                heartsContainer.appendChild(heart);
+            }
+            
+            // Clean up hearts after animation
+            setTimeout(() => {
+                heartsContainer.innerHTML = '';
+            }, 3000);
+        }
+        
+        /*
+        UTILITY FUNCTIONS
+        */
+        
+        function shareExperience() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Do You Love Me? 💕',
+                    text: 'Check out this cute love proposal prank!',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showTemporaryMessage('Link copied to clipboard! 📋');
+                }).catch(() => {
+                    // Further fallback: show URL in prompt
+                    prompt('Copy this link to share:', window.location.href);
+                });
+            }
+        }
+        
+        function resetExperience() {
+            // Reset all state
+            currentQuestion = 1;
+            lastRunawayTime = 0;
+            
+            // Reset runaway button
+            const runawayBtn = document.getElementById('runawayBtn');
+            if (runawayBtn) {
+                runawayBtn.classList.remove('runaway');
+                runawayBtn.style.transform = '';
+            }
+            
+            // Clear any temporary messages
+            const tempMessages = document.querySelectorAll('.temp-message');
+            tempMessages.forEach(msg => msg.remove());
+            
+            // Show first question
+            showQuestion(1);
+        }
+        
+        /*
+        ACCESSIBILITY ENHANCEMENTS
+        */
+        
+        function setupAccessibility() {
+            // Keyboard navigation support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const focusedElement = document.activeElement;
+                    if (focusedElement && focusedElement.classList.contains('btn')) {
+                        e.preventDefault();
+                        focusedElement.click();
+                    }
+                }
+                
+                // Escape key to reset
+                if (e.key === 'Escape') {
+                    resetExperience();
+                }
+            });
+            
+            // Focus management for screen readers
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        const target = mutation.target;
+                        if (target.classList.contains('active') && target.classList.contains('question-card')) {
+                            // Announce the new question to screen readers
+                            const questionText = target.querySelector('.question-text');
+                            if (questionText) {
+                                questionText.setAttribute('aria-live', 'assertive');
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Observe all question cards
+            document.querySelectorAll('.question-card').forEach(card => {
+                observer.observe(card, { attributes: true, attributeFilter: ['class'] });
+            });
+        }
+        
+        /*
+        PERFORMANCE OPTIMIZATIONS
+        */
+        
+        // Throttle resize events
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Recalculate any size-dependent values
+                const runawayBtn = document.getElementById('runawayBtn');
+                if (runawayBtn && runawayBtn.classList.contains('runaway')) {
+                    // Reset button position on resize to prevent overflow
+                    runawayBtn.style.transform = '';
+                    runawayBtn.classList.remove('runaway');
+                }
+            }, 250);
+        });
+        
+        // Lazy load background animations on scroll or interaction
+        let animationsLoaded = false;
+        function ensureAnimationsLoaded() {
+            if (!animationsLoaded) {
+                initializeBackgroundAnimations();
+                animationsLoaded = true;
+            }
+        }
+        
+        // Load animations on first user interaction
+        document.addEventListener('click', ensureAnimationsLoaded, { once: true });
+        document.addEventListener('touchstart', ensureAnimationsLoaded, { once: true });
+        
+        /*
+        ERROR HANDLING
+        */
+        
+        window.addEventListener('error', function(e) {
+            console.error('Application error:', e.error);
+            // Graceful degradation: ensure basic functionality works
+            if (e.error && e.error.message.includes('confetti')) {
+                console.log('Confetti library failed to load, continuing without confetti effects');
+            }
+        });
+        
+        /*
+        DYNAMIC STYLES FOR TEMPORARY ELEMENTS
+        */
+        
+        // Add temporary message animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        /*
+        DEVELOPMENT HELPERS
+        (Remove these in production)
+        */
+        
+        // Console logging for debugging
+        console.log('💕 Love Proposal Website Initialized');
+        console.log('Configuration:', CONFIG);
+        console.log('To test runaway behavior, navigate to question 4');
+        
+        // Expose functions for testing
+        window.loveProposalDebug = {
+            showQuestion,
+            handleYes,
+            handleNo,
+            resetExperience,
+            triggerFinalCelebration,
+            makeButtonRunaway: (e) => makeButtonRunaway({target: document.getElementById('runawayBtn')})
+        };
+    </script>
+</body>
+</html>
