@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About StudyWeb - Premium Study Hub</title>
+    <meta name="description" content="StudyWeb — premium study hub for students. Concise notes, formula charts, and fast practice tests designed for exam readiness.">
+    <meta name="author" content="Abhinash Kumar">
+    <meta name="keywords" content="study hub, notes, formulas, practice tests, student resources">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "StudyWeb",
+        "url": "https://studyweb.com",
+        "description": "Premium study hub for students with concise notes, formula charts, and practice tests",
+        "founder": {
+            "@type": "Person",
+            "name": "Abhinash Kumar"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "developer",
+            "email": "contact@studyweb.com"
+        }
+    }
+    </script>
+
+    <style>
+        /* 
+        ===== ABOUTPAGE.HTML STYLES =====
+        Author: Abhinash Kumar
+        Date: 2025
+        File: AboutPage.html
+        Dependencies: Google Fonts (Playfair Display, Inter), Font Awesome
+        Runtime: Vanilla JS with sessionStorage support
+        */
+
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            /* Color Palette */
+            --primary-gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --secondary-accent: #00e6ff;
+            --glass-bg: rgba(20, 30, 48, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #e6eef8;
+            --text-muted: #a0b3cc;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --dark-bg: #0a0f1c;
+            
+            /* Typography */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Animation Durations */
+            --duration-fast: 0.2s;
+            --duration-medium: 0.4s;
+            --duration-slow: 0.6s;
+            
+            /* Spacing */
+            --section-padding: 5rem 0;
+            --card-padding: 2rem;
+            --border-radius: 1.5rem;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Video/Image */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 50%, #2a2f4a 100%);
+            z-index: -2;
+        }
+
+        .background-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(67, 97, 238, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0, 230, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* ===== HEADER SECTION ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 15, 28, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary-gradient);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--secondary-accent);
+            text-decoration: none;
+            transition: color var(--duration-fast);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--text-light);
+        }
+
+        .back-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--duration-medium);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowPulse 3s ease-in-out infinite alternate, titleFloat 4s ease-in-out infinite;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--duration-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--secondary-accent);
+            border: 2px solid var(--secondary-accent);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(67, 97, 238, 0.4);
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cta-btn:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        /* ===== SECTION STYLES ===== */
+        .section {
+            padding: var(--section-padding);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== MISSION SECTION ===== */
+        .mission-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .mission-box::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: var(--primary-gradient);
+            border-radius: var(--border-radius);
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            transition: all var(--duration-medium);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.2);
+            border-color: var(--secondary-accent);
+        }
+
+        .feature-icon {
+            width: 4rem;
+            height: 4rem;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ===== ROADMAP SECTION ===== */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .roadmap-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .roadmap-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-live {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-beta {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-coming {
+            background: var(--text-muted);
+            color: white;
+        }
+
+        .roadmap-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            height: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 0.25rem;
+            transition: width 1s ease-out;
+        }
+
+        /* Email Subscribe Form */
+        .subscribe-form {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 3rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 1rem;
+            min-width: 250px;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary-accent);
+            box-shadow: 0 0 0 3px rgba(0, 230, 255, 0.1);
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--duration-medium);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        /* ===== DESIGN SECTION ===== */
+        .design-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+        }
+
+        .highlight-icon {
+            font-size: 2rem;
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== DEVELOPER SECTION ===== */
+        .developer-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all var(--duration-medium);
+        }
+
+        .developer-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.2);
+        }
+
+        .developer-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            color: white;
+            transition: transform var(--duration-medium);
+        }
+
+        .developer-card:hover .developer-avatar {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .developer-name {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .developer-role {
+            color: var(--secondary-accent);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .developer-bio {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .developer-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .dev-link {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--duration-medium);
+        }
+
+        .dev-link.primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .dev-link.secondary {
+            background: transparent;
+            color: var(--secondary-accent);
+            border: 1px solid var(--secondary-accent);
+        }
+
+        .dev-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all var(--duration-medium);
+            font-size: 1.2rem;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-gradient);
+            transform: scale(1.1);
+            color: white;
+        }
+
+        /* ===== TECHNICAL DETAILS ACCORDION ===== */
+        .accordion {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(20px);
+            margin-top: 3rem;
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all var(--duration-medium);
+        }
+
+        .accordion-header:hover {
+            color: var(--secondary-accent);
+        }
+
+        .accordion-icon {
+            transition: transform var(--duration-medium);
+        }
+
+        .accordion[open] .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 0 2rem 2rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .tech-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        /* ===== FOOTER SECTION ===== */
+        .footer {
+            background: rgba(10, 15, 28, 0.9);
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color var(--duration-fast);
+        }
+
+        .footer-link:hover {
+            color: var(--secondary-accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 20px rgba(67, 97, 238, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(67, 97, 238, 0.8); }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 3rem 0;
+                --card-padding: 1.5rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 4rem 0 3rem;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .form-group {
+                flex-direction: column;
+            }
+
+            .form-input {
+                min-width: 100%;
+            }
+
+            .developer-links {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .design-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== ACCESSIBILITY & REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .hero-title {
+                animation: none;
+            }
+
+            .hero-subtitle {
+                opacity: 1;
+                animation: none;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .back-btn:focus,
+        .cta-btn:focus,
+        .form-input:focus,
+        .submit-btn:focus,
+        .accordion-header:focus {
+            outline: 2px solid var(--secondary-accent);
+            outline-offset: 2px;
+        }
+    </style>
+    <style>
+        /* From Uiverse.io by iconicchandu */ 
+.card {
+  --white: hsl(0, 0%, 100%);
+  --black: hsl(240, 15%, 9%);
+  --paragraph: hsl(0, 0%, 83%);
+  --line: hsl(240, 9%, 17%);
+  --primary: hsl(189, 92%, 58%);
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  padding: 4rem;
+  width: 32rem;
+  background-color: hsla(240, 15%, 9%, 1);
+  background-image: radial-gradient(
+      at 88% 40%,
+      hsla(240, 15%, 9%, 1) 0px,
+      transparent 85%
+    ),
+    radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+    radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+    radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
+    radial-gradient(at 41% 94%, hsl(189, 97%, 36%) 0px, transparent 85%),
+    radial-gradient(at 100% 99%, hsl(188, 94%, 13%) 0px, transparent 85%);
+
+  border-radius: 1rem;
+  box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset;
+}
+
+.card .card__border {
+  overflow: hidden;
+  pointer-events: none;
+
+  position: absolute;
+  z-index: -10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  background-image: linear-gradient(
+    0deg,
+    hsl(0, 0%, 100%) -50%,
+    hsl(0, 0%, 40%) 100%
+  );
+
+  border-radius: 1rem;
+}
+
+.card .card__border::before {
+  content: "";
+  pointer-events: none;
+
+  position: fixed;
+  z-index: 200;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%), rotate(0deg);
+  transform-origin: left;
+
+  width: 200%;
+  height: 10rem;
+  background-image: linear-gradient(
+    0deg,
+    hsla(0, 0%, 100%, 0) 0%,
+    hsl(189, 100%, 50%) 40%,
+    hsl(189, 100%, 50%) 60%,
+    hsla(0, 0%, 40%, 0) 100%
+  );
+
+  animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card .card_title__container .card_title {
+  font-size: 1.83rem;
+  color: var(--white);
+  font-weight: 800;
+}
+
+.card .card_title__container .card_paragraph {
+  margin-top: 1rem;
+  width: 65%;
+
+  font-size: 0.60rem;
+  color: var(--paragraph);
+}
+
+.card .line {
+  width: 100%;
+  height: 0.1rem;
+  background-color: var(--line);
+
+  border: none;
+}
+
+.card .card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card .card__list .card__list_item {
+  display: flex;
+
+  gap: 0.40rem;
+}
+
+.card .card__list .card__list_item .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--primary);
+
+  border-radius: 50%;
+}
+
+.card .card__list .card__list_item .check .check_svg {
+  width: 0.75rem;
+  height: 0.75rem;
+
+  fill: var(--black);
+}
+
+.card .card__list .card__list_item .list_text {
+  font-size: 1rem;
+  color: var(--white);
+}
+
+.card .button {
+  cursor: pointer;
+
+  padding: 1rem;
+  width: 100%;
+  background-image: linear-gradient(
+    0deg,
+    hsl(189, 92%, 58%),
+    hsl(189, 99%, 26%) 100%
+  );
+ margin-top: 10px;
+  font-size: 0.90rem;
+  color: var(--white);
+
+  border: 0;
+  border-radius: 9999px;
+  box-shadow: inset 0 -2px 25px -4px var(--white);
+  transition: all 0.70s ease-in-out;
+}
+.card .button:hover {
+    
+    transform: scale(1.1);
+}
+.leftContent {
+    transform: translateX(120px);
+    
+}
+.WebFeature {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+}
+    </style>
+</head>
+<body>
+    <!-- Background Overlay -->
+    <div class="background-overlay"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">SW</div>
+                StudyWeb
+            </a>
+            
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a> › About
+            </nav>
+            
+            <a href="Dashboard.html" onclick="HomePage()" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">About StudyWeb</h1>
+                <p class="hero-subtitle">A premium study hub — important pre-exam notes, curated study resources, and concise chapter summaries.</p>
+                
+                <div class="hero-ctas">
+                    <a href="#features" class="cta-btn cta-primary">
+                        <span>Explore Courses</span>
+                    </a>
+                    <a href="#developer" class="cta-btn cta-secondary">
+                        <span>Contact the Developer</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION SECTION -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">What is StudyWeb?</h2>
+                <p class="section-subtitle">
+                    StudyWeb is designed for high-school students who need quick, effective revision tools. 
+                    We focus on concise notes, formula charts, practice tests, and a performance-focused UI 
+                    that helps students prepare efficiently for their exams.
+                </p>
+                
+                <div class="mission-box">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 1rem;">Our Mission</h3>
+                    <p>To make quality education accessible through focused, well-designed study resources that help students achieve their academic goals with confidence and clarity.</p>
+                </div>
+            </div>
+        </section>
+      <section class="WebFeature">
+        <div class="leftContent">
+<div class="card">
+  <div class="card__border"></div>
+  <div class="card_title__container">
+    <span class="card_title">You Get in StudyWeb</span>
+    <p class="card_paragraph">All-in-one platform for study materials.</p>
+  </div>
+  <hr class="line" />
+  <ul class="card__list">
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Physics Chapters with Notes & Summaries</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Chemistry Chapters with Notes & Summaries</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Formula Charts (Maths, Physics, Chemistry)</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Practice Tests (MCQs & Scoring)</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">And More Items</span>
+    </li>
+  </ul>
+  <button class="button" onclick="HomePage()">Start Learning Now</button>
+</div>
+</div>
+<div class="leftContent">
+<div class="card">
+  <div class="card__border"></div>
+  <div class="card_title__container">
+    <span class="card_title">Why Choose StudyWeb?</span>
+    <p class="card_paragraph">Benifits That make your Study Smarter & Faster.</p>
+  </div>
+  <hr class="line" />
+  <ul class="card__list">
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Quick & concise notes for exams</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Easy-to-access formula charts</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Practice tests to track progress</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">Organized study structure</span>
+    </li>
+    <li class="card__list_item">
+      <span class="check">
+        <svg
+          class="check_svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </span>
+      <span class="list_text">And More Features</span>
+    </li>
+  </ul>
+  <button class="button" onclick="HomePage()">Start Learning Now</button>
+</div>
+</div>
+</section>
+        <!-- FEATURES SECTION -->
+        <section class="section" id="features">
+            <div class="container">
+                <h2 class="section-title">Key Features</h2>
+                <p class="section-subtitle">Discover the tools that make StudyWeb the perfect study companion</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card" data-delay="0">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="feature-title">Physics & Chemistry Chapters</h3>
+                        <p class="feature-description">Curated chapter summaries with quick-view 'View' actions for each lesson.</p>
+                    </div>
+
+                    <div class="feature-card" data-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3 class="feature-title">Formula Charts</h3>
+                        <p class="feature-description">Printable formula sheets and one-page cheat-sheets for last-minute revision.</p>
+                    </div>
+
+                    <div class="feature-card" data-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3 class="feature-title">Practice Tests</h3>
+                        <p class="feature-description">Timed practice tests and instant scoring to track progress.</p>
+                    </div>
+
+                    <div class="feature-card" data-delay="300">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="feature-title">AI Tools (Coming soon)</h3>
+                        <p class="feature-description">Automated formula solver, essay assistant, and code runner.</p>
+                    </div>
+
+                    <div class="feature-card" data-delay="400">
+                        <div class="feature-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 class="feature-title">Custom Settings</h3>
+                        <p class="feature-description">Enable/disable modules from the settings panel; dynamic buttons appear on the dashboard.</p>
+                    </div>
+
+                    <div class="feature-card" data-delay="500">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Responsive & Fast</h3>
+                        <p class="feature-description">Mobile-first, minimal DOM, lazy images and CSS-only micro-interactions where possible.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROADMAP SECTION -->
+        <section class="section" id="roadmap">
+            <div class="container">
+                <h2 class="section-title">Product Roadmap</h2>
+                <p class="section-subtitle">Current and upcoming modules to enhance your study experience</p>
+                
+                <div class="roadmap-grid">
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-live">Live</span>
+                        <h4 class="roadmap-title">Physics</h4>
+                        <p>Complete chapter summaries and formula sheets</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-live">Live</span>
+                        <h4 class="roadmap-title">Chemistry</h4>
+                        <p>Reaction mechanisms and periodic trends</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-beta">Beta</span>
+                        <h4 class="roadmap-title">English</h4>
+                        <p>Literature analysis and grammar guides</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-beta">Beta</span>
+                        <h4 class="roadmap-title">Hindi</h4>
+                        <p>Comprehensive language and literature resources</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="60"></div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-coming">Coming Soon</span>
+                        <h4 class="roadmap-title">Programming</h4>
+                        <p>Code tutorials and algorithm practice</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="25"></div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item">
+                        <span class="roadmap-status status-coming">Coming Soon</span>
+                        <h4 class="roadmap-title">Career & Business Finance</h4>
+                        <p>Professional development and financial literacy</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Subscribe Form -->
+                <div class="subscribe-form">
+                    <h3 style="text-align: center; margin-bottom: 1rem; color: var(--text-light);">Stay Updated</h3>
+                    <p style="text-align: center; margin-bottom: 2rem; color: var(--text-muted);">Get notified when new modules and features are released</p>
+                    
+                    <form id="subscribeForm" class="form-group">
+                        <input type="email" class="form-input" placeholder="Enter your email address" required>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-bell"></i>
+                            Subscribe
+                        </button>
+                    </form>
+                    <div id="subscribeMessage" style="margin-top: 1rem; text-align: center;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESIGN SECTION -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Design & UX Philosophy</h2>
+                <p class="section-subtitle">Transparency in our design choices for developers and designers</p>
+                
+                <div class="design-highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h4>Background Video</h4>
+                        <p>Immersive visual experience with performance optimization</p>
+                    </div>
+
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <h4>Sidebar Navigation</h4>
+                        <p>Intuitive menu structure with smooth transitions</p>
+                    </div>
+
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-toggle-on"></i>
+                        </div>
+                        <h4>Settings Toggles</h4>
+                        <p>User-controlled module visibility and preferences</p>
+                    </div>
+
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h4>Dynamic Buttons</h4>
+                        <p>Context-aware interactions with visual feedback</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPER SECTION -->
+        <section class="section" id="developer">
+            <div class="container">
+                <h2 class="section-title">Meet the Developer</h2>
+                
+                <div class="developer-card">
+                    <div class="developer-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="developer-name">Abhinash Kumar</h3>
+                    <p class="developer-role">Student • Developer</p>
+                    <p class="developer-bio">
+                        StudyWeb is developed by <strong>Abhinash Kumar</strong> — a student and developer building tools to make revision fast and effective. Built with a focus on clarity, performance and accessibility.
+                    </p>
+                    
+                    <div class="developer-links">
+                        <a href="Hire-me.html" class="dev-link primary">
+                            <i class="fas fa-handshake"></i>
+                            Hire Me
+                        </a>
+                        <a href="Choose-Portfolio.html" class="dev-link secondary">
+                            <i class="fas fa-briefcase"></i>
+                            Portfolio
+                        </a>
+                        <a href="ContactPage.html" class="dev-link secondary">
+                            <i class="fas fa-envelope"></i>
+                            Contact
+                        </a>
+                    </div>
+
+                    <div class="social-icons">
+                        <a href="mailto:kumarjhaabhinash68@gmail.com" class="social-icon" aria-label="Email" rel="noopener noreferrer">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/abhinash-code" class="social-icon" aria-label="GitHub" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 3rem; color: var(--text-muted);">
+                    Have feedback or want to collaborate? Get in touch.
+                </p>
+            </div>
+        </section>
+
+        <!-- TECHNICAL DETAILS SECTION -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Technical Details</h2>
+                
+                <details class="accordion">
+                    <summary class="accordion-header">
+                        <span>Technologies & Implementation</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </summary>
+                    <div class="accordion-content">
+                        <p>StudyWeb is built with modern web technologies focused on performance and accessibility:</p>
+                        
+                        <div class="tech-list">
+                            <div class="tech-item">
+                                <strong>Frontend</strong><br>
+                                HTML5, CSS3, Vanilla JavaScript
+                            </div>
+                            <div class="tech-item">
+                                <strong>Styling</strong><br>
+                                CSS Grid, Flexbox, Custom Properties
+                            </div>
+                            <div class="tech-item">
+                                <strong>Storage</strong><br>
+                                SessionStorage, LocalStorage
+                            </div>
+                            <div class="tech-item">
+                                <strong>Icons</strong><br>
+                                Font Awesome, Custom SVGs
+                            </div>
+                            <div class="tech-item">
+                                <strong>Fonts</strong><br>
+                                Google Fonts (Playfair Display, Inter)
+                            </div>
+                            <div class="tech-item">
+                                <strong>Accessibility</strong><br>
+                                ARIA attributes, Semantic HTML
+                            </div>
+                        </div>
+
+                        <h4 style="margin: 2rem 0 1rem; color: var(--text-light);">Key Features</h4>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li><strong>Content Storage:</strong> Static files with dynamic loading via JavaScript</li>
+                            <li><strong>Settings Management:</strong> Browser storage for user preferences</li>
+                            <li><strong>Responsive Design:</strong> Mobile-first approach with progressive enhancement</li>
+                            <li><strong>Performance:</strong> Lazy loading, optimized animations, minimal dependencies</li>
+                            <li><strong>Accessibility:</strong> Screen reader support, keyboard navigation, high contrast</li>
+                            <li><strong>Progressive Enhancement:</strong> Works without JavaScript for core functionality</li>
+                        </ul>
+
+                        <!-- TODO: Backend integration for forms and user data -->
+                        <p style="margin-top: 2rem; padding: 1rem; background: rgba(255, 193, 7, 0.1); border-radius: 0.5rem; color: #ffc107;">
+                            <strong>Note:</strong> Forms are currently client-side only. Backend integration planned for user accounts and progress tracking.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="FormulaChart.html" class="footer-link">Formulas</a>
+                <a href="ToolsPage.html" class="footer-link">Tools</a>
+                <a href="test.html" class="footer-link">Tests</a>
+                <a href="ContactPage.html" class="footer-link">Contact</a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; StudyWeb 2025 • Developed with ❤️ by Abhinash Kumar</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* 
+        ===== ABOUTPAGE.HTML JAVASCRIPT =====
+        Author: Abhinash Kumar
+        Purpose: Progressive enhancement for AboutPage.html
+        Dependencies: None (Vanilla JS)
+        */
+        function HomePage() {
+            window.location.href = "Dashboard.html";
+        }
+        (function() {
+            'use strict';
+
+            // ===== UTILITY FUNCTIONS =====
+            
+            // Intersection Observer for scroll animations
+            function initScrollAnimations() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const delay = entry.target.dataset.delay || 0;
+                            setTimeout(() => {
+                                entry.target.classList.add('show');
+                            }, parseInt(delay));
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                // Observe feature cards
+                document.querySelectorAll('.feature-card').forEach(card => {
+                    observer.observe(card);
+                });
+            }
+
+            // Animate progress bars when visible
+            function initProgressBars() {
+                const progressBars = document.querySelectorAll('.progress-fill');
+                
+                const progressObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const progress = entry.target.dataset.progress;
+                            setTimeout(() => {
+                                entry.target.style.width = progress + '%';
+                            }, 500);
+                            progressObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                progressBars.forEach(bar => {
+                    progressObserver.observe(bar);
+                });
+            }
+
+            // ===== FORM HANDLING =====
+            
+            // Email subscription form
+            function initSubscribeForm() {
+                const form = document.getElementById('subscribeForm');
+                const messageDiv = document.getElementById('subscribeMessage');
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const emailInput = form.querySelector('input[type="email"]');
+                    const email = emailInput.value.trim();
+                    
+                    if (!email) {
+                        showMessage('Please enter a valid email address.', 'error');
+                        return;
+                    }
+
+                    // Simulate subscription (TODO: Connect to backend)
+                    const submitBtn = form.querySelector('.submit-btn');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        showMessage('Thanks for subscribing! We\'ll notify you of updates.', 'success');
+                        emailInput.value = '';
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        
+                        // Store subscription in localStorage (for demo)
+                        localStorage.setItem('studyweb_subscriber', email);
+                    }, 2000);
+                });
+
+                function showMessage(text, type) {
+                    messageDiv.innerHTML = `<p style="color: ${type === 'success' ? 'var(--success)' : 'var(--danger)'}; font-weight: 500;">${text}</p>`;
+                    setTimeout(() => {
+                        messageDiv.innerHTML = '';
+                    }, 5000);
+                }
+            }
+
+            // ===== NAVIGATION HANDLING =====
+            
+            // Back button functionality
+            function initBackButton() {
+                const backBtn = document.querySelector('.back-btn');
+                
+                backBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Try to go back in history, fallback to dashboard
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        // Fallback to dashboard or index
+                        window.location.href = 'Dashboard.html';
+                    }
+                });
+            }
+
+            // Smooth scrolling for anchor links
+            function initSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            const headerHeight = document.querySelector('.header').offsetHeight;
+                            const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            }
+
+            // ===== ACCESSIBILITY ENHANCEMENTS =====
+            
+            // Accordion keyboard handling
+            function initAccordionAccessibility() {
+                const accordions = document.querySelectorAll('.accordion');
+                
+                accordions.forEach(accordion => {
+                    const header = accordion.querySelector('.accordion-header');
+                    
+                    header.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            accordion.toggleAttribute('open');
+                        }
+                    });
+                });
+            }
+
+            // Focus management for modals/popups
+            function initFocusManagement() {
+                // Trap focus in modal-like elements if needed
+                // Currently not needed but framework for future modals
+            }
+
+            // ===== PERFORMANCE OPTIMIZATIONS =====
+            
+            // Lazy load images
+            function initLazyLoading() {
+                if ('IntersectionObserver' in window) {
+                    const imageObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                img.src = img.dataset.src;
+                                img.classList.remove('lazy');
+                                imageObserver.unobserve(img);
+                            }
+                        });
+                    });
+
+                    document.querySelectorAll('img[data-src]').forEach(img => {
+                        imageObserver.observe(img);
+                    });
+                }
+            }
+
+            // Preload critical resources
+            function preloadResources() {
+                // Preload critical pages
+                const criticalPages = ['Dashboard.html', 'index.html'];
+                
+                criticalPages.forEach(page => {
+                    const link = document.createElement('link');
+                    link.rel = 'prefetch';
+                    link.href = page;
+                    document.head.appendChild(link);
+                });
+            }
+
+            // ===== INITIALIZATION =====
+            
+            // Wait for DOM to be ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            function init() {
+                console.log('AboutPage.html initialized');
+                
+                // Initialize all components
+                initScrollAnimations();
+                initProgressBars();
+                initSubscribeForm();
+                initBackButton();
+                initSmoothScrolling();
+                initAccordionAccessibility();
+                initFocusManagement();
+                initLazyLoading();
+                preloadResources();
+
+                // Add loaded class for any CSS transitions
+                document.body.classList.add('loaded');
+            }
+
+            // ===== KEYBOARD SHORTCUTS (Optional Enhancement) =====
+            
+            // Global keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Press 'H' to go home
+                if (e.key === 'h' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                    if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                        window.location.href = 'index.html';
+                    }
+                }
+                
+                // Press 'B' to go back
+                if (e.key === 'b' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                    if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                        window.history.back();
+                    }
+                }
+            });
+
+            // ===== ERROR HANDLING =====
+            
+            // Global error handler
+            window.addEventListener('error', function(e) {
+                console.error('AboutPage error:', e.error);
+                // Could send to analytics service
+            });
+
+        })();
+    </script>
+</body>
+</html>
