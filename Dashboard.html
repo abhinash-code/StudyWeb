@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* Original CSS preserved exactly as provided */
         * {
             margin: 0;
             padding: 0;
@@ -469,6 +470,7 @@
             width: 4px;
             background: linear-gradient(to bottom, #818cf8, #6366f1);
             border-radius: 0 4px 4px 0;
+            transition: all 0.3s ease;
         }
 
         .item .i {
@@ -580,6 +582,7 @@
             color: #cbd5e1;
             cursor: pointer;
             transition: all 0.2s ease;
+            transform: translateZ(0);
         }
 
         .btn-icon:hover {
@@ -673,6 +676,7 @@
             color: #a5b4fc;
             margin-bottom: 10px;
             font-size: 18px;
+            transition: color 0.3s ease;
         }
 
         .card p {
@@ -1367,12 +1371,12 @@
         }
 
         @keyframes thing {
-            0% {
-                background-position: 130%;
+            0% { 
+                background-position: 130%; 
                 opacity: 1;
             }
-            to {
-                background-position: -166%;
+            to { 
+                background-position: -166%; 
                 opacity: 0;
             }
         }
@@ -1438,6 +1442,205 @@
         .chem-card-btn:active {
             box-shadow: 0 0.3em 1em -0.5em #14a73e98;
         }
+
+        /* NEW STYLES FOR SETTINGS FEATURE */
+        /* Settings Panel */
+        #settingsPanel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 500px;
+            background: rgba(30, 30, 60, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #settingsPanel.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        #settingsPanel h2 {
+            color: #f8fafc;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            color: #e2e8f0;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #4a90e2;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .settings-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .settings-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #saveSettingsBtn {
+            background-color: #4a90e2;
+            color: white;
+        }
+
+        #saveSettingsBtn:hover {
+            background-color: #3a7bc8;
+        }
+
+        #closeSettingsBtn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+
+        #closeSettingsBtn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dynamic buttons container */
+        #dynamic-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 20px;
+            justify-content: center;
+            transform: translateY(80px);
+        }
+
+        .dynamic-btn {
+            background-color: rgba(74, 144, 226, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .dynamic-btn:hover {
+            background-color: rgba(74, 144, 226, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive adjustments for dynamic buttons */
+        @media (max-width: 768px) {
+            .dynamic-btn {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            #dynamic-buttons-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Settings overlay */
+        #settingsOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        #settingsOverlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body>
@@ -1487,7 +1690,7 @@
                 </div>
                 <div id="profileMenu" class="profile-menu" aria-hidden="true">
                     <a class="pm-item" data-url="hire.html" id="btn" data-target="Hire-me.html" href="#" title="Hire">Hire</a>
-                    <a class="pm-item" data-url="about.html" id="btn" data-target="Choose-Portfolio.html" href="#" title="About">About</a>
+                    <a class="pm-item" data-url="about.html" id="btn" data-target="Choose-Portfolio.html" href="#" title="About">About me</a>
                     <a class="pm-item" data-url="contact.html" id="btn" data-target="ContactPage.html" href="#" title="Contact">Contact</a>
                 </div>
             </div>
@@ -1536,9 +1739,10 @@
                         <div class="label" id="btn" data-target="Test.html" title="Test">Practice Tests</div>
                     </li>
 
-                    <li class="item" data-target="settings" tabindex="0" role="button" aria-pressed="false">
+                    <!-- Settings Button - Modified to open settings panel -->
+                    <li class="item" id="openSettingsBtn" data-target="settings" tabindex="0" role="button" aria-pressed="false">
                         <div class="i"><i class="fa-solid fa-gear"></i></div>
-                        <div class="label" title="Setting" onclick="alert('This Feature is Coming soon... ')">Setting</div>
+                        <div class="label" title="Settings">Settings</div>
                     </li>
 
                     <li class="item" data-target="contact" tabindex="0" role="button" aria-pressed="false">
@@ -1598,8 +1802,11 @@
                             <p class="sw-sub" style="cursor: default;">A premium study hub for students — important pre-exam notes, curated study resources, and concise chapter summaries. Built for focus, performance and speed.</p>
                             <div class="sw-row">
                                 <a href="#" class="sw-cta sw-anim" title="Explore Physics">Explore More</a>
-                                <button class="sw-cta" id="btn" data-target="ContactPage.html" style="background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--sw-text);margin-left:12px" data-title="ContactPage.html" title="Contact">Contact</button>
+                                <button class="sw-cta" id="btn" data-target="AboutPage.html" style="background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--sw-text);margin-left:12px" data-title="AboutPage.html" title="About">About</button>
                             </div>
+                            
+                            <!-- Dynamic buttons container - Will be populated based on sessionStorage settings -->
+                            <div id="dynamic-buttons-container"></div>
                         </div>
                     </div>
 
@@ -1617,7 +1824,7 @@
                                     <i class="fas fa-bolt"></i>
                                 </div>
                                 <h2>Chapter 1</h2>
-                                <p>Study of charges, Coulomb’s law, electric field, flux, and Gauss’s law.</p>
+                                <p>Study of charges, Coulomb's law, electric field, flux, and Gauss's law.</p>
                                 <!-- From Uiverse.io by SelfMadeSystem --> 
                                 <button class="frutiger-button"> 
                                     <div class="inner">
@@ -1645,7 +1852,7 @@
                                     <i class="fas fa-plug"></i>
                                 </div>
                                 <h2>Chapter 3</h2>
-                                <p>Ohm’s law, resistivity, drift velocity, Kirchhoff’s rules, and electric circuits.</p>
+                                <p>Ohm's law, resistivity, drift velocity, Kirchhoff's rules, and electric circuits.</p>
                                 <!-- From Uiverse.io by SelfMadeSystem --> 
                                 <button class="frutiger-button">
                                     <div class="inner">
@@ -1661,7 +1868,7 @@
                                     <i class="fas fa-magnet"></i>
                                 </div>
                                 <h2>Chapter 4</h2>
-                                <p>Magnetic effects of current, Biot-Savart law, Ampere’s law, and cyclotron.</p>
+                                <p>Magnetic effects of current, Biot-Savart law, Ampere's law, and cyclotron.</p>
                                 <!-- From Uiverse.io by SelfMadeSystem --> 
                                 <button class="frutiger-button">
                                     <div class="inner">
@@ -1675,7 +1882,7 @@
                                     <i class="fas fa-compass"></i>
                                 </div>
                                 <h2>Chapter 5</h2>
-                                <p>Properties of bar magnets, earth’s magnetism, susceptibility, and magnetic materials.</p>
+                                <p>Properties of bar magnets, earth's magnetism, susceptibility, and magnetic materials.</p>
                                 <!-- From Uiverse.io by SelfMadeSystem --> 
                                 <button class="frutiger-button">
                                     <div class="inner">
@@ -1689,7 +1896,7 @@
                                     <i class="fas fa-wave-square"></i>
                                 </div>
                                 <h2>Chapter 6</h2>
-                                <p>Faraday’s laws, Lenz’s law, self & mutual induction, and AC generator.</p>
+                                <p>Faraday's laws, Lenz's law, self & mutual induction, and AC generator.</p>
                                 <!-- From Uiverse.io by SelfMadeSystem --> 
                                 <button class="frutiger-button">
                                     <div class="inner">
@@ -1777,36 +1984,64 @@
             <div class="dot"></div>
         </div> 
     </div>
+
+    <!-- Settings Panel (hidden by default) -->
+    <div id="settingsOverlay" class="settings-overlay"></div>
+    <section id="settingsPanel" aria-labelledby="settingsHeading" aria-hidden="true">
+        <h2 id="settingsHeading">Settings</h2>
+        <div class="settings-group">
+            <div class="setting-item">
+                <label for="enableProgramming" class="setting-label">Enable Programming Feature</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="enableProgramming">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <label for="enableFinance" class="setting-label">Enable Business Finance Feature</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="enableFinance">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="settings-actions">
+            <button id="closeSettingsBtn" class="settings-btn">Cancel</button>
+            <button id="saveSettingsBtn" class="settings-btn">Save Settings</button>
+        </div>
+    </section>
+
     <script>
-     // Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-  const navLinks = document.querySelectorAll('.NavBar a');
-  
-  // Remove active class from all links
-  function removeActiveClasses() {
-    navLinks.forEach(link => {
-      link.classList.remove('nav-active');
-    });
-  }
-  
-  // Add click event to each link
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Prevent default only if it's not a hash link
-      if(this.getAttribute('href') === '#') {
-        e.preventDefault();
-      }
-      
-      // Remove active class from all links
-      removeActiveClasses();
-      
-      // Add active class to clicked link
-      this.classList.add('nav-active');
-    });
-  });
-});
+        // Add this to your existing JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.NavBar a');
+            
+            // Remove active class from all links
+            function removeActiveClasses() {
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-active');
+                });
+            }
+            
+            // Add click event to each link
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Prevent default only if it's not a hash link
+                    if(this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                    
+                    // Remove active class from all links
+                    removeActiveClasses();
+                    
+                    // Add active class to clicked link
+                    this.classList.add('nav-active');
+                });
+            });
+        });
     </script>
     <script>
+        // SETTINGS FEATURE IMPLEMENTATION
         document.addEventListener('DOMContentLoaded', function() {
             // Get DOM elements
             const sidebar = document.getElementById('appSidebar');
@@ -1822,6 +2057,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('#btn');
             const loader = document.getElementById('loader');
             const body = document.body;
+            
+            // Settings panel elements
+            const settingsPanel = document.getElementById('settingsPanel');
+            const settingsOverlay = document.getElementById('settingsOverlay');
+            const openSettingsBtn = document.getElementById('openSettingsBtn');
+            const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+            const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+            const enableProgramming = document.getElementById('enableProgramming');
+            const enableFinance = document.getElementById('enableFinance');
+            const dynamicButtonsContainer = document.getElementById('dynamic-buttons-container');
             
             // Toggle sidebar collapse
             collapseBtn.addEventListener('click', function() {
@@ -1968,6 +2213,85 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             });
+            
+            // SETTINGS PANEL FUNCTIONALITY
+            // Open settings panel
+            openSettingsBtn.addEventListener('click', function() {
+                // Load current settings
+                enableProgramming.checked = sessionStorage.getItem('programmingFeature') === 'true';
+                enableFinance.checked = sessionStorage.getItem('financeFeature') === 'true';
+                
+                // Show settings panel
+                settingsPanel.classList.add('active');
+                settingsOverlay.classList.add('active');
+                settingsPanel.setAttribute('aria-hidden', 'false');
+                
+                // Focus first input for accessibility
+                setTimeout(() => {
+                    enableProgramming.focus();
+                }, 100);
+            });
+            
+            // Close settings panel
+            function closeSettings() {
+                settingsPanel.classList.remove('active');
+                settingsOverlay.classList.remove('active');
+                settingsPanel.setAttribute('aria-hidden', 'true');
+            }
+            
+            closeSettingsBtn.addEventListener('click', closeSettings);
+            settingsOverlay.addEventListener('click', closeSettings);
+            
+            // Save settings
+            saveSettingsBtn.addEventListener('click', function() {
+                // Save to sessionStorage
+                sessionStorage.setItem('programmingFeature', enableProgramming.checked);
+                sessionStorage.setItem('financeFeature', enableFinance.checked);
+                
+                // Update dynamic buttons
+                updateDynamicButtons();
+                
+                // Close settings panel
+                closeSettings();
+            });
+            
+            // ESC key to close settings
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+                    closeSettings();
+                }
+            });
+            
+            // Function to update dynamic buttons based on sessionStorage
+            function updateDynamicButtons() {
+                // Clear existing dynamic buttons
+                dynamicButtonsContainer.innerHTML = '';
+                
+                // Check if programming feature is enabled
+                if (sessionStorage.getItem('programmingFeature') === 'true') {
+                    const programmingBtn = document.createElement('a');
+                    programmingBtn.id = 'programmingBtn';
+                    programmingBtn.className = 'dynamic-btn';
+                    programmingBtn.href = '#';
+                    programmingBtn.innerHTML = '<i class="fa-solid fa-code"></i> Programming Zone';
+                    programmingBtn.setAttribute('aria-label', 'Programming Zone');
+                    dynamicButtonsContainer.appendChild(programmingBtn);
+                }
+                
+                // Check if finance feature is enabled
+                if (sessionStorage.getItem('financeFeature') === 'true') {
+                    const financeBtn = document.createElement('a');
+                    financeBtn.id = 'financeBtn';
+                    financeBtn.className = 'dynamic-btn';
+                    financeBtn.href = '#finance';
+                    financeBtn.innerHTML = '<i class="fa-solid fa-chart-line"></i> Business Finance Zone';
+                    financeBtn.setAttribute('aria-label', 'Business Finance Zone');
+                    dynamicButtonsContainer.appendChild(financeBtn);
+                }
+            }
+            
+            // Initialize dynamic buttons on page load
+            updateDynamicButtons();
         });
 
         // Search functionality
@@ -1989,5 +2313,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     </script>
+    
+    
 </body>
 </html>
