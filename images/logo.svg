@@ -1,0 +1,11 @@
+<svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="5" y="15" width="30" height="30" rx="6" fill="url(#logoGradient)"/>
+  <path d="M15 25 L25 25 M15 30 L25 30 M15 35 L25 35" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <text x="45" y="35" font-family="Inter, sans-serif" font-size="24" font-weight="700" fill="#1E40AF">FinancePro</text>
+</svg>
