@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard - FinancePro</title>
+    <meta name="description" content="Access your financial reports, upcoming appointments, and documents in your secure client dashboard.">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__container">
+            <a href="/" class="nav__logo">
+                <img src="/images/logo.svg" alt="FinancePro" width="120" height="40">
+            </a>
+            <button class="nav__toggle" aria-label="Toggle navigation">
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+            </button>
+            <ul class="nav__menu">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/services.html" class="nav__link">Services</a></li>
+                <li><a href="/resources.html" class="nav__link">Resources</a></li>
+                <li><a href="/contact.html" class="nav__link">Contact</a></li>
+                <li><a href="/booking.html" class="nav__link nav__link--cta">Book Consultation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top: 6rem; padding-bottom: 6rem;">
+        <div class="services-preview__header">
+            <h1 class="services-preview__title">Client Dashboard</h1>
+            <p class="services-preview__subtitle">
+                Manage your financial services and access your documents
+            </p>
+        </div>
+
+        <div id="login-section" style="max-width: 400px; margin: 0 auto;">
+            <h2 style="margin-bottom: 2rem; text-align: center;">Client Login</h2>
+            <form id="client-login-form">
+                <div class="form-group">
+                    <label class="form-label" for="client-email">Email Address</label>
+                    <input type="email" class="form-input" id="client-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="client-password">Password</label>
+                    <input type="password" class="form-input" id="client-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--large" style="width: 100%;">
+                    Login to Dashboard
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">
+                <a href="#" id="demo-login" style="color: var(--color-primary);">Use Demo Account</a>
+            </p>
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                <div class="service-card">
+                    <h2>Upcoming Appointments</h2>
+                    <div id="upcoming-appointments">
+                        <p>No upcoming appointments</p>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <h2>Recent Invoices</h2>
+                    <div id="recent-invoices">
+                        <p>No recent invoices</p>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <h2>Documents & Reports</h2>
+                    <div id="documents">
+                        <button class="btn btn--primary" onclick="generateSampleReport()">Download Sample Report (PDF)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/client-dashboard.js"></script>
+</body>
+</html>
