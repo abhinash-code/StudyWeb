@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensional Formulas Explorer | 12th Physics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --bg-card-hover: rgba(255, 255, 255, 0.1);
+            --bg-accent: #06b6d4;
+            --bg-accent-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #6d28d9 100%);
+            --text-primary: #e6eef8;
+            --text-secondary: #9fb3d6;
+            --text-accent: #06b6d4;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --glow: 0 0 15px rgba(6, 182, 212, 0.5);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --card-border-radius: 16px;
+            --backdrop-blur: blur(10px);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            background: var(--bg-accent-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: var(--backdrop-blur);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: var(--text-accent);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #e6eef8, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .controls {
+            background: var(--bg-card);
+            backdrop-filter: var(--backdrop-blur);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--bg-accent);
+            box-shadow: var(--glow);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            flex: 1;
+        }
+        
+        .chip {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chip.active {
+            background: var(--bg-accent);
+            color: var(--bg-primary);
+            box-shadow: var(--glow);
+        }
+        
+        .chip:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        select {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        .language-toggle {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .toggle-container {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 50px;
+            padding: 0.25rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .toggle-option {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .toggle-option.active {
+            background: var(--bg-accent);
+            color: var(--bg-primary);
+        }
+        
+        .formulas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .formula-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--backdrop-blur);
+            border-radius: var(--card-border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px) rotate(2deg);
+            animation: cardEntrance 0.6s ease forwards;
+        }
+        
+        .formula-card:hover {
+            transform: translateY(-8px) scale(1.02) rotate(0);
+            box-shadow: var(--shadow-lg);
+            background: var(--bg-card-hover);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .category-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background: var(--bg-accent);
+            color: var(--bg-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .copy-btn:hover {
+            color: var(--bg-accent);
+            transform: scale(1.1);
+        }
+        
+        .english-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .hindi-name {
+            min-height: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .hindi-name:empty:before {
+            content: "Click to add Hindi name";
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+        
+        .formula {
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .dimensional-formula {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+            color: var(--text-accent);
+        }
+        
+        .notes {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+        
+        .floating-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+        
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-accent);
+            color: var(--bg-primary);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .action-btn:hover:after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+        }
+        
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            backdrop-filter: var(--backdrop-blur);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .overlay-content {
+            background: var(--bg-card);
+            backdrop-filter: var(--backdrop-blur);
+            border-radius: var(--card-border-radius);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            max-width: 600px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .overlay.active .overlay-content {
+            transform: scale(1);
+        }
+        
+        .close-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px) rotate(2deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+            }
+            70% {
+                transform: scale(1.02);
+                box-shadow: 0 0 0 10px rgba(6, 182, 212, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+            }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .formulas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+            }
+            
+            .floating-actions {
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+            </div>
+            <h1>Dimensional Formulas Explorer</h1>
+            <h2>12th Grade Physics Reference</h2>
+            <h2>All Physics Dimensional Formulas are Available in This Page</h2>
+        </header>
+
+        <section class="controls">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search formulas..." id="searchInput">
+            </div>
+
+            <div class="filter-controls">
+                <div class="category-chips" id="categoryFilters">
+                    <!-- Category chips will be generated here -->
+                </div>
+                
+                <div class="sort-container">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="name">Name</option>
+                        <option value="category">Category</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="language-toggle">
+                <div class="toggle-container">
+                    <div class="toggle-option active" data-lang="english">English</div>
+                    <div class="toggle-option" data-lang="both">Both</div>
+                    <div class="toggle-option" data-lang="hindi">Hindi</div>
+                </div>
+            </div>
+        </section>
+
+        <main>
+            <div class="formulas-grid" id="formulasContainer">
+                <!-- Formula cards will be generated here -->
+            </div>
+        </main>
+    </div>
+
+    <div class="floating-actions">
+        <button class="action-btn" id="addFormulaBtn" title="Add new formula">
+            <i class="fas fa-plus"></i>
+        </button>
+        <button class="action-btn" id="exportJsonBtn" title="Export to JSON">
+            <i class="fas fa-download"></i>
+        </button>
+        <button class="action-btn" id="importJsonBtn" title="Import from JSON">
+            <i class="fas fa-upload"></i>
+        </button>
+    </div>
+
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
+    <div class="overlay" id="formulaOverlay">
+        <div class="overlay-content">
+            <button class="close-overlay" id="closeOverlay">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="overlayContent">
+                <!-- Focus mode content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+
+    <script>
+        // Sample formulas data with Hindi names
+        const formulas = [
+           // Fundamental Quantities
+{
+    id: "f1",
+    englishName: "Mass",
+    hindiName: "द्रव्यमान",
+    category: "Fundamental Quantities",
+    formula: "m",
+    dimensionalFormula: "M",
+    notes: "Basic fundamental quantity"
+},
+{
+    id: "f2",
+    englishName: "Length",
+    hindiName: "लम्बाई",
+    category: "Fundamental Quantities",
+    formula: "l",
+    dimensionalFormula: "L",
+    notes: "Basic fundamental quantity"
+},
+{
+    id: "f3",
+    englishName: "Time",
+    hindiName: "समय",
+    category: "Fundamental Quantities",
+    formula: "t",
+    dimensionalFormula: "T",
+    notes: "Basic fundamental quantity"
+},
+{
+    id: "f4",
+    englishName: "Electric Current",
+    hindiName: "विद्युत् धारा",
+    category: "Fundamental Quantities",
+    formula: "I",
+    dimensionalFormula: "I",
+    notes: "Basic fundamental quantity"
+},
+{
+    id: "f5",
+    englishName: "Temperature",
+    hindiName: "तापमान",
+    category: "Fundamental Quantities",
+    formula: "T",
+    dimensionalFormula: "Θ",
+    notes: "Basic fundamental quantity"
+},
+{
+    id: "f6",
+    englishName: "Amount of Substance",
+    hindiName: "पदार्थ की मात्रा",
+    category: "Fundamental Quantities",
+    formula: "n",
+    dimensionalFormula: "N",
+    notes: "Mole - basic fundamental quantity"
+},
+{
+    id: "f7",
+    englishName: "Luminous Intensity",
+    hindiName: "प्रकाशित तीव्रता",
+    category: "Fundamental Quantities",
+    formula: "Iv",
+    dimensionalFormula: "J",
+    notes: "Basic fundamental quantity"
+},
+
+// Kinematics
+{
+    id: "f8",
+    englishName: "Distance/Displacement",
+    hindiName: "दूरी/स्थान",
+    category: "Kinematics",
+    formula: "s",
+    dimensionalFormula: "L",
+    notes: "Change in position"
+},
+{
+    id: "f9",
+    englishName: "Velocity",
+    hindiName: "वेग",
+    category: "Kinematics",
+    formula: "v = ds/dt",
+    dimensionalFormula: "L T⁻¹",
+    notes: "Rate of change of displacement"
+},
+{
+    id: "f10",
+    englishName: "Speed",
+    hindiName: "आवर्तित वेग",
+    category: "Kinematics",
+    formula: "v",
+    dimensionalFormula: "L T⁻¹",
+    notes: "Magnitude of velocity"
+},
+{
+    id: "f11",
+    englishName: "Acceleration",
+    hindiName: "त्वरण",
+    category: "Kinematics",
+    formula: "a = dv/dt",
+    dimensionalFormula: "L T⁻²",
+    notes: "Rate of change of velocity"
+},
+{
+    id: "f12",
+    englishName: "Frequency",
+    hindiName: "आवृत्ति",
+    category: "Kinematics",
+    formula: "f = 1/T",
+    dimensionalFormula: "T⁻¹",
+    notes: "Number of cycles per unit time"
+},
+{
+    id: "f13",
+    englishName: "Angular Frequency",
+    hindiName: "कोणीय वेग",
+    category: "Kinematics",
+    formula: "ω = 2πf",
+    dimensionalFormula: "T⁻¹",
+    notes: "Angular displacement per unit time"
+},
+{
+    id: "f14",
+    englishName: "Wave Number",
+    hindiName: "तरंग संख्या",
+    category: "Kinematics",
+    formula: "k = 2π/λ",
+    dimensionalFormula: "L⁻¹",
+    notes: "Number of waves per unit length"
+},
+
+// Dynamics
+{
+    id: "f15",
+    englishName: "Force",
+    hindiName: "बल",
+    category: "Dynamics",
+    formula: "F = ma",
+    dimensionalFormula: "M L T⁻²",
+    notes: "Newton's second law"
+},
+{
+    id: "f16",
+    englishName: "Momentum",
+    hindiName: "संवेग",
+    category: "Dynamics",
+    formula: "p = mv",
+    dimensionalFormula: "M L T⁻¹",
+    notes: "Product of mass and velocity"
+},
+{
+    id: "f17",
+    englishName: "Impulse",
+    hindiName: "आवेग",
+    category: "Dynamics",
+    formula: "J = Δp = F⋅Δt",
+    dimensionalFormula: "M L T⁻¹",
+    notes: "Change in momentum"
+},
+{
+    id: "f18",
+    englishName: "Work/Energy",
+    hindiName: "कार्य/ऊर्जा",
+    category: "Dynamics",
+    formula: "W = F⋅s",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Force applied through distance"
+},
+{
+    id: "f19",
+    englishName: "Power",
+    hindiName: "शक्ति",
+    category: "Dynamics",
+    formula: "P = W/t",
+    dimensionalFormula: "M L² T⁻³",
+    notes: "Rate of doing work"
+},
+{
+    id: "f20",
+    englishName: "Pressure/Stress",
+    hindiName: "दबाव/तनाव",
+    category: "Dynamics",
+    formula: "P = F/A",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Force per unit area"
+},
+{
+    id: "f21",
+    englishName: "Torque",
+    hindiName: "आचरण",
+    category: "Dynamics",
+    formula: "τ = r × F",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Rotational force"
+},
+{
+    id: "f22",
+    englishName: "Moment of Inertia",
+    hindiName: "जड़त्व गुणांक",
+    category: "Dynamics",
+    formula: "I = Σmr²",
+    dimensionalFormula: "M L²",
+    notes: "Rotational analog of mass"
+},
+{
+    id: "f23",
+    englishName: "Angular Momentum",
+    hindiName: "कोणीय संवेग",
+    category: "Dynamics",
+    formula: "L = Iω",
+    dimensionalFormula: "M L² T⁻¹",
+    notes: "Rotational momentum"
+},
+{
+    id: "f24",
+    englishName: "Rotational Kinetic Energy",
+    hindiName: "स्पर्शरेखा-घूर्णन ऊर्जा",
+    category: "Dynamics",
+    formula: "KE = ½Iω²",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Energy due to rotation"
+},
+
+// Properties of Matter
+{
+    id: "f25",
+    englishName: "Surface Tension",
+    hindiName: "सतही तनाव",
+    category: "Properties of Matter",
+    formula: "γ = F/l",
+    dimensionalFormula: "M T⁻²",
+    notes: "Force per unit length"
+},
+{
+    id: "f26",
+    englishName: "Surface Energy Density",
+    hindiName: "सतही ऊर्जा प्रति एकक क्षेत्र",
+    category: "Properties of Matter",
+    formula: "u = E/A",
+    dimensionalFormula: "M T⁻²",
+    notes: "Energy per unit area"
+},
+{
+    id: "f27",
+    englishName: "Young's Modulus",
+    hindiName: "युवा मापांक",
+    category: "Properties of Matter",
+    formula: "Y = (F/A)/(ΔL/L)",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Elastic modulus"
+},
+{
+    id: "f28",
+    englishName: "Mass Density",
+    hindiName: "घनत्व",
+    category: "Properties of Matter",
+    formula: "ρ = m/V",
+    dimensionalFormula: "M L⁻³",
+    notes: "Mass per unit volume"
+},
+{
+    id: "f29",
+    englishName: "Linear Mass Density",
+    hindiName: "रैखिक दसनशीलता",
+    category: "Properties of Matter",
+    formula: "λ = m/l",
+    dimensionalFormula: "M L⁻¹",
+    notes: "Mass per unit length"
+},
+{
+    id: "f30",
+    englishName: "Area Density",
+    hindiName: "क्षेत्रीय घनत्व",
+    category: "Properties of Matter",
+    formula: "σ = m/A",
+    dimensionalFormula: "M L⁻²",
+    notes: "Mass per unit area"
+},
+{
+    id: "f31",
+    englishName: "Dynamic Viscosity",
+    hindiName: "गतिसापेक्ष चिपचिपापन",
+    category: "Properties of Matter",
+    formula: "η = F/(A⋅dv/dy)",
+    dimensionalFormula: "M L⁻¹ T⁻¹",
+    notes: "Resistance to flow"
+},
+{
+    id: "f32",
+    englishName: "Kinematic Viscosity",
+    hindiName: "काइनेमेटिक विस्कोसिटी",
+    category: "Properties of Matter",
+    formula: "ν = η/ρ",
+    dimensionalFormula: "L² T⁻¹",
+    notes: "Dynamic viscosity per density"
+},
+{
+    id: "f33",
+    englishName: "Bulk Modulus",
+    hindiName: "बल्क मापांक",
+    category: "Properties of Matter",
+    formula: "K = -ΔP/(ΔV/V)",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Volume elasticity"
+},
+
+// Gravitation
+{
+    id: "f34",
+    englishName: "Gravitational Constant",
+    hindiName: "गुरुत्वाकर्षण स्थिरांक",
+    category: "Gravitation",
+    formula: "G",
+    dimensionalFormula: "M⁻¹ L³ T⁻²",
+    notes: "Universal gravitational constant"
+},
+{
+    id: "f35",
+    englishName: "Gravitational Acceleration",
+    hindiName: "गुरुत्वीय त्वरण",
+    category: "Gravitation",
+    formula: "g",
+    dimensionalFormula: "L T⁻²",
+    notes: "Acceleration due to gravity"
+},
+{
+    id: "f36",
+    englishName: "Gravitational Potential",
+    hindiName: "गुरुत्वीय पोटेंशियल",
+    category: "Gravitation",
+    formula: "Φ = -GM/r",
+    dimensionalFormula: "L² T⁻²",
+    notes: "Gravitational potential energy per unit mass"
+},
+
+// Oscillations and Waves
+{
+    id: "f37",
+    englishName: "Amplitude",
+    hindiName: "आयाम",
+    category: "Oscillations and Waves",
+    formula: "A",
+    dimensionalFormula: "L",
+    notes: "Maximum displacement"
+},
+{
+    id: "f38",
+    englishName: "Time Period",
+    hindiName: "आयतकाल",
+    category: "Oscillations and Waves",
+    formula: "T",
+    dimensionalFormula: "T",
+    notes: "Time for one complete cycle"
+},
+{
+    id: "f39",
+    englishName: "Wave Speed",
+    hindiName: "तरंग वेग",
+    category: "Oscillations and Waves",
+    formula: "v = fλ",
+    dimensionalFormula: "L T⁻¹",
+    notes: "Speed of wave propagation"
+},
+{
+    id: "f40",
+    englishName: "Intensity",
+    hindiName: "तीव्रता",
+    category: "Oscillations and Waves",
+    formula: "I = P/A",
+    dimensionalFormula: "M T⁻³",
+    notes: "Power per unit area"
+},
+{
+    id: "f41",
+    englishName: "Energy Density of Wave",
+    hindiName: "ऊर्जा घनत्व",
+    category: "Oscillations and Waves",
+    formula: "u = E/V",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Energy per unit volume"
+},
+{
+    id: "f42",
+    englishName: "Potential Energy in Oscillator",
+    hindiName: "यांत्रिक ऊर्ज़ा",
+    category: "Oscillations and Waves",
+    formula: "PE = ½kx²",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Stored mechanical energy"
+},
+
+// Heat and Thermodynamics
+{
+    id: "f43",
+    englishName: "Heat",
+    hindiName: "ऊष्मा",
+    category: "Heat and Thermodynamics",
+    formula: "Q",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Thermal energy transfer"
+},
+{
+    id: "f44",
+    englishName: "Temperature",
+    hindiName: "ताप",
+    category: "Heat and Thermodynamics",
+    formula: "T",
+    dimensionalFormula: "Θ",
+    notes: "Measure of thermal energy"
+},
+{
+    id: "f45",
+    englishName: "Thermal Energy",
+    hindiName: "ऊष्मीय ऊर्जा",
+    category: "Heat and Thermodynamics",
+    formula: "U",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Internal energy"
+},
+{
+    id: "f46",
+    englishName: "Specific Heat Capacity",
+    hindiName: "विशेष ऊष्मा",
+    category: "Heat and Thermodynamics",
+    formula: "c = Q/(mΔT)",
+    dimensionalFormula: "L² T⁻² Θ⁻¹",
+    notes: "Heat capacity per unit mass"
+},
+{
+    id: "f47",
+    englishName: "Thermal Conductivity",
+    hindiName: "ऊष्मीय चालकता",
+    category: "Heat and Thermodynamics",
+    formula: "k = Q⋅L/(A⋅ΔT⋅t)",
+    dimensionalFormula: "M L T⁻³ Θ⁻¹",
+    notes: "Heat conduction ability"
+},
+{
+    id: "f48",
+    englishName: "Thermal Diffusivity",
+    hindiName: "थर्मल विसरण",
+    category: "Heat and Thermodynamics",
+    formula: "α = k/(ρc)",
+    dimensionalFormula: "L² T⁻¹",
+    notes: "Rate of temperature change"
+},
+{
+    id: "f49",
+    englishName: "Specific Latent Heat",
+    hindiName: "विशिष्ट निहित ऊष्मा",
+    category: "Heat and Thermodynamics",
+    formula: "L = Q/m",
+    dimensionalFormula: "L² T⁻²",
+    notes: "Heat for phase change per unit mass"
+},
+{
+    id: "f50",
+    englishName: "Boltzmann Constant",
+    hindiName: "बोल्ट्ज़मैन स्थिरांक",
+    category: "Heat and Thermodynamics",
+    formula: "kB",
+    dimensionalFormula: "M L² T⁻² Θ⁻¹",
+    notes: "Relates energy and temperature"
+},
+{
+    id: "f51",
+    englishName: "Universal Gas Constant",
+    hindiName: "गैस स्थिरांक",
+    category: "Heat and Thermodynamics",
+    formula: "R = NAkB",
+    dimensionalFormula: "M L² T⁻² N⁻¹ Θ⁻¹",
+    notes: "Gas constant per mole"
+},
+{
+    id: "f52",
+    englishName: "Molar Mass",
+    hindiName: "मोलर द्रव्यमान",
+    category: "Heat and Thermodynamics",
+    formula: "M = m/n",
+    dimensionalFormula: "M N⁻¹",
+    notes: "Mass per mole"
+},
+{
+    id: "f53",
+    englishName: "Entropy",
+    hindiName: "एंट्रॉपि",
+    category: "Heat and Thermodynamics",
+    formula: "S = Q/T",
+    dimensionalFormula: "M L² T⁻² Θ⁻¹",
+    notes: "Measure of disorder"
+},
+{
+    id: "f54",
+    englishName: "Average Kinetic Energy per Molecule",
+    hindiName: "औसत गतिज ऊर्जा",
+    category: "Heat and Thermodynamics",
+    formula: "KE = (3/2)kBT",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Molecular kinetic energy"
+},
+
+// Electrostatics
+{
+    id: "f55",
+    englishName: "Electric Charge",
+    hindiName: "विद्युत आवेश",
+    category: "Electrostatics",
+    formula: "q",
+    dimensionalFormula: "I T",
+    notes: "Fundamental property of matter"
+},
+{
+    id: "f56",
+    englishName: "Electric Field",
+    hindiName: "विद्युत क्षेत्र",
+    category: "Electrostatics",
+    formula: "E = F/q",
+    dimensionalFormula: "M L T⁻³ I⁻¹",
+    notes: "Force per unit charge"
+},
+{
+    id: "f57",
+    englishName: "Electric Potential",
+    hindiName: "इलेक्ट्रिक पोटेंशियल",
+    category: "Electrostatics",
+    formula: "V = W/q",
+    dimensionalFormula: "M L² T⁻³ I⁻¹",
+    notes: "Work per unit charge"
+},
+{
+    id: "f58",
+    englishName: "Potential Difference",
+    hindiName: "विद्युत विभवांतर",
+    category: "Electrostatics",
+    formula: "ΔV",
+    dimensionalFormula: "M L² T⁻³ I⁻¹",
+    notes: "Voltage between two points"
+},
+{
+    id: "f59",
+    englishName: "Capacitance",
+    hindiName: "क्षमता",
+    category: "Electrostatics",
+    formula: "C = Q/V",
+    dimensionalFormula: "I² T⁴ M⁻¹ L⁻²",
+    notes: "Charge storage ability"
+},
+{
+    id: "f60",
+    englishName: "Permittivity",
+    hindiName: "धारिता",
+    category: "Electrostatics",
+    formula: "ε",
+    dimensionalFormula: "M⁻¹ L⁻³ T⁴ I²",
+    notes: "Electric field resistance"
+},
+{
+    id: "f61",
+    englishName: "Charge Density",
+    hindiName: "आवेश घनत्व",
+    category: "Electrostatics",
+    formula: "ρ = q/V",
+    dimensionalFormula: "I T L⁻³",
+    notes: "Charge per unit volume"
+},
+{
+    id: "f62",
+    englishName: "Current Density",
+    hindiName: "विद्युत धारा घनत्व",
+    category: "Electrostatics",
+    formula: "J = I/A",
+    dimensionalFormula: "I L⁻²",
+    notes: "Current per unit area"
+},
+{
+    id: "f63",
+    englishName: "Electric Potential Energy Density",
+    hindiName: "इलेक्ट्रिक पोटेंसी ऊर्जा घनत्व",
+    category: "Electrostatics",
+    formula: "u = ½ε₀E²",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Energy stored per unit volume"
+},
+
+// Current Electricity
+{
+    id: "f64",
+    englishName: "Current",
+    hindiName: "करंट",
+    category: "Current Electricity",
+    formula: "I = Q/t",
+    dimensionalFormula: "I",
+    notes: "Flow of charge"
+},
+{
+    id: "f65",
+    englishName: "Resistance",
+    hindiName: "प्रतिरोध",
+    category: "Current Electricity",
+    formula: "R = V/I",
+    dimensionalFormula: "M L² T⁻³ I⁻²",
+    notes: "Opposition to current flow"
+},
+{
+    id: "f66",
+    englishName: "Conductance",
+    hindiName: "चालकता",
+    category: "Current Electricity",
+    formula: "G = 1/R",
+    dimensionalFormula: "M⁻¹ L⁻² T³ I²",
+    notes: "Ease of current flow"
+},
+{
+    id: "f67",
+    englishName: "Resistivity",
+    hindiName: "प्रतिरोधकता",
+    category: "Current Electricity",
+    formula: "ρ = RA/L",
+    dimensionalFormula: "M L³ T⁻³ I⁻²",
+    notes: "Material property"
+},
+{
+    id: "f68",
+    englishName: "Electric Potential",
+    hindiName: "विद्युत विभव",
+    category: "Current Electricity",
+    formula: "V",
+    dimensionalFormula: "M L² T⁻³ I⁻¹",
+    notes: "Electric potential"
+},
+{
+    id: "f69",
+    englishName: "Electrical Power",
+    hindiName: "विद्युत शक्ति",
+    category: "Current Electricity",
+    formula: "P = VI",
+    dimensionalFormula: "M L² T⁻³",
+    notes: "Rate of energy consumption"
+},
+
+// Magnetism
+{
+    id: "f70",
+    englishName: "Magnetic Flux Density",
+    hindiName: "चुंबकीय फ्लक्स बी",
+    category: "Magnetism",
+    formula: "B = F/(IL)",
+    dimensionalFormula: "M T⁻² I⁻¹",
+    notes: "Magnetic field strength"
+},
+{
+    id: "f71",
+    englishName: "Magnetic Flux",
+    hindiName: "चुंबकीय फ्लक्स",
+    category: "Magnetism",
+    formula: "Φ = B⋅A",
+    dimensionalFormula: "M L² T⁻² I⁻¹",
+    notes: "Magnetic field through area"
+},
+{
+    id: "f72",
+    englishName: "Magnetic Moment",
+    hindiName: "चुंबकीय क्षण",
+    category: "Magnetism",
+    formula: "μ = IA",
+    dimensionalFormula: "I L²",
+    notes: "Magnetic dipole strength"
+},
+{
+    id: "f73",
+    englishName: "Inductance",
+    hindiName: "प्रेरकता",
+    category: "Magnetism",
+    formula: "L = Φ/I",
+    dimensionalFormula: "M L² T⁻² I⁻²",
+    notes: "Self-inductance property"
+},
+{
+    id: "f74",
+    englishName: "Permeability",
+    hindiName: "गहनता",
+    category: "Magnetism",
+    formula: "μ = B/H",
+    dimensionalFormula: "M L T⁻² I⁻²",
+    notes: "Magnetic field penetration"
+},
+
+// Electromagnetic Induction and AC
+{
+    id: "f75",
+    englishName: "Induced EMF",
+    hindiName: "प्रेरण ई.एम.एफ.",
+    category: "Electromagnetic Induction",
+    formula: "ε = -dΦ/dt",
+    dimensionalFormula: "M L² T⁻³ I⁻¹",
+    notes: "Faraday's law"
+},
+{
+    id: "f76",
+    englishName: "Induced EMF per Turn",
+    hindiName: "प्रेरण",
+    category: "Electromagnetic Induction",
+    formula: "ε",
+    dimensionalFormula: "M L² T⁻³ I⁻¹",
+    notes: "EMF per coil turn"
+},
+{
+    id: "f77",
+    englishName: "Impedance",
+    hindiName: "इम्पीडेंस",
+    category: "Electromagnetic Induction",
+    formula: "Z = V/I",
+    dimensionalFormula: "M L² T⁻³ I⁻²",
+    notes: "AC circuit resistance"
+},
+{
+    id: "f78",
+    englishName: "Reactance",
+    hindiName: "रिएक्टेन्स",
+    category: "Electromagnetic Induction",
+    formula: "X",
+    dimensionalFormula: "M L² T⁻³ I⁻²",
+    notes: "AC reactive opposition"
+},
+
+// Optics and EM Waves
+{
+    id: "f79",
+    englishName: "Electric Field",
+    hindiName: "विद्युत क्षेत्र",
+    category: "Optics",
+    formula: "E",
+    dimensionalFormula: "M L T⁻³ I⁻¹",
+    notes: "Electric field in EM wave"
+},
+{
+    id: "f80",
+    englishName: "Magnetic Field",
+    hindiName: "चुंबकीय क्षेत्र",
+    category: "Optics",
+    formula: "B",
+    dimensionalFormula: "M T⁻² I⁻¹",
+    notes: "Magnetic field in EM wave"
+},
+{
+    id: "f81",
+    englishName: "Electric Field Energy Density",
+    hindiName: "विद्युत क्षेत्र ऊर्जा घनत्व",
+    category: "Optics",
+    formula: "u = ½ε₀E²",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Energy density in electric field"
+},
+{
+    id: "f82",
+    englishName: "Wavelength",
+    hindiName: "तरंगदैर्ध्य",
+    category: "Optics",
+    formula: "λ = c/f",
+    dimensionalFormula: "L",
+    notes: "Length of one wave cycle"
+},
+{
+    id: "f83",
+    englishName: "Refractive Index",
+    hindiName: "अपवर्तनांक",
+    category: "Optics",
+    formula: "n = c/v",
+    dimensionalFormula: "Dimensionless",
+    notes: "Light bending measure"
+},
+{
+    id: "f84",
+    englishName: "Light Intensity",
+    hindiName: "तीव्रता",
+    category: "Optics",
+    formula: "I = P/A",
+    dimensionalFormula: "M T⁻³",
+    notes: "Light power per area"
+},
+{
+    id: "f85",
+    englishName: "Optical Power",
+    hindiName: "अपवर्तन शक्ति",
+    category: "Optics",
+    formula: "P = 1/f",
+    dimensionalFormula: "L⁻¹",
+    notes: "Lens focusing power"
+},
+
+// Modern Physics
+{
+    id: "f86",
+    englishName: "Planck's Constant",
+    hindiName: "प्लैंक स्थिरांक",
+    category: "Modern Physics",
+    formula: "h",
+    dimensionalFormula: "M L² T⁻¹",
+    notes: "Quantum action constant"
+},
+{
+    id: "f87",
+    englishName: "Photon Energy",
+    hindiName: "क्रॉन्टम ऊर्जा",
+    category: "Modern Physics",
+    formula: "E = hν",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Energy of light quantum"
+},
+{
+    id: "f88",
+    englishName: "Photon Momentum",
+    hindiName: "फोटॉन संवेग",
+    category: "Modern Physics",
+    formula: "p = h/λ",
+    dimensionalFormula: "M L T⁻¹",
+    notes: "Momentum of light quantum"
+},
+{
+    id: "f89",
+    englishName: "Bohr Radius",
+    hindiName: "बोहर विकिरण",
+    category: "Modern Physics",
+    formula: "a₀",
+    dimensionalFormula: "L",
+    notes: "Atomic radius constant"
+},
+{
+    id: "f90",
+    englishName: "Electron Charge",
+    hindiName: "इलेक्ट्रॉन चार्ज",
+    category: "Modern Physics",
+    formula: "e",
+    dimensionalFormula: "I T",
+    notes: "Elementary charge"
+},
+
+// Atoms and Nuclei
+{
+    id: "f91",
+    englishName: "Activity of Radioactive Source",
+    hindiName: "विघटन क्रिया",
+    category: "Atoms and Nuclei",
+    formula: "A = λN",
+    dimensionalFormula: "T⁻¹",
+    notes: "Decay rate"
+},
+{
+    id: "f92",
+    englishName: "Half-life",
+    hindiName: "जीवनकाल",
+    category: "Atoms and Nuclei",
+    formula: "t₁/₂",
+    dimensionalFormula: "T",
+    notes: "Time for half decay"
+},
+{
+    id: "f93",
+    englishName: "Nuclear Cross-section",
+    hindiName: "नाभिकीय क्रॉस-सेक्शन",
+    category: "Atoms and Nuclei",
+    formula: "σ",
+    dimensionalFormula: "L²",
+    notes: "Effective target area"
+},
+{
+    id: "f94",
+    englishName: "Binding Energy",
+    hindiName: "बाइंडिंग ऊर्जा",
+    category: "Atoms and Nuclei",
+    formula: "BE",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Nuclear binding energy"
+},
+
+// Electronics
+{
+    id: "f95",
+    englishName: "Electric Dipole Moment",
+    hindiName: "इलेक्ट्रिक डिपोल मोमेंट",
+    category: "Electronics",
+    formula: "p = qd",
+    dimensionalFormula: "I T L",
+    notes: "Charge separation measure"
+},
+{
+    id: "f96",
+    englishName: "Transistor Gain",
+    hindiName: "ट्रांजिस्टर गेन",
+    category: "Electronics",
+    formula: "β = Ic/Ib",
+    dimensionalFormula: "Dimensionless",
+    notes: "Current amplification"
+},
+{
+    id: "f97",
+    englishName: "Capacitor Energy",
+    hindiName: "कैपेसिटर ऊर्जा",
+    category: "Electronics",
+    formula: "U = ½CV²",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Energy stored in capacitor"
+},
+{
+    id: "f98",
+    englishName: "Fermi Energy",
+    hindiName: "Fermi energy",
+    category: "Electronics",
+    formula: "EF",
+    dimensionalFormula: "M L² T⁻²",
+    notes: "Highest occupied energy level"
+},
+
+// General Derived Quantities
+{
+    id: "f99",
+    englishName: "Specific Energy",
+    hindiName: "कार्यशीलता",
+    category: "General Physics",
+    formula: "E/m",
+    dimensionalFormula: "L² T⁻²",
+    notes: "Energy per unit mass"
+},
+{
+    id: "f100",
+    englishName: "Energy Density",
+    hindiName: "ऊर्जा घनत्व",
+    category: "General Physics",
+    formula: "u = E/V",
+    dimensionalFormula: "M L⁻¹ T⁻²",
+    notes: "Energy per unit volume"
+},
+{
+    id: "f101",
+    englishName: "Surface Energy",
+    hindiName: "सतही ऊर्जा",
+    category: "General Physics",
+    formula: "Es = γA",
+    dimensionalFormula: "M T⁻²",
+    notes: "Energy associated with surface"
+},
+{
+    id: "f102",
+    englishName: "Coefficient of Linear Expansion",
+    hindiName: "सापेक्षिक गर्मता",
+    category: "General Physics",
+    formula: "α = ΔL/(L⋅ΔT)",
+    dimensionalFormula: "Θ⁻¹",
+    notes: "Linear expansion per temperature"
+},
+{
+    id: "f103",
+    englishName: "Thermal Conductance",
+    hindiName: "तापीय चालकता",
+    category: "General Physics",
+    formula: "G = kA/L",
+    dimensionalFormula: "M L² T⁻³ Θ⁻¹",
+    notes: "Heat conduction rate"
+},
+
+// Physical Constants
+{
+    id: "f104",
+    englishName: "Vacuum Permittivity",
+    hindiName: "ε₀",
+    category: "Physical Constants",
+    formula: "ε₀",
+    dimensionalFormula: "M⁻¹ L⁻³ T⁴ I²",
+    notes: "Electric constant"
+},
+{
+    id: "f105",
+    englishName: "Vacuum Permeability",
+    hindiName: "μ₀",
+    category: "Physical Constants",
+    formula: "μ₀",
+    dimensionalFormula: "M L T⁻² I⁻²",
+    notes: "Magnetic constant"
+},
+{
+    id: "f106",
+    englishName: "Speed of Light",
+    hindiName: "c",
+    category: "Physical Constants",
+    formula: "c",
+    dimensionalFormula: "L T⁻¹",
+    notes: "Universal speed limit"
+},
+{
+    id: "f107",
+    englishName: "Electron Charge",
+    hindiName: "e",
+    category: "Physical Constants",
+    formula: "e",
+    dimensionalFormula: "I T",
+    notes: "Elementary charge"
+},
+{
+    id: "f108",
+    englishName: "Boltzmann Constant",
+    hindiName: "kB",
+    category: "Physical Constants",
+    formula: "kB",
+    dimensionalFormula: "M L² T⁻² Θ⁻¹",
+    notes: "Statistical mechanics constant"
+}
+
+        ];
+
+        // App state
+        let state = {
+            activeCategories: [],
+            searchQuery: "",
+            sortBy: "name",
+            languageMode: "english",
+            currentTheme: "dark"
+        };
+
+        // DOM elements
+        const formulasContainer = document.getElementById('formulasContainer');
+        const categoryFilters = document.getElementById('categoryFilters');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const langOptions = document.querySelectorAll('.toggle-option');
+        const themeToggle = document.getElementById('themeToggle');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const formulaOverlay = document.getElementById('formulaOverlay');
+        const overlayContent = document.getElementById('overlayContent');
+        const closeOverlay = document.getElementById('closeOverlay');
+        const addFormulaBtn = document.getElementById('addFormulaBtn');
+        const exportJsonBtn = document.getElementById('exportJsonBtn');
+        const importJsonBtn = document.getElementById('importJsonBtn');
+        const importFile = document.getElementById('importFile');
+
+        // Initialize the app
+        function init() {
+            loadFromLocalStorage();
+            renderCategoryFilters();
+            renderFormulas();
+            setupEventListeners();
+        }
+
+        // Load data from localStorage
+        function loadFromLocalStorage() {
+            // Load saved Hindi names
+            formulas.forEach(formula => {
+                const savedName = localStorage.getItem(`hindiName_${formula.id}`);
+                if (savedName) {
+                    formula.hindiName = savedName;
+                }
+            });
+
+            // Load theme preference
+            const savedTheme = localStorage.getItem('dimformulas_theme');
+            if (savedTheme) {
+                state.currentTheme = savedTheme;
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeIcon();
+            }
+            
+            // Load language preference
+            const savedLang = localStorage.getItem('dimformulas_lang');
+            if (savedLang) {
+                state.languageMode = savedLang;
+                document.querySelectorAll('.toggle-option').forEach(opt => {
+                    opt.classList.toggle('active', opt.dataset.lang === savedLang);
+                });
+            }
+        }
+
+        // Render category filter chips
+        function renderCategoryFilters() {
+            // Get all unique categories
+            const categories = [...new Set(formulas.map(f => f.category))];
+            
+            // Add "Show All" chip
+            const allChip = document.createElement('div');
+            allChip.className = 'chip active';
+            allChip.textContent = 'Show All';
+            allChip.dataset.category = 'all';
+            allChip.addEventListener('click', () => toggleCategoryFilter('all'));
+            categoryFilters.appendChild(allChip);
+            
+            // Add category chips
+            categories.forEach(category => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = category;
+                chip.dataset.category = category;
+                chip.addEventListener('click', () => toggleCategoryFilter(category));
+                categoryFilters.appendChild(chip);
+            });
+        }
+
+        // Toggle category filter
+        function toggleCategoryFilter(category) {
+            if (category === 'all') {
+                // Reset all filters
+                state.activeCategories = [];
+                document.querySelectorAll('.chip').forEach(chip => {
+                    chip.classList.remove('active');
+                });
+                document.querySelector('[data-category="all"]').classList.add('active');
+            } else {
+                // Toggle the specific category
+                const index = state.activeCategories.indexOf(category);
+                if (index === -1) {
+                    state.activeCategories.push(category);
+                } else {
+                    state.activeCategories.splice(index, 1);
+                }
+                
+                // Update chip active state
+                document.querySelector(`[data-category="${category}"]`).classList.toggle('active');
+                
+                // Update "Show All" chip
+                const allChip = document.querySelector('[data-category="all"]');
+                if (state.activeCategories.length === 0) {
+                    allChip.classList.add('active');
+                } else {
+                    allChip.classList.remove('active');
+                }
+            }
+            
+            renderFormulas();
+        }
+
+        // Render formulas based on current filters
+        function renderFormulas() {
+            // Clear container
+            formulasContainer.innerHTML = '';
+            
+            // Filter and sort formulas
+            let filteredFormulas = filterFormulas();
+            filteredFormulas = sortFormulas(filteredFormulas);
+            
+            // Add cards to container with staggered animation
+            filteredFormulas.forEach((formula, index) => {
+                const card = createFormulaCard(formula, index);
+                formulasContainer.appendChild(card);
+            });
+            
+            // If no formulas match the filter, show message
+            if (filteredFormulas.length === 0) {
+                const message = document.createElement('div');
+                message.className = 'no-results';
+                message.textContent = 'No formulas match your search criteria.';
+                message.style.gridColumn = '1 / -1';
+                message.style.textAlign = 'center';
+                message.style.padding = '2rem';
+                message.style.color = 'var(--text-secondary)';
+                formulasContainer.appendChild(message);
+            }
+        }
+
+        // Filter formulas based on active filters and search query
+        function filterFormulas() {
+            return formulas.filter(formula => {
+                // Category filter
+                if (state.activeCategories.length > 0 && !state.activeCategories.includes(formula.category)) {
+                    return false;
+                }
+                
+                // Search query
+                if (state.searchQuery) {
+                    const query = state.searchQuery.toLowerCase();
+                    return (
+                        formula.englishName.toLowerCase().includes(query) ||
+                        formula.hindiName.toLowerCase().includes(query) ||
+                        formula.formula.toLowerCase().includes(query) ||
+                        formula.dimensionalFormula.toLowerCase().includes(query) ||
+                        formula.category.toLowerCase().includes(query)
+                    );
+                }
+                
+                return true;
+            });
+        }
+
+        // Sort formulas based on current sort option
+        function sortFormulas(formulasToSort) {
+            return [...formulasToSort].sort((a, b) => {
+                if (state.sortBy === 'name') {
+                    return a.englishName.localeCompare(b.englishName);
+                } else if (state.sortBy === 'category') {
+                    return a.category.localeCompare(b.category) || a.englishName.localeCompare(b.englishName);
+                }
+                return 0;
+            });
+        }
+
+        // Create a formula card element
+        function createFormulaCard(formula, index) {
+            const card = document.createElement('div');
+            card.className = 'formula-card';
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.dataset.id = formula.id;
+            
+            // Card header with category and copy button
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header';
+            
+            const categoryTag = document.createElement('div');
+            categoryTag.className = 'category-tag';
+            categoryTag.textContent = formula.category;
+            
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+            copyBtn.title = 'Copy dimensional formula';
+            copyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                copyToClipboard(formula.dimensionalFormula);
+                showToast('Dimensional formula copied!');
+            });
+            
+            cardHeader.appendChild(categoryTag);
+            cardHeader.appendChild(copyBtn);
+            
+            // English name
+            const englishName = document.createElement('div');
+            englishName.className = 'english-name';
+            englishName.textContent = formula.englishName;
+            
+            // Hindi name (contentEditable)
+            const hindiName = document.createElement('div');
+            hindiName.className = 'hindi-name';
+            hindiName.contentEditable = true;
+            hindiName.textContent = formula.hindiName;
+            hindiName.addEventListener('blur', () => {
+                formula.hindiName = hindiName.textContent;
+                localStorage.setItem(`hindiName_${formula.id}`, formula.hindiName);
+            });
+            
+            // Formula
+            const formulaEl = document.createElement('div');
+            formulaEl.className = 'formula';
+            formulaEl.textContent = formula.formula;
+            
+            // Dimensional formula
+            const dimensionalFormula = document.createElement('div');
+            dimensionalFormula.className = 'dimensional-formula';
+            dimensionalFormula.textContent = `[${formula.dimensionalFormula}]`;
+            
+            // Notes
+            const notes = document.createElement('div');
+            notes.className = 'notes';
+            notes.textContent = formula.notes || '';
+            
+            // Assemble card
+            card.appendChild(cardHeader);
+            
+            // Show English name based on language mode
+            if (state.languageMode !== 'hindi') {
+                card.appendChild(englishName);
+            }
+            
+            // Show Hindi name based on language mode
+            if (state.languageMode !== 'english') {
+                card.appendChild(hindiName);
+            }
+            
+            // Show English formula based on language mode
+            if (state.languageMode !== 'hindi') {
+                card.appendChild(formulaEl);
+            }
+            
+            card.appendChild(dimensionalFormula);
+            card.appendChild(notes);
+            
+            // Add click event for focus mode
+            card.addEventListener('click', () => showFormulaFocusMode(formula));
+            
+            return card;
+        }
+
+        // Show formula in focus mode
+        function showFormulaFocusMode(formula) {
+            overlayContent.innerHTML = `
+                <h2>${formula.englishName}</h2>
+                ${formula.hindiName ? `<div class="hindi-name">${formula.hindiName}</div>` : ''}
+                <div class="category-tag" style="margin: 1rem 0">${formula.category}</div>
+                <div class="formula">${formula.formula}</div>
+                <div class="dimensional-formula" style="font-size: 2rem; margin: 2rem 0">[${formula.dimensionalFormula}]</div>
+                ${formula.notes ? `<div class="notes">${formula.notes}</div>` : ''}
+                <button class="copy-btn" style="margin-top: 1rem; align-self: center">
+                    <i class="far fa-copy"></i> Copy Formula
+                </button>
+            `;
+            
+            // Add copy event to the button
+            const copyBtn = overlayContent.querySelector('.copy-btn');
+            copyBtn.addEventListener('click', () => {
+                copyToClipboard(formula.dimensionalFormula);
+                showToast('Dimensional formula copied!');
+            });
+            
+            formulaOverlay.classList.add('active');
+        }
+
+        // Copy text to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            state.currentTheme = state.currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', state.currentTheme);
+            localStorage.setItem('dimformulas_theme', state.currentTheme);
+            updateThemeIcon();
+        }
+
+        // Update theme icon based on current theme
+        function updateThemeIcon() {
+            const icon = themeToggle.querySelector('i');
+            if (state.currentTheme === 'dark') {
+                icon.className = 'fas fa-moon';
+            } else {
+                icon.className = 'fas fa-sun';
+            }
+        }
+
+        // Export formulas to JSON file
+        function exportToJson() {
+            const dataStr = JSON.stringify(formulas, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'dimensional-formulas.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Import formulas from JSON file
+        function importFromJson() {
+            importFile.click();
+        }
+
+        // Handle imported JSON file
+        function handleImportedFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedFormulas = JSON.parse(e.target.result);
+                    
+                    // Validate the imported data
+                    if (Array.isArray(importedFormulas) && importedFormulas.every(f => 
+                        f.id && f.englishName && f.category && f.formula && f.dimensionalFormula
+                    )) {
+                        // Clear current formulas and add imported ones
+                        formulas.length = 0;
+                        importedFormulas.forEach(f => formulas.push(f));
+                        
+                        // Re-render everything
+                        renderFormulas();
+                        showToast('Formulas imported successfully!');
+                    } else {
+                        throw new Error('Invalid format');
+                    }
+                } catch (err) {
+                    showToast('Error importing formulas. Invalid file format.');
+                    console.error('Import error:', err);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset the input
+            event.target.value = '';
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Search input
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderFormulas();
+            });
+            
+            // Sort select
+            sortSelect.addEventListener('change', (e) => {
+                state.sortBy = e.target.value;
+                renderFormulas();
+            });
+            
+            // Language options
+            langOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    langOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    state.languageMode = option.dataset.lang;
+                    localStorage.setItem('dimformulas_lang', state.languageMode);
+                    renderFormulas();
+                });
+            });
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Close overlay
+            closeOverlay.addEventListener('click', () => {
+                formulaOverlay.classList.remove('active');
+            });
+            
+            // Floating action buttons
+            addFormulaBtn.addEventListener('click', () => {
+                showToast('Add new formula feature coming soon!');
+            });
+            
+            exportJsonBtn.addEventListener('click', exportToJson);
+            importJsonBtn.addEventListener('click', importFromJson);
+            importFile.addEventListener('change', handleImportedFile);
+            
+            // Close overlay when clicking outside
+            formulaOverlay.addEventListener('click', (e) => {
+                if (e.target === formulaOverlay) {
+                    formulaOverlay.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
