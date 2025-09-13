@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 Hindi Notes</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --prose-color: #e8f0ff;
+            --poetry-color: #fff4e0;
+            --primary-color: #4a6fa5;
+            --secondary-color: #6d8bc7;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            padding-bottom: 60px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: white;
+            border: none;
+            border-radius: 4px;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 1rem auto;
+            max-width: 500px;
+            padding: 0 1rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* Main Content */
+        main {
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Cards Layout */
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (min-width: 600px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card.prose {
+            border-top: 4px solid var(--prose-color);
+        }
+
+        .card.poetry {
+            border-top: 4px solid var(--poetry-color);
+        }
+
+        .card-content {
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .author-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.8rem;
+            background-color: #eee;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            color: var(--primary-color);
+        }
+
+        .card-author {
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-type {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .type-prose {
+            background-color: var(--prose-color);
+            color: #2c5aa0;
+        }
+
+        .type-poetry {
+            background-color: var(--poetry-color);
+            color: #b06c16;
+        }
+
+        .card-summary {
+            margin: 0.8rem 0;
+            color: #555;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .details-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .details-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: var(--transition);
+        }
+
+        .favorite-btn.active {
+            color: #e74c3c;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            border-radius: 8px;
+            max-width: 600px;
+            animation: modalFadeIn 0.3s;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-author-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-author-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            background-color: #eee;
+        }
+
+        .modal-author-details {
+            flex-grow: 1;
+        }
+
+        .modal-author-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-work-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-summary {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .print-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .print-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none;
+        }
+
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .instructions h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .instructions ul {
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Print Styles */
+        @media print {
+            header, nav, .search-container, .card-actions, footer, .modal-actions {
+                display: none !important;
+            }
+            
+            body, .card {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .cards-container {
+                display: block !important;
+            }
+            
+            .card {
+                break-inside: avoid;
+                margin-bottom: 1rem;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Class 12 Hindi Notes</h1>
+        <nav>
+            <button class="nav-btn active" data-filter="all">सभी</button>
+            <button class="nav-btn" data-filter="prose">गद्य</button>
+            <button class="nav-btn" data-filter="poetry">पद्य</button>
+        </nav>
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="रचना या लेखक खोजें...">
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="cards-container" id="cardsContainer">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+            
+            <div class="instructions">
+                <h3>लेखक फोटो जोड़ने के निर्देश:</h3>
+                <ul>
+                    <li>एक 'images' फोल्डर बनाएं</li>
+                    <li>फोटो फाइलों का नाम नीचे दिए गए स्लग के अनुसार रखें</li>
+                    <li>फाइल प्रारूप JPG होना चाहिए</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-author-info">
+                    <img src="" alt="" class="modal-author-image" id="modalAuthorImage">
+                    <div class="modal-author-details">
+                        <h3 class="modal-author-name" id="modalAuthorName"></h3>
+                        <span class="modal-work-type" id="modalWorkType"></span>
+                    </div>
+                </div>
+                <div class="modal-summary" id="modalSummary" contenteditable="true">
+                    <!-- Summary content will be added here -->
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn print-btn" id="printBtn">प्रिंट करें</button>
+                    <button class="favorite-btn modal-favorite" id="modalFavorite">♥</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made for revision — lightweight | Version 1.0</p>
+    </footer>
+
+    <script>
+        // Data array with all the notes
+        const notesData = [
+            // गद्य खंड (prose)
+            { "section": "गद्य", "title": "बातचीत", "author": "बालकृष्ण भट्ट", "authorImage": "images/balakrushna_bhatt.jpg", "summary": "बालकृष्ण भट्ट की 'बातचीत' एक प्रसिद्ध निबंध है जो संवाद कला और सामाजिक संवाद के महत्व पर प्रकाश डालती है।" },
+            { "section": "गद्य", "title": "उसने कहा था", "author": "चन्दधरशर्मा गुलेरी", "authorImage": "images/chanddhadhar_sharma_guleri.jpg", "summary": "यह कहानी प्रेम, बलिदान और मित्रता के अमर भावनाओं को दर्शाती है जो प्रथम विश्वयुद्ध की पृष्ठभूमि में लिखी गई थी।" },
+            { "section": "गद्य", "title": "संपूर्ण क्रान्ति", "author": "जयप्रकाश नारायण", "authorImage": "images/jayprakash_narayan.jpg", "summary": "जयप्रकाश नारायण का यह ऐतिहासिक भाषण भारत में सम्पूर्ण क्रांति की अवधारणा प्रस्तुत करता है जो सामाजिक, आर्थिक और राजनीतिक परिवर्तन की मांग करती है।" },
+            { "section": "गद्य", "title": "अर्धनारीश्वर", "author": "रामधारीसिंह 'दिनकर'", "authorImage": "images/ramdhari_singh_dinkar.jpg", "summary": "दिनकर की यह रचना नारी और पुरुष की एकात्मकता तथा समानता के दार्शनिक पहलू को प्रस्तुत करती है।" },
+            { "section": "गद्य", "title": "रोज़", "author": "सच्चिदानंद हीराचंद वात्स्यायन अज्ञेय", "authorImage": "images/sachchidanand_vatsyayana_ajneya.jpg", "summary": "अज्ञेय की यह कहानी दैनिक जीवन की साधारण घटनाओं के माध्यम से गहन दार्शनिक विचार प्रस्तुत करती है।" },
+            { "section": "गद्य", "title": "एक लेख और एक पत्र", "author": "भगत सिंह", "authorImage": "images/bhagat_singh.jpg", "summary": "भगत सिंह के लेख और पत्र उनके क्रांतिकारी विचारों, देशभक्ति और बलिदान की भावना को प्रकट करते हैं।" },
+            { "section": "गद्य", "title": "ओ सदानीरा", "author": "जगदीशचंद्र माथुर", "authorImage": "images/jagdishchandra_mathur.jpg", "summary": "यह नाटक भारतीय समाज में नारी की स्थिति और उसके संघर्ष को प्रभावी ढंग से प्रस्तुत करता है।" },
+            { "section": "गद्य", "title": "सिपाही की माँ", "author": "मोहन राकेश", "authorImage": "images/mohan_rakesh.jpg", "summary": "मोहन राकेश की यह कहानी एक माँ की वेदना और उसके संघर्ष को दर्शाती है जिसका बेटा सेना में है।" },
+            { "section": "गद्य", "title": "'प्रगीत' और समाज", "author": "नामवर सिंह", "authorImage": "images/namvar_singh.jpg", "summary": "नामवर सिंह का यह निबंध साहित्य और समाज के अंतर्संबंधों की गहन विवेचना प्रस्तुत करता है।" },
+            { "section": "गद्य", "title": "जूठन", "author": "ओमप्रकाश वाल्मीकि", "authorImage": "images/omprakash_valmiki.jpg", "summary": "यह आत्मकथा दलित समाज के संघर्ष, अपमान और उत्थान की मार्मिक गाथा प्रस्तुत करती है।" },
+            { "section": "गद्य", "title": "हँसते हुए मेरा अकेलापन", "author": "मलयज", "authorImage": "images/malayaj.jpg", "summary": "मलयज की यह रचना आधुनिक मनुष्य की अंतर्व्यथा और अकेलेपन को अभिव्यक्त करती है।" },
+            { "section": "गद्य", "title": "तिरिछ", "author": "उदय प्रकाश", "authorImage": "images/uday_prakash.jpg", "summary": "यह कहानी समकालीन सामाजिक यथार्थ और मानवीय संवेदनाओं की पड़ताल करती है।" },
+
+            // पद्य खंड (poetry)
+            { "section": "पद्य", "title": "कड़बक (उत्तरकांड से)", "author": "मलिक मोहम्मद जायसी", "authorImage": "images/malik_mohammad_jaisi.jpg", "summary": "जायसी की कवितावली सूफी परंपरा की अमर कृति है जो प्रेम और भक्ति की गहन अनुभूति प्रस्तुत करती है।" },
+            { "section": "पद्य", "title": "पद", "author": "सूरदास", "authorImage": "images/surdas.jpg", "summary": "सूरदास के पद कृष्ण भक्ति की अनुपम व्यंजना प्रस्तुत करते हैं जो भक्ति साहित्य की अमूल्य निधि हैं।" },
+            { "section": "पद्य", "title": "पद", "author": "तुलसीदास", "authorImage": "images/tulsidas.jpg", "summary": "तुलसीदास के पद राम भक्ति की सर्वोत्कृष्ट अभिव्यक्ति हैं जो भारतीय जनमानस में गहरे पैठे हुए हैं।" },
+            { "section": "पद्य", "title": "छप्पय", "author": "नाभादास", "authorImage": "images/nabhadas.jpg", "summary": "नाभादास के छप्पय भक्ति साहित्य की独特 परंपरा का निर्वाह करते हैं।" },
+            { "section": "पद्य", "title": "कवित्त", "author": "भूषण", "authorImage": "images/bhushan.jpg", "summary": "भूषण के कवित्त वीर रस की अनुपम रचनाएँ हैं जो शिवाजी और छत्रपति की वीरता का गुणगान करती हैं।" },
+            { "section": "पद्य", "title": "तुमुल कोलाहल कलह में", "author": "जयशंकर प्रसाद", "authorImage": "images/jayshankar_prasad.jpg", "summary": "प्रसाद की यह कविता राष्ट्रीय चेतना और देशभक्ति की उच्च भावनाओं से परिपूर्ण है।" },
+            { "section": "पद्य", "title": "पुत्र वियोग", "author": "सुभद्रा कुमारी चौहान", "authorImage": "images/subhadra_kumari_chauhan.jpg", "summary": "सुभद्रा कुमारी चौहान की यह कविता एक माँ की वेदना को अभिव्यक्त करती है जिसने अपने पुत्र को खो दिया है।" },
+            { "section": "पद्य", "title": "उषा", "author": "श्मशेर बहादुर सिंह", "authorImage": "images/shamsher_bahadur_singh.jpg", "summary": "श्मशेर बहादुर सिंह की 'उषा' प्रयोगवादी कविता का एक उत्कृष्ट उदाहरण है जो नई काव्य भाषा गढ़ती है।" },
+            { "section": "पद्य", "title": "जन-जन का चेहरा एक", "author": "गजानन माधव मुक्तिबोध", "authorImage": "images/gajanan_madhav_muktibodh.jpg", "summary": "मुक्तिबोध की यह कविता सामाजिक एकता और मानवीय समानता के दर्शन को प्रस्तुत करती है।" },
+            { "section": "पद्य", "title": "अधिनायक", "author": "रघुवीर सहाय", "authorImage": "images/raghuvir_sahay.jpg", "summary": "रघुवीर सहाय की यह कविता आधुनिक राजनीतिक व्यवस्था पर तीखा व्यंग्य प्रस्तुत करती है।" },
+            { "section": "पद्य", "title": "प्यारे नन्हे बेटे को", "author": "विनोद कुमार शुक्ल", "authorImage": "images/vinod_kumar_shukla.jpg", "summary": "विनोद कुमार शुक्ल की यह कविता पारिवारिक संबंधों और कोमल भावनाओं की मार्मिक अभिव्यक्ति है।" },
+            { "section": "पद्य", "title": "हार-जीत", "author": "अशोक वाजपेयी", "authorImage": "images/ashok_wajpeyi.jpg", "summary": "अशोक वाजपेयी की यह कविता जीवन के द्वंद्व और मानवीय अनुभूतियों की गहन पड़ताल करती है。" },
+            { "section": "पद्य", "title": "गाँव का घर", "author": "ज्ञानेंद्रपति", "authorImage": "images/gyanendrapati.jpg", "summary": "ज्ञानेंद्रपति की यह कविता ग्रामीण जीवन की स्मृतियों और संस्कृति की सुगंध से परिपूर्ण है।" }
+        ];
+
+        // DOM Elements
+        const cardsContainer = document.getElementById('cardsContainer');
+        const searchBar = document.querySelector('.search-bar');
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const modal = document.getElementById('detailsModal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const printBtn = document.getElementById('printBtn');
+
+        // State variables
+        let currentFilter = 'all';
+        let currentSearchTerm = '';
+        let favorites = JSON.parse(localStorage.getItem('hindiNotesFavorites')) || {};
+
+        // Initialize the application
+        function init() {
+            renderCards();
+            setupEventListeners();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Navigation filter buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFilter = button.dataset.filter;
+                    renderCards();
+                });
+            });
+
+            // Search functionality
+            searchBar.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value.toLowerCase();
+                renderCards();
+            });
+
+            // Close modal
+            closeModalBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Print functionality
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
+
+        // Filter and search cards
+        function getFilteredData() {
+            return notesData.filter(item => {
+                const matchesFilter = currentFilter === 'all' || 
+                                    (currentFilter === 'prose' && item.section === 'गद्य') ||
+                                    (currentFilter === 'poetry' && item.section === 'पद्य');
+                
+                const matchesSearch = currentSearchTerm === '' || 
+                                    item.title.toLowerCase().includes(currentSearchTerm) ||
+                                    item.author.toLowerCase().includes(currentSearchTerm);
+                
+                return matchesFilter && matchesSearch;
+            });
+        }
+
+        // Render cards based on current filter and search
+        function renderCards() {
+            const filteredData = getFilteredData();
+            
+            cardsContainer.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                cardsContainer.innerHTML = '<p class="no-results">कोई परिणाम नहीं मिला</p>';
+                return;
+            }
+            
+            filteredData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `card ${item.section === 'गद्य' ? 'prose' : 'poetry'}`;
+                card.dataset.index = index;
+                
+                const isFavorite = favorites[item.title] || false;
+                
+                card.innerHTML = `
+                    <div class="card-content">
+                        <div class="card-header">
+                            <img src="${item.authorImage}" alt="${item.author}" class="author-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSIjZGRkIj48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSI+4KSqPC90ZXh0Pjwvc3ZnPg=='">
+                            <div>
+                                <h3 class="card-title">${item.title}</h3>
+                                <p class="card-author">${item.author}</p>
+                            </div>
+                        </div>
+                        <span class="card-type ${item.section === 'गद्य' ? 'type-prose' : 'type-poetry'}">${item.section}</span>
+                        <p class="card-summary">${item.summary || 'इस रचना का सारांश उपलब्ध नहीं है। आप विवरण बटन दबाकर अपना सारांश जोड़ सकते हैं।'}</p>
+                        <div class="card-actions">
+                            <button class="details-btn" data-index="${index}">विवरण</button>
+                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-title="${item.title}">♥</button>
+                        </div>
+                    </div>
+                `;
+                
+        cardsContainer.appendChild(card);
+        
+        // Add event listener to details button
+        const detailsBtn = card.querySelector('.details-btn');
+        detailsBtn.addEventListener('click', () => {
+            // writer का unique slug पास करो - FIXED VERSION
+            const slug = generateAuthorSlug(item.author); 
+            window.location.href = `author_detail.html?writer=${slug}`;
+        });
+    }); // <-- This closes the filteredData.forEach
+
+} // <-- This closes the renderCards function
+
+// नया generateAuthorSlug function जोड़ें
+function generateAuthorSlug(authorName) {
+    // विशिष्ट लेखकों के लिए predefined slugs
+    const authorSlugs = {
+        "रामधारीसिंह 'दिनकर'": "ramdhari_singh_dinkar",
+        "जयशंकर प्रसाद": "jayashankar_prasad",
+        "सच्चिदानंद हीराचंद वात्स्यायन अज्ञेय": "ajneya",
+        "बालकृष्ण भट्ट": "balakrushna_bhatt",
+        "चन्दधरशर्मा गुलेरी": "chanddhadhar_sharma_guleri",
+        "जयप्रकाश नारायण": "jayprakash_narayan",
+        "मोहन राकेश": "mohan_rakesh",
+        "नामवर सिंह": "namvar_singh",
+        "ओमप्रकाश वाल्मीकि": "omprakash_valmiki",
+        "मलयज": "malayaj",
+        "उदय प्रकाश": "uday_prakash",
+        "मलिक मोहम्मद जायसी": "malik_mohammad_jaisi",
+        "सूरदास": "surdas",
+        "तुलसीदास": "tulsidas",
+        "नाभादास": "nabhadas",
+        "भूषण": "bhushan",
+        "सुभद्रा कुमारी चौहान": "subhadra_kumari_chauhan",
+        "श्मशेर बहादुर सिंह": "shamsher_bahadur_singh",
+        "गजानन माधव मुक्तिबोध": "gajanan_madhav_muktibodh",
+        "रघुवीर सहाय": "raghuvir_sahay",
+        "विनोद कुमार शुक्ल": "vinod_kumar_shukla",
+        "अशोक वाजपेयी": "ashok_wajpeyi",
+        "ज्ञानेंद्रपति": "gyanendrapati",
+        "भगत सिंह":"bhagat_singh",
+        "जगदीशचंद्र माथुर":"jagdishchandra_mathur"
+    };
+    
+    // अगर author predefined list में है तो उसका slug return करो
+    if (authorSlugs[authorName]) {
+        return authorSlugs[authorName];
+    }
+    
+    // नहीं तो generic slug generate करो
+    return authorName
+        .toLowerCase()
+        .replace(/'/g, "")  // single quotes हटाओ
+        .replace(/[^a-z0-9अ-ह]+/g, "_")  // special chars → underscore
+        .replace(/^_+|_+$/g, "");     // शुरुआत/अंत के _ हटा दो
+}
+
+        // Open modal with details
+        function openModal(index) {
+            const item = notesData[index];
+            const isFavorite = favorites[item.title] || false;
+            
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalAuthorName').textContent = item.author;
+            
+            const modalAuthorImage = document.getElementById('modalAuthorImage');
+            modalAuthorImage.src = item.authorImage;
+            modalAuthorImage.alt = item.author;
+            
+            const modalWorkType = document.getElementById('modalWorkType');
+            modalWorkType.textContent = item.section;
+            modalWorkType.className = `modal-work-type ${item.section === 'गद्य' ? 'type-prose' : 'type-poetry'}`;
+            
+            const modalSummary = document.getElementById('modalSummary');
+            modalSummary.textContent = item.summary || 'इस रचना का सारांश उपलब्ध नहीं है। आप यहाँ अपना सारांश टाइप कर सकते हैं।';
+            
+            const modalFavorite = document.getElementById('modalFavorite');
+            modalFavorite.className = `favorite-btn modal-favorite ${isFavorite ? 'active' : ''}`;
+            modalFavorite.dataset.title = item.title;
+            
+            modalFavorite.addEventListener('click', () => {
+                toggleFavorite(item.title, modalFavorite);
+            });
+            
+            modal.style.display = 'block';
+        }
+
+        // Toggle favorite status
+        function toggleFavorite(title, buttonElement) {
+            favorites[title] = !favorites[title];
+            localStorage.setItem('hindiNotesFavorites', JSON.stringify(favorites));
+            
+            if (favorites[title]) {
+                buttonElement.classList.add('active');
+            } else {
+                buttonElement.classList.remove('active');
+            }
+            
+            // Update all favorite buttons for this title
+            document.querySelectorAll(`.favorite-btn[data-title="${title}"]`).forEach(btn => {
+                if (favorites[title]) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

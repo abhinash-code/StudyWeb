@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>लेखक विवरण</title>
+  <style>
+    /* Reset + Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Noto Sans Devanagari", system-ui, sans-serif;
+      background: #f4f6fb;
+      color: #222;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Back Button */
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      color: #27466a;
+      background: #eef4ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .back-btn:hover { background: #d9e7ff; }
+
+    /* Section Layout */
+    .author-section { display: none; }
+    .author-section.active { display: block; }
+
+    .author-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .author-img {
+      width: 160px;
+      height: 160px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #eee;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+    .author-meta {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .tags { margin-top: 8px; }
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      margin-right: 8px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #27466a;
+      background: #eef4ff;
+      border-radius: 20px;
+    }
+
+    /* Content */
+    .author-content h2 {
+      margin: 18px 0 10px;
+      font-size: 1.3rem;
+      color: #27466a;
+    }
+    .author-content p {
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+    .author-content ul {
+      margin: 10px 0 20px 20px;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media(max-width:600px) {
+      .author-img { width: 100%; height: auto; }
+      .author-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="back-btn" onclick="history.back()">← वापस</button>
+
+    <!-- दिनकर -->
+    <section id="ramdhari_singh_dinkar" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="दिनकर" class="author-img">
+        <div>
+          <h1>रामधारी सिंह दिनकर</h1>
+          <div class="author-meta">कवि • निबंधकार • राष्ट्रकवि • गद्यकार</div>
+          <div class="tags">
+            <span class="tag">छायावादोत्तर युग</span>
+            <span class="tag">वीर रस</span>
+            <span class="tag">राष्ट्रकवि</span>
+            <span class="tag">उर्वशी</span>
+            <span class="tag">कुरुक्षेत्र</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>रामधारी सिंह दिनकर छायावादोत्तर युग के महान कवि और गद्यकार थे। उन्हें "राष्ट्रकवि" की उपाधि से सम्मानित किया गया। उनकी रचनाओं में वीर रस, राष्ट्रीय चेतना और मानवीय गुणों का अद्भुत संयोजन दिखाई देता है। "कुरुक्षेत्र" और "उर्वशी" जैसी कृतियों से उन्होंने हिंदी साहित्य में अमर स्थान बनाया।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 23 सितंबर 1908</li>
+          <li><strong>जन्म स्थान:</strong> सिमरिया, बेगूसराय, बिहार</li>
+          <li><strong>निधन:</strong> 24 अप्रैल 1974</li>
+          <li><strong>माता:</strong> मनरुप देवी</li>
+          <li><strong>पिता:</strong> रवि सिंह</li>
+          <li><strong>पत्नी:</strong> श्यामवती देवी</li>
+          <li><strong>युग:</strong> छायावादोत्तर युग के कवि</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>प्रारंभिक शिक्षा गांव और उसके आसपास</li>
+          <li>1928: मोकामा घाट रेलवे हाई स्कूल से मैट्रिक</li>
+          <li>1932: पटना कॉलेज से बी.ए. ऑनर्स (इतिहास)</li>
+        </ul>
+
+        <h2>व्यवसाय और पद</h2>
+        <ul>
+          <li>प्रधानाध्यापक, एच.ई. स्कूल, बरबीहा</li>
+          <li>सब-रजिस्ट्रार</li>
+          <li>सब-डायरेक्टर, जनसंपर्क विभाग</li>
+          <li>बिहार विश्वविद्यालय में हिंदी के प्रोफेसर</li>
+          <li>भागलपुर विश्वविद्यालय में उपकुलपति</li>
+          <li>हिंदी सलाहकार के रूप में भी कार्य किये</li>
+        </ul>
+
+        <h2>साहित्यिक अभिरुचि</h2>
+        <ul>
+          <li>1925: 'छात्र सहोदर' में पहली कविता प्रकाशित</li>
+          <li>देश (पटना), प्रकाश (बेगूसराय), प्रतिमा (कझौज) में छात्र जीवन में अनेक रचनाएं प्रकाशित</li>
+          <li>21 वर्ष की अवस्था में पहली कविता पुस्तक 'प्राणभंग' प्रकाशित हुआ</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>प्रमुख काव्य कृतियां</h3>
+        <ul>
+          <li>प्राणभंग (1929)</li>
+          <li>रेणुका (1935)</li>
+          <li>हुंकार (1938)</li>
+          <li>रसवंती (1940)</li>
+          <li>कुरुक्षेत्र (1946)</li>
+          <li>रश्मिरश्मी (1952)</li>
+          <li>नीलकुसुम (1954)</li>
+          <li>उर्वशी (1961)</li>
+          <li>परशुराम की प्रतीक्षा (1963)</li>
+          <li>कोमलता और कठिनता (1964)</li>
+          <li>हारे को हरिनाम (1970)</li>
+        </ul>
+
+        <h3>प्रमुख गद्य कृतियां</h3>
+        <ul>
+          <li>मिट्टी की ओर (1946)</li>
+          <li>अर्धनारीश्वर (1952)</li>
+          <li>संस्कृति के चार अध्याय (1956)</li>
+          <li>काव्य की भूमिका (1958)</li>
+          <li>वट पीपल (1961)</li>
+          <li>शुद्ध कविता की खोज (1966)</li>
+          <li>दिनकर की डायरी (1973)</li>
+        </ul>
+
+        <h2>पुरस्कार एवं सम्मान</h2>
+        <ul>
+          <li><strong>साहित्य अकादमी पुरस्कार:</strong> 'संस्कृति के चार अध्याय' पर</li>
+          <li><strong>भारतीय ज्ञानपीठ पुरस्कार:</strong> 'उर्वशी' पर</li>
+          <li><strong>पद्मभूषण:</strong> राष्ट्रपति द्वारा सम्मानित</li>
+          <li><strong>राज्यसभा के सदस्य:</strong> संसदीय कार्यों में योगदान</li>
+          <li><strong>राष्ट्रकवि:</strong> की उपाधि से सम्मानित</li>
+          <li>कई अन्य अलंकारों से सम्मानित</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> दिनकर जी की रचनाओं में वीर रस की प्रधानता है। उन्होंने अपनी कविताओं के माध्यम से राष्ट्रीय चेतना जगाने का कार्य किया। "कुरुक्षेत्र" और "उर्वशी" उनकी अमर कृतियां हैं जिन्होंने उन्हें राष्ट्रकवि का दर्जा दिलाया।</p>
+      </div>
+
+    </section>
+
+    <!-- प्रसाद -->
+    <section id="jayashankar_prasad" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+       <div>
+          <h1>जयशंकर प्रसाद</h1>
+          <div class="author-meta">कवि • नाटककार • उपन्यासकार • कहानीकार • निबंधकार</div>
+          <div class="tags">
+            <span class="tag">छायावाद</span>
+            <span class="tag">कामायनी</span>
+            <span class="tag">चन्द्रगुप्त</span>
+            <span class="tag">कंकाल</span>
+            <span class="tag">ध्रुवस्वामिनी</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>जयशंकर प्रसाद न केवल एक महान छायावादी कवि थे बल्कि वे एक महान नाटककार, उपन्यासकार, कहानीकार एवं निबंधकार भी थे। कवि के रूप में उन्होंने आरंभ में ब्रजभाषा में कविताएं लिखीं किंतु शीघ्र ही उन्होंने काव्य रचना के लिए खड़ी बोली हिंदी अपना ली। उनका सर्वश्रेष्ठ अवदान है 'कामायनी'।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 1889 (माघ शुक्ल दशमी, संवत् 1946)</li>
+          <li><strong>जन्म स्थान:</strong> वाराणसी</li>
+          <li><strong>निधन:</strong> 15 नवंबर 1937 में</li>
+          <li><strong>पिता:</strong> देवी प्रसाद साहू</li>
+          <li><strong>पितामह:</strong> शिवरत्न साहू | सुरता (तेनाकू) बनाने के कारण 'सुघनी साहू' के नाम से विख्यात</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>आठवीं तक संस्कृत, हिंदी, फारसी, उर्दू की शिक्षा घर पर निपुण शिक्षकों द्वारा</li>
+        </ul>
+
+        <h2>विशेष परिस्थिति</h2>
+        <ul>
+          <li>बारह वर्ष की अवस्था में पितृविहीन, दो वर्ष बाद माता की भी मृत्यु</li>
+          <li>परिवार में गुहकलह की स्थिति</li>
+          <li>ज्येष्ठ भ्राता शंभु रत्न की मृत्यु से संकट की स्थिति उत्पन्न हो गयी</li>
+          <li>उत्तरदायित्व प्रसाद जी के कंधों पर</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>काव्य संकलन</h3>
+        <ul>
+          <li>झरना (1918)</li>
+          <li>आंसू (1925)</li>
+          <li>लहर (1933)</li>
+        </ul>
+
+        <h3>अनुकूत रचनाएं</h3>
+        <ul>
+          <li>महाराणा का महत्व</li>
+          <li>कर्णालय</li>
+          <li>प्रेम पथिक</li>
+        </ul>
+
+        <h3>प्रबंध काव्य</h3>
+        <ul>
+          <li><strong>कामायनी (1936)</strong> - सर्वश्रेष्ठ कृति</li>
+        </ul>
+
+        <h3>नाटक</h3>
+        <ul>
+          <li>कल्याणी परिणय (1912)</li>
+          <li>प्रायश्चित (1914)</li>
+          <li>राज्यश्री (1915)</li>
+          <li>विशाख (1929)</li>
+          <li>कामना (1927)</li>
+          <li>जनमेजय का नागयज्ञ (1926)</li>
+          <li>स्कंदगुप्त (1928)</li>
+          <li>एक घूंट (1928)</li>
+          <li>चन्द्रगुप्त (1931)</li>
+          <li>ध्रुवस्वामिनी (1933)</li>
+        </ul>
+
+        <h3>कथा संग्रह</h3>
+        <ul>
+          <li>छाया (1912)</li>
+          <li>प्रतिध्वनि (1931)</li>
+          <li>इंद्रजाल (1936)</li>
+        </ul>
+
+        <h3>उपन्यास</h3>
+        <ul>
+          <li>कंकाल (1929)</li>
+          <li>तितली (1934)</li>
+          <li>इरावती (अपूर्ण, 1940)</li>
+        </ul>
+
+        <h2>रचनाएं - कलाधर उपनाम से ब्रजभाषा में</h2>
+        <ul>
+          <li>सवैयों की रचना</li>
+          <li>प्रसाद की प्रेरणा से उनके भांजे अनिका प्रसाद ने हंडू का प्रकाशन 1909 से प्रारंभ किया</li>
+          <li>कालक्रम के अनुसार चित्राधार प्रथम संग्रह, जिसमें कविता, कहानी, नाटक आदि रचनाएं संकलित</li>
+        </ul>
+
+        <h2>साहित्यिक महत्व</h2>
+        <p>जयशंकर प्रसाद जी ने आधुनिक हिंदी का श्रेष्ठतम महाकाव्य भी है। इसमें प्रलय के बाद मानवीय सृष्टि के विकास की पौराणिक कथा का आश्रय लेकर मनुष्य के मानसिक आध्यात्मिक विकास के संक्षिप्त इतिवृत्त को बड़े अर्थपूर्ण संकेतों द्वारा प्रस्तुत किया गया है। यह पाठ कामायनी से ही लिया गया है।</p>
+
+        <p><strong>विशेषता:</strong> प्रसाद जी हिंदी साहित्य के चार स्तंभों में से एक माने जाते हैं। उन्होंने छायावाद को प्रतिष्ठित किया और 'कामायनी' जैसी अमर कृति की रचना की। उनकी रचनाओं में गहन दर्शन, सुंदर भावनाएं और उत्कृष्ट कलात्मकता का संयोजन मिलता है।</p>
+      </div>
+
+    </section>
+    <!-- Jayprakash narayan -->
+    <section id="jayprakash_narayan" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>जयप्रकाश नारायण (लोकनायक)</h1>
+          <div class="author-meta">राजनेता • समाज सुधारक • स्वतंत्रता संग्राम सेनानी • लेखक</div>
+          <div class="tags">
+            <span class="tag">सम्पूर्ण क्रांति</span>
+            <span class="tag">समाजवाद</span>
+            <span class="tag">जनता पार्टी</span>
+            <span class="tag">लोकतंत्र</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>जयप्रकाश नारायण को "लोकनायक" के नाम से जाना जाता है। वे भारतीय स्वतंत्रता संग्राम के महान सेनानी, समाजवादी नेता और लोकतंत्र के रक्षक थे। उन्होंने आपातकाल के विरुद्ध "सम्पूर्ण क्रांति" का नेतृत्व किया और भारतीय राजनीति में नैतिकता और सत्यनिष्ठा के प्रतीक बने।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 11 अक्टूबर 1902</li>
+          <li><strong>जन्म स्थान:</strong> सिताब दियारा गांव (UP के बलिया & बिहार के सारण में फैला)</li>
+          <li><strong>बचपन का नाम:</strong> बाउल</li>
+          <li><strong>पिता:</strong> हरसूदयाल</li>
+          <li><strong>माता:</strong> फुलरानी</li>
+          <li><strong>पत्नी:</strong> प्रभावती देवी (गांधीवादी ब्रजकिशोर प्रसाद की पुत्री)</li>
+          <li><strong>निधन:</strong> 8 अक्टूबर 1979</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>आरंभिक शिक्षा घर पर</li>
+          <li>बाद में पटना कॉलेजिएट में अध्ययन</li>
+          <li>असहयोग आंदोलन के कारण पढ़ाई को अधूरा छोड़ दिया</li>
+          <li>1922 में शिक्षा प्राप्ति के लिए अमेरिका गए</li>
+          <li>कैलिफोर्निया जैसे विश्वविद्यालय में पढ़ाई की</li>
+          <li>माँ की अस्वस्थता के कारण PhD पूरी नहीं कर सके और घर वापस लौटे</li>
+        </ul>
+
+        <h2>राजनीतिक जीवन</h2>
+        <ul>
+          <li><strong>1929:</strong> कांग्रेस में शामिल हुए</li>
+          <li><strong>1932:</strong> सविनय अवज्ञा आंदोलन के दौरान जेल गए</li>
+          <li><strong>कांग्रेस सोशलिस्ट पार्टी:</strong> गठन में अहम भूमिका निभाई</li>
+          <li><strong>1952:</strong> आजादी के बाद प्रजा सोशलिस्ट पार्टी के गठन में योगदान</li>
+          <li>धीरे-धीरे सक्रिय राजनीति से स्वयं को अलग कर लिया</li>
+          <li>आपातकाल के दौरान जेल गए</li>
+          <li>इनके मार्गदर्शन में ही जनता पार्टी का गठन हुआ</li>
+        </ul>
+
+        <h2>प्रमुख आंदोलन और योगदान</h2>
+        <ul>
+          <li><strong>सम्पूर्ण क्रांति:</strong> आपातकाल के विरुद्ध व्यापक आंदोलन का नेतृत्व</li>
+          <li><strong>5 जून 1974:</strong> पटना के गांधी मैदान में ऐतिहासिक भाषण</li>
+          <li>भ्रष्टाचार और तानाशाही के विरुद्ध संघर्ष</li>
+          <li>लोकतांत्रिक मूल्यों की रक्षा</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        <ul>
+          <li>रिकंस्ट्रक्शन ऑफ इंडियन पॉलिटी (Reconstruction of Indian Polity)</li>
+        </ul>
+
+        <h2>सम्मान और पुरस्कार</h2>
+        <ul>
+          <li><strong>1965:</strong> समाज सेवा के लिए मैग्ससे सम्मान</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> जयप्रकाश नारायण ने व्यक्तिगत राजनीतिक महत्वाकांक्षाओं से ऊपर उठकर देश की सेवा की। उन्होंने लोकतंत्र की रक्षा के लिए आजीवन संघर्ष किया और "लोकनायक" की उपाधि से सम्मानित हुए।</p>
+      </div>
+
+    </section>
+    <!--bhagat singh  -->
+    <section id="bhagat_singh" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>भगत सिंह</h1>
+          <div class="author-meta">क्रांतिकारी • स्वतंत्रता सेनानी • लेखक • शहीद</div>
+          <div class="tags">
+            <span class="tag">शहीदावासक पत्र</span>
+            <span class="tag">क्रांतिकारी</span>
+            <span class="tag">स्वतंत्रता संग्राम</span>
+            <span class="tag">हिंदुस्तान समाजवादी</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>भगत सिंह भारतीय स्वतंत्रता संग्राम के महान क्रांतिकारी और शहीद थे। उन्होंने मात्र 23 वर्ष की आयु में देश की आजादी के लिए अपना बलिदान दिया। उनके लेख और पत्र आज भी युवाओं के लिए प्रेरणा का स्रोत हैं।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 28 सितंबर 1907</li>
+          <li><strong>जन्म स्थान:</strong> बंगा चक, नं 105, गुप्ता ब्रांच, वर्तमान नारकपुर (पाकिस्तान)</li>
+          <li><strong>पैतृक गांव:</strong> खटकड़कलां, पंजाब</li>
+          <li><strong>शहादत:</strong> 23 मार्च 1931 (शाम 7:33 मिनट पर लाहौर पडत्रल केस में फांसी)</li>
+          <li><strong>माता:</strong> विद्यावती</li>
+          <li><strong>पिता:</strong> सरदार किशन सिंह</li>
+        </ul>
+
+        <h2>पारिवारिक पृष्ठभूमि</h2>
+        <ul>
+          <li>संपूर्ण परिवार स्वाधीनता सेनानी</li>
+          <li>पिता और चाचा अजीत सिंह लाला लाजपत राय के सहयोगी</li>
+          <li>अजीत सिंह को मांडले जेल में देश निकाला दिया गया था</li>
+          <li>बाद में विदेशों में जाकर मुक्तिसंग्राम का संचालन करने लगे</li>
+          <li>छोटे चाचा सरदार स्वर्ण सिंह भी जेल गए</li>
+          <li>जेल की यातनाओं के कारण 1990 में उनका निधन हुआ</li>
+          <li>भगत सिंह की शहादत के बाद उनके भाई कुलवीर सिंह और कुलतार सिंह को देवली के जेल में रखा गया था जहां वे 1946 तक रहे</li>
+          <li>पिता अनेक बार जेल गए</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>पहले चार साल की प्राइमरी शिक्षा अपने गांव बंगा में</li>
+          <li>फिर लाहौर के डी.ए.वी. स्कूल से वर्ग नौ तक की पढ़ाई की</li>
+          <li>बाद में नेशनल कॉलेज, लाहौर से एफ.ए. किया</li>
+          <li>बी.ए. के दौरान पढ़ाई छोड़ दी और क्रांतिकारी दल में शामिल हो गए</li>
+        </ul>
+
+        <h2>प्रभाव</h2>
+        <ul>
+          <li>बचपन में कर्तार सिंह सराभा और 1914 के गदर पार्टी के आंदोलन के प्रति तीव्र आकर्षण</li>
+          <li>सराभा की निर्भीक क्रांतिका का मन पर स्थाई और गहरा असर</li>
+          <li>16 नवंबर 1915 को सराभा की फांसी के समय भगत सिंह की उम्र 8 वर्ष थी</li>
+          <li>वे सराभा का चित्र अपनी जेब में रखते थे</li>
+        </ul>
+
+        <h2>गति विधियाँ</h2>
+        <ul>
+          <li>12 वर्ष की उम्र में जलियांवाला बाग की मिट्टी लेकर क्रांतिकारी गतिविधियों की शुरुआत</li>
+          <li>1922 में चौरीचौरा कांड के बाद 14 वर्ष की उम्र में कांग्रेस और महात्मा गांधी से मोहभंग</li>
+          <li>1923 में पढ़ाई और पद छोड़कर कानपुर, गणेश शंकर विद्यार्थी के पत्र 'प्रताप' में सेवाएं दीं</li>
+          <li>1926 में अपने नेतृत्व में पंजाब में 'नौजवान भारत सभा' का गठन किया</li>
+          <li>जिसकी शाखाएं विभिन्न शहरों में स्थापित की गईं</li>
+          <li>1928 से 31 तक बंद्रेशवर आजाद के साथ मिलकर 'हिंदुस्तान समाजवादी प्रजातांत्रिक संघ' का गठन किया</li>
+          <li>क्रांतिकारी आंदोलन सभन रूप से छेड़ दिया</li>
+          <li>8 अप्रैल 1929 को बंद्रेशवर दत्त और राजगुरु के साथ केंद्रीय असेंबली में बम फेंका और गिरफ्तार हुए</li>
+        </ul>
+
+        <h2>पहली गिरफ्तारी</h2>
+        <ul>
+          <li>अक्टूबर 1926 में दशहरा मेले में हुए बम विस्फोट के कारण गई 1927 में हुई</li>
+        </ul>
+
+        <h2>कृतियाँ</h2>
+        <ul>
+          <li>पंजाब की भाषा तथा लिपि की समस्या (हिंदी में 1924)</li>
+          <li>विश्वप्रेम (कर्तवक्ता के मतावाला में 1924 में प्रकाशित हिंदी लेख)</li>
+          <li>'यूवक' (मतावाला में 1924 में प्रकाशित हिंदी लेख)</li>
+          <li>मैं नास्तिक क्यों हूं (1930-31)</li>
+          <li>अदृत समस्या, विद्यार्थी और राजनीति, सत्याग्रह और हड़ताल, बम का दर्शन, भारतीय क्रांति का आदर्श आदि अनेक लेख</li>
+          <li>टिप्पणियां एवं पत्र जो अलग-अलग प्रकाशकों द्वारा भगत सिंह के दस्तावेज के रूप में प्रकाशित</li>
+        </ul>
+
+        <h3>एक पत्र और लेख का सारांश</h3>
+        <p>भगत सिंह "विद्यार्थी और राजनीति" के माध्यम से बताते हैं कि विद्यार्थी को पहले के साथ ही राजनीति में भी दिलचस्पी लेनी चाहिए। यदि कोई इसे मना कर रहा है तो समझाना चाहिए कि वह राजनीति के पीछे छुप पड़ने है, क्योंकि विद्यार्थी युवा होते हैं। उन्हीं के हाथ में देश की बागडोर है। भगत सिंह व्यावहारिक राजनीति का उदाहरण देते हुए नौजवानों को यह समझाते हैं कि महात्मा गांधी, जवाहर लाल नेहरू, और सुभाष चंद्र बोस का स्वतंत्रता करना और भाषण सुनना यह व्यावहारिक राजनीति नहीं तो और क्या है।</p>
+
+        <p><strong>शहीदानाम सान्याली की पुस्तक "बंदी जीवन" और "ज्ञान मैं की आत्मकथा" का अनुवाद:</strong> जेल डायरी में लिखी और निर्भावित चार पुस्तके भगत सिंह के द्वारा लिखी बताई जाती हैं जो अभाव है - समाजवाद का आदर्श, आत्मकथा, भारत में क्रांतिकारी आंदोलन का इतिहास और मौत के दरवाजे पर।</p>
+
+        <p><strong>विशेषता:</strong> भगत सिंह केवल एक क्रांतिकारी नहीं बल्कि एक गहन चिंतक और लेखक भी थे। उनके लेख और पत्र आज भी प्रासंगिक हैं और युवाओं को देशभक्ति की प्रेरणा देते हैं।</p>
+      </div>
+
+    </section>
+    <!--jagdishchandra mathur  -->
+    <section id="jagdishchandra_mathur" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>जगदीशचन्द्र माथुर</h1>
+          <div class="author-meta">नाटककार • निबंधकार • आलोचक • प्रशासक</div>
+          <div class="tags">
+            <span class="tag">ओ सदानीरा</span>
+            <span class="tag">कोणार्क</span>
+            <span class="tag">भोर का तारा</span>
+            <span class="tag">आधुनिक नाटक</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>जगदीशचन्द्र माथुर आधुनिक हिंदी साहित्य के प्रतिष्ठित नाटककार, निबंधकार और सांस्कृतिक व्यक्तित्व थे। उन्होंने नाट्य साहित्य को एक नई दिशा प्रदान की और सांस्कृतिक गतिविधियों के संवर्धन में महत्वपूर्ण भूमिका निभाई।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 16 जुलाई 1917</li>
+          <li><strong>जन्म स्थान:</strong> शाहजहांपुर, उत्तर प्रदेश</li>
+          <li><strong>निधन:</strong> 14 मई 1978</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>एम.ए. (अंग्रेजी), इलाहाबाद विश्वविद्यालय</li>
+          <li>1941 में आई.सी.एस. परीक्षा उत्तीर्ण</li>
+          <li>प्रशिक्षण के लिए अमेरिका गए</li>
+          <li>उसके बाद बिहार में शिक्षा सचिव हुए</li>
+        </ul>
+
+        <h2>कार्यक्षेत्र</h2>
+        <ul>
+          <li>सन् 1944 में बिहार के सुप्रसिद्ध सांस्कृतिक उत्सव वैशाली महोत्सव का बीजारोपण किया</li>
+          <li>ऑल इंडिया रेडियो में महानिदेशक रहे</li>
+          <li>सूचना और प्रसारण मंत्रालय में हिंदी सलाहकार के पद पर कार्य किया</li>
+          <li>हार्वर्ड विश्वविद्यालय के विजिटिंग फेलो रहे</li>
+          <li>अन्य अनेक महत्वपूर्ण कार्यों से जुड़े थे</li>
+        </ul>
+
+        <h2>सम्मान</h2>
+        <ul>
+          <li>विद्या वारिधि की उपाधि से विभूषित</li>
+          <li>कालिदास अवार्ड से सम्मानित</li>
+          <li>बिहार राजभाषा पुरस्कार से सम्मानित</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>नाटक और एकांकी</h3>
+        <ul>
+          <li>मेरी बेंसुरी (1936) - प्रथम एकांकी</li>
+          <li>भोर का तारा (1946) - पांच एकांकी नाटकों का संग्रह</li>
+          <li>ओ मेरे सपने (1950)</li>
+          <li>कोणार्क (1951)</li>
+          <li>बंदी (1954)</li>
+          <li>कंदर सिंह की टेक (1954)</li>
+          <li>गगन सवारी (1958)</li>
+          <li>शारदीया (1959)</li>
+          <li>पहला राजा (1969)</li>
+          <li>दशरथ नंदन (1974)</li>
+          <li>मेरे श्रेष्ठ रंग एकांकी</li>
+          <li>दो कठपुतली नाटक भी लिखे</li>
+        </ul>
+
+        <h3>गद्य साहित्य</h3>
+        <ul>
+          <li>दस तस्वीरें - रेखाचित्र और संस्मरण</li>
+          <li>जिन्होंने जीना जाना - रेखाचित्र और संस्मरण</li>
+          <li>पंपराशील नाट्य (1960) - समीक्षा दृष्टि का परिचायक</li>
+          <li>बहुजन संप्रेषण के माध्यम - जनसंचार पर विशिष्ट पुस्तक</li>
+          <li>बोलते क्षण - निबंध संग्रह</li>
+        </ul>
+
+        <h2>विशेष उल्लेख</h2>
+        <ul>
+          <li><strong>'ओ सदानीरा':</strong> यह प्रसिद्ध निबंध 'बोलते क्षण' से लिया गया है</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> जगदीशचन्द्र माथुर ने हिंदी नाट्य साहित्य को समृद्ध बनाने के साथ-साथ सांस्कृतिक चेतना को बढ़ावा दिया। उनके नाटक आज भी मंचित किए जाते हैं और उनके निबंध साहित्य की अमूल्य धरोहर हैं।</p>
+      </div>
+    </section>
+    <!--malik muhammad jayshi  -->
+    <section id="malik_mohammad_jaisi" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>मलिक मुहम्मद जायसी</h1>
+          <div class="author-meta">कवि • फकीर • सूफी कवि • प्रेमाख्यानक काव्यकार</div>
+          <div class="tags">
+            <span class="tag">पद्मावत</span>
+            <span class="tag">सूफी काव्य</span>
+            <span class="tag">प्रेम मार्गी शाखा</span>
+            <span class="tag">अवधी भाषा</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>मलिक मुहम्मद जायसी हिंदी साहित्य के महान सूफी कवि थे। वे प्रेमाख्यानक काव्य-परंपरा के प्रतिनिधि कवि हैं और उन्हें "प्रेम के पीर का कवि" कहा जाता है। उनका महाकाव्य "पद्मावत" हिंदी साहित्य की अमूल्य निधि है।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 1492</li>
+          <li><strong>निधन:</strong> 1548</li>
+          <li><strong>निवास स्थान:</strong> जायस, अमेठी, उत्तर प्रदेश</li>
+          <li><strong>पिता:</strong> मलिक शेख ममरेज</li>
+          <li><strong>गुरु:</strong> शेख मोहिदी और सैयद अशरफ जहांगीर</li>
+        </ul>
+
+        <h2>काव्यगत विशेषताएं</h2>
+        <ul>
+          <li><strong>काव्य की भाषा:</strong> अवधी</li>
+          <li><strong>काव्य की रस:</strong> श्रृंगार रस</li>
+          <li><strong>काव्य परंपरा:</strong> प्रेमाख्यानक काव्य-परंपरा के कवि</li>
+          <li><strong>विशेषता:</strong> प्रेम मार्गी शाखा के प्रतिनिधि</li>
+        </ul>
+
+        <h2>व्यक्तित्व</h2>
+        <ul>
+          <li>चेचक के कारण रूपहीन तथा बाईं आंख और कान से वंचित</li>
+          <li>फकीर और सूफी संत</li>
+          <li>आध्यात्मिक व्यक्तित्व के धनी</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>मुख्य कृतियां</h3>
+        <ul>
+          <li><strong>पद्मावत</strong> - महाकाव्य (सर्वप्रसिद्ध कृति)</li>
+          <li>अखरावट</li>
+          <li>आखिरी कलाम</li>
+          <li>चित्रखा</li>
+          <li>कहरानामा (महरी बाइसी)</li>
+          <li>मसला या मसलानामा (खंडित प्राप्त)</li>
+        </ul>
+
+        <h3>अन्य उल्लेखनीय कृतियां</h3>
+        <ul>
+          <li>चंपावत</li>
+          <li>होलीनामा</li>
+          <li>इत्रावत आदि</li>
+        </ul>
+
+        <h2>साहित्यिक महत्व</h2>
+        <ul>
+          <li>जायसी के महाकाव्य पद्मावत से यह कविता संकलित की गई है</li>
+          <li>हिंदी साहित्य में सूफी काव्य धारा के प्रवर्तक</li>
+          <li>प्रेम और भक्ति का अद्भुत संयोजन</li>
+          <li>अवधी भाषा के महान कवि</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> जायसी जी ने सूफी दर्शन को भारतीय काव्य परंपरा के साथ जोड़कर एक अनूठी काव्यधारा की स्थापना की। उनका "पद्मावत" न केवल एक प्रेमकथा है बल्कि गहन आध्यात्मिक संदेश भी देता है।</p>
+      </div>
+
+    </section>
+     <!--surdash -->
+    <section id="surdas" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>सूरदास</h1>
+          <div class="author-meta">कवि • भक्त • संगीतकार • वात्सल्य रस के अद्वितीय कवि</div>
+          <div class="tags">
+            <span class="tag">सूरसागर</span>
+            <span class="tag">कृष्णभक्ति</span>
+            <span class="tag">अष्टछाप</span>
+            <span class="tag">वात्सल्य रस</span>
+            <span class="tag">पुष्टिमार्ग</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>सूरदास वात्सल्य के विश्व में अद्वितीय कवि थे। वे कृष्णभक्ति शाखा के सर्वश्रेष्ठ कवि माने जाते हैं और अष्टछाप के प्रमुख कवियों में से एक हैं। उनका "सूरसागर" हिंदी साहित्य की अमूल्य धरोहर है।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 1478 (अनुमानित)</li>
+          <li><strong>निधन:</strong> 1583</li>
+          <li><strong>जन्म स्थान:</strong> दिल्ली के निकट 'सीही' नामक ग्राम में</li>
+          <li><strong>निवास स्थान:</strong> ब्रजक्षेत्र में क्रमशः 'गऊघाट', वृंदावन एवं पारसौली ग्राम</li>
+        </ul>
+
+        <h2>शिक्षा और व्यक्तित्व</h2>
+        <ul>
+          <li>स्वाध्याय द्वारा ज्ञानार्जन, काव्य रचना एवं संगीत का ज्ञान एवं अभ्यास</li>
+          <li>जन्म से अंधे अथवा बड़े होने पर दोनों आंखें जाती रहीं</li>
+          <li>मुदुल, विनम्र, निरभिमानी, भावुक और अंतर्मुखी स्वभाव के विरक्त महात्मा</li>
+        </ul>
+
+        <h2>साहित्यिक काल और परंपरा</h2>
+        <ul>
+          <li><strong>काल:</strong> भक्ति काल</li>
+          <li><strong>भाषा:</strong> ब्रजभाषा</li>
+          <li>सरगुण भक्ति धारा के कृष्णभक्ति धारा के कवि</li>
+          <li>पुष्टिमार्गी (भगवान श्रीकृष्ण की भक्ति का एक मार्ग) में दीक्षित</li>
+        </ul>
+
+        <h2>अष्टछाप के कवि</h2>
+        <ul>
+          <li>सूरदास</li>
+          <li>परमानंददास</li>
+          <li>नंददास</li>
+          <li>कृष्णदास</li>
+          <li>गोविंदस्वामी</li>
+          <li>कुंभनदास</li>
+          <li>छीतस्वामी</li>
+          <li>चतुर्भुजदास</li>
+        </ul>
+
+        <h2>गुरु और दीक्षा</h2>
+        <ul>
+          <li><strong>दीक्षागुरु:</strong> महाप्रभु वल्लभाचार्य</li>
+          <li><strong>दीक्षाकाल:</strong> 1509-10 (अनुमानित)</li>
+          <li>वल्लभाचार्य से मिलने के पूर्व सूरदास दैन्य भाव के पद गाते थे</li>
+        </ul>
+
+        <h2>अभिरुचि</h2>
+        <ul>
+          <li>पर्यटन</li>
+          <li>सत्संग</li>
+          <li>कृष्णभक्ति एवं वैराग्य</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        <ul>
+          <li><strong>सूरसागर</strong> - प्रसिद्ध महाकाव्य</li>
+          <li>साहित्यलहरी</li>
+          <li>राधारसकेलि</li>
+          <li>सूरसारावली आदि</li>
+        </ul>
+
+        <h2>साहित्यिक महत्व</h2>
+        <ul>
+          <li>'सूरसागर' से ही पूरे विश्व में इन्हें प्रसिद्धि प्राप्त हुआ</li>
+          <li>वात्सल्य रस के सर्वश्रेष्ठ कवि</li>
+          <li>कृष्ण के बाल-लीलाओं के अनुपम चितेरे</li>
+          <li>यह कविता सूर सागर से संकलित है</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> सूरदास जी ने कृष्ण की बाल-लीलाओं का इतना मनोहारी चित्रण किया है कि उन्हें "वात्सल्य रस का सम्राट" कहा जाता है। उनकी रचनाओं में मातृत्व और बाल-सुलभता का अद्भुत चित्रण मिलता है।</p>
+      </div>
+
+    </section>
+     <!--tulsidas  -->
+    <section id="tulsidas" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>गोस्वामी तुलसीदास</h1>
+          <div class="author-meta">कवि • भक्त • संत • महाकाव्यकार</div>
+          <div class="tags">
+            <span class="tag">रामचरितमानस</span>
+            <span class="tag">रामभक्ति</span>
+            <span class="tag">अवधी भाषा</span>
+            <span class="tag">कविता वाली</span>
+            <span class="tag">हनुमान चालीसा</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>गोस्वामी तुलसीदास हिंदी साहित्य के सबसे महान कवि और संत माने जाते हैं। उन्होंने "रामचरितमानस" जैसी अमर कृति की रचना की जो आज भी करोड़ों लोगों की आस्था और प्रेरणा का केंद्र है। वे भक्तिकाल के सगुण धारा के प्रतिनिधि कवि हैं।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>मूल नाम:</strong> रामबोला</li>
+          <li><strong>जन्म:</strong> 1543 (राजापुर, बांदा, उत्तरप्रदेश)</li>
+          <li><strong>स्थायी निवास:</strong> काशी में</li>
+          <li><strong>निधन:</strong> 1623</li>
+          <li><strong>पिता:</strong> आत्माराम दुबे</li>
+          <li><strong>माता:</strong> हुलसी</li>
+          <li><strong>पत्नी:</strong> रत्नावली (विवाह के कुछ ही समय बाद वैराग्य के कारण विछोह)</li>
+        </ul>
+
+        <h2>प्रसिद्धिका कारण</h2>
+        <ul>
+          <li>चुनियां, जिसने जन्म के बाद पारिवारिक हानि होने पर पालन-पोषण किया</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>शिक्षा चारों वेद, षडदर्शन, इतिहास, पुराण, स्मृति, काव्य आदि की शिक्षा काशी में पंद्रह वर्षों तक प्राप्त की</li>
+          <li><strong>शिक्षा गुरु:</strong> शेष सनातन, काशी के विद्वान</li>
+          <li><strong>दीक्षा गुरु:</strong> नरहरि दास, सुकरक्षेत के वासी, गुरु ने विद्यारम्भ कराया</li>
+        </ul>
+
+        <h2>काव्यगत विशेषताएं</h2>
+        <ul>
+          <li><strong>कविता की भाषा:</strong> अवधी और ब्रजभाषा (यह कविता अवधी भाषा में है)</li>
+        </ul>
+
+        <h2>निर्णायक घटना</h2>
+        <ul>
+          <li>काशी में विद्याध्ययन के बाद जन्मभूमि आकर कृषावनचक व्यास बन गए</li>
+          <li>दीनबंधु पाठक ने व्यक्तिगत और वकृता से प्रभावित होकर अपनी पुत्री रत्नावली से विवाह कर दिया</li>
+          <li>पत्नी से प्रगाढ़ प्रेम और आसक्ति के कारण फटकारे जाने पर विरक्त हो गए और गृहस्थ जीवन एवं घर का परित्याग कर दिया</li>
+        </ul>
+
+        <h2>व्यक्तित्व</h2>
+        <ul>
+          <li>विनम्र, मृदुभाषी, गंभीर और शांत स्वभाव के गौरवशाली व्यक्ति थे तुलसी की बड़ी-बड़ी गुणों वाली माला पहनते थे</li>
+          <li>गोस्वामी तुलसीदास हिंदी के शीर्षस्थ जातीय महाकवि हैं</li>
+          <li>गोस्वामी तुलसीदास हिंदी के मध्यकालीन भक्तिकाल की सगुण भक्तिधारा की समभक्ति शाखा के प्रधान कवि हैं</li>
+          <li>रामकथा को लेकर लिखे गए काव्यों में आदिकवि वाल्मीकी की 'रामायण' के बाद 'रामचरितमानस' ही सर्वाधिक सफल, लोकप्रिय एवं उत्कृष्ट कृति है</li>
+        </ul>
+
+        <h2>तीर्थयात्राएं</h2>
+        <ul>
+          <li>सुकरक्षेत, अयध्या, चित्रकूट, प्रयाग, मथुरा-वृंदावन, कुरुक्षेत्र, हरिद्वार, बद्रीनाथ, मैंगलगापुरण मिश्रित, जगन्नाथपुरी, रामेश्वर आदि प्रमुख तीर्थों की यात्राएं समय-समय पर काशीवास करते हुए ही संपन्न की</li>
+        </ul>
+
+        <h2>मित्र और सेवी</h2>
+        <ul>
+          <li>अब्दुर्रहीम खानखाना, महाराजा मानसिंह, नाभादास, दाशनिक मधुसूदन सरस्वती, टोडरमल आदि</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        <ul>
+          <li>रामललानहछू</li>
+          <li>वैराग्य संदीपनी</li>
+          <li>बरवै रामायण</li>
+          <li>पार्वती मंगल</li>
+          <li>जानकी मंगल</li>
+          <li>रामाज्ञाप्रश्न</li>
+          <li>दोहावली</li>
+          <li>कवितावली</li>
+          <li>गीतावली</li>
+          <li>श्रीकृष्ण गीतावली</li>
+          <li>रामचरितमानस</li>
+          <li>विनय पत्रिका</li>
+        </ul>
+
+        <h3>विशेष उल्लेख</h3>
+        <ul>
+          <li>इनके अतिरिक्त 44 छंदों की हनुमान बाहुक रचना को कवितावली का ही अंग माना जाता है</li>
+          <li>उसे स्वतंत्र करने पर कुल 13 छोटी-बड़ी कृतियां होती हैं</li>
+          <li>इनके अतिरिक्त कुछ अन्य कृतियां भी बताई जाती हैं</li>
+          <li>कुल 12 या 13 कृतियों की प्रामाणिकता असंदिग्ध</li>
+        </ul>
+
+        <h2>मानस का रचना समय</h2>
+        <ul>
+          <li>रचनारंभ तिथि संवत् 1631 (1574 ई०)</li>
+          <li>चैत्र शुक्ल नवमी मंगलवार रामनवमी की तिथि पर, अयोध्या में कविता की</li>
+          <li>31 वर्ष की अवस्था में</li>
+          <li>रचना 1633 (1576 ई०) आषाढ़ शुक्ल पञ्चमी-राम सीता विवाह की तिथि को कुल 2 वर्ष 7 माह 26 दिन में पूर्ण हुई</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> गोस्वामी तुलसीदास जी ने अपनी गुरुस्ती बनाते थे। शीघ्र ही गुरुस्थ जीवन का परित्याग कर वे विरक्त साधु जीवन में चले आए। उन्होंने अपने युग की दो महान कृतियां 'रामचरितमानस' (महाकाव्य) और 'विनय पत्रिका' की रचना की। विनय पत्रिका की भाषा भी अनुवेदी ब्रजभाषा ही है।</p>
+      </div>
+
+    </section>
+     <!-- nabhadas -->
+    <section id="nabhadas" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>नाभादास</h1>
+          <div class="author-meta">कवि • भक्त • चरित्रकार • वैष्णव संत</div>
+          <div class="tags">
+            <span class="tag">भक्तमाल</span>
+            <span class="tag">छप्पय छंद</span>
+            <span class="tag">रामभक्ति</span>
+            <span class="tag">संत चरित्र</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>नाभादास भक्तिकाल के प्रसिद्ध कवि और संत थे। वे सगुणोपासक रामभक्त कवि थे और गोस्वामी तुलसीदास के समकालीन थे। उनकी प्रसिद्ध कृति "भक्तमाल" भक्त चरित्रों की अमूल्य निधि है जो छप्पय छंद में लिखी गई है।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 1570 (अनुमानित)</li>
+          <li><strong>निधन:</strong> अज्ञात (1600 तक वर्तमान)</li>
+          <li><strong>स्थायी निवास:</strong> वृंदावन</li>
+        </ul>
+
+        <h2>जन्म स्थान और प्रारंभिक जीवन</h2>
+        <ul>
+          <li>सांप्रदायिक मान्यता के अनुसार दक्षिण भारत में जन्म</li>
+          <li>शैशव में पिता की मृत्यु और अकाल के कारण माता के साथ जयपुर (राजस्थान) में प्रवास</li>
+          <li>दुर्भाग्यवश माता के साथ से भी बिछोह हो गया</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>गुरु और प्रतिपालक की देख-रेख में स्वाध्याय</li>
+          <li>सत्संग द्वारा ज्ञानार्जन</li>
+        </ul>
+
+        <h2>अभिरुचि</h2>
+        <ul>
+          <li>लोकप्रणग</li>
+          <li>भगवद्भक्ति</li>
+          <li>काव्य रचना</li>
+          <li>वैष्णव दर्शन-चिंतन में</li>
+        </ul>
+
+        <h2>दीक्षागुरु</h2>
+        <ul>
+          <li><strong>गुरु:</strong> स्वामी अग्रदास (अग्रदासी)</li>
+          <li>जो स्वामी रामानंद की शिष्य परंपरा के प्रसिद्ध कवि थे</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        <ul>
+          <li><strong>भक्तमाल</strong> (रचनाकाल 1585-1596 निर्धारित) - मुख्य कृति</li>
+          <li>अष्टयाम (ब्रजभाषा गद्य में)</li>
+          <li>अष्टयाम ('रामचरितमानस' की दोहा-चौपाई शैली में)</li>
+          <li>रामचरित संबंधी प्रकीर्ण पदों का संग्रह</li>
+        </ul>
+
+        <h2>भक्तमाल की विशेषताएं</h2>
+        <ul>
+          <li>यह भक्तकवि नाभादास के शील, सोच और मानस का निर्मल दर्पण है</li>
+          <li>यह भक्त चरित्रों की माला है</li>
+          <li>संपूर्ण 'भक्तमाल' छप्पय छंद में निबद्ध है</li>
+          <li>छप्पय एक छंद है जो छह पंक्तियों का गेय पद होता है</li>
+          <li>इसमें 316 छप्पयों में 200 भक्तों के चरित्र वर्णित हैं</li>
+          <li>कबीर और सूर पर लिखे गए छप्पय 'भक्तमाल' से संकलित हैं</li>
+        </ul>
+
+        <h2>सामाजिक पृष्ठभूमि</h2>
+        <ul>
+          <li>कवि नाभादास की पारिवारिक-सामाजिक पृष्ठभूमि अधिकतर विद्वानों के मतानुसार दलित वर्ग की थी</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> नाभादास जी की "भक्तमाल" हिंदी साहित्य की अनमोल कृति है जिसमें विभिन्न संतों और भक्तों के जीवन चरित्र का सुंदर चित्रण है। यह छप्पय छंद की उत्कृष्ट रचना है और भक्ति साहित्य का महत्वपूर्ण ग्रंथ है।</p>
+      </div>
+
+    </section>
+     <!-- bhushan -->
+    <section id="bhushan" class="author-section">
+      <div class="author-header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc_ZMaF2o1IqIXMfLfNl2YKrijwh9bNPSIefh5Kxmw5evlXH0rHeNyrkVCmBRAO7sVftQ&usqp=CAU" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>भूषण</h1>
+          <div class="author-meta">कवि • वीर रस के महान कवि • रीतिकालीन कवि • राजदरबारी कवि</div>
+          <div class="tags">
+            <span class="tag">वीर रस</span>
+            <span class="tag">शिवराज भूषण</span>
+            <span class="tag">रीतिकाल</span>
+            <span class="tag">शिवा बावनी</span>
+            <span class="tag">छत्रसाल दशक</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>भूषण रीतिकाल के एक प्रसिद्ध कवि और वीर रस के महान कवि थे। उन्होंने छत्रपति शिवाजी और महाराज छत्रसाल जैसे वीर योद्धाओं की प्रशंसा में अनुपम काव्य रचा। उनके काव्य में वीरता और शौर्य का ओजस्वी चित्रण मिलता है।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 1613</li>
+          <li><strong>निधन:</strong> 1715</li>
+          <li><strong>जन्म स्थान:</strong> तिकवांपुर, कानपुर, उत्तरप्रदेश</li>
+          <li><strong>पिता:</strong> रत्नाकर त्रिपाठी</li>
+        </ul>
+
+        <h2>उपनाम और प्रसिद्धि</h2>
+        <ul>
+          <li><strong>उपनाम:</strong> चित्रकूट के सोलंकी राजा रुद्रसाह ने इन्हें <strong>'कवि भूषण'</strong> की उपाधि दी थी</li>
+          <li>आगे उपनाम भूषण इतना प्रसिद्ध हुआ कि मूलनाम विस्मृत हो गया</li>
+        </ul>
+
+        <h2>प्रमुख आश्रयदाता</h2>
+        <ul>
+          <li><strong>छत्रपति शिवाजी</strong></li>
+          <li><strong>शिवाजी के पुत्र शाहूजी</strong></li>
+          <li><strong>बुंदेला राजा छत्रसाल</strong></li>
+        </ul>
+
+        <h2>पारिवारिक संबंध</h2>
+        <ul>
+          <li>रीतिकाल के प्रसिद्ध कवि <strong>चितामणि त्रिपाठी</strong> और <strong>मतिराम</strong> भूषण के भाई के रूप में जाने जाते हैं</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>प्राप्त कृतियां</h3>
+        <ul>
+          <li><strong>शिवराज भूषण</strong> - 384 छंदों में 105 अलंकारों का निरूपण और छत्रपति शिवाजी की प्रशस्ति करनेवाले मुक्तकों का संग्रह</li>
+          <li><strong>शिवा बावनी</strong> - 52 मुक्तकों में छत्रपति शिवाजी की वीरता का बखान</li>
+          <li><strong>छत्रसाल दशक</strong> - 10 छंदों में महाराज छत्रसाल की वीरता का यशोगान</li>
+        </ul>
+
+        <h3>अप्राप्त कृतियां</h3>
+        <ul>
+          <li>भूषण हजारा</li>
+          <li>भूषण उल्लास</li>
+          <li>दूषण उल्लास</li>
+        </ul>
+
+        <h3>अन्य रचनाएं</h3>
+        <ul>
+          <li>कुछ स्फुट पद्य भी प्राप्त होते हैं</li>
+        </ul>
+
+        <h2>काव्यगत विशेषताएं</h2>
+        <ul>
+          <li><strong>मुख्य रस:</strong> वीर रस के महान कवि</li>
+          <li><strong>काल:</strong> रीतिकाल (उत्तर मध्यकाल)</li>
+          <li>शिवाजी और छत्रसाल के शौर्य का ओजस्वी बखान</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> भूषण जी ने अपने समय के महान वीर योद्धाओं छत्रपति शिवाजी और महाराज छत्रसाल के वीर-गाथाओं को अमर बना दिया। उनका काव्य वीर रस से ओत-प्रोत है और उन्हें वीर रस का अजेय कवि माना जाता है।</p>
+      </div>
+
+    </section>
+     <!--subhadra_kumari_chauhan -->
+    <section id="subhadra_kumari_chauhan" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>सुभद्रा कुमारी चौहान</h1>
+          <div class="author-meta">कवयित्री • लेखिका • स्वतंत्रता सेनानी • राजनेता</div>
+          <div class="tags">
+            <span class="tag">झांसी की रानी</span>
+            <span class="tag">मुकुल</span>
+            <span class="tag">वीरांगना काव्य</span>
+            <span class="tag">छायावादी काव्य</span>
+            <span class="tag">देशभक्ति</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>सुभद्रा कुमारी चौहान हिंदी की छायावादी काव्यधारा की प्रमुख और विशिष्ट कवयित्री थीं। उन्होंने छात्र जीवन से ही काव्य रचना की प्रवृत्ति दिखाई और आगे चलकर प्रमुख कवयित्री एवं साहित्यकार के रूप में प्रतिष्ठा पाई। वे एक साहसी स्वतंत्रता सेनानी भी थीं।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 16 अगस्त 1904</li>
+          <li><strong>जन्म स्थान:</strong> निहालपुर, इलाहाबाद, उत्तर प्रदेश</li>
+          <li><strong>पिता:</strong> ठाकुर रामनाथ सिंह</li>
+          <li><strong>माता:</strong> श्रीमती धीरज कंवर</li>
+          <li><strong>निधन:</strong> 15 फरवरी 1948, बसंत पंचमी के दिन नागपुर से जबलपुर वापसी में कार दुर्घटना में</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>क्रास्थवेट गर्ल्स स्कूल, इलाहाबाद में प्रारंभिक शिक्षा</li>
+          <li>इसी स्कूल में प्रसिद्ध कवयित्री महादेवी वर्मा सुभद्रा कुमारी चौहान के साथ थीं</li>
+          <li>पुनः शिशुसाइकिल स्कूल, वाराणसी में वर्ग 9 तक की पढ़ाई</li>
+          <li>शिक्षा अधूरी छोड़कर असहयोग आंदोलन में कूद पड़ीं</li>
+        </ul>
+
+        <h2>वैवाहिक जीवन</h2>
+        <ul>
+          <li><strong>पति:</strong> ठाकुर लक्ष्मण सिंह चौहान, खंडवा, मध्य प्रदेश निवासी</li>
+          <li><strong>विवाह:</strong> 1919 में</li>
+          <li>ठाकुर लक्ष्मण सिंह अंग्रेज सरकार द्वारा जप्त 'कृष्णा प्रथा' और 'गुलामी का नशा' नामक नाटकों के लेखक थे</li>
+          <li>वे प्रसिद्ध पत्रकार, स्वतंत्रता सेनानी और कांग्रेस नेता थे</li>
+        </ul>
+
+        <h2>प्रधान कार्यक्षेत्र</h2>
+        <ul>
+          <li>समाज सेवा</li>
+          <li>राजनीति</li>
+          <li>स्वाधीनता संघर्ष में सक्रिय भागीदारी</li>
+          <li>अनेक बार कारावास</li>
+          <li>मध्य प्रदेश में कांग्रेस पार्टी की एम.एल.ए.</li>
+        </ul>
+
+        <h2>विशिष्ट अभिरुचि</h2>
+        <ul>
+          <li>छात्र जीवन से ही काव्य रचना की प्रवृत्ति</li>
+          <li>आगे चलकर प्रमुख कवयित्री एवं साहित्यकार के रूप में प्रतिष्ठा</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        <ul>
+          <li><strong>मुकुल</strong> - कविता संग्रह</li>
+          <li><strong>खेल</strong> - कहानी संग्रह (1930)</li>
+          <li><strong>त्रिधारा</strong> - कविता चयन</li>
+          <li><strong>बिखरे मोती</strong> - कहानी संग्रह</li>
+          <li>सभा के [अन्य रचनाएं]</li>
+        </ul>
+
+        <h2>पुरस्कार</h2>
+        <ul>
+          <li><strong>'मुकुल'</strong> पर 1930 में <strong>'हिंदी साहित्य सम्मेलन'</strong> का <strong>'सेक्सरिया पुरस्कार'</strong></li>
+        </ul>
+
+        <h2>साहित्यिक विशेषताएं</h2>
+        <ul>
+          <li>सुभद्रा जी के प्रतिनिधि काव्य संकलन 'मुकुल' से यहाँ ली गई है</li>
+          <li>जो पुत्र के असामयिक निधन के बाद कवयित्री माँ के द्वारा लिखी गई है</li>
+          <li>पुत्र के असमय निधन के बाद पीछे तड़पते रह गए माँ के हृदय के निदारुण शोक की ऐसी सादगी भरी अभिव्यक्ति है</li>
+          <li>जो निजीगत और सार्वभौम होकर अभीष्ट रूप में काव्यत्व अर्जित कर लेती है</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> सुभद्रा कुमारी चौहान जी ने अपनी वीरतापूर्ण कविताओं से लाखों लोगों में देशभक्ति की भावना जगाई। "झांसी की रानी" जैसी कविताएं आज भी प्रेरणा देती हैं। वे एक साहसी स्वतंत्रता सेनानी और प्रखर कवयित्री दोनों थीं।</p>
+      </div>
+
+    </section>
+    <!--  -->
+    <section id="" class="author-section">
+      <div class="author-header">
+        <img src="images/jayashankar_prasad.jpg" alt="जयशंकर प्रसाद" class="author-img">
+        
+    </section>
+    <!--  -->
+    <section id="" class="author-section">
+      <div class="author-header">
+        <img src="images/jayashankar_prasad.jpg" alt="जयशंकर प्रसाद" class="author-img">
+        
+    </section>
+    <!-- chandradhar sharma guleri -->
+    <section id="chanddhadhar_sharma_guleri" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="जयशंकर प्रसाद" class="author-img">
+        <div>
+          <h1>चन्द्रधर शर्मा गुलेरी</h1>
+          <div class="author-meta">कहानीकार • निबंधकार • संस्कृत विद्वान • अनुवादक</div>
+          <div class="tags">
+            <span class="tag">उसने कहा था</span>
+            <span class="tag">आधुनिक हिंदी कहानी</span>
+            <span class="tag">संस्कृत अध्ययन</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>चन्द्रधर शर्मा गुलेरी हिंदी कहानी साहित्य के मौलिक रचनाकार थे। उन्होंने मात्र तीन कहानियाँ लिखीं, लेकिन "उसने कहा था" जैसी अमर कृति से हिंदी साहित्य में अपना विशिष्ट स्थान बनाया। वे संस्कृत के प्रकांड विद्वान और श्रेष्ठ निबंधकार भी थे।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 7 जुलाई 1883</li>
+          <li><strong>जन्म स्थान:</strong> जयपुर, राजस्थान</li>
+          <li><strong>पिता:</strong> पं. शिवराम</li>
+          <li><strong>मूल निवास:</strong> ग्राम-गुलेर, जिला-कांगड़ा, हिमाचल प्रदेश</li>
+          <li><strong>निधन:</strong> 12 सितंबर 1922</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>बचपन में संस्कृत की शिक्षा</li>
+          <li>1899: इलाहाबाद विश्वविद्यालय से एंट्रेंस परीक्षा</li>
+          <li>1899: कोलकाता विश्वविद्यालय से मैट्रिक परीक्षा</li>
+          <li>1901: कोलकाता विश्वविद्यालय से इंटरमीडिएट</li>
+          <li>1903: इलाहाबाद विश्वविद्यालय से बी.ए.</li>
+        </ul>
+
+        <h2>करियर और पद</h2>
+        <ul>
+          <li>1904: जयपुर दरबार की ओर से खेतड़ी के नानालिंग राजा जयसिंह के अभिभावक</li>
+          <li>जयपुर भवन छात्रावास के अधीक्षक</li>
+          <li>1916: संस्कृत विभाग के अध्यक्ष</li>
+          <li>बनारस हिंदू विश्वविद्यालय में प्राच्य विभाग के कार्यवाहक प्राचार्य</li>
+          <li>मदन मोहन मालवीय के निमंत्रण पर मनीष चंद्र नेदी पीठ के प्रोफेसर</li>
+        </ul>
+
+        <h2>संपादन कार्य</h2>
+        <ul>
+          <li>समालोचक पत्रिका का संपादन</li>
+          <li>काशी नागरी प्रचारिणी पत्रिका से जुड़ाव</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>कहानियाँ</h3>
+        <ul>
+          <li>सुखमय जीवन (1911)</li>
+          <li>वृद्ध का कौंटा (1911)</li>
+          <li>उसने कहा था (1915) - हिंदी की अमर कहानी</li>
+        </ul>
+
+        <h3>प्रमुख निबंध</h3>
+        <ul>
+          <li>कछुआ धर्म</li>
+          <li>मारेसि मोहि कुठाराँ</li>
+          <li>पुरानी हिंदी</li>
+          <li>भारतवर्ष</li>
+          <li>डिंगल</li>
+          <li>संस्कृत की त्मरसी</li>
+          <li>देवानी प्रिय आदि</li>
+        </ul>
+
+        <h3>टिप्पणियाँ</h3>
+        <ul>
+          <li>अनुवाद की बाढ़</li>
+          <li>खोज की खोज</li>
+          <li>क्रियाशील हिंदी</li>
+          <li>वैदिक भाषा में प्राकृतपन आदि</li>
+        </ul>
+
+        <h3>अंग्रेजी में रचनाएं</h3>
+        <ul>
+          <li>ए पोयम बाय भास</li>
+          <li>ए कमेंट्री ऑन वात्स्यायनस कामसूत्र</li>
+          <li>दि लिटरेरी क्रिटिसिज्म आदि निबंध</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> केवल तीन कहानियाँ लिखकर भी हिंदी साहित्य में अमर हो गए। "उसने कहा था" आज भी हिंदी की सर्वश्रेष्ठ कहानियों में गिनी जाती है।</p>
+      </div>
+
+    </section>
+    <!--baalkrishna bhatt-->
+    <section id="balakrushna_bhatt" class="author-section">
+      <div class="author-header">
+        <img src="https://bharatdiscovery.org/w/images/thumb/c/c8/Balkrishna-Bhatt.jpg/200px-Balkrishna-Bhatt.jpg" alt="जयशंकर प्रसाद" class="author-img">
+       <div>
+          <h1>बालकृष्ण भट्ट</h1>
+          <div class="author-meta">लेखक • निबंधकार • अध्यापक • पत्रकार</div>
+          <div class="tags">
+            <span class="tag">भारतेंदु युग</span>
+            <span class="tag">हिंदी प्रदीप</span>
+            <span class="tag">सामाजिक सुधार</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>बालकृष्ण भट्ट भारतेंदु युग के महान लेखक थे जिन्होंने हिंदी साहित्य के विकास में अपना महत्वपूर्ण योगदान दिया। उन्होंने 'हिंदी प्रदीप' पत्रिका के माध्यम से हिंदी भाषा और साहित्य के प्रचार-प्रसार में महत्वपूर्ण भूमिका निभाई। उनकी रचनाओं में सामाजिक सुधार की भावना स्पष्ट रूप से दिखाई देती है।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 23 जून 1844</li>
+          <li><strong>जन्म स्थान:</strong> इलाहाबाद, उत्तर प्रदेश</li>
+          <li><strong>माता:</strong> पार्वती देवी</li>
+          <li><strong>पिता:</strong> बेनी प्रसाद भट्ट (व्यापारी)</li>
+          <li><strong>निधन:</strong> 20 जुलाई 1914</li>
+        </ul>
+
+        <h2>शिक्षा और करियर</h2>
+        <ul>
+          <li>प्रारंभ में संस्कृत का अध्ययन किया</li>
+          <li>1867 में प्रयाग के मिशन स्कूल से एंट्रेंस परीक्षा उत्तीर्ण</li>
+          <li>1869-1875: प्रयाग के मिशन स्कूल में अध्यापन</li>
+          <li>1885: प्रयाग के सी.पी.वी. स्कूल में संस्कृत अध्यापक</li>
+          <li>1888: कान्यक्या पाठशाला इंटर कॉलेज में अध्यापक</li>
+        </ul>
+
+        <h2>साहित्यिक योगदान</h2>
+        <ul>
+          <li>'हिंदी प्रदीप' पत्रिका का संपादन (33 वर्षों तक)</li>
+          <li>भारतेंदु हरिश्चंद्र से प्रेरित होकर 'हिंदी वर्धिनी सभा' की स्थापना</li>
+          <li>लाला श्रीनिवास दास के 'संयोगिता स्वयंवर' की आलोचना</li>
+          <li>रामचंद्र शुक्ल द्वारा अंग्रेजी साहित्य के पंडित की उपाधि</li>
+        </ul>
+
+        <h2>प्रमुख रचनाएँ</h2>
+        
+        <h3>उपन्यास</h3>
+        <ul>
+          <li>रहस्य कथा</li>
+          <li>नूतन ब्रह्मचारी</li>
+          <li>सौ अजान एक सुजान</li>
+          <li>गुप्त वैरी</li>
+          <li>रसातल यात्रा</li>
+          <li>उचित दक्षिणा</li>
+          <li>हमारी घड़ी</li>
+          <li>सद्राव का अभाव</li>
+        </ul>
+
+        <h3>नाटक</h3>
+        <ul>
+          <li>पद्मावती</li>
+          <li>किरातार्जुनीय</li>
+          <li>वेणी संहार</li>
+          <li>शिशुपाल वध</li>
+          <li>नल दमयंती या दमयंती स्वयंवर</li>
+          <li>चंद्रसेन</li>
+          <li>सीता वनवास</li>
+          <li>पतित पावन</li>
+          <li>मेघनाद वध</li>
+          <li>कंस वध की एक नकल</li>
+          <li>वृहत्कला</li>
+          <li>इंग्लैण्डेश्वरी</li>
+          <li>भारत जननी</li>
+          <li>भारतवर्ष और कलि</li>
+          <li>दो दुर्देशी</li>
+          <li>एक रोगी और एक वैद्य</li>
+          <li>रेल का विकट खेल</li>
+          <li>बालविवाह</li>
+        </ul>
+
+        <h3>प्रहसन</h3>
+        <ul>
+          <li>जैसा काम वैसा परिणाम</li>
+          <li>नई रोशनी का विप</li>
+          <li>आचार विड़ंबन आदि</li>
+        </ul>
+
+        <p><strong>कुल निबंध:</strong> लगभग 1000 निबंध लिखे, जिनमें से अधिकतर अत्यंत महत्वपूर्ण हैं।</p>
+      </div>
+
+    </section>
+
+    <!-- अज्ञेय -->
+    <section id="ajneya" class="author-section">
+      <div class="author-header">
+        <img src="data:image/jpeg;base64,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" alt="अज्ञेय" class="author-img">
+        <div>
+          <h1>राजेन्द्र हीरानंद वाल्मायान अनेजा</h1>
+          <div class="author-meta">लेखक • कहानीकार • उपन्यासकार • अनुवादक</div>
+          <div class="tags">
+            <span class="tag">येज कहानी</span>
+            <span class="tag">हिंदी साहित्य</span>
+            <span class="tag">अनुवाद कार्य</span>
+            <span class="tag">पत्रकारिता</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-content">
+        <h2>परिचय</h2>
+        <p>राजेन्द्र हीरानंद वाल्मायान अनेजा एक बहुमुखी प्रतिभा के धनी लेखक थे। उन्होंने हिंदी साहित्य में कहानी, उपन्यास और अनुवाद के क्षेत्र में महत्वपूर्ण योगदान दिया। वे संस्कृत, अंग्रेजी और हिंदी के अतिरिक्त कई भाषाओं के जानकार थे।</p>
+
+        <h2>व्यक्तिगत जानकारी</h2>
+        <ul>
+          <li><strong>जन्म:</strong> 7 मार्च 1911</li>
+          <li><strong>मूल निवास:</strong> कुशीनगर, उत्तर प्रदेश</li>
+          <li><strong>निधन:</strong> 4 अप्रैल 1987</li>
+          <li><strong>माता:</strong> टेटी देवी</li>
+          <li><strong>पिता:</strong> डॉ. हीरानंद शास्त्री (प्रख्यात पुरातत्ववेत्ता)</li>
+        </ul>
+
+        <h2>शिक्षा</h2>
+        <ul>
+          <li>प्रारंभिक चार साल लखनऊ में घर पर</li>
+          <li>मैट्रिक, 1925 में, पंजाब</li>
+          <li>विश्वविद्यालय से इंटर 1927 में मद्रास क्रिश्चन कॉलेज से</li>
+          <li>बी.ए. एम.सी. 1929 फॉरमन कॉलेज, लाहौर, पंजाब</li>
+          <li>एम.ए. (अंग्रेजी, पूर्वी), लाहौर से</li>
+          <li>क्रांतिकारी आंदोलन में गिरफ्तार हो जाने से आगे पढ़ाई रुक गई</li>
+        </ul>
+
+        <h2>भाषा-ज्ञान</h2>
+        <ul>
+          <li>संस्कृत, अंग्रेजी, हिंदी के अतिरिक्त फारसी, तमिल और अनेक भाषाओं का ज्ञान</li>
+        </ul>
+
+        <h2>व्यक्तित्व एवं स्वभाव</h2>
+        <ul>
+          <li>सुंदर, लंबा, गठीला शरीर</li>
+          <li>सुरुचि, सुलव्यवस्था एवं अनुशासनप्रियता</li>
+          <li>एकांतप्रिय अनुमूर्ति स्वभाव</li>
+          <li>गंभीर एवं चिंतनशील, चिंतामणि</li>
+          <li>अपने मन एवं चितमावण के लिए प्रसिद्ध</li>
+          <li>पिताजी का तबादला होते रहने के कारण लखनऊ, कश्मीर, लाहौर, पटना, मद्रास आदि स्थानों पर उनके साथ रहने और पर्यावरण का संस्कार बचपन में ही मिला</li>
+        </ul>
+
+        <h2>अभिरुचि</h2>
+        <ul>
+          <li>बागवानी, पर्वतन, अध्ययन आदि के आलावा दर्जों प्रकार के पेशेवर कार्यों में दक्षता</li>
+          <li>फोटोग्राफी, हस्तकला, शिल्प आदि में प्रवीणता</li>
+          <li>यूरोप, एशिया, अमेरिका सहित कई देशों की साहित्यिक यात्राएं</li>
+        </ul>
+
+        <h2>सम्मान एवं पुरस्कार</h2>
+        <ul>
+          <li>साहित्य अकादमी, भारतीय ज्ञानपीठ, युग (युगोस्लाविया) का अंतर्राष्ट्रीय स्वर्णपदक आदि पुरस्कार</li>
+          <li>देश-विदेश के अनेक विश्वविद्यालयों में 'विजिटिंग प्रोफेसर' के रूप में आमंत्रित</li>
+        </ul>
+
+        <h2>पत्रकारिता</h2>
+        <ul>
+          <li>दैनिक (आगरा), विशाल भारत (कोलकाता), प्रतिक (प्रयाग)</li>
+          <li>दिनमान (दिल्ली), नया प्रतिक (दिल्ली), नवभारत टाइम्स (नई दिल्ली)</li>
+          <li>वार्त, वक्त, एवर्थिंग (अंग्रेजी में संपादन)</li>
+        </ul>
+
+        <h2>कृतियाँ</h2>
+        <ul>
+          <li>दस वर्ष की अवस्था में कविता लिखनी शुरू की</li>
+          <li>लेखन हिंदी-अंग्रेजी दोनों भाषाओं में</li>
+          <li>बचपन में खेलने के लिए 'इदरत्मा' नामक नाटक लिखा</li>
+          <li>घर में एक हस्तलिखित पत्रिका 'आनंदवृषु' निकालते थे</li>
+          <li>1924-25 में अंग्रेजी में एक उपन्यास लिखा था</li>
+          <li>1924 में पहली कहानी इलाहाबाद की स्काउट पत्रिका 'सेवा' में प्रकाशित</li>
+          <li>1930 के बाद नियमित लेखन</li>
+        </ul>
+
+        <p><strong>विशेषता:</strong> राजेन्द्र जी बहुभाषी लेखक थे जिन्होंने साहित्य, पत्रकारिता और अनुवाद के क्षेत्र में महत्वपूर्ण योगदान दिया। उनकी रचनाओं में विविधता और गंभीरता दोनों के दर्शन होते हैं।</p>
+      </div>
+
+    </section>
+    <!-- Default Message -->
+<section id="default-message" class="author-section">
+    <div class="author-header">
+        <h1>लेखक का विवरण उपलब्ध नहीं</h1>
+    </div>
+    <div class="author-content">
+        <p>कृपया बाद में पुनः प्रयास करें या होम पेज पर वापस जाएं।</p>
+    </div>
+</section>
+  </div>
+
+  <script>
+// URL से "writer" param पढ़ो
+const params = new URLSearchParams(window.location.search);
+const writer = params.get("writer");
+
+// सभी sections hide करो
+document.querySelectorAll('.author-section').forEach(section => {
+    section.classList.remove('active');
+});
+
+if (writer) {
+    const section = document.getElementById(writer);
+    if (section) {
+        section.classList.add("active");
+    } else {
+        // अगर writer नहीं मिला तो default message दिखाओ
+        console.log("Writer not found:", writer);
+        document.getElementById("default-message").classList.add("active");
+    }
+} else {
+    // अगर कोई writer parameter नहीं है तो default message दिखाओ
+    document.getElementById("default-message").classList.add("active");
+}
+  </script>
+</body>
+</html>
