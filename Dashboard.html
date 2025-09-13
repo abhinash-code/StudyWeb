@@ -1642,6 +1642,505 @@
             visibility: visible;
         }
     </style>
+    <style>
+        /* CSS Variables for easy theming */
+        :root {
+            --sw-accent: #e91e63;
+            --sw-accent-2: #ff4081;
+            --sw-bg-alpha: 0.08;
+            --sw-glow-opacity: 0.15;
+            --sw-text-primary: #ffffff;
+            --sw-text-secondary: rgba(255, 255, 255, 0.9);
+            --sw-charcoal: #1a1a1a;
+            --sw-charcoal-light: #2d2d2d;
+        }
+
+        /* Demo container styling */
+        
+        .container-4 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px;
+            transform: translateY(1000px);
+        }
+      
+        /* Main Card Component */
+        .sw-lekhak-card {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, var(--sw-bg-alpha)) 0%,
+                rgba(233, 30, 99, 0.05) 50%,
+                rgba(255, 255, 255, 0.02) 100%
+            );
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(233, 30, 99, var(--sw-glow-opacity)),
+                0 32px 64px rgba(233, 30, 99, 0.1),
+                0 0 200px rgba(233, 30, 99, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(0) rotateX(0) scale(1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, filter, box-shadow;
+            overflow: hidden;
+        }
+       .sw-lekhak-card:hover {
+        box-shadow: 20px 20px 20px red;
+       }
+        /* Fallback for browsers without backdrop-filter */
+        @supports not (backdrop-filter: blur(20px)) {
+            .sw-lekhak-card {
+                background: rgba(26, 26, 26, 0.9);
+                box-shadow: 
+                    inset 0 0 20px rgba(255, 255, 255, 0.05),
+                    0 8px 32px rgba(233, 30, 99, var(--sw-glow-opacity)),
+                    0 32px 64px rgba(233, 30, 99, 0.1);
+            }
+        }
+
+        /* Floating animation */
+        .sw-lekhak-card {
+            animation: sw-float 6s ease-in-out infinite;
+        }
+
+        @keyframes sw-float {
+            0%, 100% { transform: translateY(0) rotateX(0.5deg); }
+            50% { transform: translateY(-8px) rotateX(-0.5deg); }
+        }
+
+        /* Moving gradient sheen layer */
+        .sw-lekhak-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(233, 30, 99, 0.1) 50%,
+                transparent 70%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+            pointer-events: none;
+            aria-hidden: true;
+        }
+
+        /* Pulse glow layer */
+        .sw-lekhak-card::after {
+            content: '';
+            position: relative;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(
+                circle,
+                rgba(233, 30, 99, 0.3) 0%,
+                rgba(255, 64, 129, 0.2) 30%,
+                transparent 70%
+            );
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+            aria-hidden: true;
+        }
+
+        /* Card Content */
+        #sw-card-001 {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .sw-card-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            line-height: 1.6;
+            color: var(--sw-text-primary);
+            margin: 0 0 2rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .sw-card-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2.5rem;
+            background: linear-gradient(
+                135deg,
+                rgba(233, 30, 99, 0.8) 0%,
+                rgba(255, 64, 129, 0.9) 100%
+            );
+            color: var(--sw-text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 4px 16px rgba(233, 30, 99, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .sw-card-button:hover,
+        .sw-card-button:focus {
+            background: linear-gradient(
+                135deg,
+                rgba(233, 30, 99, 0.9) 0%,
+                rgba(255, 64, 129, 1) 100%
+            );
+            transform: scale(1.05);
+            box-shadow: 
+                0 8px 24px rgba(233, 30, 99, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Aggressive Hover Effects */
+        .sw-lekhak-card:hover {
+            transform: translateY(-18px) rotateX(6deg) scale(1.03);
+            box-shadow: 
+                0 20px 60px rgba(233, 30, 99, 0.25),
+                0 60px 120px rgba(233, 30, 99, 0.15),
+                0 0 300px rgba(233, 30, 99, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            filter: brightness(1.1);
+            animation: none;
+        }
+
+        .sw-lekhak-card:hover::before {
+            transform: translateX(100%);
+            transition-duration: 0.8s;
+        }
+
+        .sw-lekhak-card:hover::after {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 1;
+            animation: sw-pulse 0.6s ease-out;
+        }
+
+        @keyframes sw-pulse {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(2); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(3); opacity: 1; }
+        }
+
+        /* Chromatic aberration effect */
+        .sw-lekhak-card:hover {
+            position: relative;
+        }
+
+        .sw-lekhak-card:hover::before {
+            box-shadow: 
+                -2px 0 0 rgba(233, 30, 99, 0.3),
+                2px 0 0 rgba(64, 196, 255, 0.2);
+        }
+
+        /* Particle sparks */
+        .sw-spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, var(--sw-accent-2), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .sw-spark.active {
+            animation: sw-sparkle 0.8s ease-out forwards;
+        }
+
+        @keyframes sw-sparkle {
+            0% {
+                opacity: 1;
+                transform: scale(0) translate(0, 0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translate(var(--spark-x, 0), var(--spark-y, 0));
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1023px) {
+            .sw-lekhak-card {
+                max-width: 480px;
+                width: 90%;
+                padding: 2rem;
+            }
+            
+            .sw-card-title {
+                font-size: 1.125rem;
+            }
+        }
+
+        @media (max-width: 599px) {
+            .container-4 {
+                padding: 15px;
+            }
+            
+            .sw-lekhak-card {
+                width: 100%;
+                max-width: none;
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+            
+            .sw-card-title {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .sw-card-button {
+                width: 100%;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+            
+            /* Reduce hover intensity on mobile */
+            .sw-lekhak-card:hover {
+                transform: translateY(-8px) rotateX(3deg) scale(1.02);
+            }
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            .sw-lekhak-card {
+                animation: none;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+            }
+            
+            .sw-lekhak-card:hover {
+                transform: translateY(-4px) scale(1.01);
+                animation: none;
+            }
+            
+            .sw-lekhak-card::before,
+            .sw-lekhak-card::after {
+                display: none;
+            }
+            
+            .sw-spark {
+                display: none;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .sw-card-button:focus-visible {
+            outline: 2px solid var(--sw-accent);
+            outline-offset: 2px;
+        }
+        .container-3 {
+            transform: translateX(90px);
+        }
+    </style>
+    <style>
+    :root{
+      --bg-1: #0b0b0f;
+      --bg-2: #111018;
+      --accent-1: #ff6ec7; /* magenta/pink */
+      --accent-2: #f9d66b; /* warm gold */
+      --accent-3: #9b7cff; /* violet sheen */
+      --card-edge: rgba(255,255,255,0.04);
+      --text-size-min: 28px;
+      --text-size-max: 120px;
+    }
+
+    /* page background */
+   
+
+    /* stage wrapper to avoid ID collisions on pages */
+    .sw-hindi-stage{
+      --pad: clamp(18px,2.5vw,42px);
+      width:min(1200px, 96%);
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      perspective:1400px; /* for 3D tilt */
+      pointer-events:auto;
+      transform: translateY(950px);
+    }
+
+    /* Decorative ambient glow behind the text */
+    .sw-ambient-glow{
+      position:absolute;
+      inset: -12% -20% auto -20%;
+      height:75%;
+      background: radial-gradient(40% 30% at 12% 30%, rgba(155,124,255,0.08), transparent),
+                  radial-gradient(30% 20% at 85% 70%, rgba(255,110,199,0.06), transparent),
+                  radial-gradient(60% 40% at 50% 50%, rgba(249,214,107,0.04), transparent);
+      filter: blur(60px) saturate(120%);
+      z-index:0;
+      pointer-events:none;
+      transform: translateZ(-200px);
+      mix-blend-mode: screen;
+      opacity:0.95;
+    }
+
+    /* the hero text container */
+    .sw-hindi-wrap{
+      z-index:2;
+      display:inline-block;
+      padding:var(--pad);
+      border-radius:22px;
+      transform-style:preserve-3d;
+      will-change:transform;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 200px rgba(155,124,255,0.04), 0 0 320px rgba(249,214,107,0.02);
+      border: 1px solid var(--card-edge);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:160px;
+      gap:16px;
+    }
+
+    /* Main text styling (uses the user's provided id) */
+    #Hindi{
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight:900;
+      font-size: clamp(var(--text-size-min), 9vw, var(--text-size-max));
+      line-height:0.9;
+      margin:0;
+      padding:0 6px;
+      letter-spacing: -0.02em;
+      text-transform:none;
+      position:relative;
+      z-index:3;
+      display:inline-block;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(90deg, var(--accent-1), var(--accent-3) 40%, var(--accent-2) 80%);
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.65));
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.02),
+        0 6px 20px rgba(155,124,255,0.06),
+        0 16px 60px rgba(255,110,199,0.06);
+      transition: transform 420ms cubic-bezier(.22,.9,.3,1), text-shadow 420ms ease;
+    }
+
+    /* shiny shimmer layer that sweeps across the text */
+    #Hindi::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      z-index:2;
+      -webkit-background-clip:text;
+      background-clip:text;
+      background: linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.18) 45%, rgba(255,255,255,0.0) 60%);
+      transform: translateX(-120%);
+      filter: blur(8px);
+      pointer-events:none;
+      transition: none;
+    }
+
+    /* underline neon stroke */
+    #Hindi::after{
+      content:'';
+      position:absolute;
+      left:6%;
+      right:6%;
+      bottom:-10%;
+      height:8px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(155,124,255,0.6), rgba(255,110,199,0.7), rgba(249,214,107,0.45));
+      filter: blur(14px) saturate(140%);
+      opacity:0.9;
+      z-index:1;
+      transform: translateZ(-1px);
+      pointer-events:none;
+    }
+
+    /* small decorative dots (sparkle placeholders) */
+    .sw-sparks{position:absolute; inset:0; z-index:1; pointer-events:none;}
+    .sw-sparks span{position:absolute; width:6px; height:6px; border-radius:50%; opacity:0; transform:translate3d(0,0,0); will-change:transform,opacity;}
+
+    /* animation definitions */
+    @keyframes shimmerSweep{
+      0%{ transform: translateX(-120%); opacity:0 }
+      50%{ transform: translateX(20%); opacity:1 }
+      100%{ transform: translateX(120%); opacity:0 }
+    }
+
+    @keyframes floatTilt{
+      0%{ transform: rotateX(0deg) translateY(0) }
+      50%{ transform: rotateX(2deg) translateY(-6px) }
+      100%{ transform: rotateX(0deg) translateY(0) }
+    }
+
+    /* Hover / focus effects — large dramatic change */
+    .sw-hindi-wrap:hover, .sw-hindi-wrap:focus-within{
+      transform: translateZ(40px) rotateX(4deg) scale(1.02);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 420px rgba(155,124,255,0.12), 0 0 720px rgba(249,214,107,0.06);
+    }
+
+    .sw-hindi-wrap:hover #Hindi, .sw-hindi-wrap:focus-within #Hindi{
+      transform: translateZ(60px) translateY(-10px) rotateX(2deg) scale(1.02);
+      text-shadow: 0 4px 18px rgba(155,124,255,0.12), 0 28px 120px rgba(255,110,199,0.12);
+    }
+
+    .sw-hindi-wrap:hover #Hindi::before{
+      animation: shimmerSweep 900ms ease-out forwards;
+    }
+
+    /* create subtle particle bursts on hover using CSS animations tied to spans */
+    .sw-hindi-wrap:hover .sw-sparks span{
+      opacity:1;
+      animation: sparkFly linear forwards;
+    }
+
+    @keyframes sparkFly{
+      from{ transform: translate3d(0,0,0) scale(0.6); opacity:1 }
+      to{ transform: translate3d(var(--tx,0), var(--ty, -120px), 0) scale(0.3); opacity:0 }
+    }
+
+    /* floating idle animation */
+    .sw-hindi-wrap{ animation: floatTilt 6s ease-in-out infinite; }
+
+    /* prefers-reduced-motion fallback */
+    @media (prefers-reduced-motion: reduce){
+      .sw-hindi-wrap, #Hindi, #Hindi::before, .sw-sparks span{ animation:none !important; transition:none !important; }
+      body{ transition:none }
+    }
+
+    /* responsiveness — ensure the container works on mobile */
+    @media (max-width:599px){
+      .sw-hindi-wrap{ padding:18px; border-radius:14px; }
+      #Hindi{ font-size: clamp(28px, 12vw, 64px); }
+      #Hindi::after{ bottom:-8%; height:6px; }
+    }
+
+    /* extra: make sure the sparks are visually varied */
+    .sw-sparks span[data-color="1"]{ background: var(--accent-1); box-shadow: 0 0 8px rgba(255,110,199,0.9); }
+    .sw-sparks span[data-color="2"]{ background: var(--accent-2); box-shadow: 0 0 10px rgba(249,214,107,0.95); }
+    .sw-sparks span[data-color="3"]{ background: var(--accent-3); box-shadow: 0 0 10px rgba(155,124,255,0.9); }
+
+  </style>
+</head>
 </head>
 <body>
     <video id="bg-video" autoplay muted loop playsinline>
@@ -1973,10 +2472,35 @@
                                     <button class="chem-card-btn" title="View" onclick="alert('coming soon...')">View</button>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
+                        <div class="sw-hindi-stage" aria-hidden="false">
+    <div class="sw-ambient-glow" aria-hidden="true"></div>
+
+    <div class="sw-hindi-wrap" role="img" aria-label="Hindi styled heading">
+      <!-- User-provided element (kept as-is) -->
+      <div id="Hindi">Hindi</div>
+
+      <!-- decorative spark container (populated by JS below) -->
+      <div class="sw-sparks" aria-hidden="true"></div>
+    </div>
+  </div>
+
+                        <div class="container-4" id="hindi">
+        <article class="sw-lekhak-card">
+            <div id="sw-card-001">
+                <p class="sw-card-title">
+                    इसमें 12th के हिन्दी विषय के सभी लेखक और उनके रचनाओं के नाम एक ही जगह पर दिया गया है
+                </p>
+                <a href="#" class="sw-card-button" role="button" aria-label="Visit authors list" id="btn" data-target="Hindi.html">
+                    Visit
+                </a>
+            </div>
+        </article>
+    </div>
                     </div>
                 </section>
             </div>
+            
         </div>
     
         <div class="panel panel-top"></div>
@@ -2014,7 +2538,144 @@
             <button id="saveSettingsBtn" class="settings-btn">Save Settings</button>
         </div>
     </section>
+    <script>
+    // Progressive enhancement: create a handful of decorative sparks around the text.
+    (function(){
+      const container = document.querySelector('.sw-sparks');
+      if(!container) return;
 
+      const SPARK_COUNT = 26;
+      for(let i=0;i<SPARK_COUNT;i++){
+        const s = document.createElement('span');
+        // random placement inside the text area
+        const left = Math.random()*100;
+        const top = Math.random()*100;
+        s.style.left = left + '%';
+        s.style.top = top + '%';
+        // random target fly vector
+        const tx = Math.round((Math.random()*200 - 100)) + 'px';
+        const ty = (Math.round(Math.random()*140) + 80) + 'px';
+        s.style.setProperty('--tx', tx);
+        s.style.setProperty('--ty', '-' + ty);
+        // color variation
+        const color = (i % 3) + 1;
+        s.setAttribute('data-color', String(color));
+        // duration jitter
+        const dur = (Math.random()*700 + 600) + 'ms';
+        s.style.animationDuration = dur;
+        s.style.animationDelay = (Math.random()*140) + 'ms';
+        container.appendChild(s);
+      }
+
+      // Make sparks trigger on hover/tap for touch devices: briefly restart animations
+      const wrap = document.querySelector('.sw-hindi-wrap');
+      let touchTimer = null;
+      function triggerSparks(){
+        const spans = container.querySelectorAll('span');
+        spans.forEach(sp => {
+          // restart animation by cloning
+          const a = sp.cloneNode(false);
+          a.style.left = sp.style.left; a.style.top = sp.style.top;
+          a.style.setProperty('--tx', sp.style.getPropertyValue('--tx'));
+          a.style.setProperty('--ty', sp.style.getPropertyValue('--ty'));
+          a.setAttribute('data-color', sp.getAttribute('data-color'));
+          a.style.animationDuration = sp.style.animationDuration;
+          a.style.animationDelay = sp.style.animationDelay;
+          sp.replaceWith(a);
+        });
+      }
+
+      wrap.addEventListener('mouseenter', triggerSparks, {passive:true});
+      wrap.addEventListener('touchstart', function(){
+        if(touchTimer) clearTimeout(touchTimer);
+        triggerSparks();
+        // allow repeated taps
+        touchTimer = setTimeout(()=> touchTimer = null, 800);
+      }, {passive:true});
+
+    })();
+  </script>
+<script>
+        // Progressive Enhancement: Particle Spark System
+        (function() {
+            'use strict';
+            
+            const card = document.querySelector('.sw-lekhak-card');
+            if (!card) return;
+            
+            // Check for reduced motion preference
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) return;
+            
+            let sparkTimeout;
+            
+            function createSpark(x, y) {
+                const spark = document.createElement('div');
+                spark.className = 'sw-spark';
+                
+                // Random direction and distance
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 30 + Math.random() * 40;
+                const sparkX = Math.cos(angle) * distance;
+                const sparkY = Math.sin(angle) * distance;
+                
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                spark.style.setProperty('--spark-x', sparkX + 'px');
+                spark.style.setProperty('--spark-y', sparkY + 'px');
+                
+                card.appendChild(spark);
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    spark.classList.add('active');
+                });
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (spark.parentNode) {
+                        spark.parentNode.removeChild(spark);
+                    }
+                }, 800);
+            }
+            
+            function generateSparks(event) {
+                const rect = card.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Create multiple sparks
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(() => {
+                        const offsetX = (Math.random() - 0.5) * 60;
+                        const offsetY = (Math.random() - 0.5) * 60;
+                        createSpark(
+                            centerX + offsetX,
+                            centerY + offsetY
+                        );
+                    }, i * 50);
+                }
+            }
+            
+            // Hover events
+            card.addEventListener('mouseenter', function(e) {
+                clearTimeout(sparkTimeout);
+                sparkTimeout = setTimeout(() => generateSparks(e), 200);
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                clearTimeout(sparkTimeout);
+            });
+            
+            // Touch events for mobile
+            card.addEventListener('touchstart', function(e) {
+                // Prevent multiple rapid touches
+                clearTimeout(sparkTimeout);
+                sparkTimeout = setTimeout(() => generateSparks(e), 100);
+            }, { passive: true });
+            
+        })();
+    </script>
     <script>
         // Add this to your existing JavaScript
         document.addEventListener('DOMContentLoaded', function() {
