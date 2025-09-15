@@ -1954,192 +1954,269 @@
         }
     </style>
     <style>
-    :root{
-      --bg-1: #0b0b0f;
-      --bg-2: #111018;
-      --accent-1: #ff6ec7; /* magenta/pink */
-      --accent-2: #f9d66b; /* warm gold */
-      --accent-3: #9b7cff; /* violet sheen */
-      --card-edge: rgba(255,255,255,0.04);
-      --text-size-min: 28px;
-      --text-size-max: 120px;
-    }
+  #Hindi {
+    font-family: 'Poppins', 'Segoe UI', sans-serif; /* modern, stylish heading font */
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 80px); /* responsive heading size */
+    background: linear-gradient(90deg, #ff6ec7, #9b7cff, #f9d66b); /* subtle gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* gradient text */
+    text-transform: none;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    cursor: default;
+    z-index: 1000;
+    transform: translateY(1700px);
+    padding: 0;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.15); /* subtle shadow for depth */
+    display: inline-block;
+    margin-right: 850px;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
 
-    /* page background */
+/* hover effect for slight pop */
+#Hindi:hover {
    
+    text-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+}
 
-    /* stage wrapper to avoid ID collisions on pages */
-    .sw-hindi-stage{
-      --pad: clamp(18px,2.5vw,42px);
-      width:min(1200px, 96%);
-      max-width:1100px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      perspective:1400px; /* for 3D tilt */
-      pointer-events:auto;
-      transform: translateY(950px);
-    }
+/* remove shimmer, underline, spark effects */
+#Hindi::before,
+#Hindi::after {
+    content: none;
+}
 
-    /* Decorative ambient glow behind the text */
-    .sw-ambient-glow{
-      position:absolute;
-      inset: -12% -20% auto -20%;
-      height:75%;
-      background: radial-gradient(40% 30% at 12% 30%, rgba(155,124,255,0.08), transparent),
-                  radial-gradient(30% 20% at 85% 70%, rgba(255,110,199,0.06), transparent),
-                  radial-gradient(60% 40% at 50% 50%, rgba(249,214,107,0.04), transparent);
-      filter: blur(60px) saturate(120%);
-      z-index:0;
-      pointer-events:none;
-      transform: translateZ(-200px);
-      mix-blend-mode: screen;
-      opacity:0.95;
-    }
+.sw-hindi-wrap {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: none;
+    animation: none;
+}
 
-    /* the hero text container */
-    .sw-hindi-wrap{
-      z-index:2;
-      display:inline-block;
-      padding:var(--pad);
-      border-radius:22px;
-      transform-style:preserve-3d;
-      will-change:transform;
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 200px rgba(155,124,255,0.04), 0 0 320px rgba(249,214,107,0.02);
-      border: 1px solid var(--card-edge);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:160px;
-      gap:16px;
-    }
+.sw-sparks {
+    display: none;
+}
 
-    /* Main text styling (uses the user's provided id) */
-    #Hindi{
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight:900;
-      font-size: clamp(var(--text-size-min), 9vw, var(--text-size-max));
-      line-height:0.9;
-      margin:0;
-      padding:0 6px;
-      letter-spacing: -0.02em;
-      text-transform:none;
-      position:relative;
-      z-index:3;
-      display:inline-block;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-image: linear-gradient(90deg, var(--accent-1), var(--accent-3) 40%, var(--accent-2) 80%);
-      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.65));
-      text-shadow:
-        0 1px 0 rgba(255,255,255,0.02),
-        0 6px 20px rgba(155,124,255,0.06),
-        0 16px 60px rgba(255,110,199,0.06);
-      transition: transform 420ms cubic-bezier(.22,.9,.3,1), text-shadow 420ms ease;
-    }
+    </style>
+   <style>
+        /* Unique class names to avoid conflicts */
+        .hindi-authors-container-unique {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .authors-box-special {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 16px;
+            background: rgba(147, 112, 219, 0.15); /* Light purple with transparency */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 12px 30px rgba(75, 0, 130, 0.2);
+            border: 1px solid rgba(238, 130, 238, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: box-appear-unique 1.2s ease-out forwards;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .authors-box-special::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(148, 0, 211, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer-unique 8s infinite linear;
+            z-index: -1;
+        }
+        
+        .authors-title-exclusive {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #4B0082; /* Indigo */
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: title-focus-unique 2s ease-in-out infinite alternate;
+        }
+        
+        .authors-content-distinct {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateZ(30px);
+            transition: transform 0.4s ease;
+            border-left: 4px solid #9370DB; /* Medium purple */
+        }
+        
+        .authors-content-distinct:hover {
+            transform: translateZ(40px) scale(1.02);
+        }
+        
+        .authors-list-special {
+            columns: 2;
+            column-gap: 20px;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .authors-list-special li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(147, 112, 219, 0.3);
+            break-inside: avoid;
+            color: #2E0854; /* Dark purple */
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .authors-list-special li:hover {
+            color: #8A2BE2; /* Blue violet */
+            padding-left: 5px;
+        }
+        
+        .authors-list-special li:last-child {
+            border-bottom: none;
+        }
+        
+        .visit-button-unique {
+            display: block;
+            width: 140px;
+            margin: 0 auto;
+            padding: 14px 0;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082); /* Purple gradient */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(139, 0, 139, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .visit-button-unique::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .visit-button-unique:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(139, 0, 139, 0.4);
+        }
+        
+        .visit-button-unique:hover::before {
+            left: 100%;
+        }
+        
+        .visit-button-unique:active {
+            transform: translateY(2px) scale(0.98);
+        }
+        
+        /* Animations */
+        @keyframes box-appear-unique {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotateX(15deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+        
+        @keyframes title-focus-unique {
+            0% {
+                transform: scale(1);
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            100% {
+                transform: scale(1.03);
+                text-shadow: 0 4px 8px rgba(75, 0, 130, 0.2);
+            }
+        }
+        
+        @keyframes shimmer-unique {
+            0% {
+                transform: rotate(45deg) translateX(-50%) translateY(-50%);
+            }
+            100% {
+                transform: rotate(45deg) translateX(50%) translateY(50%);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 650px) {
+            .authors-list-special {
+                columns: 1;
+            }
+            
+            .authors-box-special {
+                padding: 20px 15px;
+            }
+            
+            .authors-title-exclusive {
+                font-size: 18px;
+            }
+        }
+       #english {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1d1fb4;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #fffdff 0%, #3498db 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding: 0 20px;
+    margin: 10px 0;
+    transform: translateY(1000px);
+    transition: all 0.3s ease;
+}
 
-    /* shiny shimmer layer that sweeps across the text */
-    #Hindi::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      z-index:2;
-      -webkit-background-clip:text;
-      background-clip:text;
-      background: linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.18) 45%, rgba(255,255,255,0.0) 60%);
-      transform: translateX(-120%);
-      filter: blur(8px);
-      pointer-events:none;
-      transition: none;
-    }
+#english:hover {
+    transform: scale(1.05);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
-    /* underline neon stroke */
-    #Hindi::after{
-      content:'';
-      position:absolute;
-      left:6%;
-      right:6%;
-      bottom:-10%;
-      height:8px;
-      border-radius:999px;
-      background: linear-gradient(90deg, rgba(155,124,255,0.6), rgba(255,110,199,0.7), rgba(249,214,107,0.45));
-      filter: blur(14px) saturate(140%);
-      opacity:0.9;
-      z-index:1;
-      transform: translateZ(-1px);
-      pointer-events:none;
-    }
 
-    /* small decorative dots (sparkle placeholders) */
-    .sw-sparks{position:absolute; inset:0; z-index:1; pointer-events:none;}
-    .sw-sparks span{position:absolute; width:6px; height:6px; border-radius:50%; opacity:0; transform:translate3d(0,0,0); will-change:transform,opacity;}
+/* underline aur animation remove kar diya */
 
-    /* animation definitions */
-    @keyframes shimmerSweep{
-      0%{ transform: translateX(-120%); opacity:0 }
-      50%{ transform: translateX(20%); opacity:1 }
-      100%{ transform: translateX(120%); opacity:0 }
-    }
-
-    @keyframes floatTilt{
-      0%{ transform: rotateX(0deg) translateY(0) }
-      50%{ transform: rotateX(2deg) translateY(-6px) }
-      100%{ transform: rotateX(0deg) translateY(0) }
-    }
-
-    /* Hover / focus effects — large dramatic change */
-    .sw-hindi-wrap:hover, .sw-hindi-wrap:focus-within{
-      transform: translateZ(40px) rotateX(4deg) scale(1.02);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 420px rgba(155,124,255,0.12), 0 0 720px rgba(249,214,107,0.06);
-    }
-
-    .sw-hindi-wrap:hover #Hindi, .sw-hindi-wrap:focus-within #Hindi{
-      transform: translateZ(60px) translateY(-10px) rotateX(2deg) scale(1.02);
-      text-shadow: 0 4px 18px rgba(155,124,255,0.12), 0 28px 120px rgba(255,110,199,0.12);
-    }
-
-    .sw-hindi-wrap:hover #Hindi::before{
-      animation: shimmerSweep 900ms ease-out forwards;
-    }
-
-    /* create subtle particle bursts on hover using CSS animations tied to spans */
-    .sw-hindi-wrap:hover .sw-sparks span{
-      opacity:1;
-      animation: sparkFly linear forwards;
-    }
-
-    @keyframes sparkFly{
-      from{ transform: translate3d(0,0,0) scale(0.6); opacity:1 }
-      to{ transform: translate3d(var(--tx,0), var(--ty, -120px), 0) scale(0.3); opacity:0 }
-    }
-
-    /* floating idle animation */
-    .sw-hindi-wrap{ animation: floatTilt 6s ease-in-out infinite; }
-
-    /* prefers-reduced-motion fallback */
-    @media (prefers-reduced-motion: reduce){
-      .sw-hindi-wrap, #Hindi, #Hindi::before, .sw-sparks span{ animation:none !important; transition:none !important; }
-      body{ transition:none }
-    }
-
-    /* responsiveness — ensure the container works on mobile */
-    @media (max-width:599px){
-      .sw-hindi-wrap{ padding:18px; border-radius:14px; }
-      #Hindi{ font-size: clamp(28px, 12vw, 64px); }
-      #Hindi::after{ bottom:-8%; height:6px; }
-    }
-
-    /* extra: make sure the sparks are visually varied */
-    .sw-sparks span[data-color="1"]{ background: var(--accent-1); box-shadow: 0 0 8px rgba(255,110,199,0.9); }
-    .sw-sparks span[data-color="2"]{ background: var(--accent-2); box-shadow: 0 0 10px rgba(249,214,107,0.95); }
-    .sw-sparks span[data-color="3"]{ background: var(--accent-3); box-shadow: 0 0 10px rgba(155,124,255,0.9); }
-
-  </style>
+    </style>
 </head>
 </head>
 <body>
@@ -2281,8 +2358,8 @@
                     <ul type="none">
                         <li><a href="#physics" class="sw-nav-link sw-anim active" title="Physics" data-target="physics">Physics</a></li>
                         <li><a href="#chemistry" class="sw-nav-link sw-anim" title="Chemistry" data-target="chemistry">Chemistry</a></li>
-                        <li><a href="#english" class="sw-nav-link sw-anim" title="English" data-target="english">English</a></li>
-                        <li><a href="#hindi" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">Hindi</a></li>
+                        <li><a href="#hindi" class="sw-nav-link sw-anim" title="English" data-target="english">Hindi</a></li>
+                        <li><a href="#english" class="sw-nav-link sw-anim" title="Hindi" data-target="hindi">English</a></li>
                     </ul>
                     <div class="nav-actions">                
                         <div class="hamburger" id="hamburger">
@@ -2497,6 +2574,14 @@
             </div>
         </article>
     </div>
+    <div id="english">English</div>
+    <div class="hindi-authors-container-unique"  style="transform: translateY(900px);">
+        <div class="authors-box-special">
+            <h2 class="authors-title-exclusive">It contains all the authors of the 12th grade English subject and the names of their works in one place</h2>
+            <button class="visit-button-unique" id="btn" data-target="english.html">Visit</button>
+        </div>
+    </div>
+
                     </div>
                 </section>
             </div>
@@ -2538,6 +2623,55 @@
             <button id="saveSettingsBtn" class="settings-btn">Save Settings</button>
         </div>
     </section>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the button element
+            const visitButton = document.querySelector('.visit-button-unique');
+            
+            // Add click event listener
+            visitButton.addEventListener('click', function() {
+                // Create a ripple effect
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+                this.appendChild(ripple);
+                
+                // Remove the ripple after animation completes
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+                
+                // Example action - replace with your desired functionality
+              
+            });
+            
+            // Add styles for ripple effect
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple-effect {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-unique 0.6s linear;
+                    pointer-events: none;
+                    width: 100px;
+                    height: 100px;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -50px;
+                    margin-left: -50px;
+                }
+                
+                @keyframes ripple-unique {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
     <script>
     // Progressive enhancement: create a handful of decorative sparks around the text.
     (function(){
