@@ -1,0 +1,151 @@
+{
+  "works": [
+    {
+      "section": "Prose",
+      "title": "Indian civilization and culture",
+      "author": "Mahatma Gandhi",
+      "authorImage": "images/mahatma_gandhi.jpg",
+      "summary": "Gandhi's reflections on Indian civilization and its cultural values."
+    },
+    {
+      "section": "Prose",
+      "title": "Bharat is my home",
+      "author": "Dr Zakir Hussain",
+      "authorImage": "images/zakir_hussain.jpg",
+      "summary": "A patriotic essay expressing deep connection with India as homeland."
+    },
+    {
+      "section": "Prose",
+      "title": "A pinch of snuff",
+      "author": "Manohar Malgaonkar",
+      "authorImage": "images/manohar_malgaonkar.jpg",
+      "summary": "A humorous take on social customs and habits in Indian society."
+    },
+    {
+      "section": "Prose",
+      "title": "I have a dream",
+      "author": "Martin Luther King",
+      "authorImage": "images/martin_luther_king.jpg",
+      "summary": "The iconic speech about racial equality and civil rights."
+    },
+    {
+      "section": "Prose",
+      "title": "Ideas that have helped mankind",
+      "author": "Bertrand Russell",
+      "authorImage": "images/bertrand_russell.jpg",
+      "summary": "Russell's exploration of philosophical concepts that advanced humanity."
+    },
+    {
+      "section": "Prose",
+      "title": "The Artist",
+      "author": "Shiga Naoya",
+      "authorImage": "images/shiga_naoya.jpg",
+      "summary": "A Japanese short story exploring the nature of art and creativity."
+    },
+    {
+      "section": "Prose",
+      "title": "A child is born",
+      "author": "Germaine Greer",
+      "authorImage": "images/germaine_greer.jpg",
+      "summary": "Feminist perspective on childbirth and motherhood."
+    },
+    {
+      "section": "Prose",
+      "title": "How Free is the press",
+      "author": "Dorothy L. Sayers",
+      "authorImage": "images/dorothy_sayers.jpg",
+      "summary": "Critical examination of media freedom and responsibilities."
+    },
+    {
+      "section": "Prose",
+      "title": "The Earth",
+      "author": "H.E. Bates",
+      "authorImage": "images/he_bates.jpg",
+      "summary": "Nature writing exploring humanity's connection to the natural world."
+    },
+    {
+      "section": "Prose",
+      "title": "India through a traveller's Eye",
+      "author": "Pearl S. Buck",
+      "authorImage": "images/pearl_buck.jpg",
+      "summary": "An American novelist's perspective on Indian culture and society."
+    },
+    {
+      "section": "Prose",
+      "title": "A Marriage Proposal",
+      "author": "Anton Chekhov",
+      "authorImage": "images/anton_chekhov.jpg",
+      "summary": "A classic one-act comedy about relationships and social conventions."
+    },
+    {
+      "section": "Poetry",
+      "title": "Sweetest Love, I Do Not Go",
+      "author": "John Donne",
+      "authorImage": "images/john_donne.jpg",
+      "summary": "Metaphysical poem about love and separation."
+    },
+    {
+      "section": "Poetry",
+      "title": "Songs Of Myself",
+      "author": "Walt Whitman",
+      "authorImage": "images/walt_whitman.jpg",
+      "summary": "Celebration of the self and democratic ideals in free verse."
+    },
+    {
+      "section": "Poetry",
+      "title": "Now The Leaves Are Falling Fast",
+      "author": "W. H. Auden",
+      "authorImage": "images/wh_auden.jpg",
+      "summary": "Modernist poem reflecting on change and mortality."
+    },
+    {
+      "section": "Poetry",
+      "title": "To Autumn",
+      "author": "John Keats",
+      "authorImage": "images/john_keats.jpg",
+      "summary": "Ode celebrating the season of autumn and its sensory richness."
+    },
+    {
+      "section": "Poetry",
+      "title": "An Epitaph",
+      "author": "Walter de la Mare",
+      "authorImage": "images/walter_delamare.jpg",
+      "summary": "A reflective poem on memory and loss."
+    },
+    {
+      "section": "Poetry",
+      "title": "The Soldier",
+      "author": "Rupert Brooke",
+      "authorImage": "images/rupert_brooke.jpg",
+      "summary": "Patriotic sonnet about sacrifice for one's country."
+    },
+    {
+      "section": "Poetry",
+      "title": "Macavity: The Mystery Cat",
+      "author": "T. S. Eliot",
+      "authorImage": "images/ts_eliot.jpg",
+      "summary": "Humorous poem about a cunning feline character."
+    },
+    {
+      "section": "Poetry",
+      "title": "Fire-Hymn",
+      "author": "Keki N. Daruwala",
+      "authorImage": "images/keki_daruwala.jpg",
+      "summary": "Indian English poem exploring spiritual themes through fire imagery."
+    },
+    {
+      "section": "Poetry",
+      "title": "Snake",
+      "author": "D. H. Lawrence",
+      "authorImage": "images/dh_lawrence.jpg",
+      "summary": "Symbolic poem about human encounter with a snake."
+    },
+    {
+      "section": "Poetry",
+      "title": "My Grandmother's House",
+      "author": "Kamala Das",
+      "authorImage": "images/kamala_das.jpg",
+      "summary": "Nostalgic poem about childhood memories and lost love."
+    }
+  ]
+}
