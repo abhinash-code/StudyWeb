@@ -2214,8 +2214,218 @@
 }
 
 
-/* underline aur animation remove kar diya */
 
+
+    </style>
+    <style>
+        
+        /* FIXED: Chapter cards positioning */
+        .chapter-card-container {
+            display: flex;
+            align-items: center;
+            height: auto;
+            margin-top: 3rem;
+            background: transparent;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            transform: none !important; /* Remove translateY */
+        }
+
+        /* FIXED: Chemistry cards positioning */
+        .chem-card-wrap {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            transform: none !important; /* Remove translateY */
+            width: 100%;
+            float: none;
+            margin-right: 0;
+            clear: both;
+        }
+       
+        /* FIXED: Chemistry heading */
+        #Chemistry-heading {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            color: whitesmoke;
+            font-size: 32px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bolder;
+            text-shadow: 0 2px 2px grey;
+            width: 100%;
+            text-align: center;
+            margin: 2rem 0 1rem 0;
+            transform: none !important; /* Remove translateY */
+        }
+        
+        /* FIXED: Physics heading */
+        #physics-heading {
+            font-size: 32px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 900;
+            font-style: initial;
+            color: whitesmoke;
+            justify-content: center;
+            display: flex;
+            flex-direction: row;
+            text-shadow: 0 4px 4px grey;
+            cursor: default;
+            margin: 2rem 0 1rem 0;
+            transform: none !important; /* Remove translateY */
+        }
+
+        /* FIXED: Container-3 adjustments */
+        .container-3 {
+            width: 100%;
+            transform: none !important; /* Remove translateX */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+        
+        /* FIXED: Hindi section */
+        #Hindi {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            font-weight: 800;
+            font-size: clamp(32px, 6vw, 60px);
+            background: linear-gradient(90deg, #ff6ec7, #9b7cff, #f9d66b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: none;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            cursor: default;
+            z-index: 1000;
+            padding: 0;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.15);
+            display: block;
+            margin: 3rem auto 1rem auto;
+            text-align: center;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            transform: none !important; /* Remove translateY */
+            width: 100%;
+        }
+
+        /* FIXED: English section */
+        #english {
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 700;
+            color: #1d1fb4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fffdff 0%, #3498db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding: 20px;
+            margin: 3rem 0 1rem 0;
+            transform: none !important; /* Remove translateY */
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* FIXED: Container-4 adjustments */
+        .container-4 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: auto;
+            padding: 20px;
+            transform: none !important; /* Remove translateY */
+            margin: 2rem 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* FIXED: Hindi authors container */
+        .hindi-authors-container-unique {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: auto;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transform: none !important; /* Remove translateY */
+            margin: 2rem 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Mobile responsiveness improvements */
+        @media (max-width: 768px) {
+            .chapter-card-container, .chem-card-wrap {
+                gap: 1.5rem;
+            }
+            
+            .chapter-card {
+                width: 90%;
+                max-width: 320px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .chem-card {
+                width: 90%;
+                max-width: 280px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .container-3 {
+                padding: 0 0.5rem;
+            }
+            
+            #Hindi {
+                margin: 2rem auto 1rem auto;
+                font-size: clamp(28px, 8vw, 40px);
+            }
+            
+            #english {
+                margin: 2rem 0 1rem 0;
+                font-size: clamp(24px, 6vw, 32px);
+                padding: 15px;
+            }
+            
+            .authors-box-special {
+                width: 90%;
+                margin: 0 auto;
+            }
+            
+            .sw-lekhak-card {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chapter-card, .chem-card {
+                width: 95%;
+            }
+            
+            #Chemistry-heading, #physics-heading {
+                font-size: 28px;
+            }
+            
+            .authors-box-special {
+                padding: 20px 15px;
+            }
+            
+            .authors-title-exclusive {
+                font-size: 18px;
+            }
+        }
+    
     </style>
 </head>
 </head>
