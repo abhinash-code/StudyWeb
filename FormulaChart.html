@@ -3,147 +3,484 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formula Chart</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Advanced Formula Chart | Maths & Physics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary: #2563eb;
+      --secondary: #7c3aed;
+      --accent: #06d6a0;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --radius: 12px;
+    }
+
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(145deg, #e0eafc, #cfdef3);
+      background: linear-gradient(145deg, #e0f2fe, #dbeafe);
+      min-height: 100vh;
+      padding: 30px 20px;
+      color: var(--dark);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header Styles */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    .header h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #64748b;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* All Collections Box */
+    .featured-box {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 50px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      animation: slideUp 0.8s ease;
+      transition: transform 0.3s ease;
+    }
+
+    .featured-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .featured-icon {
+      background: var(--gradient);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .featured-icon i {
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .featured-content {
+      flex: 1;
+    }
+
+    .featured-content h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .featured-content p {
+      color: #64748b;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .btn-featured {
+      display: inline-block;
+      padding: 12px 30px;
+      background: var(--gradient);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-featured:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Subjects Grid */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .subject-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeIn 1s ease;
+      transition: transform 0.3s ease;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .subject-header {
+      background: var(--gradient);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .subject-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .subject-header i {
+      font-size: 1.5rem;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 25px;
+    }
+
+    .chapter-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      padding: 50px 20px;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      color: #2c3e50;
-      margin-bottom: 40px;
-      font-weight: 700;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-container {
-      width: 100%;
-      max-width: 950px;
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      overflow: hidden;
-      border: 1px solid #d1dce5;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 20px;
-      text-align: center;
-      font-size: 1rem;
-    }
-
-    th {
-      background: #374785;
-      color: #ffffff;
-      font-size: 1.1rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    tr:nth-child(even) td {
-      background-color: #f7f9fc;
-    }
-
-    tr:hover td {
-      background-color: #e3f2fd;
-      transition: background 0.3s ease-in-out;
-    }
-
-    td a {
-      display: inline-block;
-      padding: 10px 18px;
-      background-color: #4fd1c5;
-      color: #fff;
+      justify-content: center;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 10px;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      color: var(--dark);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      min-height: 100px;
     }
 
-    td a:hover {
-      background-color: #38b2ac;
-      transform: translateY(-2px);
+    .chapter-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
-    @media(max-width: 600px) {
-      th, td {
-        padding: 14px 8px;
-        font-size: 0.95rem;
-      }
+    .chapter-btn i {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
 
-      td a {
-        padding: 8px 14px;
-        font-size: 0.9rem;
+    .chapter-btn span {
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .chapter-btn.available {
+      background: #e0f2fe;
+      border: 2px solid #bfdbfe;
+    }
+
+    .chapter-btn.unavailable {
+      background: #f1f5f9;
+      color: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .chapter-btn.unavailable:hover {
+      background: #f1f5f9;
+      color: #94a3b8;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(30px);
       }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .subjects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .chapters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        padding: 20px;
+      }
+      
+      .featured-box {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px;
+      }
+      
+      .featured-icon {
+        margin-bottom: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .chapters-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .chapter-btn {
+        min-height: 80px;
+        padding: 12px 8px;
+      }
+      
+      .chapter-btn i {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <h1>Here is Your Formula Chart</h1>
-  <div class="table-container">
-    <table>
-      <tr>
-        <th>Maths</th>
-        <th>Physics</th>
-      </tr>
-      <tr>
-        <td><a href="MathsFormulaPart-1.jpg">Chapter 1</a></td>
-        <td><a href="physics chapter-2 formulas.pdf">Chapter 1</a></td>
-      </tr>
-      <tr>
-        <td><a href="MathsFormulaPart-2.jpg">Chapter 2</a></td>
-        <td><a href="phyricschapter-1 formulas.pdf">Chapter 2</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 3</a></td>
-        <td><a href="Physics Chapter-3 formula.html">Chapter 3</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 4</a></td>
-        <td><a href="">Chapter 4</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 5</a></td>
-        <td><a href="">Chapter 5</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 6</a></td>
-        <td><a href="">Chapter 6</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 7</a></td>
-        <td><a href="">Chapter 7</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 8</a></td>
-        <td><a href="">Chapter 8</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 9</a></td>
-        <td><a href="">Chapter 9</a></td>
-      </tr>
-      <tr>
-        <td><a href="">Chapter 10</a></td>
-        <td><a href="">Chapter 10</a></td>
-      </tr>
-    </table>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Formula Master Pro</h1>
+      <p>Your ultimate collection of Maths and Physics formulas. Access all chapters with a single click!</p>
+    </header>
+
+    <!-- All Collections Box -->
+    <div class="featured-box">
+      <div class="featured-icon">
+        <i class="fas fa-rocket"></i>
+      </div>
+      <div class="featured-content">
+        <h2>All Formulas Collection</h2>
+        <p>Get access to the complete formula library with advanced search, filters, and categorized collections. Perfect for last-minute revisions!</p>
+        <a href="Formulas_Collection.html" class="btn-featured">
+          <i class="fas fa-external-link-alt"></i> Explore All Collections
+        </a>
+      </div>
+    </div>
+
+    <!-- Subjects Grid -->
+    <div class="subjects-grid">
+      <!-- Maths Section -->
+      <div class="subject-card">
+        <div class="subject-header">
+          <h2><i class="fas fa-calculator"></i> Mathematics</h2>
+        </div>
+        <div class="chapters-grid">
+          <a href="MathsFormulaPart-1.jpg" class="chapter-btn available">
+            <i class="fas fa-square-root-alt"></i>
+            <span>Chapter 1</span>
+          </a>
+          <a href="MathsFormulaPart-2.jpg" class="chapter-btn available">
+            <i class="fas fa-function"></i>
+            <span>Chapter 2</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-shapes"></i>
+            <span>Chapter 3</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-chart-line"></i>
+            <span>Chapter 4</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-infinity"></i>
+            <span>Chapter 5</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-vector-square"></i>
+            <span>Chapter 6</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-dice"></i>
+            <span>Chapter 7</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-project-diagram"></i>
+            <span>Chapter 8</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-cube"></i>
+            <span>Chapter 9</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-brain"></i>
+            <span>Chapter 10</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Physics Section -->
+      <div class="subject-card">
+        <div class="subject-header">
+          <h2><i class="fas fa-atom"></i> Physics</h2>
+        </div>
+        <div class="chapters-grid">
+          <a href="physics chapter-2 formulas.pdf" class="chapter-btn available">
+            <i class="fas fa-bolt"></i>
+            <span>Chapter 1</span>
+          </a>
+          <a href="phyricschapter-1 formulas.pdf" class="chapter-btn available">
+            <i class="fas fa-microscope"></i>
+            <span>Chapter 2</span>
+          </a>
+          <a href="Physics Chapter-3 formula.html" class="chapter-btn available">
+            <i class="fas fa-weight-hanging"></i>
+            <span>Chapter 3</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-fire"></i>
+            <span>Chapter 4</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-magnet"></i>
+            <span>Chapter 5</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-lightbulb"></i>
+            <span>Chapter 6</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-wave-square"></i>
+            <span>Chapter 7</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-satellite"></i>
+            <span>Chapter 8</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-radiation"></i>
+            <span>Chapter 9</span>
+          </a>
+          <a href="#" class="chapter-btn unavailable">
+            <i class="fas fa-rocket"></i>
+            <span>Chapter 10</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2023 Formula Master Pro | Designed for Students</p>
+    </footer>
   </div>
+
+  <script>
+    // Add loading animation to buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll('.chapter-btn.available');
+      
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') {
+            e.preventDefault();
+            return;
+          }
+          
+          const originalText = this.innerHTML;
+          this.innerHTML = '<div class="loading"></div> Loading...';
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+          }, 1500);
+        });
+      });
+      
+      // Add animation to featured button
+      const featuredBtn = document.querySelector('.btn-featured');
+      featuredBtn.addEventListener('click', function(e) {
+        const originalText = this.innerHTML;
+        this.innerHTML = '<div class="loading"></div> Opening Collections...';
+        
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 1500);
+      });
+    });
+  </script>
 </body>
 </html>
