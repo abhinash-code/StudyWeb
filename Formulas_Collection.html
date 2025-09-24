@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- existing meta -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Formula Collection</title>
     <!-- MathJax v3 for LaTeX rendering -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -63,7 +64,29 @@
             top: 0;
             z-index: 100;
         }
+/* ===== Safe-area / notch fixes for mobile ===== */
+html, body {
+  height: 100%;
+}
 
+/* Make header respect the device safe-area (notch / status bar) */
+header {
+  /* top offset uses safe-area inset if available */
+  top: env(safe-area-inset-top, 0);
+  /* padding-top includes safe-area inset so content is not hidden */
+  padding: calc(env(safe-area-inset-top, 0) + 1rem) 1rem 1rem;
+  /* Legacy iOS fallback */
+  padding-top: calc(constant(safe-area-inset-top) + 1rem);
+  /* keep it on top of everything */
+  z-index: 100;
+  /* ensure header doesn't collapse on some narrow viewports */
+  min-height: 64px;
+}
+
+/* Optional: if you want whole page to avoid clipping under OS chrome */
+body {
+  padding-top: env(safe-area-inset-top, 0);
+}
         .header-content {
             display: flex;
             flex-direction: column;
