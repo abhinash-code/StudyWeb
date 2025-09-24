@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula Collection</title>
+    <!-- MathJax v3 for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-color: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --primary-color: #4895ef;
+            --secondary-color: #4361ee;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e9ecef;
+            --text-secondary: #adb5bd;
+            --border-color: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            padding-bottom: 80px; /* Space for FAB */
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--surface-color);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.25);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-controls::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .filter-controls::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .filter-btn, .sort-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            font-size: 0.875rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .sort-select {
+            min-width: 140px;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .formulas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .formulas-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .formulas-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Formula Card */
+        .formula-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .formula-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .formula-card.pinned {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .formula-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .formula-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-category {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .formula-latex {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--radius);
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        [data-theme="dark"] .formula-latex {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .formula-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--background-color);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .formula-note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid var(--warning-color);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 0.875rem;
+        }
+
+        .formula-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: var(--radius);
+            background-color: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .pin-btn.pinned svg {
+            fill: var(--warning-color);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 90;
+            transition: var(--transition);
+        }
+
+        .fab:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        .fab svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--surface-color);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.25);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .preview-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: var(--radius);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        [data-theme="dark"] .preview-container {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            fill: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Print Styles */
+        @media print {
+            header, .fab, .formula-actions, .filter-controls {
+                display: none !important;
+            }
+            
+            body {
+                background-color: white;
+                color: black;
+                padding: 0;
+            }
+            
+            .formula-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .formulas-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Utility Classes */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        /* Formula Cards with Animation */
+.formula-card {
+    background-color: var(--surface-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.formula-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Staggered Animation for Cards */
+.formula-card:nth-child(1) { animation-delay: 0.1s; }
+.formula-card:nth-child(2) { animation-delay: 0.2s; }
+.formula-card:nth-child(3) { animation-delay: 0.3s; }
+.formula-card:nth-child(4) { animation-delay: 0.4s; }
+.formula-card:nth-child(5) { animation-delay: 0.5s; }
+.formula-card:nth-child(6) { animation-delay: 0.6s; }
+.formula-card:nth-child(7) { animation-delay: 0.7s; }
+.formula-card:nth-child(8) { animation-delay: 0.8s; }
+.formula-card:nth-child(9) { animation-delay: 0.9s; }
+.formula-card:nth-child(10) { animation-delay: 1.0s; }
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* For new cards added dynamically */
+.formula-card.new-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-top">
+                <h1 class="app-title">Formula Collection</h1>
+                <div class="header-controls">
+                    <button id="theme-toggle" class="action-btn" aria-label="Toggle theme">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z"/>
+                        </svg>
+                    </button>
+                    <button id="export-btn" class="btn btn-secondary">Export</button>
+                    <button id="import-btn" class="btn btn-secondary">Import</button>
+                </div>
+            </div>
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                </svg>
+                <input type="text" id="search-input" class="search-input" placeholder="Search formulas...">
+            </div>
+            <div class="filter-controls">
+                <select id="sort-select" class="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+                <button class="filter-btn active" data-category="all">All</button>
+                <!-- Category filters will be generated dynamically -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div id="formulas-container" class="formulas-grid">
+            <!-- Formula cards will be generated here -->
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button id="add-fab" class="fab" aria-label="Add new formula">
+        <svg viewBox="0 0 24 24">
+            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+        </svg>
+    </button>
+
+    <!-- Modal for Add/Edit Formula -->
+    <div id="formula-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title" class="modal-title">Add Formula</h2>
+                <button id="close-modal" class="close-btn" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formula-form">
+                    <input type="hidden" id="formula-id">
+                    
+                    <div class="form-group">
+                        <label for="formula-title" class="form-label">Title</label>
+                        <input type="text" id="formula-title" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formula-latex" class="form-label">LaTeX Formula</label>
+                        <textarea id="formula-latex" class="form-textarea" required></textarea>
+                        <div class="form-help">Enter the formula in LaTeX format. Use backslashes for commands (e.g., \sin, \frac{}{}).</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formula-category" class="form-label">Category</label>
+                        <input type="text" id="formula-category" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formula-tags" class="form-label">Tags</label>
+                        <input type="text" id="formula-tags" class="form-input" placeholder="comma,separated,tags">
+                        <div class="form-help">Separate multiple tags with commas.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formula-note" class="form-label">Note (Optional)</label>
+                        <textarea id="formula-note" class="form-textarea"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" id="preview-btn" class="btn btn-secondary">Preview Formula</button>
+                        <div id="preview-container" class="preview-container">
+                            <span>Preview will appear here</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="save-btn" class="btn btn-primary">Save Formula</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <script>
+        
+        const FORMULAS = [
+            { id: "f1", title: "Sine Inverse Odd Function Property", latex: "\\sin^{-1}(-x) = -\\sin^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "odd function", "sine"], note: "Domain: x ∈ [-1, 1]" },
+{ id: "f2", title: "Cosecant Inverse Odd Function Property", latex: "\\csc^{-1}(-x) = -\\csc^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "odd function", "cosecant"], note: "Domain: x ∈ (-∞, -1] ∪ [1, ∞)" },
+{ id: "f3", title: "Tangent Inverse Odd Function Property", latex: "\\tan^{-1}(-x) = -\\tan^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "odd function", "tangent"], note: "Domain: x ∈ (-∞, ∞)" },
+{ id: "f4", title: "Cosine Inverse Complementary Property", latex: "\\cos^{-1}(-x) = \\pi - \\cos^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "complementary", "cosine"], note: "Domain: x ∈ [-1, 1]" },
+{ id: "f5", title: "Secant Inverse Complementary Property", latex: "\\sec^{-1}(-x) = \\pi - \\sec^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "complementary", "secant"], note: "Domain: x ∈ (-∞, -1] ∪ [1, ∞)" },
+{ id: "f6", title: "Cotangent Inverse Complementary Property", latex: "\\cot^{-1}(-x) = \\pi - \\cot^{-1}(x)", category: "Mathematics", tags: ["inverse trigonometric", "complementary", "cotangent"], note: "Domain: x ∈ (-∞, ∞)" },
+{ id: "f7", title: "Sine-Cosine Inverse Complementary Sum", latex: "\\sin^{-1}(x) + \\cos^{-1}(x) = \\frac{\\pi}{2}", category: "Mathematics", tags: ["inverse trigonometric", "complementary sum", "sine", "cosine"], note: "Domain: x ∈ [-1, 1]" },
+{ id: "f8", title: "Tangent-Cotangent Inverse Complementary Sum", latex: "\\tan^{-1}(x) + \\cot^{-1}(x) = \\frac{\\pi}{2}", category: "Mathematics", tags: ["inverse trigonometric", "complementary sum", "tangent", "cotangent"], note: "Domain: x ∈ ℝ" },
+{ id: "f9", title: "Cosecant-Secant Inverse Complementary Sum", latex: "\\csc^{-1}(x) + \\sec^{-1}(x) = \\frac{\\pi}{2}", category: "Mathematics", tags: ["inverse trigonometric", "complementary sum", "cosecant", "secant"], note: "Domain: x ∈ (-∞, -1] ∪ [1, ∞)" },
+{ id: "f10", title: "Limit of Sum Property", latex: "\\lim_{x \\to a} [f(x) + g(x)] = \\lim_{x \\to a} f(x) + \\lim_{x \\to a} g(x)", category: "Mathematics", tags: ["limits", "sum property", "algebra of limits"], note: "Limit of sum equals sum of limits" },
+{ id: "f11", title: "Limit of Difference Property", latex: "\\lim_{x \\to a} [f(x) - g(x)] = \\lim_{x \\to a} f(x) - \\lim_{x \\to a} g(x)", category: "Mathematics", tags: ["limits", "difference property", "algebra of limits"], note: "Limit of difference equals difference of limits" },
+{ id: "f12", title: "Limit of Product Property", latex: "\\lim_{x \\to a} [f(x) \\cdot g(x)] = \\lim_{x \\to a} f(x) \\cdot \\lim_{x \\to a} g(x)", category: "Mathematics", tags: ["limits", "product property", "algebra of limits"], note: "Limit of product equals product of limits" },
+{ id: "f13", title: "Limit of Quotient Property", latex: "\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{\\lim_{x \\to a} f(x)}{\\lim_{x \\to a} g(x)}", category: "Mathematics", tags: ["limits", "quotient property", "algebra of limits"], note: "Provided denominator limit ≠ 0" },
+{ id: "f14", title: "Limit of Constant Multiple", latex: "\\lim_{x \\to a} [k \\cdot f(x)] = k \\lim_{x \\to a} f(x)", category: "Mathematics", tags: ["limits", "constant multiple", "algebra of limits"], note: "k is constant" },
+{ id: "f15", title: "Standard Limit x^n - a^n", latex: "\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = na^{n-1}", category: "Mathematics", tags: ["limits", "standard limit", "polynomial"], note: "n is positive integer" },
+{ id: "f16", title: "Standard Limit sin(x)/x", latex: "\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1", category: "Mathematics", tags: ["limits", "trigonometric limit", "standard limit"], note: "Important trigonometric limit" },
+{ id: "f17", title: "Standard Limit tan(x)/x", latex: "\\lim_{x \\to 0} \\frac{\\tan x}{x} = 1", category: "Mathematics", tags: ["limits", "trigonometric limit", "standard limit"], note: "Important trigonometric limit" },
+{ id: "f18", title: "Standard Limit sin^(-1)(x)/x", latex: "\\lim_{x \\to 0} \\frac{\\sin^{-1} x}{x} = 1", category: "Mathematics", tags: ["limits", "inverse trigonometric limit", "standard limit"], note: "Inverse sine limit" },
+{ id: "f19", title: "Standard Limit a^x - 1", latex: "\\lim_{x \\to 0} \\frac{a^x - 1}{x} = \\ln a", category: "Mathematics", tags: ["limits", "exponential limit", "standard limit"], note: "a > 0, logarithmic result" },
+{ id: "f20", title: "Standard Limit e^x - 1", latex: "\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1", category: "Mathematics", tags: ["limits", "exponential limit", "standard limit"], note: "Natural exponential limit" },
+{ id: "f21", title: "Integration of 1/(x²-a²)", latex: "\\int \\frac{dx}{x^2 - a^2} = \\frac{1}{2a} \\log\\left|\\frac{x-a}{x+a}\\right| + C", category: "Mathematics", tags: ["integration", "rational functions", "logarithmic"], note: "Standard integral for x²-a² in denominator" },
+{ id: "f22", title: "Integration of 1/(a²-x²)", latex: "\\int \\frac{dx}{a^2 - x^2} = \\frac{1}{2a} \\log\\left|\\frac{a+x}{a-x}\\right| + C", category: "Mathematics", tags: ["integration", "rational functions", "logarithmic"], note: "Standard integral for a²-x² in denominator" },
+{ id: "f23", title: "Integration of 1/(a²+x²)", latex: "\\int \\frac{dx}{a^2 + x^2} = \\frac{1}{a} \\tan^{-1}\\left(\\frac{x}{a}\\right) + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "standard"], note: "Standard integral for a²+x² in denominator" },
+{ id: "f24", title: "Integration of 1/√(x²-a²)", latex: "\\int \\frac{dx}{\\sqrt{x^2 - a^2}} = \\log\\left|x + \\sqrt{x^2 - a^2}\\right| + C", category: "Mathematics", tags: ["integration", "irrational functions", "logarithmic"], note: "Standard integral with square root x²-a²" },
+{ id: "f25", title: "Integration of 1/√(a²-x²)", latex: "\\int \\frac{dx}{\\sqrt{a^2 - x^2}} = \\sin^{-1}\\left(\\frac{x}{a}\\right) + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "irrational"], note: "Standard integral with square root a²-x²" },
+{ id: "f26", title: "Integration of 1/√(x²+a²)", latex: "\\int \\frac{dx}{\\sqrt{x^2 + a^2}} = \\log\\left|x + \\sqrt{x^2 + a^2}\\right| + C", category: "Mathematics", tags: ["integration", "irrational functions", "logarithmic"], note: "Standard integral with square root x²+a²" },
+{ id: "f27", title: "Integration of √(a²+x²)", latex: "\\int \\sqrt{a^2 + x^2} dx = \\frac{x}{2}\\sqrt{a^2 + x^2} + \\frac{a^2}{2}\\log\\left|x + \\sqrt{a^2 + x^2}\\right| + C", category: "Mathematics", tags: ["integration", "irrational functions", "reduction"], note: "Integration of square root a²+x²" },
+{ id: "f28", title: "Integration of √(x²-a²)", latex: "\\int \\sqrt{x^2 - a^2} dx = \\frac{x}{2}\\sqrt{x^2 - a^2} - \\frac{a^2}{2}\\log\\left|x + \\sqrt{x^2 - a^2}\\right| + C", category: "Mathematics", tags: ["integration", "irrational functions", "reduction"], note: "Integration of square root x²-a²" },
+{ id: "f29", title: "Integration of √(a²-x²)", latex: "\\int \\sqrt{a^2 - x^2} dx = \\frac{x}{2}\\sqrt{a^2 - x^2} + \\frac{a^2}{2}\\sin^{-1}\\left(\\frac{x}{a}\\right| + C", category: "Mathematics", tags: ["integration", "irrational functions", "trigonometric"], note: "Integration of square root a²-x²" },
+{ id: "f30", title: "Integration of tan(x)", latex: "\\int \\tan x \\, dx = -\\log|\\cos x| + C = \\log|\\sec x| + C", category: "Mathematics", tags: ["integration", "trigonometric", "logarithmic"], note: "Standard integral of tangent function" },
+{ id: "f31", title: "Integration of cot(x)", latex: "\\int \\cot x \\, dx = \\log|\\sin x| + C", category: "Mathematics", tags: ["integration", "trigonometric", "logarithmic"], note: "Standard integral of cotangent function" },
+{ id: "f32", title: "Integration of sec(x)", latex: "\\int \\sec x \\, dx = \\log|\\sec x + \\tan x| + C = \\log\\left|\\tan\\left(\\frac{\\pi}{4} + \\frac{x}{2}\\right)\\right| + C", category: "Mathematics", tags: ["integration", "trigonometric", "logarithmic"], note: "Standard integral of secant function" },
+{ id: "f33", title: "Integration of cosec(x)", latex: "\\int \\csc x \\, dx = \\log|\\csc x - \\cot x| + C = \\log\\left|\\tan\\left(\\frac{x}{2}\\right)\\right| + C", category: "Mathematics", tags: ["integration", "trigonometric", "logarithmic"], note: "Standard integral of cosecant function" },
+{ id: "f34", title: "Integration by Parts Formula", latex: "\\int u v \\, dx = u \\int v \\, dx - \\int \\left(\\frac{du}{dx} \\int v \\, dx\\right) dx", category: "Mathematics", tags: ["integration", "by parts", "product rule"], note: "ILATE rule for choosing u and v" },
+{ id: "f35", title: "Standard Result for 1/(a²+x²)", latex: "\\int \\frac{dx}{a^2 + x^2} = \\frac{1}{a} \\tan^{-1}\\left(\\frac{x}{a}\\right) + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "standard"], note: "Already covered but appears again" },
+{ id: "f36", title: "Logarithm Product Property", latex: "\\log_a(mn) = \\log_a m + \\log_a n", category: "Mathematics", tags: ["logarithm", "properties", "product"], note: "Product rule for logarithms" },
+{ id: "f37", title: "Logarithm Quotient Property", latex: "\\log_a\\left(\\frac{m}{n}\\right) = \\log_a m - \\log_a n", category: "Mathematics", tags: ["logarithm", "properties", "quotient"], note: "Quotient rule for logarithms" },
+{ id: "f38", title: "Logarithm Power Property", latex: "\\log_a(m^n) = n \\log_a m", category: "Mathematics", tags: ["logarithm", "properties", "power"], note: "Power rule for logarithms" },
+{ id: "f39", title: "Logarithm Base Change Formula", latex: "\\log_a b = \\frac{\\log_c b}{\\log_c a}", category: "Mathematics", tags: ["logarithm", "base change", "properties"], note: "Change of base formula" },
+{ id: "f40", title: "Common Logarithm Base Change", latex: "\\log_a b = \\frac{\\log b}{\\log a}", category: "Mathematics", tags: ["logarithm", "base change", "common log"], note: "Base change using common logarithm" },
+{ id: "f41", title: "Derivative of sin⁻¹(x)", latex: "\\frac{d}{dx}(\\sin^{-1} x) = \\frac{1}{\\sqrt{1-x^2}}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: x ∈ (-1, 1)" },
+{ id: "f42", title: "Derivative of cos⁻¹(x)", latex: "\\frac{d}{dx}(\\cos^{-1} x) = \\frac{-1}{\\sqrt{1-x^2}}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: x ∈ (-1, 1)" },
+{ id: "f43", title: "Derivative of tan⁻¹(x)", latex: "\\frac{d}{dx}(\\tan^{-1} x) = \\frac{1}{1+x^2}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: x ∈ ℝ" },
+{ id: "f44", title: "Derivative of cot⁻¹(x)", latex: "\\frac{d}{dx}(\\cot^{-1} x) = \\frac{-1}{1+x^2}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: x ∈ ℝ" },
+{ id: "f45", title: "Derivative of sec⁻¹(x)", latex: "\\frac{d}{dx}(\\sec^{-1} x) = \\frac{1}{|x|\\sqrt{x^2-1}}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: |x| > 1" },
+{ id: "f46", title: "Derivative of cosec⁻¹(x)", latex: "\\frac{d}{dx}(\\csc^{-1} x) = \\frac{-1}{|x|\\sqrt{x^2-1}}", category: "Mathematics", tags: ["differentiation", "inverse trigonometric", "derivatives"], note: "Domain: |x| > 1" },
+{ id: "f47", title: "Integration of x^n", latex: "\\int x^n dx = \\frac{x^{n+1}}{n+1} + C", category: "Mathematics", tags: ["integration", "power rule", "basic"], note: "n ≠ -1" },
+{ id: "f48", title: "Integration of 1/x", latex: "\\int \\frac{1}{x} dx = \\log|x| + C", category: "Mathematics", tags: ["integration", "logarithmic", "basic"], note: "Standard logarithmic integral" },
+{ id: "f49", title: "Integration of e^x", latex: "\\int e^x dx = e^x + C", category: "Mathematics", tags: ["integration", "exponential", "basic"], note: "Natural exponential function" },
+{ id: "f50", title: "Integration of a^x", latex: "\\int a^x dx = \\frac{a^x}{\\log a} + C", category: "Mathematics", tags: ["integration", "exponential", "basic"], note: "a > 0, a ≠ 1" },
+{ id: "f51", title: "Integration of cos(x)", latex: "\\int \\cos x dx = \\sin x + C", category: "Mathematics", tags: ["integration", "trigonometric", "basic"], note: "Standard cosine integral" },
+{ id: "f52", title: "Integration of sec²(x)", latex: "\\int \\sec^2 x dx = \\tan x + C", category: "Mathematics", tags: ["integration", "trigonometric", "basic"], note: "Standard secant square integral" },
+{ id: "f53", title: "Integration of sec(x)tan(x)", latex: "\\int \\sec x \\tan x dx = \\sec x + C", category: "Mathematics", tags: ["integration", "trigonometric", "product"], note: "Product of secant and tangent" },
+{ id: "f54", title: "Integration of sin(x)", latex: "\\int \\sin x dx = -\\cos x + C", category: "Mathematics", tags: ["integration", "trigonometric", "basic"], note: "Standard sine integral" },
+{ id: "f55", title: "Integration of cosec²(x)", latex: "\\int \\csc^2 x dx = -\\cot x + C", category: "Mathematics", tags: ["integration", "trigonometric", "basic"], note: "Standard cosecant square integral" },
+{ id: "f56", title: "Integration of cosec(x)cot(x)", latex: "\\int \\csc x \\cot x dx = -\\csc x + C", category: "Mathematics", tags: ["integration", "trigonometric", "product"], note: "Product of cosecant and cotangent" },
+{ id: "f57", title: "Integration of 1/(1+x²)", latex: "\\int \\frac{1}{1+x^2} dx = \\tan^{-1} x + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "standard"], note: "Standard inverse tangent integral" },
+{ id: "f58", title: "Integration of 1/√(1-x²)", latex: "\\int \\frac{1}{\\sqrt{1-x^2}} dx = \\sin^{-1} x + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "standard"], note: "Standard inverse sine integral" },
+{ id: "f59", title: "Integration of 1/(x√(x²-1))", latex: "\\int \\frac{1}{x\\sqrt{x^2-1}} dx = \\sec^{-1} x + C", category: "Mathematics", tags: ["integration", "inverse trigonometric", "standard"], note: "Standard inverse secant integral" },
+{ id: "f60", title: "Double Angle sin(2x)", latex: "\\sin 2x = \\frac{2\\tan x}{1 + \\tan^2 x}", category: "Mathematics", tags: ["trigonometry", "double angle", "sine"], note: "Double angle formula for sine in terms of tan" },
+{ id: "f61", title: "Double Angle cos(2x)", latex: "\\cos 2x = \\frac{1 - \\tan^2 x}{1 + \\tan^2 x}", category: "Mathematics", tags: ["trigonometry", "double angle", "cosine"], note: "Double angle formula for cosine in terms of tan" },
+{ id: "f62", title: "Triple Angle sin(3x)", latex: "\\sin 3x = 3\\sin x - 4\\sin^3 x", category: "Mathematics", tags: ["trigonometry", "triple angle", "sine"], note: "Triple angle formula for sine" },
+{ id: "f63", title: "Triple Angle cos(3x)", latex: "\\cos 3x = 4\\cos^3 x + 3\\cos x", category: "Mathematics", tags: ["trigonometry", "triple angle", "cosine"], note: "Triple angle formula for cosine" },
+{ id: "f64", title: "Triple Angle tan(3x)", latex: "\\tan 3x = \\frac{3\\tan x - \\tan^3 x}{1 - 3\\tan^2 x}", category: "Mathematics", tags: ["trigonometry", "triple angle", "tangent"], note: "Triple angle formula for tangent" },
+{ id: "f65", title: "Half Angle sin²(A/2)", latex: "2\\sin^2\\frac{A}{2} = 1 - \\cos A", category: "Mathematics", tags: ["trigonometry", "half angle", "sine"], note: "Half angle formula for sin²" },
+{ id: "f66", title: "Half Angle cos²(A/2)", latex: "2\\cos^2\\frac{A}{2} = 1 + \\cos A", category: "Mathematics", tags: ["trigonometry", "half angle", "cosine"], note: "Half angle formula for cos²" },
+{ id: "f67", title: "Sum to Product sin A", latex: "\\sin A = \\frac{2\\sin\\frac{A}{2}\\cos\\frac{A}{2}}{1}", category: "Mathematics", tags: ["trigonometry", "sum to product", "sine"], note: "Expression for sin A in half angles" },
+{ id: "f68", title: "Cosecant Square Formula", latex: "\\csc^2 A = \\frac{1 + \\tan^2 A}{2\\tan A}", category: "Mathematics", tags: ["trigonometry", "cosecant", "identities"], note: "Cosecant square in terms of tangent" },
+{ id: "f69", title: "Secant Square Formula", latex: "\\sec^2 A = \\frac{1 + \\tan^2 A}{1 - \\tan^2 A}", category: "Mathematics", tags: ["trigonometry", "secant", "identities"], note: "Secant square in terms of tangent" },
+{ id: "f70", title: "Derivative of x^n", latex: "\\frac{d}{dx}(x^n) = nx^{n-1}", category: "Mathematics", tags: ["differentiation", "power rule", "basic"], note: "Power rule for differentiation" },
+{ id: "f71", title: "Derivative of cos(x)", latex: "\\frac{d}{dx}(\\cos x) = -\\sin x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of cosine function" },
+{ id: "f72", title: "Derivative of sin(x)", latex: "\\frac{d}{dx}(\\sin x) = \\cos x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of sine function" },
+{ id: "f73", title: "Derivative of cot(x)", latex: "\\frac{d}{dx}(\\cot x) = -\\csc^2 x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of cotangent function" },
+{ id: "f74", title: "Derivative of tan(x)", latex: "\\frac{d}{dx}(\\tan x) = \\sec^2 x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of tangent function" },
+{ id: "f75", title: "Derivative of cosec(x)", latex: "\\frac{d}{dx}(\\csc x) = -\\csc x \\cot x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of cosecant function" },
+{ id: "f76", title: "Derivative of sec(x)", latex: "\\frac{d}{dx}(\\sec x) = \\sec x \\tan x", category: "Mathematics", tags: ["differentiation", "trigonometric", "basic"], note: "Derivative of secant function" },
+{ id: "f77", title: "Product Rule", latex: "\\frac{d}{dx}(uv) = \\left(\\frac{du}{dx}\\right)v + u\\left(\\frac{dv}{dx}\\right)", category: "Mathematics", tags: ["differentiation", "product rule", "calculus"], note: "Product rule for differentiation" },
+{ id: "f78", title: "Quotient Rule", latex: "\\frac{d}{dx}\\left(\\frac{u}{v}\\right) = \\frac{\\left(\\frac{du}{dx}\\right)v - u\\left(\\frac{dv}{dx}\\right)}{v^2}", category: "Mathematics", tags: ["differentiation", "quotient rule", "calculus"], note: "Quotient rule for differentiation" },
+{ id: "f79", title: "Chain Rule", latex: "\\frac{d}{dx}(f(g(x))) = f'(g(x)) \\cdot g'(x)", category: "Mathematics", tags: ["differentiation", "chain rule", "calculus"], note: "Chain rule for composite functions" },
+{ id: "f80", title: "Derivative of e^x", latex: "\\frac{d}{dx}(e^x) = e^x", category: "Mathematics", tags: ["differentiation", "exponential", "basic"], note: "Derivative of natural exponential" },
+{ id: "f81", title: "Derivative of log(x)", latex: "\\frac{d}{dx}(\\log x) = \\frac{1}{x}", category: "Mathematics", tags: ["differentiation", "logarithmic", "basic"], note: "Derivative of natural logarithm" },
+{ id: "f82", title: "Derivative of a^x", latex: "\\frac{d}{dx}(a^x) = a^x \\log a", category: "Mathematics", tags: ["differentiation", "exponential", "basic"], note: "Derivative of exponential with base a" },
+{ id: "f83", title: "Derivative of log_a(x)", latex: "\\frac{d}{dx}(\\log_a x) = \\frac{1}{x \\log a}", category: "Mathematics", tags: ["differentiation", "logarithmic", "basic"], note: "Derivative of logarithm with base a" },
+{ id: "f84", title: "Half Angle Identity (1-cos x)", latex: "(1-\\cos x) = 2\\sin^2\\left(\\frac{x}{2}\\right)", category: "Mathematics", tags: ["trigonometry", "half angle", "identities"], note: "Half angle identity for (1-cos x)" },
+{ id: "f85", title: "Half Angle Identity (1+cos x)", latex: "(1+\\cos x) = 2\\cos^2\\left(\\frac{x}{2}\\right)", category: "Mathematics", tags: ["trigonometry", "half angle", "identities"], note: "Half angle identity for (1+cos x)" },
+{ id: "f86", title: "Inverse Tangent Subtraction", latex: "\\tan^{-1} x - \\tan^{-1} y = \\tan^{-1}\\left(\\frac{x-y}{1+xy}\\right)", category: "Mathematics", tags: ["inverse trigonometric", "addition formulas", "tangent"], note: "Subtraction formula for inverse tangent" },
+{ id: "f87", title: "Inverse Tangent Addition", latex: "\\tan^{-1} x + \\tan^{-1} y = \\tan^{-1}\\left(\\frac{x+y}{1-xy}\\right)", category: "Mathematics", tags: ["inverse trigonometric", "addition formulas", "tangent"], note: "Addition formula for inverse tangent" }
+
+
+
+
+
+        ];
+
+        // STORAGE: LocalStorage utilities
+        const STORAGE_KEY = 'formula_collection_v1';
+
+        function getFormulasFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error('Error parsing stored formulas:', e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function saveFormulasToStorage(formulas) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(formulas));
+                return true;
+            } catch (e) {
+                console.error('Error saving formulas:', e);
+                return false;
+            }
+        }
+
+        function initializeStorage() {
+            const storedFormulas = getFormulasFromStorage();
+            if (!storedFormulas) {
+                // First time: save the initial formulas
+                saveFormulasToStorage(FORMULAS);
+                return FORMULAS;
+            }
+            return storedFormulas;
+        }
+
+        // STATE: App state management
+        let formulas = [];
+        let filteredFormulas = [];
+        let currentFilter = 'all';
+        let currentSort = 'newest';
+
+        // UI: DOM elements
+        const formulasContainer = document.getElementById('formulas-container');
+        const searchInput = document.getElementById('search-input');
+        const sortSelect = document.getElementById('sort-select');
+        const filterControls = document.querySelector('.filter-controls');
+        const themeToggle = document.getElementById('theme-toggle');
+        const addFab = document.getElementById('add-fab');
+        const formulaModal = document.getElementById('formula-modal');
+        const closeModal = document.getElementById('close-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const formulaForm = document.getElementById('formula-form');
+        const formulaTitle = document.getElementById('formula-title');
+        const formulaLatex = document.getElementById('formula-latex');
+        const formulaCategory = document.getElementById('formula-category');
+        const formulaTags = document.getElementById('formula-tags');
+        const formulaNote = document.getElementById('formula-note');
+        const previewBtn = document.getElementById('preview-btn');
+        const previewContainer = document.getElementById('preview-container');
+        const exportBtn = document.getElementById('export-btn');
+        const importBtn = document.getElementById('import-btn');
+        const importFile = document.getElementById('import-file');
+        const toastContainer = document.getElementById('toast-container');
+
+        // UTILITY: Helper functions
+        function generateId() {
+            return 'f' + Date.now() + Math.floor(Math.random() * 1000);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24">
+                    <path d="${type === 'success' ? 'M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' : 'M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'}"/>
+                </svg>
+                <div class="toast-message">${message}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    if (toastContainer.contains(toast)) {
+                        toastContainer.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('LaTeX copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy to clipboard', 'error');
+            });
+        }
+
+        // MATHJAX: Math rendering utilities
+        function renderMath(element) {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([element]).catch(err => {
+                    console.error('MathJax typeset error:', err);
+                });
+            }
+        }
+
+        function previewFormula() {
+            const latex = formulaLatex.value.trim();
+            if (!latex) {
+                previewContainer.innerHTML = '<span>Enter a LaTeX formula to preview</span>';
+                return;
+            }
+            
+            previewContainer.innerHTML = `$$${latex}$$`;
+            renderMath(previewContainer);
+        }
+
+        // DATA: Filtering and sorting
+        function filterFormulas(searchTerm = '', category = 'all') {
+            let filtered = formulas;
+            
+            // Filter by search term
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filtered = filtered.filter(formula => 
+                    formula.title.toLowerCase().includes(term) ||
+                    formula.latex.toLowerCase().includes(term) ||
+                    formula.category.toLowerCase().includes(term) ||
+                    formula.tags.some(tag => tag.toLowerCase().includes(term)) ||
+                    formula.note.toLowerCase().includes(term)
+                );
+            }
+            
+            // Filter by category
+            if (category !== 'all') {
+                filtered = filtered.filter(formula => formula.category === category);
+            }
+            
+            return filtered;
+        }
+
+        function sortFormulas(formulasToSort, sortBy) {
+            const sorted = [...formulasToSort];
+            
+            switch(sortBy) {
+                case 'newest':
+                    // For demo purposes, we'll sort by ID (newer IDs have higher numbers)
+                    return sorted.sort((a, b) => {
+                        const aNum = parseInt(a.id.substring(1)) || 0;
+                        const bNum = parseInt(b.id.substring(1)) || 0;
+                        return bNum - aNum;
+                    });
+                case 'oldest':
+                    // For demo purposes, we'll sort by ID (older IDs have lower numbers)
+                    return sorted.sort((a, b) => {
+                        const aNum = parseInt(a.id.substring(1)) || 0;
+                        const bNum = parseInt(b.id.substring(1)) || 0;
+                        return aNum - bNum;
+                    });
+                case 'title':
+                    return sorted.sort((a, b) => a.title.localeCompare(b.title));
+                default:
+                    return sorted;
+            }
+        }
+
+        function updateFilteredFormulas() {
+            const searchTerm = searchInput.value.trim();
+            filteredFormulas = filterFormulas(searchTerm, currentFilter);
+            filteredFormulas = sortFormulas(filteredFormulas, currentSort);
+            renderFormulas();
+        }
+
+        // UI: Rendering functions
+        function renderCategoryFilters() {
+            // Get unique categories
+            const categories = [...new Set(formulas.map(f => f.category))];
+            
+            // Clear existing filters (except "All" and sort select)
+            const existingFilters = filterControls.querySelectorAll('.filter-btn:not([data-category="all"])');
+            existingFilters.forEach(btn => btn.remove());
+            
+            // Add category filters
+            categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = `filter-btn ${category === currentFilter ? 'active' : ''}`;
+                btn.textContent = category;
+                btn.setAttribute('data-category', category);
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    filterControls.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Apply filter
+                    currentFilter = category;
+                    updateFilteredFormulas();
+                });
+                
+                filterControls.insertBefore(btn, sortSelect);
+            });
+        }
+
+        function renderFormulas() {
+            formulasContainer.innerHTML = '';
+            
+            if (filteredFormulas.length === 0) {
+                formulasContainer.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9,3A6,6 0 0,1 15,9C15,10.5 14.5,11.9 13.6,13L12,14.6L10.4,13C9.5,11.9 9,10.5 9,9A6,6 0 0,1 15,3C16.5,3 17.9,3.5 19,4.4L20.4,3C19,1.8 17.1,1 15,1A8,8 0 0,0 7,9C7,10.8 7.6,12.5 8.7,13.9L3.6,19L5,20.4L10.1,15.3C11.5,16.4 13.2,17 15,17A8,8 0 0,0 23,9C23,6.9 22.2,5 21,3.6L19.6,5C20.5,6.1 21,7.5 21,9C21,12.3 18.3,15 15,15C11.7,15 9,12.3 9,9C9,5.7 11.7,3 15,3Z"/>
+                        </svg>
+                        <h3>No formulas found</h3>
+                        <p>Try adjusting your search or filter criteria</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredFormulas.forEach(formula => {
+                const card = document.createElement('div');
+                card.className = `formula-card ${formula.pinned ? 'pinned' : ''}`;
+                card.innerHTML = `
+                    <div class="formula-header">
+                        <div>
+                            <h3 class="formula-title">${formula.title}</h3>
+                            <span class="formula-category">${formula.category}</span>
+                        </div>
+                    </div>
+                    <div class="formula-latex">$$${formula.latex}$$</div>
+                    ${formula.tags.length > 0 ? `
+                        <div class="formula-tags">
+                            ${formula.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    ${formula.note ? `<div class="formula-note">${formula.note}</div>` : ''}
+                    <div class="formula-actions">
+                        <button class="action-btn pin-btn ${formula.pinned ? 'pinned' : ''}" data-id="${formula.id}" aria-label="${formula.pinned ? 'Unpin' : 'Pin'} formula">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                            </svg>
+                        </button>
+                        <button class="action-btn copy-btn" data-id="${formula.id}" aria-label="Copy LaTeX to clipboard">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                            </svg>
+                        </button>
+                        <button class="action-btn edit-btn" data-id="${formula.id}" aria-label="Edit formula">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                            </svg>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${formula.id}" aria-label="Delete formula">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                formulasContainer.appendChild(card);
+            });
+            
+            // Re-render MathJax for the new formulas
+            setTimeout(() => {
+                renderMath(formulasContainer);
+            }, 100);
+            
+            // Add event listeners to the action buttons
+            attachCardEventListeners();
+        }
+
+        function attachCardEventListeners() {
+            // Pin buttons
+            document.querySelectorAll('.pin-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    togglePinFormula(id);
+                });
+            });
+            
+            // Copy buttons
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    const formula = formulas.find(f => f.id === id);
+                    if (formula) {
+                        copyToClipboard(formula.latex);
+                    }
+                });
+            });
+            
+            // Edit buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    openEditModal(id);
+                });
+            });
+            
+            // Delete buttons
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    deleteFormula(id);
+                });
+            });
+        }
+
+        // MODAL: Modal management
+        function openAddModal() {
+            document.getElementById('modal-title').textContent = 'Add Formula';
+            formulaForm.reset();
+            document.getElementById('formula-id').value = '';
+            previewContainer.innerHTML = '<span>Preview will appear here</span>';
+            formulaModal.classList.add('active');
+            formulaTitle.focus();
+        }
+
+        function openEditModal(id) {
+            const formula = formulas.find(f => f.id === id);
+            if (!formula) return;
+            
+            document.getElementById('modal-title').textContent = 'Edit Formula';
+            document.getElementById('formula-id').value = formula.id;
+            formulaTitle.value = formula.title;
+            formulaLatex.value = formula.latex;
+            formulaCategory.value = formula.category;
+            formulaTags.value = formula.tags.join(', ');
+            formulaNote.value = formula.note || '';
+            
+            // Show preview
+            previewContainer.innerHTML = `$$${formula.latex}$$`;
+            renderMath(previewContainer);
+            
+            formulaModal.classList.add('active');
+            formulaTitle.focus();
+        }
+
+        function closeFormulaModal() {
+            formulaModal.classList.remove('active');
+        }
+
+        function saveFormula() {
+            const id = document.getElementById('formula-id').value;
+            const title = formulaTitle.value.trim();
+            const latex = formulaLatex.value.trim();
+            const category = formulaCategory.value.trim();
+            const tags = formulaTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            const note = formulaNote.value.trim();
+            
+            // Validation
+            if (!title || !latex || !category) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            let updatedFormulas;
+            
+            if (id) {
+                // Editing existing formula
+                updatedFormulas = formulas.map(f => 
+                    f.id === id ? { ...f, title, latex, category, tags, note } : f
+                );
+                showToast('Formula updated successfully');
+            } else {
+                // Adding new formula
+                const newFormula = {
+                    id: generateId(),
+                    title,
+                    latex,
+                    category,
+                    tags,
+                    note,
+                    pinned: false
+                };
+                updatedFormulas = [...formulas, newFormula];
+                showToast('Formula added successfully');
+            }
+            
+            formulas = updatedFormulas;
+            saveFormulasToStorage(formulas);
+            updateFilteredFormulas();
+            renderCategoryFilters();
+            closeFormulaModal();
+        }
+
+        // DATA: Formula operations
+        function togglePinFormula(id) {
+            formulas = formulas.map(f => 
+                f.id === id ? { ...f, pinned: !f.pinned } : f
+            );
+            saveFormulasToStorage(formulas);
+            updateFilteredFormulas();
+            showToast('Formula pinned/unpinned');
+        }
+
+        function deleteFormula(id) {
+            if (confirm('Are you sure you want to delete this formula?')) {
+                formulas = formulas.filter(f => f.id !== id);
+                saveFormulasToStorage(formulas);
+                updateFilteredFormulas();
+                renderCategoryFilters();
+                showToast('Formula deleted');
+            }
+        }
+
+        function exportFormulas() {
+            const dataStr = JSON.stringify(formulas, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'formula-collection.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showToast('Formulas exported successfully');
+        }
+
+        function importFormulas() {
+            importFile.click();
+        }
+
+        function handleFileImport(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    
+                    if (!Array.isArray(importedData)) {
+                        throw new Error('Invalid file format');
+                    }
+                    
+                    // Validate each item has required fields
+                    const isValid = importedData.every(item => 
+                        item.id && item.title && item.latex && item.category
+                    );
+                    
+                    if (!isValid) {
+                        throw new Error('Invalid formula data structure');
+                    }
+                    
+                    if (confirm('Do you want to replace your current formulas with the imported ones?')) {
+                        // Replace
+                        formulas = importedData;
+                    } else {
+                        // Merge (avoid duplicates by ID)
+                        const existingIds = new Set(formulas.map(f => f.id));
+                        const newFormulas = importedData.filter(f => !existingIds.has(f.id));
+                        formulas = [...formulas, ...newFormulas];
+                    }
+                    
+                    saveFormulasToStorage(formulas);
+                    updateFilteredFormulas();
+                    renderCategoryFilters();
+                    showToast('Formulas imported successfully');
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showToast('Error importing formulas. Please check the file format.', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+            // Reset the file input
+            e.target.value = '';
+        }
+
+        function resetToDemo() {
+            if (confirm('This will replace all your formulas with the demo data. Continue?')) {
+                formulas = [...FORMULAS];
+                saveFormulasToStorage(formulas);
+                updateFilteredFormulas();
+                renderCategoryFilters();
+                showToast('Reset to demo formulas');
+            }
+        }
+
+        // THEME: Theme management
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('formula_collection_theme', newTheme);
+            
+            // Update theme toggle icon
+            const themeIcon = themeToggle.querySelector('svg path');
+            themeIcon.setAttribute('d', newTheme === 'dark' 
+                ? 'M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8Z'
+                : 'M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z'
+            );
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('formula_collection_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Set correct icon for current theme
+            const themeIcon = themeToggle.querySelector('svg path');
+            themeIcon.setAttribute('d', savedTheme === 'dark' 
+                ? 'M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8Z'
+                : 'M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z'
+            );
+        }
+
+        // INITIALIZATION: App initialization
+        function init() {
+            // Initialize data
+            formulas = initializeStorage();
+            filteredFormulas = [...formulas];
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Render UI
+            renderCategoryFilters();
+            updateFilteredFormulas();
+            
+            // Event listeners
+            searchInput.addEventListener('input', () => {
+                updateFilteredFormulas();
+            });
+            
+            sortSelect.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                updateFilteredFormulas();
+            });
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            addFab.addEventListener('click', openAddModal);
+            
+            closeModal.addEventListener('click', closeFormulaModal);
+            cancelBtn.addEventListener('click', closeFormulaModal);
+            
+            saveBtn.addEventListener('click', saveFormula);
+            
+            previewBtn.addEventListener('click', previewFormula);
+            
+            exportBtn.addEventListener('click', exportFormulas);
+            importBtn.addEventListener('click', importFormulas);
+            importFile.addEventListener('change', handleFileImport);
+            
+            // Close modal on backdrop click
+            formulaModal.addEventListener('click', (e) => {
+                if (e.target === formulaModal) {
+                    closeFormulaModal();
+                }
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && formulaModal.classList.contains('active')) {
+                    closeFormulaModal();
+                }
+            });
+            
+            // Add reset to demo option to import button on long press
+            let pressTimer;
+            importBtn.addEventListener('mousedown', () => {
+                pressTimer = setTimeout(() => {
+                    resetToDemo();
+                }, 2000);
+            });
+            
+            importBtn.addEventListener('mouseup', () => {
+                clearTimeout(pressTimer);
+            });
+            
+            importBtn.addEventListener('mouseleave', () => {
+                clearTimeout(pressTimer);
+            });
+            
+            // Touch events for mobile
+            importBtn.addEventListener('touchstart', () => {
+                pressTimer = setTimeout(() => {
+                    resetToDemo();
+                }, 2000);
+            });
+            
+            importBtn.addEventListener('touchend', () => {
+                clearTimeout(pressTimer);
+            });
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
