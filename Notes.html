@@ -2,117 +2,591 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Choose Your Subject</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CHOOSE YOUR WEAPON</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== DANGEROUS VARIABLES ===== */
+        :root {
+            --neon-red: #ff0022;
+            --neon-blue: #00f7ff;
+            --neon-purple: #b300ff;
+            --neon-green: #00ff4c;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --surface: rgba(20, 20, 30, 0.8);
+            --surface-glow: rgba(255, 0, 34, 0.1);
+            --text-primary: #ffffff;
+            --text-glow: #ff0022;
+            --shadow-glow: 0 0 20px rgba(255, 0, 34, 0.7);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(120deg, #e3f0ff 0%, #f7faff 80%);
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 34, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 34, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(255, 0, 34, 0.3);
+            animation: float 15s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 20%;
+            border-radius: 50%;
+            animation-delay: -10s;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
-        .container {
-            background: #fff;
-            padding: 36px 42px;
-            border-radius: 18px;
-            box-shadow: 0 6px 36px 0 rgba(44, 62, 80, 0.13);
-            max-width: 510px;
-            width: 97%;
-            margin: 40px 0;
-            animation: fadein 0.7s;
-        }
-        @keyframes fadein {
-            from { opacity: 0; transform: translateY(40px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        h1 {
-            color: #15396b;
-            letter-spacing: 1.6px;
-            margin-bottom: 28px;
-            font-weight: 700;
-        }
-        table {
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
             width: 100%;
-            border-collapse: collapse;
-            background: #f7fafd;
-            border-radius: 13px;
-            box-shadow: 0 1px 7px #cfd8dc2b;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--neon-red), var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 0, 34, 0.5);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+            box-shadow: 0 0 15px var(--neon-red);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        /* ===== SUBJECTS GRID ===== */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .subject-card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 0, 34, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
             overflow: hidden;
+            animation: fadeInUp 1s ease-out both;
         }
-        th, td {
-            padding: 16px 10px;
-            text-align: left;
-            font-size: 1.09em;
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, var(--surface-glow), transparent);
+            opacity: 0;
+            transition: var(--transition);
         }
-        th {
-            background-color: #e3eafc;
-            color: #204385;
+
+        .subject-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+            border-color: var(--neon-red);
+        }
+
+        .subject-card:hover::before {
+            opacity: 1;
+        }
+
+        .subject-card:nth-child(1) { animation-delay: 0.2s; }
+        .subject-card:nth-child(2) { animation-delay: 0.4s; }
+        .subject-card:nth-child(3) { animation-delay: 0.6s; }
+        .subject-card:nth-child(4) { animation-delay: 0.8s; }
+
+        .subject-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 34, 0.5));
+        }
+
+        .subject-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            position: relative;
         }
-        tr {
-            transition: background 0.18s;
+
+        .subject-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
         }
-        tr:hover {
-            background: #e2eeff;
+
+        .subject-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
-        td {
-            color: #22293b;
-            font-weight: 500;
-        }
-        .link-btn {
+
+        .subject-btn {
             display: inline-block;
-            background: linear-gradient(90deg, #1976d2 30%, #41acf7 100%);
-            color: #fff;
-            padding: 9px 20px;
+            background: linear-gradient(45deg, var(--neon-red), var(--neon-purple));
+            color: white;
+            padding: 0.8rem 2rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: 600;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 2px 6px #aac6fa2b;
-            transition: background 0.19s, box-shadow 0.19s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 0, 34, 0.3);
         }
-        .link-btn:hover {
-            background: linear-gradient(90deg, #1565c0, #1976d2);
-            box-shadow: 0 6px 16px #92b2f529;
-            text-decoration: underline;
+
+        .subject-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
         }
-        @media (max-width:600px) {
-            .container { padding: 12px 2px; }
-            table, th, td { font-size: 0.96em; }
+
+        .subject-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 34, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .subject-btn:hover::before {
+            left: 100%;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            animation: fadeInUp 1s ease-out 1s both;
+            width: 100%;
+        }
+
+        .footer-text {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 0, 34, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 30px rgba(255, 0, 34, 0.8), 0 0 40px rgba(255, 0, 34, 0.6);
+            }
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.2;
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg);
+                opacity: 0.3;
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .subject-card {
+                padding: 1.5rem;
+            }
+            
+            .subject-icon {
+                font-size: 2.5rem;
+                height: 60px;
+            }
+            
+            .subject-name {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem 0.5rem;
+            }
+            
+            .subject-card {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Choose Your Subject</h1>
-        <table>
-            <tr>
-                <th>Subject Name</th>
-                <th>Link</th>
-            </tr>
-            <tr>
-                <td>Physics</td>
-                <td><a class="link-btn" href="PhysicsNotes.html">Click Here</a></td>
-            </tr>
-            <tr>
-                <td>Chemistry</td>
-                <td><a class="link-btn" href="ChemistryNotes.html">Click Here</a></td>
-            </tr>
-            <tr>
-                <td>Maths</td>
-                <td><a class="link-btn" href="MathsNotes.html">Click Here</a></td>
-            </tr>
-            <tr>
-                <td>Biology</td>
-                <td><a class="link-btn" href="BiologyNotes.html">Click Here</a></td>
-            </tr>
-        </table>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="grid-lines"></div>
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="page-title">CHOOSE YOUR WEAPON</h1>
+            <p class="page-subtitle">Select your subject to conquer the battlefield of knowledge</p>
+        </header>
+
+        <!-- Subjects Grid -->
+        <div class="subjects-grid">
+            <!-- Physics Card -->
+            <div class="subject-card">
+                <div class="subject-icon">⚡</div>
+                <h2 class="subject-name">Physics</h2>
+                <p class="subject-description">Master the laws of the universe. From quantum mechanics to astrophysics, conquer the physical world.</p>
+                <a href="PhysicsNotes.html" class="subject-btn">Enter Battlefield</a>
+            </div>
+
+            <!-- Chemistry Card -->
+            <div class="subject-card">
+                <div class="subject-icon">🧪</div>
+                <h2 class="subject-name">Chemistry</h2>
+                <p class="subject-description">Unleash the power of elements. Reactions, bonds, and transformations at your command.</p>
+                <a href="ChemistryNotes.html" class="subject-btn">Enter Battlefield</a>
+            </div>
+
+            <!-- Maths Card -->
+            <div class="subject-card">
+                <div class="subject-icon">∫</div>
+                <h2 class="subject-name">Mathematics</h2>
+                <p class="subject-description">Solve the unsolvable. Equations, theorems, and proofs to conquer any challenge.</p>
+                <a href="MathsNotes.html" class="subject-btn">Enter Battlefield</a>
+            </div>
+
+            <!-- Biology Card -->
+            <div class="subject-card">
+                <div class="subject-icon">🧬</div>
+                <h2 class="subject-name">Biology</h2>
+                <p class="subject-description">Decode the secrets of life. From DNA to ecosystems, master the living world.</p>
+                <a href="BiologyNotes.html" class="subject-btn">Enter Battlefield</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">© 2024 KNOWLEDGE ARSENAL | PREPARE FOR DOMINANCE</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animation to buttons
+            const buttons = document.querySelectorAll('.subject-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Add ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                const cards = document.querySelectorAll('.subject-card');
+                const currentActive = document.activeElement.closest('.subject-card');
+                
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    let index = Array.from(cards).indexOf(currentActive);
+                    
+                    if (e.key === 'ArrowRight') {
+                        index = (index + 1) % cards.length;
+                    } else {
+                        index = (index - 1 + cards.length) % cards.length;
+                    }
+                    
+                    cards[index].querySelector('.subject-btn').focus();
+                }
+            });
+
+            // Add particle effect on hover
+            const cards = document.querySelectorAll('.subject-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const particles = document.createElement('div');
+                    particles.className = 'particles';
+                    particles.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        pointer-events: none;
+                        z-index: -1;
+                    `;
+                    
+                    for (let i = 0; i < 10; i++) {
+                        const particle = document.createElement('div');
+                        particle.style.cssText = `
+                            position: absolute;
+                            width: 4px;
+                            height: 4px;
+                            background: var(--neon-red);
+                            border-radius: 50%;
+                            top: ${Math.random() * 100}%;
+                            left: ${Math.random() * 100}%;
+                            animation: particleFloat 1s ease-out forwards;
+                            box-shadow: 0 0 10px var(--neon-red);
+                        `;
+                        particles.appendChild(particle);
+                    }
+                    
+                    this.appendChild(particles);
+                    
+                    setTimeout(() => {
+                        particles.remove();
+                    }, 1000);
+                });
+            });
+        });
+
+        // Add particle animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes particleFloat {
+                0% {
+                    transform: translate(0, 0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(${Math.random() * 100 - 50}px, -100px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
