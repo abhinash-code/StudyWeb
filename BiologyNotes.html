@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biology Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Biology Notes | Class 12</title>
   <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --primary-color: #2e7d32;
+      --primary-dark: #1b5e20;
+      --secondary-color: #66bb6a;
+      --accent-color: #ffb74d;
+      --success-color: #81c784;
+      --background-color: #0d1f0c;
+      --surface-color: #1b3a1a;
+      --surface-light: #2e5730;
+      --text-primary: #e8f5e9;
+      --text-secondary: #c8e6c9;
+      --text-muted: #a5d6a7;
+      --border-color: #388e3c;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --gradient: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);
+      --biology-gradient: linear-gradient(135deg, #2e7d32 0%, #1b5e20 50%, #66bb6a 100%);
+      --leaf-gradient: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+    }
+
+    /* ===== BASE STYLES ===== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -12,129 +36,821 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #004d40, #1de9b6);
-      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #0d1f0c 0%, #1b3a1a 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      line-height: 1.6;
+    }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 40px 20px;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 40px;
-      color: #a7ffeb;
-      text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 90%;
-      max-width: 700px;
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(12px);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      animation: slideUp 1.3s ease-out;
-    }
-
-    th, td {
-      padding: 18px;
+    /* ===== HEADER ===== */
+    .header {
       text-align: center;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .page-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      background: var(--biology-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      animation: fadeInUp 1s ease-out;
+      line-height: 1.2;
+    }
+
+    .page-subtitle {
       font-size: 1.2rem;
-      transition: background 0.3s ease, transform 0.2s ease;
+      color: var(--text-secondary);
+      font-weight: 400;
+      animation: fadeInUp 1s ease-out 0.2s both;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    tr:nth-child(even) {
-      background-color: rgba(255, 255, 255, 0.03);
+    /* ===== TABLE STYLES ===== */
+    .notes-table {
+      width: 100%;
+      max-width: 800px;
+      background: var(--surface-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      animation: slideUp 1s ease-out 0.4s both;
     }
 
-    tr:hover {
-      background-color: rgba(167, 255, 235, 0.2);
-      transform: scale(1.01);
+    .table-header {
+      background: var(--biology-gradient);
+      padding: 1.5rem 2rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    td a {
+    .table-header::before {
+      content: '🧬';
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0.3;
+    }
+
+    .table-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chapter-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .table-body {
+      padding: 1rem 0;
+    }
+
+    .chapter-row {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-row:last-child {
+      border-bottom: none;
+    }
+
+    .chapter-row::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: var(--leaf-gradient);
+      transform: scaleY(0);
+      transition: var(--transition);
+    }
+
+    .chapter-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+      transform: translateX(8px);
+    }
+
+    .chapter-row:hover::before {
+      transform: scaleY(1);
+    }
+
+    .chapter-number {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .chapter-name {
+      flex: 1;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .chapter-action {
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
       text-decoration: none;
-      color: #00e676;
-      font-weight: bold;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
     }
 
-    td a:hover {
-      color: #ffffff;
-      text-shadow: 0 0 8px #69f0ae;
+    .action-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .action-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* ===== STATS CARDS ===== */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--surface-color);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: var(--transition);
+      animation: fadeInUp 1s ease-out 0.6s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '🌱';
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 1.5rem;
+      opacity: 0.2;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--biology-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ===== BIOLOGY ELEMENTS ===== */
+    .biology-elements {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .biology-card {
+      background: var(--surface-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+      animation: fadeInUp 1s ease-out 0.8s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .biology-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .biology-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--leaf-gradient);
+    }
+
+    .biology-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .biology-name {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 4rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      animation: fadeInUp 1s ease-out 1s both;
+      width: 100%;
+    }
+
+    .footer a {
+      color: var(--success-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer a:hover {
+      color: var(--accent-color);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(120px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2.2rem;
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem 1rem;
       }
-      td, th {
-        padding: 15px;
+
+      .chapter-row {
+        padding: 1.25rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .chapter-action {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .table-header {
+        padding: 1.25rem 1.5rem;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .biology-elements {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .chapter-row:hover {
+        transform: translateX(4px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem 0.75rem;
+      }
+
+      .chapter-row {
+        padding: 1rem 1.25rem;
+      }
+
+      .table-header {
+        padding: 1rem 1.25rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .page-subtitle {
         font-size: 1rem;
       }
+
+      .biology-elements {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ===== DARK MODE SUPPORT ===== */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --background-color: #f1f8e9;
+        --surface-color: #ffffff;
+        --surface-light: #e8f5e9;
+        --text-primary: #1b5e20;
+        --text-secondary: #2e7d32;
+        --text-muted: #43a047;
+        --border-color: #a5d6a7;
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      body {
+        background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);
+      }
+
+      .chapter-row:hover {
+        background: rgba(46, 125, 50, 0.05);
+      }
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
   </style>
 </head>
 <body>
-  <h1>Here is Your Biology Notes</h1>
-  <table>
-    <tr>
-      <td>Chapter 1</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 2</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 3</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 4</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 5</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 6</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 7</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 8</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 9</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-    <tr>
-      <td>Chapter 10</td>
-      <td><a href="#">Click here</a></td>
-    </tr>
-  </table>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="header">
+      <h1 class="page-title">Biology Notes</h1>
+      <p class="page-subtitle">Comprehensive Class 12 Biology curriculum with detailed diagrams, processes, and life science concepts</p>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-number">16</div>
+        <div class="stat-label">Chapters</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">180+</div>
+        <div class="stat-label">Diagrams</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">94%</div>
+        <div class="stat-label">Exam Success Rate</div>
+      </div>
+    </div>
+
+    <!-- Biology Elements -->
+    <div class="biology-elements">
+      <div class="biology-card">
+        <div class="biology-icon">🧬</div>
+        <div class="biology-name">DNA Structure</div>
+      </div>
+      <div class="biology-card">
+        <div class="biology-icon">🔬</div>
+        <div class="biology-name">Microscope</div>
+      </div>
+      <div class="biology-card">
+        <div class="biology-icon">🌱</div>
+        <div class="biology-name">Plants</div>
+      </div>
+      <div class="biology-card">
+        <div class="biology-icon">🦠</div>
+        <div class="biology-name">Microbes</div>
+      </div>
+      <div class="biology-card">
+        <div class="biology-icon">🧠</div>
+        <div class="biology-name">Brain</div>
+      </div>
+      <div class="biology-card">
+        <div class="biology-icon">❤️</div>
+        <div class="biology-name">Heart</div>
+      </div>
+    </div>
+
+    <!-- Notes Table -->
+    <div class="notes-table">
+      <div class="table-header">
+        <div class="table-title">
+          <span>Curriculum Chapters</span>
+          <span class="chapter-count">16 Chapters</span>
+        </div>
+      </div>
+      
+      <div class="table-body">
+        <!-- Chapter 1 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 1</div>
+          <div class="chapter-name">Reproduction in Organisms</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 2</div>
+          <div class="chapter-name">Sexual Reproduction in Flowering Plants</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 3</div>
+          <div class="chapter-name">Human Reproduction</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 4</div>
+          <div class="chapter-name">Reproductive Health</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 5 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 5</div>
+          <div class="chapter-name">Principles of Inheritance and Variation</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 6</div>
+          <div class="chapter-name">Molecular Basis of Inheritance</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 7 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 7</div>
+          <div class="chapter-name">Evolution</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 8 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 8</div>
+          <div class="chapter-name">Human Health and Disease</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 9 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 9</div>
+          <div class="chapter-name">Strategies for Enhancement in Food Production</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 10 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 10</div>
+          <div class="chapter-name">Microbes in Human Welfare</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 11 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 11</div>
+          <div class="chapter-name">Biotechnology: Principles and Processes</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 12 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 12</div>
+          <div class="chapter-name">Biotechnology and its Applications</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 13 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 13</div>
+          <div class="chapter-name">Organisms and Populations</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 14 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 14</div>
+          <div class="chapter-name">Ecosystem</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 15 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 15</div>
+          <div class="chapter-name">Biodiversity and Conservation</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+
+        <!-- Chapter 16 -->
+        <div class="chapter-row">
+          <div class="chapter-number">Chapter 16</div>
+          <div class="chapter-name">Environmental Issues</div>
+          <div class="chapter-action">
+            <a href="#" class="action-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              View Notes
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2024 Biology Notes | Class 12 Curriculum | Made with ❤️ for Future Biologists</p>
+    </footer>
+  </div>
+
+  <script>
+    // Add some interactive features
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click animation to buttons
+      const buttons = document.querySelectorAll('.action-btn');
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          // Add ripple effect
+          const ripple = document.createElement('span');
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          
+          ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+          `;
+          
+          this.style.position = 'relative';
+          this.style.overflow = 'hidden';
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        const rows = document.querySelectorAll('.chapter-row');
+        const currentActive = document.activeElement.closest('.chapter-row');
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          let index = Array.from(rows).indexOf(currentActive);
+          
+          if (e.key === 'ArrowDown') {
+            index = (index + 1) % rows.length;
+          } else {
+            index = (index - 1 + rows.length) % rows.length;
+          }
+          
+          rows[index].querySelector('.action-btn').focus();
+        }
+      });
+
+      // Add biology card hover effects
+      const biologyCards = document.querySelectorAll('.biology-card');
+      biologyCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px) scale(1.05)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+    });
+
+    // Add ripple animation to CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
