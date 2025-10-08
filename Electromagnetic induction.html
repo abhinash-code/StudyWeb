@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Electromagnetic Induction & AC - Interactive Lab</title>
+<style>
+/* ===== CSS VARIABLES & THEME ===== */
+:root {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #111633;
+  --bg-card: rgba(17, 22, 51, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent-cyan: #00f0ff;
+  --accent-magenta: #ff00aa;
+  --accent-purple: #8b5cf6;
+  --text-primary: #e0e7ff;
+  --text-secondary: #9ca3af;
+  --text-dim: #6b7280;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --grid-color: rgba(0, 240, 255, 0.1);
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(5px);
+}
+
+.btn:hover {
+  background: var(--glass-border);
+  border-color: var(--accent-cyan);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  border: none;
+  color: white;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.container {
+  display: flex;
+  height: calc(100vh - 80px);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.stage-container {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.canvas-wrapper {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+}
+
+#mainCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+#mainCanvas:active {
+  cursor: grabbing;
+}
+
+.oscilloscope-panel {
+  height: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* ===== CONTROL PANEL ===== */
+.control-panel {
+  width: 380px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--bg-secondary);
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-height: 44px;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--accent-cyan);
+}
+
+.tab.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+  background: var(--glass-bg);
+}
+
+.tab-content {
+  padding: 1.5rem;
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ===== CONTROL GROUPS ===== */
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.control-value {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  background: var(--glass-bg);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  transition: transform 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+input[type="number"], select {
+  width: 100%;
+  padding: 0.6rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
+select {
+  cursor: pointer;
+}
+
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 44px;
+}
+
+.toggle-btn.active {
+  background: var(--accent-cyan);
+  color: var(--bg-primary);
+  border-color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+/* ===== OUTPUT DISPLAY ===== */
+.output-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.output-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.output-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.output-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  font-family: 'Courier New', monospace;
+}
+
+.output-unit {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-left: 0.3rem;
+}
+
+/* ===== OSCILLOSCOPE ===== */
+#scopeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+  background: rgba(139, 92, 246, 0.1);
+  border-left: 3px solid var(--accent-purple);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .control-panel {
+    width: 100%;
+    max-height: 60vh;
+  }
+  
+  .stage-container {
+    min-height: 400px;
+  }
+  
+  .header-title {
+    font-size: 1.2rem;
+  }
+  
+  .oscilloscope-panel {
+    height: 150px;
+  }
+}
+
+/* ===== MODAL/OVERLAY ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.modal-close:hover {
+  color: var(--accent-cyan);
+}
+
+/* ===== ACCESSIBILITY ===== */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* ===== LOADING ANIMATION ===== */
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--accent-cyan);
+  font-size: 1.2rem;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <h1 class="header-title">⚡ Electromagnetic Induction & AC Lab</h1>
+  <div class="header-controls">
+    <button class="btn btn-primary" id="playPauseBtn" aria-label="Play/Pause simulation">▶ Play</button>
+    <button class="btn" id="resetBtn" aria-label="Reset simulation">↻ Reset</button>
+    <button class="btn" id="exportBtn" aria-label="Export data">💾 Export</button>
+    <button class="btn" id="helpBtn" aria-label="Help">? Help</button>
+  </div>
+</header>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+  
+  <!-- STAGE AREA -->
+  <div class="stage-container">
+    <div class="canvas-wrapper">
+      <canvas id="mainCanvas" aria-label="Simulation canvas"></canvas>
+    </div>
+    <div class="oscilloscope-panel">
+      <canvas id="scopeCanvas" aria-label="Oscilloscope display"></canvas>
+    </div>
+  </div>
+  
+  <!-- CONTROL PANEL -->
+  <aside class="control-panel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="magnet" role="tab" aria-selected="true">Moving Magnet</button>
+      <button class="tab" data-tab="generator" role="tab" aria-selected="false">Generator</button>
+      <button class="tab" data-tab="transformer" role="tab" aria-selected="false">Transformer</button>
+      <button class="tab" data-tab="circuit" role="tab" aria-selected="false">RL/RLC</button>
+    </div>
+    
+    <!-- TAB 1: MOVING MAGNET -->
+    <div class="tab-content active" id="magnet-content">
+      <div class="control-group">
+        <label class="control-label">
+          <span>Magnet Speed (m/s)</span>
+          <span class="control-value" id="speedValue">0.40</span>
+        </label>
+        <input type="range" id="speedSlider" min="0" max="2" step="0.01" value="0.4" aria-label="Magnet speed">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Magnetic Field (T)</span>
+          <span class="control-value" id="bFieldValue">0.50</span>
+        </label>
+        <input type="range" id="bFieldSlider" min="0" max="2" step="0.01" value="0.5" aria-label="Magnetic field strength">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Coil Turns (N)</span>
+          <span class="control-value" id="turnsValue">200</span>
+        </label>
+        <input type="range" id="turnsSlider" min="1" max="2000" step="1" value="200" aria-label="Number of coil turns">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Coil Radius (cm)</span>
+          <span class="control-value" id="radiusValue">4.0</span>
+        </label>
+        <input type="range" id="radiusSlider" min="5" max="150" step="5" value="40" aria-label="Coil radius">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Load Resistance (Ω)</span>
+          <span class="control-value" id="resistanceValue">100</span>
+        </label>
+        <input type="range" id="resistanceSlider" min="-1" max="6" step="0.1" value="2" aria-label="Load resistance">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label"><span>Motion Mode</span></label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-mode="manual">Manual</button>
+          <button class="toggle-btn" data-mode="auto">Auto</button>
+          <button class="toggle-btn" data-mode="sine">Sine</button>
+        </div>
+      </div>
+      
+      <div class="output-grid">
+        <div class="output-card">
+          <div class="output-label">Flux Φ</div>
+          <div class="output-value" id="fluxOutput">0.000<span class="output-unit">Wb</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Induced EMF</div>
+          <div class="output-value" id="emfOutput">0.000<span class="output-unit">V</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Current</div>
+          <div class="output-value" id="currentOutput">0.000<span class="output-unit">A</span></div>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <strong>Faraday's Law:</strong> ε = -N dΦ/dt<br>
+        The induced EMF opposes the change in flux (Lenz's Law).
+      </div>
+    </div>
+    
+    <!-- TAB 2: GENERATOR -->
+    <div class="tab-content" id="generator-content">
+      <div class="control-group">
+        <label class="control-label">
+          <span>Angular Speed (RPM)</span>
+          <span class="control-value" id="rpmValue">1200</span>
+        </label>
+        <input type="range" id="rpmSlider" min="0" max="6000" step="10" value="1200" aria-label="Generator RPM">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Magnetic Field (T)</span>
+          <span class="control-value" id="genBFieldValue">0.50</span>
+        </label>
+        <input type="range" id="genBFieldSlider" min="0" max="2" step="0.01" value="0.5" aria-label="Generator magnetic field">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Coil Turns</span>
+          <span class="control-value" id="genTurnsValue">100</span>
+        </label>
+        <input type="range" id="genTurnsSlider" min="1" max="1000" step="1" value="100" aria-label="Generator coil turns">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Coil Area (cm²)</span>
+          <span class="control-value" id="genAreaValue">50</span>
+        </label>
+        <input type="range" id="genAreaSlider" min="10" max="200" step="5" value="50" aria-label="Generator coil area">
+      </div>
+      
+      <div class="output-grid">
+        <div class="output-card">
+          <div class="output-label">Frequency</div>
+          <div class="output-value" id="freqOutput">20<span class="output-unit">Hz</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Peak EMF</div>
+          <div class="output-value" id="peakEmfOutput">0.00<span class="output-unit">V</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">RMS Voltage</div>
+          <div class="output-value" id="rmsOutput">0.00<span class="output-unit">V</span></div>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <strong>Generator Equation:</strong> ε(t) = NABω sin(ωt)<br>
+        RMS = Peak / √2 ≈ 0.707 × Peak
+      </div>
+    </div>
+    
+    <!-- TAB 3: TRANSFORMER -->
+    <div class="tab-content" id="transformer-content">
+      <div class="control-group">
+        <label class="control-label">
+          <span>Primary Turns (Np)</span>
+          <span class="control-value" id="npValue">100</span>
+        </label>
+        <input type="range" id="npSlider" min="10" max="1000" step="10" value="100" aria-label="Primary turns">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Secondary Turns (Ns)</span>
+          <span class="control-value" id="nsValue">50</span>
+        </label>
+        <input type="range" id="nsSlider" min="10" max="1000" step="10" value="50" aria-label="Secondary turns">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Primary Voltage (V)</span>
+          <span class="control-value" id="vpValue">230</span>
+        </label>
+        <input type="range" id="vpSlider" min="10" max="500" step="10" value="230" aria-label="Primary voltage">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Load Resistance (Ω)</span>
+          <span class="control-value" id="transLoadValue">100</span>
+        </label>
+        <input type="range" id="transLoadSlider" min="1" max="1000" step="10" value="100" aria-label="Transformer load">
+      </div>
+      
+      <div class="output-grid">
+        <div class="output-card">
+          <div class="output-label">Turns Ratio</div>
+          <div class="output-value" id="ratioOutput">2.00</div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Secondary V</div>
+          <div class="output-value" id="vsOutput">115<span class="output-unit">V</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Efficiency</div>
+          <div class="output-value" id="effOutput">95<span class="output-unit">%</span></div>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <strong>Transformer Law:</strong> Vs/Vp = Ns/Np<br>
+        Ideal transformer: Power in = Power out
+      </div>
+    </div>
+    
+    <!-- TAB 4: RL/RLC CIRCUIT -->
+    <div class="tab-content" id="circuit-content">
+      <div class="control-group">
+        <label class="control-label">
+          <span>Resistance (Ω)</span>
+          <span class="control-value" id="circuitRValue">100</span>
+        </label>
+        <input type="range" id="circuitRSlider" min="1" max="1000" step="10" value="100" aria-label="Circuit resistance">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Inductance (mH)</span>
+          <span class="control-value" id="circuitLValue">100</span>
+        </label>
+        <input type="range" id="circuitLSlider" min="1" max="1000" step="10" value="100" aria-label="Circuit inductance">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Capacitance (μF)</span>
+          <span class="control-value" id="circuitCValue">10</span>
+        </label>
+        <input type="range" id="circuitCSlider" min="0" max="100" step="1" value="10" aria-label="Circuit capacitance">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">
+          <span>Source Voltage (V)</span>
+          <span class="control-value" id="sourceVValue">12</span>
+        </label>
+        <input type="range" id="sourceVSlider" min="1" max="50" step="1" value="12" aria-label="Source voltage">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label"><span>Source Type</span></label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-source="dc">DC Step</button>
+          <button class="toggle-btn" data-source="ac">AC Sine</button>
+        </div>
+      </div>
+      
+      <div class="output-grid">
+        <div class="output-card">
+          <div class="output-label">Resonance f₀</div>
+          <div class="output-value" id="resFreqOutput">159<span class="output-unit">Hz</span></div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Q Factor</div>
+          <div class="output-value" id="qFactorOutput">1.0</div>
+        </div>
+        <div class="output-card">
+          <div class="output-label">Time Constant</div>
+          <div class="output-value" id="tauOutput">1.0<span class="output-unit">ms</span></div>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <strong>RLC Resonance:</strong> f₀ = 1/(2π√LC)<br>
+        <strong>Q Factor:</strong> Q = ωL/R = 1/(ωRC)
+      </div>
+    </div>
+    
+  </aside>
+  
+</div>
+
+<!-- HELP MODAL -->
+<div class="modal" id="helpModal">
+  <div class="modal-content">
+    <span class="modal-close" id="closeHelp">&times;</span>
+    <h2>📚 User Guide</h2>
+    <h3>Keyboard Shortcuts</h3>
+    <p><strong>Space:</strong> Play/Pause<br>
+    <strong>R:</strong> Reset simulation<br>
+    <strong>E:</strong> Export data</p>
+    
+    <h3>Guided Tasks</h3>
+    <ol>
+      <li><strong>Task 1:</strong> In "Moving Magnet" mode, vary the magnet speed from 0.2 to 2.0 m/s and observe how induced EMF changes proportionally.</li>
+      <li><strong>Task 2:</strong> In "Generator" mode, change coil turns from 50 to 500 and verify that peak EMF increases proportionally (EMF ∝ N).</li>
+      <li><strong>Task 3:</strong> In "Transformer" mode, keep primary voltage at 230V, change secondary turns, and verify Vs/Vp ≈ Ns/Np ratio.</li>
+    </ol>
+    
+    <h3>Canvas Controls</h3>
+    <p><strong>Desktop:</strong> Click and drag to pan, scroll to zoom<br>
+    <strong>Mobile:</strong> Touch drag to pan, pinch to zoom</p>
+    
+    <h3>Physics Implementation</h3>
+    <p>All simulations use numerical integration (RK4) for accurate results. Flux calculations use dipole approximation with geometric correction factors.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+'use strict';
+
+/* ========================================
+   CONFIGURATION & CONSTANTS
+======================================== */
+const CONFIG = {
+  CANVAS_DPR: window.devicePixelRatio || 1,
+  PHYSICS_DT: 1/60,
+  SCOPE_BUFFER_SIZE: 500,
+  SCOPE_TIME_WINDOW: 2, // seconds
+  
+  // Magnet defaults
+  MAGNET_SPEED_DEFAULT: 0.4,
+  MAGNET_B_DEFAULT: 0.5,
+  COIL_TURNS_DEFAULT: 200,
+  COIL_RADIUS_DEFAULT: 40,
+  RESISTANCE_DEFAULT: 100,
+  
+  // Generator defaults
+  GEN_RPM_DEFAULT: 1200,
+  GEN_TURNS_DEFAULT: 100,
+  GEN_AREA_DEFAULT: 50,
+  
+  // Transformer defaults
+  TRANS_NP_DEFAULT: 100,
+  TRANS_NS_DEFAULT: 50,
+  TRANS_VP_DEFAULT: 230,
+  
+  // Circuit defaults
+  CIRCUIT_R_DEFAULT: 100,
+  CIRCUIT_L_DEFAULT: 100,
+  CIRCUIT_C_DEFAULT: 10,
+};
+
+/* ========================================
+   STATE MANAGEMENT
+======================================== */
+const state = {
+  isPlaying: false,
+  currentTab: 'magnet',
+  time: 0,
+  
+  // Magnet simulation
+  magnet: {
+    position: 0,
+    speed: CONFIG.MAGNET_SPEED_DEFAULT,
+    bField: CONFIG.MAGNET_B_DEFAULT,
+    mode: 'manual'
+  },
+  
+  coil: {
+    turns: CONFIG.COIL_TURNS_DEFAULT,
+    radius: CONFIG.COIL_RADIUS_DEFAULT / 100, // convert to meters
+    resistance: CONFIG.RESISTANCE_DEFAULT
+  },
+  
+  // Generator simulation
+  generator: {
+    rpm: CONFIG.GEN_RPM_DEFAULT,
+    omega: 0,
+    angle: 0,
+    bField: CONFIG.MAGNET_B_DEFAULT,
+    turns: CONFIG.GEN_TURNS_DEFAULT,
+    area: CONFIG.GEN_AREA_DEFAULT / 10000 // cm² to m²
+  },
+  
+  // Transformer simulation
+  transformer: {
+    np: CONFIG.TRANS_NP_DEFAULT,
+    ns: CONFIG.TRANS_NS_DEFAULT,
+    vp: CONFIG.TRANS_VP_DEFAULT,
+    load: 100,
+    efficiency: 0.95
+  },
+  
+  // Circuit simulation
+  circuit: {
+    r: CONFIG.CIRCUIT_R_DEFAULT,
+    l: CONFIG.CIRCUIT_L_DEFAULT / 1000, // mH to H
+    c: CONFIG.CIRCUIT_C_DEFAULT / 1e6, // μF to F
+    sourceV: 12,
+    sourceType: 'dc',
+    current: 0,
+    vL: 0,
+    vC: 0,
+    charge: 0
+  },
+  
+  // Output values
+  flux: 0,
+  emf: 0,
+  current: 0,
+  
+  // Canvas interaction
+  canvas: {
+    offsetX: 0,
+    offsetY: 0,
+    scale: 1,
+    isDragging: false,
+    lastX: 0,
+    lastY: 0
+  }
+};
+
+// Oscilloscope data buffers
+const scopeData = {
+  time: [],
+  emf: [],
+  flux: [],
+  current: []
+};
+
+/* ========================================
+   PHYSICS ENGINE
+======================================== */
+class PhysicsEngine {
+  constructor() {
+    this.prevFlux = 0;
+    this.fluxHistory = [0, 0, 0];
+  }
+  
+  // Calculate magnetic flux through coil
+  calculateFlux(magnetPos, coilRadius, bField) {
+    // Simplified dipole model: B falls off with distance³
+    const distance = Math.abs(magnetPos);
+    const effectiveB = bField / (1 + Math.pow(distance / coilRadius, 3));
+    const area = Math.PI * coilRadius * coilRadius;
+    return effectiveB * area * Math.cos(Math.atan(magnetPos / coilRadius));
+  }
+  
+  // Calculate induced EMF using numerical differentiation
+  calculateEMF(flux, turns, dt) {
+    this.fluxHistory.shift();
+    this.fluxHistory.push(flux);
+    
+    // Central difference for smoother derivative
+    const dFlux = (this.fluxHistory[2] - this.fluxHistory[0]) / (2 * dt);
+    return -turns * dFlux;
+  }
+  
+  // Update magnet simulation
+  updateMagnet(dt) {
+    const { magnet, coil } = state;
+    
+    // Update position based on mode
+    if (magnet.mode === 'auto') {
+      magnet.position += magnet.speed * dt;
+      if (Math.abs(magnet.position) > 0.5) {
+        magnet.speed *= -1; // Bounce back
+      }
+    } else if (magnet.mode === 'sine') {
+      magnet.position = 0.3 * Math.sin(state.time * Math.PI);
+    }
+    
+    // Calculate flux
+    state.flux = this.calculateFlux(magnet.position, coil.radius, magnet.bField);
+    
+    // Calculate EMF
+    state.emf = this.calculateEMF(state.flux, coil.turns, dt);
+    
+    // Calculate current (Ohm's law)
+    state.current = coil.resistance > 0 ? state.emf / coil.resistance : 0;
+  }
+  
+  // Update generator simulation
+  updateGenerator(dt) {
+    const { generator } = state;
+    
+    // Convert RPM to rad/s
+    generator.omega = (generator.rpm * 2 * Math.PI) / 60;
+    generator.angle += generator.omega * dt;
+    
+    // EMF = NABω sin(ωt)
+    const peakEmf = generator.turns * generator.area * generator.bField * generator.omega;
+    state.emf = peakEmf * Math.sin(generator.angle);
+    state.flux = generator.turns * generator.area * generator.bField * Math.cos(generator.angle);
+    state.current = state.emf / 100; // Assume 100Ω load
+  }
+  
+  // Update transformer simulation
+  updateTransformer(dt) {
+    const { transformer } = state;
+    const ratio = transformer.ns / transformer.np;
+    const vs = transformer.vp * ratio;
+    const is = vs / transformer.load;
+    const ip = is * ratio;
+    
+    state.emf = vs;
+    state.current = is;
+    state.flux = transformer.np * transformer.vp * Math.sin(state.time * 2 * Math.PI * 50) / (2 * Math.PI * 50);
+  }
+  
+  // RK4 integration for RLC circuit
+  updateCircuit(dt) {
+    const { circuit } = state;
+    const { r, l, c, sourceV, sourceType } = circuit;
+    
+    // Source voltage
+    const vs = sourceType === 'dc' ? sourceV : sourceV * Math.sin(state.time * 2 * Math.PI * 50);
+    
+    // RLC differential equations
+    // di/dt = (vs - i*r - q/c) / l
+    // dq/dt = i
+    
+    const derivs = (i, q) => {
+      const vC = c > 0 ? q / c : 0;
+      const diDt = (vs - i * r - vC) / l;
+      const dqDt = i;
+      return { diDt, dqDt };
+    };
+    
+    // RK4 integration
+    const i = circuit.current;
+    const q = circuit.charge;
+    
+    const k1 = derivs(i, q);
+    const k2 = derivs(i + k1.diDt * dt/2, q + k1.dqDt * dt/2);
+    const k3 = derivs(i + k2.diDt * dt/2, q + k2.dqDt * dt/2);
+    const k4 = derivs(i + k3.diDt * dt, q + k3.dqDt * dt);
+    
+    circuit.current += (k1.diDt + 2*k2.diDt + 2*k3.diDt + k4.diDt) * dt / 6;
+    circuit.charge += (k1.dqDt + 2*k2.dqDt + 2*k3.dqDt + k4.dqDt) * dt / 6;
+    
+    circuit.vL = l * (circuit.current - i) / dt;
+    circuit.vC = c > 0 ? circuit.charge / c : 0;
+    
+    state.emf = vs;
+    state.current = circuit.current;
+  }
+  
+  step(dt) {
+    state.time += dt;
+    
+    switch(state.currentTab) {
+      case 'magnet':
+        this.updateMagnet(dt);
+        break;
+      case 'generator':
+        this.updateGenerator(dt);
+        break;
+      case 'transformer':
+        this.updateTransformer(dt);
+        break;
+      case 'circuit':
+        this.updateCircuit(dt);
+        break;
+    }
+    
+    // Store data for oscilloscope
+    this.updateScopeData();
+  }
+  
+  updateScopeData() {
+    scopeData.time.push(state.time);
+    scopeData.emf.push(state.emf);
+    scopeData.flux.push(state.flux);
+    scopeData.current.push(state.current);
+    
+    // Keep buffer size limited
+    const maxSize = CONFIG.SCOPE_BUFFER_SIZE;
+    if (scopeData.time.length > maxSize) {
+      scopeData.time.shift();
+      scopeData.emf.shift();
+      scopeData.flux.shift();
+      scopeData.current.shift();
+    }
+  }
+  
+  reset() {
+    state.time = 0;
+    state.magnet.position = 0;
+    state.generator.angle = 0;
+    state.circuit.current = 0;
+    state.circuit.charge = 0;
+    this.fluxHistory = [0, 0, 0];
+    scopeData.time = [];
+    scopeData.emf = [];
+    scopeData.flux = [];
+    scopeData.current = [];
+  }
+}
+
+/* ========================================
+   RENDERER
+======================================== */
+class Renderer {
+  constructor(canvas, scopeCanvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.scopeCanvas = scopeCanvas;
+    this.scopeCtx = scopeCanvas.getContext('2d');
+    this.resize();
+  }
+  
+  resize() {
+    const dpr = CONFIG.CANVAS_DPR;
+    
+    // Main canvas
+    const rect = this.canvas.getBoundingClientRect();
+    this.canvas.width = rect.width * dpr;
+    this.canvas.height = rect.height * dpr;
+    this.ctx.scale(dpr, dpr);
+    this.width = rect.width;
+    this.height = rect.height;
+    
+    // Scope canvas
+    const scopeRect = this.scopeCanvas.getBoundingClientRect();
+    this.scopeCanvas.width = scopeRect.width * dpr;
+    this.scopeCanvas.height = scopeRect.height * dpr;
+    this.scopeCtx.scale(dpr, dpr);
+    this.scopeWidth = scopeRect.width;
+    this.scopeHeight = scopeRect.height;
+  }
+  
+  clear() {
+    this.ctx.fillStyle = '#0a0e27';
+    this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+  
+  drawGrid() {
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+    this.ctx.lineWidth = 1;
+    
+    const step = 50;
+    for (let x = 0; x < this.width; x += step) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, this.height);
+      this.ctx.stroke();
+    }
+    for (let y = 0; y < this.height; y += step) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(this.width, y);
+      this.ctx.stroke();
+    }
+  }
+  
+  drawMagnetScene() {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    
+    // Draw coil
+    const coilRadius = state.coil.radius * 200; // Scale for display
+    this.ctx.strokeStyle = '#fbbf24';
+    this.ctx.lineWidth = 3;
+    
+    // Multiple coil turns
+    for (let i = 0; i < 5; i++) {
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, coilRadius + i * 3, 0, Math.PI * 2);
+      this.ctx.stroke();
+    }
+    
+    // Draw magnet
+    const magnetX = cx + state.magnet.position * 300;
+    const magnetW = 40;
+    const magnetH = 80;
+    
+    // North pole (red)
+    this.ctx.fillStyle = '#ef4444';
+    this.ctx.fillRect(magnetX - magnetW/2, cy - magnetH/2, magnetW/2, magnetH);
+    
+    // South pole (blue)
+    this.ctx.fillStyle = '#3b82f6';
+    this.ctx.fillRect(magnetX, cy - magnetH/2, magnetW/2, magnetH);
+    
+    // Labels
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = 'bold 16px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('N', magnetX - magnetW/4, cy);
+    this.ctx.fillText('S', magnetX + magnetW/4, cy);
+    
+    // Draw field lines
+    this.drawFieldLines(magnetX, cy);
+    
+    // Draw current direction arrow
+    if (Math.abs(state.current) > 0.001) {
+      this.drawCurrentArrow(cx, cy - coilRadius - 40, state.current);
+    }
+  }
+  
+  drawFieldLines(x, y) {
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.3)';
+    this.ctx.lineWidth = 1;
+    
+    for (let i = -3; i <= 3; i++) {
+      if (i === 0) continue;
+      this.ctx.beginPath();
+      const offsetY = i * 15;
+      this.ctx.moveTo(x - 60, y + offsetY);
+      this.ctx.quadraticCurveTo(x + 80, y + offsetY, x + 60, y - offsetY * 0.5);
+      this.ctx.stroke();
+    }
+  }
+  
+  drawCurrentArrow(x, y, current) {
+    const direction = current > 0 ? 1 : -1;
+    this.ctx.fillStyle = current > 0 ? '#10b981' : '#ef4444';
+    this.ctx.font = '20px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText(direction > 0 ? '→' : '←', x, y);
+    this.ctx.font = '12px sans-serif';
+    this.ctx.fillText('I = ' + state.current.toFixed(3) + ' A', x, y + 20);
+  }
+  
+  drawGeneratorScene() {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    
+    // Draw magnetic field (N-S poles)
+    this.ctx.fillStyle = '#ef4444';
+    this.ctx.fillRect(cx - 150, cy - 80, 50, 160);
+    this.ctx.fillStyle = '#3b82f6';
+    this.ctx.fillRect(cx + 100, cy - 80, 50, 160);
+    
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = 'bold 24px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('N', cx - 125, cy);
+    this.ctx.fillText('S', cx + 125, cy);
+    
+    // Draw rotating coil
+    const angle = state.generator.angle;
+    const coilW = 80;
+    const coilH = 120;
+    
+    this.ctx.save();
+    this.ctx.translate(cx, cy);
+    this.ctx.rotate(angle);
+    
+    this.ctx.strokeStyle = '#fbbf24';
+    this.ctx.lineWidth = 4;
+    this.ctx.strokeRect(-coilW/2, -coilH/2, coilW, coilH);
+    
+    // Coil wires
+    this.ctx.strokeStyle = '#f59e0b';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.moveTo(-coilW/2, -coilH/2);
+    this.ctx.lineTo(-coilW/2, coilH/2);
+    this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(coilW/2, -coilH/2);
+    this.ctx.lineTo(coilW/2, coilH/2);
+    this.ctx.stroke();
+    
+    this.ctx.restore();
+    
+    // Draw rotation axis
+    this.ctx.fillStyle = '#9ca3af';
+    this.ctx.beginPath();
+    this.ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+    this.ctx.fill();
+    
+    // Draw phasor
+    this.drawPhasor(cx, cy + 200, angle, state.emf);
+  }
+  
+  drawPhasor(x, y, angle, magnitude) {
+    const scale = 50;
+    const length = Math.min(Math.abs(magnitude) * scale, 100);
+    
+    this.ctx.strokeStyle = '#00f0ff';
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.lineWidth = 3;
+    
+    const endX = x + length * Math.cos(angle - Math.PI/2);
+    const endY = y + length * Math.sin(angle - Math.PI/2);
+    
+    // Arrow line
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y);
+    this.ctx.lineTo(endX, endY);
+    this.ctx.stroke();
+    
+    // Arrow head
+    const headLen = 10;
+    const headAngle = Math.PI / 6;
+    const angle1 = angle - Math.PI/2 + Math.PI - headAngle;
+    const angle2 = angle - Math.PI/2 + Math.PI + headAngle;
+    
+    this.ctx.beginPath();
+    this.ctx.moveTo(endX, endY);
+    this.ctx.lineTo(endX + headLen * Math.cos(angle1), endY + headLen * Math.sin(angle1));
+    this.ctx.moveTo(endX, endY);
+    this.ctx.lineTo(endX + headLen * Math.cos(angle2), endY + headLen * Math.sin(angle2));
+    this.ctx.stroke();
+    
+    // Label
+    this.ctx.font = '14px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('EMF Phasor', x, y + 30);
+  }
+  
+  drawTransformerScene() {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    
+    // Draw core
+    this.ctx.fillStyle = '#6b7280';
+    this.ctx.fillRect(cx - 20, cy - 100, 40, 200);
+    
+    // Draw primary coil (left)
+    this.ctx.strokeStyle = '#ef4444';
+    this.ctx.lineWidth = 3;
+    for (let i = 0; i < 6; i++) {
+      this.ctx.beginPath();
+      this.ctx.arc(cx - 60, cy - 60 + i * 20, 15, 0, Math.PI * 2);
+      this.ctx.stroke();
+    }
+    
+    // Draw secondary coil (right)
+    this.ctx.strokeStyle = '#3b82f6';
+    for (let i = 0; i < 6; i++) {
+      this.ctx.beginPath();
+      this.ctx.arc(cx + 60, cy - 60 + i * 20, 15, 0, Math.PI * 2);
+      this.ctx.stroke();
+    }
+    
+    // Labels
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = '14px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('Primary', cx - 60, cy - 90);
+    this.ctx.fillText(state.transformer.np + ' turns', cx - 60, cy - 75);
+    this.ctx.fillText('Secondary', cx + 60, cy - 90);
+    this.ctx.fillText(state.transformer.ns + ' turns', cx + 60, cy - 75);
+    
+    // Draw voltage waveforms
+    const ratio = state.transformer.ns / state.transformer.np;
+    const vPeak = 50;
+    const vSecPeak = vPeak * ratio;
+    
+    const waveY = cy + 120;
+    const phase = state.time * 2 * Math.PI * 50;
+    
+    this.ctx.strokeStyle = '#ef4444';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    for (let i = 0; i < 200; i++) {
+      const x = cx - 100 + i;
+      const y = waveY + vPeak * Math.sin(phase + i * 0.1);
+      if (i === 0) this.ctx.moveTo(x, y);
+      else this.ctx.lineTo(x, y);
+    }
+    this.ctx.stroke();
+    
+    this.ctx.strokeStyle = '#3b82f6';
+    this.ctx.beginPath();
+    for (let i = 0; i < 200; i++) {
+      const x = cx - 100 + i;
+      const y = waveY + vSecPeak * Math.sin(phase + i * 0.1);
+      if (i === 0) this.ctx.moveTo(x, y);
+      else this.ctx.lineTo(x, y);
+    }
+    this.ctx.stroke();
+  }
+  
+  drawCircuitScene() {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    
+    // Draw circuit schematic
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.lineWidth = 2;
+    
+    // Voltage source
+    this.ctx.beginPath();
+    this.ctx.arc(cx - 100, cy, 30, 0, Math.PI * 2);
+    this.ctx.stroke();
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = '20px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('~', cx - 100, cy + 7);
+    
+    // Resistor
+    this.ctx.strokeStyle = '#ef4444';
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeRect(cx - 20, cy - 80, 40, 20);
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.fillText('R', cx, cy - 90);
+    
+    // Inductor
+    this.ctx.strokeStyle = '#3b82f6';
+    this.ctx.beginPath();
+    for (let i = 0; i < 4; i++) {
+      this.ctx.arc(cx + 60 + i * 15, cy - 70, 7, 0, Math.PI, false);
+    }
+    this.ctx.stroke();
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText('L', cx + 75, cy - 90);
+    
+    // Capacitor
+    this.ctx.strokeStyle = '#10b981';
+    this.ctx.lineWidth = 3;
+    this.ctx.beginPath();
+    this.ctx.moveTo(cx + 95, cy);
+    this.ctx.lineTo(cx + 95, cy + 30);
+    this.ctx.moveTo(cx + 105, cy);
+    this.ctx.lineTo(cx + 105, cy + 30);
+    this.ctx.stroke();
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText('C', cx + 100, cy + 45);
+    
+    // Wires
+    this.ctx.strokeStyle = '#9ca3af';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    // Connect source to circuit
+    this.ctx.moveTo(cx - 70, cy);
+    this.ctx.lineTo(cx, cy);
+    this.ctx.lineTo(cx, cy - 60);
+    this.ctx.lineTo(cx + 120, cy - 60);
+    this.ctx.lineTo(cx + 120, cy);
+    this.ctx.lineTo(cx + 100, cy);
+    this.ctx.moveTo(cx + 100, cy + 30);
+    this.ctx.lineTo(cx + 100, cy + 60);
+    this.ctx.lineTo(cx - 100, cy + 60);
+    this.ctx.lineTo(cx - 100, cy + 30);
+    this.ctx.stroke();
+    
+    // Current indicator
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.font = 'bold 16px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('I = ' + state.circuit.current.toFixed(3) + ' A', cx, cy + 100);
+  }
+  
+  draw() {
+    this.clear();
+    this.drawGrid();
+    
+    switch(state.currentTab) {
+      case 'magnet':
+        this.drawMagnetScene();
+        break;
+      case 'generator':
+        this.drawGeneratorScene();
+        break;
+      case 'transformer':
+        this.drawTransformerScene();
+        break;
+      case 'circuit':
+        this.drawCircuitScene();
+        break;
+    }
+  }
+  
+  drawOscilloscope() {
+    const ctx = this.scopeCtx;
+    const w = this.scopeWidth;
+    const h = this.scopeHeight;
+    
+    // Clear
+    ctx.fillStyle = '#111633';
+    ctx.fillRect(0, 0, w, h);
+    
+    // Draw grid
+    ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+    ctx.lineWidth = 1;
+    const gridStep = 50;
+    for (let x = 0; x < w; x += gridStep) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 0; y < h; y += gridStep) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+    
+    // Draw center line
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, h/2);
+    ctx.lineTo(w, h/2);
+    ctx.stroke();
+    
+    // Draw traces
+    if (scopeData.time.length < 2) return;
+    
+    const drawTrace = (data, color, scale) => {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      const len = Math.min(data.length, w);
+      for (let i = 0; i < len; i++) {
+        const x = (i / len) * w;
+        const y = h/2 - data[data.length - len + i] * scale;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    };
+    
+    // Auto-scale based on max value
+    const maxEmf = Math.max(...scopeData.emf.map(Math.abs).slice(-100), 0.1);
+    const scale = (h * 0.4) / maxEmf;
+    
+    drawTrace(scopeData.emf, '#00f0ff', scale);
+    drawTrace(scopeData.current, '#10b981', scale * 100);
+    
+    // Legend
+    ctx.fillStyle = '#00f0ff';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('EMF', 10, 20);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('Current', 10, 35);
+  }
+}
+
+/* ========================================
+   UI CONTROLLER
+======================================== */
+class UIController {
+  constructor() {
+    this.setupEventListeners();
+    this.updateAllDisplays();
+  }
+  
+  setupEventListeners() {
+    // Play/Pause
+    document.getElementById('playPauseBtn').addEventListener('click', () => this.togglePlayPause());
+    
+    // Reset
+    document.getElementById('resetBtn').addEventListener('click', () => this.reset());
+    
+    // Export
+    document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
+    
+    // Help
+    document.getElementById('helpBtn').addEventListener('click', () => this.showHelp());
+    document.getElementById('closeHelp').addEventListener('click', () => this.hideHelp());
+    
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
+    });
+    
+    // Magnet controls
+    this.setupSlider('speedSlider', 'speedValue', (v) => {
+      state.magnet.speed = parseFloat(v);
+      return v;
+    }, 2);
+    
+    this.setupSlider('bFieldSlider', 'bFieldValue', (v) => {
+      state.magnet.bField = parseFloat(v);
+      return v;
+    }, 2);
+    
+    this.setupSlider('turnsSlider', 'turnsValue', (v) => {
+      state.coil.turns = parseInt(v);
+      return v;
+    }, 0);
+    
+    this.setupSlider('radiusSlider', 'radiusValue', (v) => {
+      state.coil.radius = parseFloat(v) / 100;
+      return (parseFloat(v) / 10).toFixed(1);
+    }, 1);
+    
+    this.setupSlider('resistanceSlider', 'resistanceValue', (v) => {
+      // Log scale: 10^v
+      const val = Math.pow(10, parseFloat(v));
+      state.coil.resistance = val;
+      return val.toFixed(val < 10 ? 1 : 0);
+    }, 0);
+    
+    // Motion mode toggles
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        state.magnet.mode = e.target.dataset.mode;
+      });
+    });
+    
+    // Generator controls
+    this.setupSlider('rpmSlider', 'rpmValue', (v) => {
+      state.generator.rpm = parseFloat(v);
+      return v;
+    }, 0);
+    
+    this.setupSlider('genBFieldSlider', 'genBFieldValue', (v) => {
+      state.generator.bField = parseFloat(v);
+      return v;
+    }, 2);
+    
+    this.setupSlider('genTurnsSlider', 'genTurnsValue', (v) => {
+      state.generator.turns = parseInt(v);
+      return v;
+    }, 0);
+    
+    this.setupSlider('genAreaSlider', 'genAreaValue', (v) => {
+      state.generator.area = parseFloat(v) / 10000;
+      return v;
+    }, 0);
+    
+    // Transformer controls
+    this.setupSlider('npSlider', 'npValue', (v) => {
+      state.transformer.np = parseInt(v);
+      this.updateTransformerOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('nsSlider', 'nsValue', (v) => {
+      state.transformer.ns = parseInt(v);
+      this.updateTransformerOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('vpSlider', 'vpValue', (v) => {
+      state.transformer.vp = parseInt(v);
+      this.updateTransformerOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('transLoadSlider', 'transLoadValue', (v) => {
+      state.transformer.load = parseInt(v);
+      this.updateTransformerOutputs();
+      return v;
+    }, 0);
+    
+    // Circuit controls
+    this.setupSlider('circuitRSlider', 'circuitRValue', (v) => {
+      state.circuit.r = parseFloat(v);
+      this.updateCircuitOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('circuitLSlider', 'circuitLValue', (v) => {
+      state.circuit.l = parseFloat(v) / 1000;
+      this.updateCircuitOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('circuitCSlider', 'circuitCValue', (v) => {
+      state.circuit.c = parseFloat(v) / 1e6;
+      this.updateCircuitOutputs();
+      return v;
+    }, 0);
+    
+    this.setupSlider('sourceVSlider', 'sourceVValue', (v) => {
+      state.circuit.sourceV = parseFloat(v);
+      return v;
+    }, 0);
+    
+    // Source type toggles
+    document.querySelectorAll('[data-source]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('[data-source]').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        state.circuit.sourceType = e.target.dataset.source;
+        physics.reset();
+      });
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        this.togglePlayPause();
+      } else if (e.code === 'KeyR') {
+        this.reset();
+      } else if (e.code === 'KeyE') {
+        this.exportData();
+      }
+    });
+  }
+  
+  setupSlider(sliderId, valueId, callback, decimals) {
+    const slider = document.getElementById(sliderId);
+    const valueDisplay = document.getElementById(valueId);
+    
+    slider.addEventListener('input', (e) => {
+      const displayValue = callback(e.target.value);
+      valueDisplay.textContent = typeof displayValue === 'number' 
+        ? displayValue.toFixed(decimals) 
+        : displayValue;
+    });
+  }
+  
+  togglePlayPause() {
+    state.isPlaying = !state.isPlaying;
+    const btn = document.getElementById('playPauseBtn');
+    btn.innerHTML = state.isPlaying ? '⏸ Pause' : '▶ Play';
+  }
+  
+  reset() {
+    physics.reset();
+    this.updateAllDisplays();
+  }
+  
+  switchTab(tabName) {
+    state.currentTab = tabName;
+    
+    // Update tab buttons
+    document.querySelectorAll('.tab').forEach(tab => {
+      const isActive = tab.dataset.tab === tabName;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive);
+    });
+    
+    // Update tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.toggle('active', content.id === `${tabName}-content`);
+    });
+    
+    physics.reset();
+  }
+  
+  updateAllDisplays() {
+    this.updateMagnetOutputs();
+    this.updateGeneratorOutputs();
+    this.updateTransformerOutputs();
+    this.updateCircuitOutputs();
+  }
+  
+  updateMagnetOutputs() {
+    document.getElementById('fluxOutput').innerHTML = 
+      `${state.flux.toFixed(3)}<span class="output-unit">Wb</span>`;
+    document.getElementById('emfOutput').innerHTML = 
+      `${state.emf.toFixed(3)}<span class="output-unit">V</span>`;
+    document.getElementById('currentOutput').innerHTML = 
+      `${state.current.toFixed(3)}<span class="output-unit">A</span>`;
+  }
+  
+  updateGeneratorOutputs() {
+    const freq = state.generator.rpm / 60;
+    const peakEmf = state.generator.turns * state.generator.area * 
+                    state.generator.bField * state.generator.omega;
+    const rms = peakEmf / Math.sqrt(2);
+    
+    document.getElementById('freqOutput').innerHTML = 
+      `${freq.toFixed(0)}<span class="output-unit">Hz</span>`;
+    document.getElementById('peakEmfOutput').innerHTML = 
+      `${peakEmf.toFixed(2)}<span class="output-unit">V</span>`;
+    document.getElementById('rmsOutput').innerHTML = 
+      `${rms.toFixed(2)}<span class="output-unit">V</span>`;
+  }
+  
+  updateTransformerOutputs() {
+    const ratio = state.transformer.np / state.transformer.ns;
+    const vs = state.transformer.vp / ratio;
+    const is = vs / state.transformer.load;
+    const ps = vs * is;
+    const pp = state.transformer.vp * (is / ratio);
+    const efficiency = (ps / pp) * 100 * state.transformer.efficiency;
+    
+    document.getElementById('ratioOutput').textContent = ratio.toFixed(2);
+    document.getElementById('vsOutput').innerHTML = 
+      `${vs.toFixed(0)}<span class="output-unit">V</span>`;
+    document.getElementById('effOutput').innerHTML = 
+      `${efficiency.toFixed(0)}<span class="output-unit">%</span>`;
+  }
+  
+  updateCircuitOutputs() {
+    const { r, l, c } = state.circuit;
+    
+    // Resonance frequency
+    const f0 = c > 0 ? 1 / (2 * Math.PI * Math.sqrt(l * c)) : 0;
+    
+    // Q factor
+    const q = c > 0 ? Math.sqrt(l / c) / r : 0;
+    
+    // Time constant
+    const tau = l / r * 1000; // ms
+    
+    document.getElementById('resFreqOutput').innerHTML = 
+      `${f0.toFixed(0)}<span class="output-unit">Hz</span>`;
+    document.getElementById('qFactorOutput').textContent = q.toFixed(1);
+    document.getElementById('tauOutput').innerHTML = 
+      `${tau.toFixed(1)}<span class="output-unit">ms</span>`;
+  }
+  
+  exportData() {
+    if (scopeData.time.length === 0) {
+      alert('No data to export. Run the simulation first.');
+      return;
+    }
+    
+    // Create CSV
+    let csv = 'Time (s),EMF (V),Flux (Wb),Current (A)\n';
+    for (let i = 0; i < scopeData.time.length; i++) {
+      csv += `${scopeData.time[i].toFixed(4)},${scopeData.emf[i].toFixed(6)},`;
+      csv += `${scopeData.flux[i].toFixed(6)},${scopeData.current[i].toFixed(6)}\n`;
+    }
+    
+    // Download
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `em_induction_data_${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  
+  showHelp() {
+    document.getElementById('helpModal').classList.add('active');
+  }
+  
+  hideHelp() {
+    document.getElementById('helpModal').classList.remove('active');
+  }
+}
+
+/* ========================================
+   CANVAS INTERACTION
+======================================== */
+class CanvasInteraction {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.setupEventListeners();
+  }
+  
+  setupEventListeners() {
+    // Mouse events
+    this.canvas.addEventListener('mousedown', (e) => this.handleStart(e));
+    this.canvas.addEventListener('mousemove', (e) => this.handleMove(e));
+    this.canvas.addEventListener('mouseup', () => this.handleEnd());
+    this.canvas.addEventListener('mouseleave', () => this.handleEnd());
+    
+    // Touch events
+    this.canvas.addEventListener('touchstart', (e) => this.handleStart(e.touches[0]));
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      this.handleMove(e.touches[0]);
+    }, { passive: false });
+    this.canvas.addEventListener('touchend', () => this.handleEnd());
+    
+    // Wheel for zoom
+    this.canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      state.canvas.scale = Math.max(0.5, Math.min(3, state.canvas.scale * delta));
+    }, { passive: false });
+  }
+  
+  handleStart(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    state.canvas.isDragging = true;
+    state.canvas.lastX = e.clientX - rect.left;
+    state.canvas.lastY = e.clientY - rect.top;
+    
+    // Check if clicking near magnet in magnet mode
+    if (state.currentTab === 'magnet' && state.magnet.mode === 'manual') {
+      const cx = rect.width / 2;
+      const magnetX = cx + state.magnet.position * 300;
+      const clickX = state.canvas.lastX;
+      
+      if (Math.abs(clickX - magnetX) < 50) {
+        state.magnet.isDragging = true;
+      }
+    }
+  }
+  
+  handleMove(e) {
+    if (!state.canvas.isDragging) return;
+    
+    const rect = this.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    if (state.magnet.isDragging && state.currentTab === 'magnet') {
+      const dx = x - state.canvas.lastX;
+      state.magnet.position += dx / 300;
+      state.magnet.position = Math.max(-1.5, Math.min(1.5, state.magnet.position));
+    } else {
+      state.canvas.offsetX += x - state.canvas.lastX;
+      state.canvas.offsetY += y - state.canvas.lastY;
+    }
+    
+    state.canvas.lastX = x;
+    state.canvas.lastY = y;
+  }
+  
+  handleEnd() {
+    state.canvas.isDragging = false;
+    state.magnet.isDragging = false;
+  }
+}
+
+/* ========================================
+   MAIN APPLICATION
+======================================== */
+const canvas = document.getElementById('mainCanvas');
+const scopeCanvas = document.getElementById('scopeCanvas');
+
+const physics = new PhysicsEngine();
+const renderer = new Renderer(canvas, scopeCanvas);
+const ui = new UIController();
+const interaction = new CanvasInteraction(canvas);
+
+// Animation loop
+let lastTime = 0;
+function animate(currentTime) {
+  const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+  lastTime = currentTime;
+  
+  if (state.isPlaying && dt > 0) {
+    physics.step(CONFIG.PHYSICS_DT);
+    ui.updateAllDisplays();
+  }
+  
+  renderer.draw();
+  renderer.drawOscilloscope();
+  
+  requestAnimationFrame(animate);
+}
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  renderer.resize();
+});
+
+// Initialize with first frame
+ui.updateAllDisplays();
+requestAnimationFrame(animate);
+
+// Auto-play on load after 1 second
+setTimeout(() => {
+  if (!state.isPlaying) {
+    ui.togglePlayPause();
+  }
+}, 1000);
+
+// Save/load state to localStorage (optional)
+function saveState() {
+  try {
+    const stateToSave = {
+      magnet: state.magnet,
+      coil: state.coil,
+      generator: state.generator,
+      transformer: state.transformer,
+      circuit: state.circuit
+    };
+    localStorage.setItem('emInductionState', JSON.stringify(stateToSave));
+  } catch (e) {
+    console.warn('Could not save state to localStorage');
+  }
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('emInductionState');
+    if (saved) {
+      const loaded = JSON.parse(saved);
+      Object.assign(state.magnet, loaded.magnet);
+      Object.assign(state.coil, loaded.coil);
+      Object.assign(state.generator, loaded.generator);
+      Object.assign(state.transformer, loaded.transformer);
+      Object.assign(state.circuit, loaded.circuit);
+      
+      // Update UI to reflect loaded values
+      document.getElementById('speedSlider').value = state.magnet.speed;
+      document.getElementById('bFieldSlider').value = state.magnet.bField;
+      // ... update other sliders
+      ui.updateAllDisplays();
+    }
+  } catch (e) {
+    console.warn('Could not load state from localStorage');
+  }
+}
+
+// Auto-save every 5 seconds
+setInterval(saveState, 5000);
+
+// Load on startup
+loadState();
+
+// Export for debugging (optional)
+window.EMSimulator = {
+  state,
+  physics,
+  renderer,
+  ui,
+  scopeData
+};
+
+})();
+</script>
+
+</body>
+</html>

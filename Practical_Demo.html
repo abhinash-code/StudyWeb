@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics & Chemistry Virtual Lab Dashboard</title>
+    <style>
+        :root {
+            /* Cyberpunk color palette */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #151520;
+            --bg-card: rgba(20, 20, 30, 0.8);
+            --accent-cyan: #00f3ff;
+            --accent-magenta: #ff00ff;
+            --accent-yellow: #ffff00;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0d0;
+            --danger: #ff0040;
+            --success: #00ff80;
+            
+            /* Glassmorphism effect */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            
+            /* Animation speeds */
+            --transition-fast: 0.2s;
+            --transition-medium: 0.4s;
+            --transition-slow: 0.8s;
+            
+            /* Layout */
+            --header-height: 70px;
+            --card-min-height: 180px;
+            --border-radius: 8px;
+        }
+
+        /* High contrast theme */
+        .high-contrast {
+            --bg-primary: #000000;
+            --bg-secondary: #111111;
+            --bg-card: #222222;
+            --accent-cyan: #00ffff;
+            --accent-magenta: #ff00ff;
+            --accent-yellow: #ffff00;
+            --text-primary: #ffffff;
+            --text-secondary: #dddddd;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background effects */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .noise-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.05"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Header styles */
+        header {
+            height: var(--header-height);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+            white-space: nowrap;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-magenta);
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--accent-magenta);
+            border-color: var(--accent-magenta);
+        }
+
+        .utility-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent-yellow);
+            background: rgba(255, 255, 0, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Main content */
+        main {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 0.9rem;
+        }
+
+        .chip.active {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .chip:hover:not(.active) {
+            border-color: var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .sort-dropdown {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Cards grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+            
+            .brand-title {
+                margin-bottom: 10px;
+            }
+            
+            .search-container {
+                margin: 10px 0;
+                max-width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            min-height: var(--card-min-height);
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-medium);
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-medium);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .category-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .physics-badge {
+            background: rgba(0, 243, 255, 0.2);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .chemistry-badge {
+            background: rgba(255, 0, 255, 0.2);
+            color: var(--accent-magenta);
+            border: 1px solid var(--accent-magenta);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .card-metadata {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .access-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .access-btn:active {
+            transform: translateY(0);
+        }
+
+        .access-btn.ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+            to {
+                width: 200%;
+                height: 200%;
+                opacity: 0;
+            }
+        }
+
+        /* Edit mode styles */
+        .edit-mode .card {
+            border: 1px dashed var(--accent-yellow);
+        }
+
+        .url-input-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .edit-mode .url-input-container {
+            display: block;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-yellow);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .save-btn {
+            background: var(--accent-yellow);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .save-btn:hover {
+            background: #ffff80;
+            box-shadow: 0 0 10px var(--accent-yellow);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-yellow);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all var(--transition-medium);
+            z-index: 1000;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--accent-yellow);
+            font-size: 1.2rem;
+        }
+
+        /* Modal for import/export */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent-cyan);
+            transform: scale(0.9);
+            transition: transform var(--transition-medium);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .close-modal:hover {
+            color: var(--accent-magenta);
+        }
+
+        .modal-content {
+            margin-bottom: 20px;
+        }
+
+        .json-textarea {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            padding: 12px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            background: #33f6ff;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-magenta);
+        }
+
+        /* Performance modes */
+        .performance-low * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .performance-low .bg-effects {
+            display: none;
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Card entrance animation */
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: cardEntrance 0.5s ease-out both;
+        }
+
+        /* Pulsing effect for missing URL */
+        @keyframes pulseWarning {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 0, 0);
+            }
+        }
+
+        .card.pulse-warning {
+            animation: pulseWarning 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background effects -->
+    <div class="bg-effects">
+        <div class="noise-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="brand-title">Physics Virtual Lab</div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search experiments...">
+        </div>
+        <div class="utility-icons">
+            <button class="icon-btn" id="theme-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
+  <circle cx="12" cy="12" r="5"/>
+  <line x1="12" y1="1" x2="12" y2="3"/>
+  <line x1="12" y1="21" x2="12" y2="23"/>
+  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+  <line x1="1" y1="12" x2="3" y2="12"/>
+  <line x1="21" y1="12" x2="23" y2="12"/>
+  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+</svg>
+</button>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <div class="controls">
+            <div class="filter-chips">
+                <div class="chip active" data-category="all">All</div>
+                <div class="chip" data-category="Physics">Physics</div>
+                <div class="chip" data-category="Chemistry">Chemistry</div>
+            </div>
+            <select class="sort-dropdown">
+                <option value="title">A → Z</option>
+                <option value="category">Category</option>
+            </select>
+        </div>
+
+        <div class="cards-grid" id="cards-container">
+            <!-- Cards will be generated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">⚠️</span>
+        <span class="toast-message">Link not set</span>
+    </div>
+
+    <script>
+        // 🔥 YAHI PAR APNE URLs DIRECT ADD KARO - KOI EDIT MODE NAHI!
+        const PROJECTS = [
+            // Physics projects - YAHI PAR URLs DALDO
+            { 
+                id: "electromag-induction", 
+                title: "Electromagnetic Induction & AC", 
+                category: "Physics", 
+                shortDesc: "Faraday, Lenz, generator, transformer & oscilloscope demos", 
+                tags: ["emf", "generator"], 
+                url: "Electromagnetic induction.html"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "ac-circuits", 
+                title: "Alternating Current Circuits (R-L-C)", 
+                category: "Physics", 
+                shortDesc: "Resonance, phasors, power factor & transient response", 
+                tags: ["circuits", "resonance"], 
+                url: "https://example.com/ac-circuits"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "em-waves", 
+                title: "Electromagnetic Waves & EM Spectrum", 
+                category: "Physics", 
+                shortDesc: "E/B field animation, polarization & dispersion", 
+                tags: ["waves", "polarization"], 
+                url: "https://example.com/em-waves"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "optics", 
+                title: "Ray Optics & Wave Optics", 
+                category: "Physics", 
+                shortDesc: "Refraction, lenses, prisms, double-slit, diffraction", 
+                tags: ["optics", "refraction"], 
+                url: "https://example.com/optics"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "dual-nature", 
+                title: "Dual Nature (Photoelectric Effect & de Broglie)", 
+                category: "Physics", 
+                shortDesc: "Photoelectric graphs & matter-wave demos", 
+                tags: ["quantum", "photoelectric"], 
+                url: "https://example.com/dual-nature"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "atoms-nuclei", 
+                title: "Atoms & Nuclei", 
+                category: "Physics", 
+                shortDesc: "Bohr model, spectral lines, radioactivity simulation", 
+                tags: ["atoms", "nuclei"], 
+                url: "https://example.com/atoms-nuclei"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "semiconductors", 
+                title: "Semiconductor Electronics", 
+                category: "Physics", 
+                shortDesc: "PN junction, diode V-I, transistor amplifier basics", 
+                tags: ["electronics", "semiconductors"], 
+                url: "https://example.com/semiconductors"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "communication", 
+                title: "Communication Systems", 
+                category: "Physics", 
+                shortDesc: "AM/FM modulation, demodulation demo & bit encoding", 
+                tags: ["communication", "modulation"], 
+                url: "https://example.com/communication"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "oscillations", 
+                title: "Oscillations & Waves", 
+                category: "Physics", 
+                shortDesc: "SHM, coupled oscillators & energy exchange", 
+                tags: ["oscillations", "waves"], 
+                url: "https://example.com/oscillations"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "circuit-sandbox", 
+                title: "Current Electricity / Circuit Sandbox", 
+                category: "Physics", 
+                shortDesc: "Build circuits, meters, V-I curves", 
+                tags: ["circuits", "electricity"], 
+                url: "https://example.com/circuit-sandbox"  // ← YAHI APNA URL DALDO
+            },
+            
+            // Chemistry projects - YAHI PAR URLs DALDO
+            { 
+                id: "crystal-lattice", 
+                title: "Crystal Lattice Visualizer", 
+                category: "Chemistry", 
+                shortDesc: "Unit cells, Miller planes, packing & XRD", 
+                tags: ["crystals", "lattice"], 
+                url: "crystal lattice Visualizer.html"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "solutions", 
+                title: "Solutions & Colligative Properties", 
+                category: "Chemistry", 
+                shortDesc: "Boiling/freezing point, Raoult's law demo", 
+                tags: ["solutions", "colligative"], 
+                url: "https://example.com/solutions"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "electrochemistry", 
+                title: "Electrochemistry", 
+                category: "Chemistry", 
+                shortDesc: "Galvanic cells, Nernst & electrolysis animations", 
+                tags: ["electrochemistry", "cells"], 
+                url: "https://example.com/electrochemistry"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "kinetics", 
+                title: "Chemical Kinetics", 
+                category: "Chemistry", 
+                shortDesc: "Rate laws, Arrhenius, collision theory visuals", 
+                tags: ["kinetics", "reactions"], 
+                url: "https://example.com/kinetics"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "surface-chemistry", 
+                title: "Surface Chemistry & Catalysis", 
+                category: "Chemistry", 
+                shortDesc: "Adsorption isotherms & catalytic lowering of barriers", 
+                tags: ["surface", "catalysis"], 
+                url: "https://example.com/surface-chemistry"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "coordination-chem", 
+                title: "p-/d-block & Coordination Chemistry", 
+                category: "Chemistry", 
+                shortDesc: "Ligand field color demo & coordination geometry", 
+                tags: ["coordination", "ligands"], 
+                url: "https://example.com/coordination-chem"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "organic-mechanisms", 
+                title: "Organic Reaction Mechanisms", 
+                category: "Chemistry", 
+                shortDesc: "SN1/SN2, E1/E2 mechanism step-through", 
+                tags: ["organic", "mechanisms"], 
+                url: "https://example.com/organic-mechanisms"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "titration", 
+                title: "Titration Curve Simulator", 
+                category: "Chemistry", 
+                shortDesc: "pH curve, indicator, titration endpoint detection", 
+                tags: ["titration", "pH"], 
+                url: "https://example.com/titration"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "polymers", 
+                title: "Polymers", 
+                category: "Chemistry", 
+                shortDesc: "Polymerization animation & chain-length properties", 
+                tags: ["polymers", "polymerization"], 
+                url: "https://example.com/polymers"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "biomolecules", 
+                title: "Biomolecules & Environmental Chemistry", 
+                category: "Chemistry", 
+                shortDesc: "Enzyme kinetics & pollutant dispersion", 
+                tags: ["biomolecules", "environmental"], 
+                url: "https://example.com/biomolecules"  // ← YAHI APNA URL DALDO
+            },
+            { 
+                id: "stoichiometry", 
+                title: "Stoichiometry & Thermochemistry Tools", 
+                category: "Chemistry", 
+                shortDesc: "Balancing, Hess's law, calorimetry", 
+                tags: ["stoichiometry", "thermochemistry"], 
+                url: "https://example.com/stoichiometry"  // ← YAHI APNA URL DALDO
+            }
+        ];
+
+        // App state
+        let appState = {
+            projects: PROJECTS, // DIRECT CODE SE URLs USE HONGE
+            filteredProjects: [],
+            currentCategory: 'all',
+            currentSort: 'title',
+            searchQuery: ''
+        };
+
+        // DOM elements
+        const cardsContainer = document.getElementById('cards-container');
+        const searchInput = document.querySelector('.search-input');
+        const filterChips = document.querySelectorAll('.chip');
+        const sortDropdown = document.querySelector('.sort-dropdown');
+        const themeToggle = document.getElementById('theme-toggle');
+        const toast = document.getElementById('toast');
+
+        // Initialize the app
+        function init() {
+            setupEventListeners();
+            filterAndRenderProjects();
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Search input
+            searchInput.addEventListener('input', (e) => {
+                appState.searchQuery = e.target.value.toLowerCase();
+                filterAndRenderProjects();
+            });
+
+            // Filter chips
+            filterChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    filterChips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    appState.currentCategory = chip.dataset.category;
+                    filterAndRenderProjects();
+                });
+            });
+
+            // Sort dropdown
+            sortDropdown.addEventListener('change', (e) => {
+                appState.currentSort = e.target.value;
+                filterAndRenderProjects();
+            });
+
+            // Theme toggle
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('high-contrast');
+            });
+        }
+
+        // Filter and render projects
+        function filterAndRenderProjects() {
+            // Filter by category
+            if (appState.currentCategory === 'all') {
+                appState.filteredProjects = [...appState.projects];
+            } else {
+                appState.filteredProjects = appState.projects.filter(
+                    project => project.category === appState.currentCategory
+                );
+            }
+
+            // Filter by search query
+            if (appState.searchQuery) {
+                appState.filteredProjects = appState.filteredProjects.filter(
+                    project => 
+                        project.title.toLowerCase().includes(appState.searchQuery) ||
+                        project.shortDesc.toLowerCase().includes(appState.searchQuery) ||
+                        project.tags.some(tag => tag.toLowerCase().includes(appState.searchQuery))
+                );
+            }
+
+            // Sort projects
+            sortProjects();
+            renderProjects();
+        }
+
+        // Sort projects
+        function sortProjects() {
+            if (appState.currentSort === 'title') {
+                appState.filteredProjects.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (appState.currentSort === 'category') {
+                appState.filteredProjects.sort((a, b) => {
+                    if (a.category === b.category) {
+                        return a.title.localeCompare(b.title);
+                    }
+                    return a.category.localeCompare(b.category);
+                });
+            }
+        }
+
+        // Render projects to DOM
+        function renderProjects() {
+            cardsContainer.innerHTML = '';
+
+            appState.filteredProjects.forEach((project, index) => {
+                const card = createProjectCard(project, index);
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // Create project card
+        function createProjectCard(project, index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.animationDelay = `${index * 0.05}s`;
+            
+            const badgeClass = project.category === 'Physics' ? 'physics-badge' : 'chemistry-badge';
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title">${project.title}</h3>
+                    <span class="category-badge ${badgeClass}">${project.category}</span>
+                </div>
+                <p class="card-description">${project.shortDesc}</p>
+                <div class="card-metadata">
+                    <span class="metadata-item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-clock">
+  <circle cx="10" cy="10" r="8"/>
+  <line x1="10" y1="6" x2="10" y2="10"/>
+  <line x1="10" y1="10" x2="13" y2="13"/>
+</svg>
+ 15-30 min</span>
+                    <span class="metadata-item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-bar-chart">
+  <line x1="4" y1="16" x2="4" y2="10"/>
+  <line x1="10" y1="16" x2="10" y2="4"/>
+  <line x1="16" y1="16" x2="16" y2="14"/>
+</svg>
+ ${project.tags.join(', ')}</span>
+                </div>
+                <button class="access-btn" data-id="${project.id}">
+                    <span>Access</span>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-unlock-modern">
+  <rect x="3" y="11" width="16" height="10" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+  <line x1="12" y1="16" x2="12" y2="18"/>
+</svg>
+</span>
+                </button>
+            `;
+            
+            // Add event listener to access button
+            const accessBtn = card.querySelector('.access-btn');
+            accessBtn.addEventListener('click', () => handleAccess(project));
+            
+            return card;
+        }
+
+        // Handle access button click - YAHI PAR URL CHECK HOTA HAI
+        function handleAccess(project) {
+            // Ripple effect
+            const accessBtn = document.querySelector(`.access-btn[data-id="${project.id}"]`);
+            accessBtn.classList.add('ripple');
+            setTimeout(() => accessBtn.classList.remove('ripple'), 600);
+            
+            // 🔥 DIRECT URL CHECK - JO AAPNE CODE MEIN DALI HAI
+            if (project.url && project.url.trim()) {
+                // URL HAI TOH DIRECT OPEN KARO
+                window.location.href = project.url;
+            } else {
+                // URL NAHI HAI TOH TOAST DIKHAO
+                showToast('Link not set - Add URL in code');
+                
+                // Warning effect
+                const card = accessBtn.closest('.card');
+                card.classList.add('pulse-warning');
+                setTimeout(() => card.classList.remove('pulse-warning'), 3000);
+            }
+        }
+
+        // Show toast
+        function showToast(message) {
+            const toastMessage = toast.querySelector('.toast-message');
+            toastMessage.textContent = message;
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

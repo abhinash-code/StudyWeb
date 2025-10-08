@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Hexagon: Neon Physics Demo</title>
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --bg: #07111a;
+            --panel-bg: rgba(0, 0, 0, 0.45);
+            --accent-cyan: #18f0f0;
+            --accent-magenta: #ff37d9;
+            --accent-yellow: #ffd23f;
+            --neon-glow: rgba(24, 240, 240, 0.18);
+            --glass-border: rgba(24, 240, 240, 0.14);
+            --ui-radius: 12px;
+            --text-color: #f0f0f0;
+            --slider-track: rgba(24, 240, 240, 0.2);
+            --slider-thumb: #18f0f0;
+            --button-bg: rgba(24, 240, 240, 0.1);
+            --button-hover: rgba(24, 240, 240, 0.2);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            letter-spacing: 0.5px;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(24, 240, 240, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(255, 55, 217, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(255, 210, 63, 0.05) 0%, transparent 20%);
+        }
+
+        /* Header */
+        .header {
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--neon-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 0 1rem 1rem;
+            gap: 1rem;
+        }
+
+        /* Canvas Stage */
+        .stage {
+            flex: 1;
+            position: relative;
+            border-radius: var(--ui-radius);
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(24, 240, 240, 0.1);
+            border: 1px solid var(--glass-border);
+            background-color: rgba(7, 17, 26, 0.8);
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--panel-bg);
+            border-radius: var(--ui-radius);
+            padding: 1rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sliders {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .slider-value {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            min-width: 3rem;
+            text-align: right;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--slider-track);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--slider-thumb);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(24, 240, 240, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            box-shadow: 0 0 15px rgba(24, 240, 240, 0.8);
+            transform: scale(1.1);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--slider-thumb);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(24, 240, 240, 0.5);
+            border: none;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .button {
+            padding: 0.7rem 1rem;
+            border-radius: var(--ui-radius);
+            background: var(--button-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button:hover {
+            background: var(--button-hover);
+            box-shadow: 0 0 10px var(--neon-glow);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .button.active {
+            background: rgba(24, 240, 240, 0.2);
+            box-shadow: 0 0 10px var(--neon-glow);
+            border-color: var(--accent-cyan);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 240, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+            
+            .stage {
+                flex: 3;
+            }
+            
+            .control-panel {
+                flex: 1;
+                max-width: 350px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .sliders {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .title {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--ui-radius);
+            border: 1px solid var(--glass-border);
+            z-index: 100;
+            max-width: 300px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">SPINNING HEXAGON: NEON PHYSICS</h1>
+    </div>
+    
+    <div class="container">
+        <div class="stage">
+            <canvas id="canvas"></canvas>
+        </div>
+        
+        <div class="control-panel">
+            <div class="sliders">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Gravity</span>
+                        <span class="slider-value" id="gravity-value">0.20</span>
+                    </div>
+                    <input type="range" min="0" max="2" step="0.01" value="0.2" class="slider" id="gravity-slider" aria-label="Gravity slider">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Friction</span>
+                        <span class="slider-value" id="friction-value">0.01</span>
+                    </div>
+                    <input type="range" min="0" max="0.1" step="0.001" value="0.01" class="slider" id="friction-slider" aria-label="Friction slider">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Rotation Speed</span>
+                        <span class="slider-value" id="rotation-value">0.60</span>
+                    </div>
+                    <input type="range" min="-3" max="3" step="0.01" value="0.6" class="slider" id="rotation-slider" aria-label="Rotation Speed slider">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Bounce Factor</span>
+                        <span class="slider-value" id="bounce-value">0.80</span>
+                    </div>
+                    <input type="range" min="0" max="1" step="0.01" value="0.8" class="slider" id="bounce-slider" aria-label="Bounce Factor slider">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Hexagon Size</span>
+                        <span class="slider-value" id="size-value">270</span>
+                    </div>
+                    <input type="range" min="120" max="420" step="1" value="270" class="slider" id="size-slider" aria-label="Hexagon Size slider">
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="button" id="randomize-btn">Randomize</button>
+                <button class="button" id="reset-btn">Reset</button>
+                <button class="button" id="add-ball-btn">Add Ball</button>
+                <button class="button" id="trails-btn">Trails: ON</button>
+                <button class="button" id="sound-btn">Sound: OFF</button>
+                <button class="button" id="export-btn">Export State</button>
+            </div>
+            
+            <div class="stats">
+                <span id="fps-counter">FPS: 60</span>
+                <span id="ball-counter">Balls: 5</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Main application wrapped in IIFE to avoid global scope pollution
+        (function() {
+            'use strict';
+            
+            // Configuration constants
+            const CONFIG = {
+                // Physics
+                FIXED_TIMESTEP: 1 / 120, // 120Hz physics
+                MAX_SUB_STEPS: 5,
+                
+                // Ball defaults
+                BALL_RADIUS_MIN: 10,
+                BALL_RADIUS_MAX: 16,
+                BALL_COLORS: [
+                    '#18f0f0', // cyan
+                    '#ff37d9', // magenta
+                    '#ffd23f', // yellow
+                    '#7bff7b', // green
+                    '#ff7b7b'  // red
+                ],
+                
+                // Hexagon
+                HEXAGON_SIDES: 6,
+                
+                // UI
+                SHOW_FPS: true,
+                MAX_BALLS: 30,
+                TRAIL_LENGTH: 50,
+                
+                // Default values
+                DEFAULTS: {
+                    gravity: 0.2,
+                    friction: 0.01,
+                    rotationSpeed: 0.6,
+                    bounceFactor: 0.8,
+                    hexagonSize: 270,
+                    trails: true,
+                    sound: false
+                }
+            };
+            
+            // Vector2 class for physics calculations
+            class Vector2 {
+                constructor(x = 0, y = 0) {
+                    this.x = x;
+                    this.y = y;
+                }
+                
+                add(v) {
+                    return new Vector2(this.x + v.x, this.y + v.y);
+                }
+                
+                subtract(v) {
+                    return new Vector2(this.x - v.x, this.y - v.y);
+                }
+                
+                multiply(scalar) {
+                    return new Vector2(this.x * scalar, this.y * scalar);
+                }
+                
+                dot(v) {
+                    return this.x * v.x + this.y * v.y;
+                }
+                
+                length() {
+                    return Math.sqrt(this.x * this.x + this.y * this.y);
+                }
+                
+                normalize() {
+                    const len = this.length();
+                    if (len === 0) return new Vector2(0, 0);
+                    return new Vector2(this.x / len, this.y / len);
+                }
+                
+                distance(v) {
+                    return Math.sqrt((this.x - v.x) ** 2 + (this.y - v.y) ** 2);
+                }
+                
+                clone() {
+                    return new Vector2(this.x, this.y);
+                }
+            }
+            
+            // Ball class representing each bouncing ball
+            class Ball {
+                constructor(position, radius, color) {
+                    this.position = position;
+                    this.velocity = new Vector2();
+                    this.radius = radius;
+                    this.color = color;
+                    this.mass = Math.PI * radius * radius;
+                    this.trail = [];
+                    this.trailMaxLength = CONFIG.TRAIL_LENGTH;
+                }
+                
+                update(dt) {
+                    // Store position for trail
+                    if (this.trail.length >= this.trailMaxLength) {
+                        this.trail.shift();
+                    }
+                    this.trail.push(this.position.clone());
+                    
+                    // Update position with velocity
+                    this.position = this.position.add(this.velocity.multiply(dt));
+                }
+                
+                applyForce(force, dt) {
+                    // F = ma -> a = F/m
+                    const acceleration = force.multiply(1 / this.mass);
+                    this.velocity = this.velocity.add(acceleration.multiply(dt));
+                }
+                
+                // Draw the ball with glow effect
+                draw(ctx, showTrails) {
+                    // Draw trail if enabled
+                    if (showTrails && this.trail.length > 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                        
+                        for (let i = 1; i < this.trail.length; i++) {
+                            const point = this.trail[i];
+                            const alpha = i / this.trail.length * 0.3;
+                            ctx.strokeStyle = this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+                            ctx.lineWidth = this.radius * 0.5;
+                            ctx.lineTo(point.x, point.y);
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(point.x, point.y);
+                        }
+                        
+                        ctx.closePath();
+                    }
+                    
+                    // Draw glow
+                    ctx.beginPath();
+                    ctx.arc(this.position.x, this.position.y, this.radius * 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color.replace(')', ', 0.2)').replace('rgb', 'rgba');
+                    ctx.fill();
+                    
+                    // Draw core ball
+                    ctx.beginPath();
+                    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    
+                    // Draw inner highlight
+                    ctx.beginPath();
+                    ctx.arc(
+                        this.position.x - this.radius * 0.3, 
+                        this.position.y - this.radius * 0.3, 
+                        this.radius * 0.4, 0, Math.PI * 2
+                    );
+                    ctx.fillStyle = this.color.replace(')', ', 0.6)').replace('rgb', 'rgba');
+                    ctx.fill();
+                }
+            }
+            
+            // Hexagon class representing the rotating container
+            class Hexagon {
+                constructor(center, radius) {
+                    this.center = center;
+                    this.radius = radius;
+                    this.angle = 0;
+                    this.angularVelocity = CONFIG.DEFAULTS.rotationSpeed;
+                    this.sides = CONFIG.HEXAGON_SIDES;
+                    this.vertices = this.calculateVertices();
+                }
+                
+                calculateVertices() {
+                    const vertices = [];
+                    for (let i = 0; i < this.sides; i++) {
+                        const angle = this.angle + (i * 2 * Math.PI / this.sides);
+                        const x = this.center.x + this.radius * Math.cos(angle);
+                        const y = this.center.y + this.radius * Math.sin(angle);
+                        vertices.push(new Vector2(x, y));
+                    }
+                    return vertices;
+                }
+                
+                update(dt) {
+                    this.angle += this.angularVelocity * dt;
+                    this.vertices = this.calculateVertices();
+                }
+                
+                draw(ctx) {
+                    // Draw inner fill
+                    ctx.beginPath();
+                    ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+                    for (let i = 1; i < this.vertices.length; i++) {
+                        ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(10, 20, 30, 0.4)';
+                    ctx.fill();
+                    
+                    // Draw neon outline
+                    ctx.beginPath();
+                    ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+                    for (let i = 1; i < this.vertices.length; i++) {
+                        ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+                    }
+                    ctx.closePath();
+                    
+                    ctx.strokeStyle = CONFIG.DEFAULTS.hexagonColor || '#18f0f0';
+                    ctx.lineWidth = 3;
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#18f0f0';
+                    ctx.stroke();
+                    
+                    // Reset shadow
+                    ctx.shadowBlur = 0;
+                }
+                
+                // Get edges as line segments
+                getEdges() {
+                    const edges = [];
+                    for (let i = 0; i < this.vertices.length; i++) {
+                        const nextIndex = (i + 1) % this.vertices.length;
+                        edges.push({
+                            start: this.vertices[i],
+                            end: this.vertices[nextIndex],
+                            normal: this.calculateEdgeNormal(this.vertices[i], this.vertices[nextIndex])
+                        });
+                    }
+                    return edges;
+                }
+                
+                calculateEdgeNormal(start, end) {
+                    const edge = end.subtract(start);
+                    const normal = new Vector2(-edge.y, edge.x).normalize();
+                    return normal;
+                }
+                
+                // Get velocity at a point due to rotation
+                getVelocityAtPoint(point) {
+                    const radiusVector = point.subtract(this.center);
+                    const tangent = new Vector2(-radiusVector.y, radiusVector.x);
+                    return tangent.multiply(this.angularVelocity);
+                }
+            }
+            
+            // Physics engine handling collisions and integration
+            class PhysicsEngine {
+                constructor() {
+                    this.gravity = new Vector2(0, CONFIG.DEFAULTS.gravity);
+                    this.friction = CONFIG.DEFAULTS.friction;
+                    this.bounceFactor = CONFIG.DEFAULTS.bounceFactor;
+                }
+                
+                update(balls, hexagon, dt) {
+                    // Apply forces
+                    for (const ball of balls) {
+                        // Apply gravity
+                        ball.applyForce(this.gravity.multiply(ball.mass), dt);
+                        
+                        // Apply damping/friction
+                        ball.velocity = ball.velocity.multiply(1 - this.friction);
+                    }
+                    
+                    // Handle collisions
+                    this.handleBallBallCollisions(balls);
+                    this.handleBallHexagonCollisions(balls, hexagon);
+                }
+                
+                handleBallBallCollisions(balls) {
+                    for (let i = 0; i < balls.length; i++) {
+                        for (let j = i + 1; j < balls.length; j++) {
+                            const ball1 = balls[i];
+                            const ball2 = balls[j];
+                            
+                            const distance = ball1.position.distance(ball2.position);
+                            const minDistance = ball1.radius + ball2.radius;
+                            
+                            if (distance < minDistance) {
+                                // Collision detected
+                                const normal = ball2.position.subtract(ball1.position).normalize();
+                                const penetration = minDistance - distance;
+                                
+                                // Separate balls
+                                const separation = normal.multiply(penetration * 0.5);
+                                ball1.position = ball1.position.subtract(separation);
+                                ball2.position = ball2.position.add(separation);
+                                
+                                // Calculate relative velocity
+                                const relativeVelocity = ball2.velocity.subtract(ball1.velocity);
+                                const velocityAlongNormal = relativeVelocity.dot(normal);
+                                
+                                // Do not resolve if velocities are separating
+                                if (velocityAlongNormal > 0) continue;
+                                
+                                // Calculate impulse scalar
+                                const restitution = this.bounceFactor;
+                                const impulseScalar = -(1 + restitution) * velocityAlongNormal;
+                                const impulse = normal.multiply(impulseScalar / (ball1.mass + ball2.mass));
+                                
+                                // Apply impulse
+                                ball1.velocity = ball1.velocity.subtract(impulse.multiply(ball2.mass));
+                                ball2.velocity = ball2.velocity.add(impulse.multiply(ball1.mass));
+                                
+                                // Trigger collision sound if enabled
+                                if (window.app && window.app.soundEnabled) {
+                                    window.app.playCollisionSound(velocityAlongNormal);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                handleBallHexagonCollisions(balls, hexagon) {
+                    const edges = hexagon.getEdges();
+                    
+                    for (const ball of balls) {
+                        for (const edge of edges) {
+                            const closestPoint = this.closestPointOnSegment(edge.start, edge.end, ball.position);
+                            const distance = ball.position.distance(closestPoint);
+                            
+                            if (distance < ball.radius) {
+                                // Collision detected
+                                const normal = edge.normal;
+                                const penetration = ball.radius - distance;
+                                
+                                // Move ball out of collision
+                                ball.position = ball.position.add(normal.multiply(penetration + 0.001));
+                                
+                                // Calculate relative velocity (accounting for hexagon rotation)
+                                const hexagonVelocity = hexagon.getVelocityAtPoint(closestPoint);
+                                const relativeVelocity = ball.velocity.subtract(hexagonVelocity);
+                                
+                                const velocityAlongNormal = relativeVelocity.dot(normal);
+                                
+                                // Do not resolve if velocities are separating
+                                if (velocityAlongNormal > 0) continue;
+                                
+                                // Calculate impulse
+                                const restitution = this.bounceFactor;
+                                const impulseScalar = -(1 + restitution) * velocityAlongNormal;
+                                const impulse = normal.multiply(impulseScalar);
+                                
+                                // Apply impulse
+                                ball.velocity = ball.velocity.add(impulse);
+                                
+                                // Trigger collision sound if enabled
+                                if (window.app && window.app.soundEnabled) {
+                                    window.app.playCollisionSound(velocityAlongNormal);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                closestPointOnSegment(start, end, point) {
+                    const line = end.subtract(start);
+                    const len = line.length();
+                    const lineNormalized = line.multiply(1 / len);
+                    
+                    const startToPoint = point.subtract(start);
+                    let t = startToPoint.dot(lineNormalized) / len;
+                    
+                    t = Math.max(0, Math.min(1, t));
+                    
+                    return start.add(line.multiply(t));
+                }
+            }
+            
+            // Renderer class handling all drawing operations
+            class Renderer {
+                constructor(canvas) {
+                    this.canvas = canvas;
+                    this.ctx = canvas.getContext('2d');
+                    this.dpr = window.devicePixelRatio || 1;
+                    this.resize();
+                }
+                
+                resize() {
+                    const { width, height } = this.canvas.getBoundingClientRect();
+                    this.canvas.width = width * this.dpr;
+                    this.canvas.height = height * this.dpr;
+                    this.ctx.scale(this.dpr, this.dpr);
+                    this.width = width;
+                    this.height = height;
+                }
+                
+                clear() {
+                    this.ctx.clearRect(0, 0, this.width, this.height);
+                }
+                
+                render(balls, hexagon, showTrails) {
+                    this.clear();
+                    
+                    // Draw hexagon
+                    hexagon.draw(this.ctx);
+                    
+                    // Draw balls
+                    for (const ball of balls) {
+                        ball.draw(this.ctx, showTrails);
+                    }
+                }
+            }
+            
+            // UI Controller handling user interactions
+            class UIController {
+                constructor(app) {
+                    this.app = app;
+                    this.setupEventListeners();
+                    this.loadSettings();
+                }
+                
+                setupEventListeners() {
+                    // Sliders
+                    document.getElementById('gravity-slider').addEventListener('input', (e) => {
+                        const value = parseFloat(e.target.value);
+                        document.getElementById('gravity-value').textContent = value.toFixed(2);
+                        this.app.physicsEngine.gravity.y = value;
+                        this.saveSettings();
+                    });
+                    
+                    document.getElementById('friction-slider').addEventListener('input', (e) => {
+                        const value = parseFloat(e.target.value);
+                        document.getElementById('friction-value').textContent = value.toFixed(3);
+                        this.app.physicsEngine.friction = value;
+                        this.saveSettings();
+                    });
+                    
+                    document.getElementById('rotation-slider').addEventListener('input', (e) => {
+                        const value = parseFloat(e.target.value);
+                        document.getElementById('rotation-value').textContent = value.toFixed(2);
+                        this.app.hexagon.angularVelocity = value;
+                        this.saveSettings();
+                    });
+                    
+                    document.getElementById('bounce-slider').addEventListener('input', (e) => {
+                        const value = parseFloat(e.target.value);
+                        document.getElementById('bounce-value').textContent = value.toFixed(2);
+                        this.app.physicsEngine.bounceFactor = value;
+                        this.saveSettings();
+                    });
+                    
+                    document.getElementById('size-slider').addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        document.getElementById('size-value').textContent = value;
+                        this.app.hexagon.radius = value;
+                        this.saveSettings();
+                    });
+                    
+                    // Buttons
+                    document.getElementById('randomize-btn').addEventListener('click', () => {
+                        this.app.randomize();
+                    });
+                    
+                    document.getElementById('reset-btn').addEventListener('click', () => {
+                        this.app.reset();
+                    });
+                    
+                    document.getElementById('add-ball-btn').addEventListener('click', () => {
+                        this.app.addBall();
+                    });
+                    
+                    document.getElementById('trails-btn').addEventListener('click', () => {
+                        this.app.toggleTrails();
+                    });
+                    
+                    document.getElementById('sound-btn').addEventListener('click', () => {
+                        this.app.toggleSound();
+                    });
+                    
+                    document.getElementById('export-btn').addEventListener('click', () => {
+                        this.app.exportState();
+                    });
+                    
+                    // Canvas interactions
+                    this.app.canvas.addEventListener('click', (e) => {
+                        const rect = this.app.canvas.getBoundingClientRect();
+                        const x = (e.clientX - rect.left) * (this.app.canvas.width / this.dpr / rect.width);
+                        const y = (e.clientY - rect.top) * (this.app.canvas.height / this.dpr / rect.height);
+                        
+                        this.app.addBallAt(x, y);
+                    });
+                    
+                    // Keyboard controls
+                    document.addEventListener('keydown', (e) => {
+                        if (e.code === 'Space') {
+                            e.preventDefault();
+                            this.app.togglePause();
+                        } else if (e.code === 'KeyR') {
+                            this.app.reset();
+                        }
+                    });
+                    
+                    // Window resize
+                    window.addEventListener('resize', () => {
+                        this.app.renderer.resize();
+                    });
+                }
+                
+                updateBallCount(count) {
+                    document.getElementById('ball-counter').textContent = `Balls: ${count}`;
+                }
+                
+                updateFPS(fps) {
+                    if (CONFIG.SHOW_FPS) {
+                        document.getElementById('fps-counter').textContent = `FPS: ${Math.round(fps)}`;
+                    }
+                }
+                
+                updateTrailsButton(enabled) {
+                    document.getElementById('trails-btn').textContent = `Trails: ${enabled ? 'ON' : 'OFF'}`;
+                    document.getElementById('trails-btn').classList.toggle('active', enabled);
+                }
+                
+                updateSoundButton(enabled) {
+                    document.getElementById('sound-btn').textContent = `Sound: ${enabled ? 'ON' : 'OFF'}`;
+                    document.getElementById('sound-btn').classList.toggle('active', enabled);
+                }
+                
+                saveSettings() {
+                    const settings = {
+                        gravity: this.app.physicsEngine.gravity.y,
+                        friction: this.app.physicsEngine.friction,
+                        rotationSpeed: this.app.hexagon.angularVelocity,
+                        bounceFactor: this.app.physicsEngine.bounceFactor,
+                        hexagonSize: this.app.hexagon.radius,
+                        trails: this.app.showTrails,
+                        sound: this.app.soundEnabled
+                    };
+                    
+                    localStorage.setItem('hexagonPhysicsSettings', JSON.stringify(settings));
+                }
+                
+                loadSettings() {
+                    try {
+                        const saved = localStorage.getItem('hexagonPhysicsSettings');
+                        if (saved) {
+                            const settings = JSON.parse(saved);
+                            
+                            // Apply settings
+                            document.getElementById('gravity-slider').value = settings.gravity;
+                            document.getElementById('gravity-value').textContent = settings.gravity.toFixed(2);
+                            this.app.physicsEngine.gravity.y = settings.gravity;
+                            
+                            document.getElementById('friction-slider').value = settings.friction;
+                            document.getElementById('friction-value').textContent = settings.friction.toFixed(3);
+                            this.app.physicsEngine.friction = settings.friction;
+                            
+                            document.getElementById('rotation-slider').value = settings.rotationSpeed;
+                            document.getElementById('rotation-value').textContent = settings.rotationSpeed.toFixed(2);
+                            this.app.hexagon.angularVelocity = settings.rotationSpeed;
+                            
+                            document.getElementById('bounce-slider').value = settings.bounceFactor;
+                            document.getElementById('bounce-value').textContent = settings.bounceFactor.toFixed(2);
+                            this.app.physicsEngine.bounceFactor = settings.bounceFactor;
+                            
+                            document.getElementById('size-slider').value = settings.hexagonSize;
+                            document.getElementById('size-value').textContent = settings.hexagonSize;
+                            this.app.hexagon.radius = settings.hexagonSize;
+                            
+                            this.app.showTrails = settings.trails;
+                            this.app.soundEnabled = settings.sound;
+                            
+                            this.updateTrailsButton(settings.trails);
+                            this.updateSoundButton(settings.sound);
+                        }
+                    } catch (e) {
+                        console.warn('Failed to load settings:', e);
+                    }
+                }
+                
+                showTooltip(message, x, y) {
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.textContent = message;
+                    tooltip.style.left = `${x}px`;
+                    tooltip.style.top = `${y - 40}px`;
+                    tooltip.classList.add('show');
+                    
+                    setTimeout(() => {
+                        tooltip.classList.remove('show');
+                    }, 2000);
+                }
+            }
+            
+            // Main App class
+            class App {
+                constructor() {
+                    this.canvas = document.getElementById('canvas');
+                    this.renderer = new Renderer(this.canvas);
+                    this.physicsEngine = new PhysicsEngine();
+                    this.uiController = new UIController(this);
+                    
+                    // Initialize scene
+                    this.center = new Vector2(this.renderer.width / 2, this.renderer.height / 2);
+                    this.hexagon = new Hexagon(this.center, CONFIG.DEFAULTS.hexagonSize);
+                    
+                    // Create initial balls
+                    this.balls = [];
+                    this.createInitialBalls();
+                    
+                    // State
+                    this.showTrails = CONFIG.DEFAULTS.trails;
+                    this.soundEnabled = CONFIG.DEFAULTS.sound;
+                    this.paused = false;
+                    
+                    // Audio context for sound effects
+                    this.audioContext = null;
+                    this.setupAudio();
+                    
+                    // Animation loop
+                    this.lastTime = performance.now();
+                    this.accumulator = 0;
+                    this.fps = 60;
+                    
+                    // Start the animation loop
+                    this.animate();
+                }
+                
+                createInitialBalls() {
+                    // Create 5 initial balls with random properties
+                    for (let i = 0; i < 5; i++) {
+                        this.addBall();
+                    }
+                }
+                
+                addBall() {
+                    if (this.balls.length >= CONFIG.MAX_BALLS) return;
+                    
+                    // Random position inside hexagon (approximate)
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * (this.hexagon.radius * 0.7);
+                    const x = this.center.x + Math.cos(angle) * distance;
+                    const y = this.center.y + Math.sin(angle) * distance;
+                    
+                    this.addBallAt(x, y);
+                }
+                
+                addBallAt(x, y) {
+                    if (this.balls.length >= CONFIG.MAX_BALLS) {
+                        this.uiController.showTooltip('Maximum balls reached!', x, y);
+                        return;
+                    }
+                    
+                    const radius = CONFIG.BALL_RADIUS_MIN + Math.random() * (CONFIG.BALL_RADIUS_MAX - CONFIG.BALL_RADIUS_MIN);
+                    const color = CONFIG.BALL_COLORS[Math.floor(Math.random() * CONFIG.BALL_COLORS.length)];
+                    
+                    const ball = new Ball(new Vector2(x, y), radius, color);
+                    
+                    // Give it a small random velocity
+                    ball.velocity = new Vector2(
+                        (Math.random() - 0.5) * 100,
+                        (Math.random() - 0.5) * 100
+                    );
+                    
+                    this.balls.push(ball);
+                    this.uiController.updateBallCount(this.balls.length);
+                }
+                
+                randomize() {
+                    // Randomize slider values
+                    const gravity = (Math.random() * 2).toFixed(2);
+                    const friction = (Math.random() * 0.1).toFixed(3);
+                    const rotationSpeed = ((Math.random() * 6) - 3).toFixed(2);
+                    const bounceFactor = Math.random().toFixed(2);
+                    const hexagonSize = Math.floor(Math.random() * (420 - 120) + 120);
+                    
+                    // Update sliders and values
+                    document.getElementById('gravity-slider').value = gravity;
+                    document.getElementById('gravity-value').textContent = gravity;
+                    this.physicsEngine.gravity.y = parseFloat(gravity);
+                    
+                    document.getElementById('friction-slider').value = friction;
+                    document.getElementById('friction-value').textContent = friction;
+                    this.physicsEngine.friction = parseFloat(friction);
+                    
+                    document.getElementById('rotation-slider').value = rotationSpeed;
+                    document.getElementById('rotation-value').textContent = rotationSpeed;
+                    this.hexagon.angularVelocity = parseFloat(rotationSpeed);
+                    
+                    document.getElementById('bounce-slider').value = bounceFactor;
+                    document.getElementById('bounce-value').textContent = bounceFactor;
+                    this.physicsEngine.bounceFactor = parseFloat(bounceFactor);
+                    
+                    document.getElementById('size-slider').value = hexagonSize;
+                    document.getElementById('size-value').textContent = hexagonSize;
+                    this.hexagon.radius = hexagonSize;
+                    
+                    // Save settings
+                    this.uiController.saveSettings();
+                    
+                    // Show notification
+                    this.uiController.showTooltip('Settings randomized!', this.renderer.width / 2, 50);
+                }
+                
+                reset() {
+                    // Remove all balls
+                    this.balls = [];
+                    
+                    // Reset to defaults
+                    document.getElementById('gravity-slider').value = CONFIG.DEFAULTS.gravity;
+                    document.getElementById('gravity-value').textContent = CONFIG.DEFAULTS.gravity.toFixed(2);
+                    this.physicsEngine.gravity.y = CONFIG.DEFAULTS.gravity;
+                    
+                    document.getElementById('friction-slider').value = CONFIG.DEFAULTS.friction;
+                    document.getElementById('friction-value').textContent = CONFIG.DEFAULTS.friction.toFixed(3);
+                    this.physicsEngine.friction = CONFIG.DEFAULTS.friction;
+                    
+                    document.getElementById('rotation-slider').value = CONFIG.DEFAULTS.rotationSpeed;
+                    document.getElementById('rotation-value').textContent = CONFIG.DEFAULTS.rotationSpeed.toFixed(2);
+                    this.hexagon.angularVelocity = CONFIG.DEFAULTS.rotationSpeed;
+                    
+                    document.getElementById('bounce-slider').value = CONFIG.DEFAULTS.bounceFactor;
+                    document.getElementById('bounce-value').textContent = CONFIG.DEFAULTS.bounceFactor.toFixed(2);
+                    this.physicsEngine.bounceFactor = CONFIG.DEFAULTS.bounceFactor;
+                    
+                    document.getElementById('size-slider').value = CONFIG.DEFAULTS.hexagonSize;
+                    document.getElementById('size-value').textContent = CONFIG.DEFAULTS.hexagonSize;
+                    this.hexagon.radius = CONFIG.DEFAULTS.hexagonSize;
+                    
+                    // Recreate initial balls
+                    this.createInitialBalls();
+                    
+                    // Save settings
+                    this.uiController.saveSettings();
+                    
+                    // Show notification
+                    this.uiController.showTooltip('Simulation reset!', this.renderer.width / 2, 50);
+                }
+                
+                toggleTrails() {
+                    this.showTrails = !this.showTrails;
+                    this.uiController.updateTrailsButton(this.showTrails);
+                    this.uiController.saveSettings();
+                }
+                
+                toggleSound() {
+                    this.soundEnabled = !this.soundEnabled;
+                    this.uiController.updateSoundButton(this.soundEnabled);
+                    this.uiController.saveSettings();
+                }
+                
+                togglePause() {
+                    this.paused = !this.paused;
+                    if (!this.paused) {
+                        this.lastTime = performance.now();
+                        this.animate();
+                    }
+                }
+                
+                exportState() {
+                    const state = {
+                        balls: this.balls.map(ball => ({
+                            position: { x: ball.position.x, y: ball.position.y },
+                            velocity: { x: ball.velocity.x, y: ball.velocity.y },
+                            radius: ball.radius,
+                            color: ball.color
+                        })),
+                        settings: {
+                            gravity: this.physicsEngine.gravity.y,
+                            friction: this.physicsEngine.friction,
+                            rotationSpeed: this.hexagon.angularVelocity,
+                            bounceFactor: this.physicsEngine.bounceFactor,
+                            hexagonSize: this.hexagon.radius
+                        }
+                    };
+                    
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.setAttribute("href", dataStr);
+                    downloadAnchorNode.setAttribute("download", "hexagon_physics_state.json");
+                    document.body.appendChild(downloadAnchorNode);
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                    
+                    this.uiController.showTooltip('State exported!', this.renderer.width / 2, 50);
+                }
+                
+                setupAudio() {
+                    try {
+                        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    } catch (e) {
+                        console.warn('Web Audio API not supported');
+                    }
+                }
+                
+                playCollisionSound(impactStrength) {
+                    if (!this.audioContext || !this.soundEnabled) return;
+                    
+                    const volume = Math.min(1, Math.abs(impactStrength) / 200);
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 200 + volume * 800;
+                    
+                    gainNode.gain.value = volume * 0.2;
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
+                    
+                    oscillator.start();
+                    oscillator.stop(this.audioContext.currentTime + 0.1);
+                }
+                
+                animate() {
+                    if (this.paused) return;
+                    
+                    const now = performance.now();
+                    const deltaTime = (now - this.lastTime) / 1000;
+                    this.lastTime = now;
+                    
+                    // Calculate FPS
+                    this.fps = 1 / deltaTime;
+                    this.uiController.updateFPS(this.fps);
+                    
+                    // Fixed timestep physics
+                    this.accumulator += deltaTime;
+                    
+                    while (this.accumulator >= CONFIG.FIXED_TIMESTEP) {
+                        this.hexagon.update(CONFIG.FIXED_TIMESTEP);
+                        this.physicsEngine.update(this.balls, this.hexagon, CONFIG.FIXED_TIMESTEP);
+                        
+                        for (const ball of this.balls) {
+                            ball.update(CONFIG.FIXED_TIMESTEP);
+                        }
+                        
+                        this.accumulator -= CONFIG.FIXED_TIMESTEP;
+                    }
+                    
+                    // Render
+                    this.renderer.render(this.balls, this.hexagon, this.showTrails);
+                    
+                    // Continue animation loop
+                    requestAnimationFrame(() => this.animate());
+                }
+            }
+            
+            // Initialize the app when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                window.app = new App();
+            });
+        })();
+    </script>
+</body>
+</html>

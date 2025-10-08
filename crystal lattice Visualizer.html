@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Lattice Visualizer</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6ab0ff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .preset-selector select {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Visualization Area */
+        .visualization-area {
+            flex: 1;
+            position: relative;
+            background-color: var(--bg-primary);
+            overflow: hidden;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .canvas-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+
+        .canvas-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+        }
+
+        /* Control Panel */
+        .control-panel {
+            width: 350px;
+            background-color: var(--bg-secondary);
+            border-left: 1px solid var(--bg-tertiary);
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel-section {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+
+        .panel-section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-container span {
+            min-width: 60px;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .color-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* Properties Display */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .property-item {
+            background-color: var(--bg-secondary);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+
+        .property-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .property-value {
+            font-weight: 500;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            background-color: var(--bg-secondary);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .control-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--bg-tertiary);
+                max-height: 40vh;
+            }
+
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .canvas-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Accordion for mobile */
+        .accordion {
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        .accordion-header {
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            padding-bottom: 1rem;
+            display: none;
+        }
+
+        .accordion.active .accordion-content {
+            display: block;
+        }
+
+        /* Graphs & Plots Panel */
+        .graphs-panel {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--bg-tertiary);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .graph-container {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            height: 250px;
+        }
+
+        .graph-title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        /* Help and Tooltips */
+        .help-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.2rem;
+        }
+
+        /* High Contrast Mode */
+        .high-contrast {
+            --bg-primary: #000000;
+            --bg-secondary: #222222;
+            --bg-tertiary: #444444;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #ffff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Crystal Lattice Visualizer</h1>
+            </div>
+            <div class="header-controls">
+                <div class="preset-selector">
+                    <select id="latticePreset">
+                        <option value="sc">Simple Cubic (SC)</option>
+                        <option value="bcc">Body-Centered Cubic (BCC)</option>
+                        <option value="fcc" selected>Face-Centered Cubic (FCC)</option>
+                        <option value="hcp">Hexagonal Close Packed (HCP)</option>
+                        <option value="diamond">Diamond</option>
+                        <option value="nacl">Rock Salt (NaCl)</option>
+                        <option value="cscl">Cesium Chloride (CsCl)</option>
+                        <option value="zns">Zinc Blende (ZnS)</option>
+                    </select>
+                </div>
+                <div class="control-buttons">
+                    <button id="playPauseBtn" class="btn btn-primary">Pause</button>
+                    <button id="resetBtn" class="btn">Reset</button>
+                    <button id="exportBtn" class="btn">Export</button>
+                    <button id="highContrastBtn" class="btn">High Contrast</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="visualization-area">
+                <canvas id="renderCanvas"></canvas>
+                <div class="canvas-overlay">
+                    <div>FCC Lattice</div>
+                    <div>a = 4.05 Å</div>
+                </div>
+                <div class="canvas-controls">
+                    <button class="btn">Rotate</button>
+                    <button class="btn">Zoom</button>
+                    <button class="btn">Pan</button>
+                    <button class="btn">Select</button>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="tabs">
+                    <button class="tab active" data-tab="structure">Structure</button>
+                    <button class="tab" data-tab="planes">Planes</button>
+                    <button class="tab" data-tab="defects">Defects</button>
+                    <button class="tab" data-tab="xrd">XRD</button>
+                </div>
+
+                <div class="tab-content active" id="structure-tab">
+                    <div class="panel-section">
+                        <h2>Lattice Parameters</h2>
+                        <div class="form-group">
+                            <label for="latticeConstant">Lattice Constant (a) [Å]</label>
+                            <div class="slider-container">
+                                <input type="range" id="latticeConstant" min="0.5" max="10" step="0.01" value="4.05">
+                                <span id="latticeConstantValue">4.05 Å</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cOverA">c/a Ratio (Hexagonal)</label>
+                            <div class="slider-container">
+                                <input type="range" id="cOverA" min="0.5" max="2" step="0.01" value="1.633" disabled>
+                                <span id="cOverAValue">1.633</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="replication">Replication (N×N×N)</label>
+                            <div class="slider-container">
+                                <input type="range" id="replication" min="1" max="8" step="1" value="3">
+                                <span id="replicationValue">3</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="atomRadius">Atom Radius Scale</label>
+                            <div class="slider-container">
+                                <input type="range" id="atomRadius" min="0.1" max="2.5" step="0.1" value="1.0">
+                                <span id="atomRadiusValue">1.0x</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="temperature">Temperature [K]</label>
+                            <div class="slider-container">
+                                <input type="range" id="temperature" min="0" max="1000" step="10" value="300">
+                                <span id="temperatureValue">300 K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>Visualization Options</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showCell" checked>
+                            <label for="showCell">Show Unit Cell</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showBonds" checked>
+                            <label for="showBonds">Show Bonds</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showAxes" checked>
+                            <label for="showAxes">Show Axes</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showLabels">
+                            <label for="showLabels">Show Labels</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showNeighbors">
+                            <label for="showNeighbors">Show Nearest Neighbors</label>
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>Computed Properties</h2>
+                        <div class="properties-grid">
+                            <div class="property-item">
+                                <div class="property-label">Unit Cell Volume</div>
+                                <div class="property-value">66.43 Å³</div>
+                            </div>
+                            <div class="property-item">
+                                <div class="property-label">Formula Units (Z)</div>
+                                <div class="property-value">4</div>
+                            </div>
+                            <div class="property-item">
+                                <div class="property-label">Density</div>
+                                <div class="property-value">8.96 g/cm³</div>
+                            </div>
+                            <div class="property-item">
+                                <div class="property-label">Packing Fraction</div>
+                                <div class="property-value">74%</div>
+                            </div>
+                            <div class="property-item">
+                                <div class="property-label">Coordination Number</div>
+                                <div class="property-value">12</div>
+                            </div>
+                            <div class="property-item">
+                                <div class="property-label">Nearest Neighbor Distance</div>
+                                <div class="property-value">2.86 Å</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="planes-tab">
+                    <div class="panel-section">
+                        <h2>Miller Indices</h2>
+                        <div class="form-group">
+                            <label for="millerH">h</label>
+                            <input type="number" id="millerH" min="-5" max="5" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="millerK">k</label>
+                            <input type="number" id="millerK" min="-5" max="5" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="millerL">l</label>
+                            <input type="number" id="millerL" min="-5" max="5" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="planeOffset">Plane Offset</label>
+                            <div class="slider-container">
+                                <input type="range" id="planeOffset" min="0" max="1" step="0.01" value="0">
+                                <span id="planeOffsetValue">0.00</span>
+                            </div>
+                        </div>
+                        <div class="property-item">
+                            <div class="property-label">d-spacing</div>
+                            <div class="property-value">2.34 Å</div>
+                        </div>
+                        <div class="help-text">
+                            Enter Miller indices (h,k,l) to visualize lattice planes.
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>Common Planes</h2>
+                        <div class="control-buttons" style="flex-wrap: wrap;">
+                            <button class="btn" data-plane="100">(1 0 0)</button>
+                            <button class="btn" data-plane="110">(1 1 0)</button>
+                            <button class="btn" data-plane="111">(1 1 1)</button>
+                            <button class="btn" data-plane="210">(2 1 0)</button>
+                            <button class="btn" data-plane="211">(2 1 1)</button>
+                            <button class="btn" data-plane="221">(2 2 1)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="defects-tab">
+                    <div class="panel-section">
+                        <h2>Point Defects</h2>
+                        <div class="control-buttons">
+                            <button class="btn" id="addVacancy">Add Vacancy</button>
+                            <button class="btn" id="addInterstitial">Add Interstitial</button>
+                            <button class="btn" id="addSubstitution">Substitute Atom</button>
+                        </div>
+                        <div class="help-text">
+                            Click on an atom to add a vacancy. Click on empty space to add an interstitial.
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>Line Defects</h2>
+                        <div class="control-buttons">
+                            <button class="btn" id="addDislocation">Add Edge Dislocation</button>
+                            <button class="btn" id="clearDefects">Clear Defects</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>Surface Cleaving</h2>
+                        <div class="form-group">
+                            <label for="cleavePlane">Cleave Along Plane</label>
+                            <select id="cleavePlane">
+                                <option value="100">(1 0 0)</option>
+                                <option value="110">(1 1 0)</option>
+                                <option value="111">(1 1 1)</option>
+                            </select>
+                        </div>
+                        <button class="btn" id="cleaveBtn">Cleave Crystal</button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="xrd-tab">
+                    <div class="panel-section">
+                        <h2>XRD Simulation</h2>
+                        <div class="form-group">
+                            <label for="xrdWavelength">Wavelength (λ) [Å]</label>
+                            <div class="slider-container">
+                                <input type="range" id="xrdWavelength" min="0.5" max="2.0" step="0.01" value="1.54">
+                                <span id="xrdWavelengthValue">1.54 Å</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="xrdResolution">Resolution</label>
+                            <select id="xrdResolution">
+                                <option value="low">Low (512 points)</option>
+                                <option value="medium" selected>Medium (1024 points)</option>
+                                <option value="high">High (2048 points)</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="showDebyeWaller" checked>
+                            <label for="showDebyeWaller">Include Thermal Effects</label>
+                        </div>
+                        <button class="btn" id="simulateXRD">Simulate XRD Pattern</button>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2>XRD Peaks</h2>
+                        <div id="xrdPeaksList" style="max-height: 200px; overflow-y: auto;">
+                            <!-- XRD peaks will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="graphs-panel">
+            <div class="graph-container">
+                <div class="graph-title">XRD Pattern</div>
+                <canvas id="xrdCanvas"></canvas>
+            </div>
+            <div class="graph-container">
+                <div class="graph-title">Radial Distribution Function</div>
+                <canvas id="rdfCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Main application code wrapped in an IIFE
+        (function() {
+            'use strict';
+
+            // Configuration constants
+            const CONFIG = {
+                LATTICE_PRESETS: {
+                    sc: { name: 'Simple Cubic', basis: [{x:0, y:0, z:0}], colors: ['#4a9eff'] },
+                    bcc: { name: 'Body-Centered Cubic', basis: [{x:0, y:0, z:0}, {x:0.5, y:0.5, z:0.5}], colors: ['#4a9eff', '#4a9eff'] },
+                    fcc: { name: 'Face-Centered Cubic', basis: [
+                        {x:0, y:0, z:0}, {x:0.5, y:0.5, z:0}, 
+                        {x:0.5, y:0, z:0.5}, {x:0, y:0.5, z:0.5}
+                    ], colors: ['#4a9eff', '#4a9eff', '#4a9eff', '#4a9eff'] },
+                    nacl: { name: 'Rock Salt (NaCl)', basis: [
+                        {x:0, y:0, z:0}, {x:0.5, y:0.5, z:0}, 
+                        {x:0.5, y:0, z:0.5}, {x:0, y:0.5, z:0.5},
+                        {x:0.5, y:0, z:0}, {x:0, y:0.5, z:0},
+                        {x:0, y:0, z:0.5}, {x:0.5, y:0.5, z:0.5}
+                    ], colors: ['#4a9eff', '#4a9eff', '#4a9eff', '#4a9eff', '#ff6b6b', '#ff6b6b', '#ff6b6b', '#ff6b6b'] }
+                },
+                ELEMENT_DATA: {
+                    'Cu': { mass: 63.55, radius: 1.28, color: '#d35400' },
+                    'Na': { mass: 22.99, radius: 1.86, color: '#4a9eff' },
+                    'Cl': { mass: 35.45, radius: 0.99, color: '#ff6b6b' },
+                    'C': { mass: 12.01, radius: 0.70, color: '#333333' },
+                    'Fe': { mass: 55.85, radius: 1.26, color: '#cc7722' },
+                    'Al': { mass: 26.98, radius: 1.43, color: '#a0a0a0' }
+                },
+                AVOGADRO: 6.022e23
+            };
+
+            // Main application class
+            class CrystalLatticeVisualizer {
+                constructor() {
+                    this.canvas = document.getElementById('renderCanvas');
+                    this.ctx = this.canvas.getContext('2d');
+                    this.xrdCanvas = document.getElementById('xrdCanvas');
+                    this.xrdCtx = this.xrdCanvas.getContext('2d');
+                    this.rdfCanvas = document.getElementById('rdfCanvas');
+                    this.rdfCtx = this.rdfCanvas.getContext('2d');
+                    
+                    this.currentLattice = 'fcc';
+                    this.latticeConstant = 4.05; // Å
+                    this.replication = 3;
+                    this.atomRadiusScale = 1.0;
+                    this.temperature = 300; // K
+                    this.isAnimating = true;
+                    
+                    this.camera = {
+                        x: 0,
+                        y: 0,
+                        z: 500,
+                        rotationX: 0.5,
+                        rotationY: 0.5,
+                        scale: 100
+                    };
+                    
+                    this.millerIndices = { h: 1, k: 1, l: 1 };
+                    this.planeOffset = 0;
+                    
+                    this.defects = [];
+                    this.selectedAtom = null;
+                    
+                    this.init();
+                }
+                
+                init() {
+                    this.setupEventListeners();
+                    this.resizeCanvases();
+                    this.animate();
+                }
+                
+                setupEventListeners() {
+                    // Lattice preset change
+                    document.getElementById('latticePreset').addEventListener('change', (e) => {
+                        this.currentLattice = e.target.value;
+                        this.updateLattice();
+                    });
+                    
+                    // Parameter sliders
+                    document.getElementById('latticeConstant').addEventListener('input', (e) => {
+                        this.latticeConstant = parseFloat(e.target.value);
+                        document.getElementById('latticeConstantValue').textContent = `${this.latticeConstant.toFixed(2)} Å`;
+                        this.updateLattice();
+                    });
+                    
+                    document.getElementById('replication').addEventListener('input', (e) => {
+                        this.replication = parseInt(e.target.value);
+                        document.getElementById('replicationValue').textContent = this.replication;
+                        this.updateLattice();
+                    });
+                    
+                    document.getElementById('atomRadius').addEventListener('input', (e) => {
+                        this.atomRadiusScale = parseFloat(e.target.value);
+                        document.getElementById('atomRadiusValue').textContent = `${this.atomRadiusScale.toFixed(1)}x`;
+                        this.updateLattice();
+                    });
+                    
+                    document.getElementById('temperature').addEventListener('input', (e) => {
+                        this.temperature = parseInt(e.target.value);
+                        document.getElementById('temperatureValue').textContent = `${this.temperature} K`;
+                        this.updateLattice();
+                    });
+                    
+                    // Control buttons
+                    document.getElementById('playPauseBtn').addEventListener('click', () => {
+                        this.isAnimating = !this.isAnimating;
+                        document.getElementById('playPauseBtn').textContent = this.isAnimating ? 'Pause' : 'Play';
+                    });
+                    
+                    document.getElementById('resetBtn').addEventListener('click', () => {
+                        this.resetView();
+                    });
+                    
+                    document.getElementById('highContrastBtn').addEventListener('click', () => {
+                        document.body.classList.toggle('high-contrast');
+                    });
+                    
+                    // Tab switching
+                    document.querySelectorAll('.tab').forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            const tabName = tab.getAttribute('data-tab');
+                            this.switchTab(tabName);
+                        });
+                    });
+                    
+                    // Miller indices
+                    document.getElementById('millerH').addEventListener('input', (e) => {
+                        this.millerIndices.h = parseInt(e.target.value) || 0;
+                        this.updateMillerPlane();
+                    });
+                    
+                    document.getElementById('millerK').addEventListener('input', (e) => {
+                        this.millerIndices.k = parseInt(e.target.value) || 0;
+                        this.updateMillerPlane();
+                    });
+                    
+                    document.getElementById('millerL').addEventListener('input', (e) => {
+                        this.millerIndices.l = parseInt(e.target.value) || 0;
+                        this.updateMillerPlane();
+                    });
+                    
+                    document.getElementById('planeOffset').addEventListener('input', (e) => {
+                        this.planeOffset = parseFloat(e.target.value);
+                        document.getElementById('planeOffsetValue').textContent = this.planeOffset.toFixed(2);
+                        this.updateMillerPlane();
+                    });
+                    
+                    // Common plane buttons
+                    document.querySelectorAll('[data-plane]').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const plane = e.target.getAttribute('data-plane');
+                            this.setMillerIndicesFromString(plane);
+                        });
+                    });
+                    
+                    // Defect buttons
+                    document.getElementById('addVacancy').addEventListener('click', () => {
+                        this.setInteractionMode('vacancy');
+                    });
+                    
+                    document.getElementById('addInterstitial').addEventListener('click', () => {
+                        this.setInteractionMode('interstitial');
+                    });
+                    
+                    document.getElementById('addDislocation').addEventListener('click', () => {
+                        this.addEdgeDislocation();
+                    });
+                    
+                    document.getElementById('clearDefects').addEventListener('click', () => {
+                        this.clearDefects();
+                    });
+                    
+                    // Canvas interaction
+                    this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+                    this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+                    this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+                    this.canvas.addEventListener('wheel', this.handleWheel.bind(this));
+                    
+                    // Window resize
+                    window.addEventListener('resize', () => {
+                        this.resizeCanvases();
+                    });
+                }
+                
+                resizeCanvases() {
+                    const container = this.canvas.parentElement;
+                    this.canvas.width = container.clientWidth;
+                    this.canvas.height = container.clientHeight;
+                    
+                    this.xrdCanvas.width = this.xrdCanvas.parentElement.clientWidth;
+                    this.xrdCanvas.height = 200;
+                    
+                    this.rdfCanvas.width = this.rdfCanvas.parentElement.clientWidth;
+                    this.rdfCanvas.height = 200;
+                }
+                
+                updateLattice() {
+                    // Update overlay information
+                    const overlay = document.querySelector('.canvas-overlay');
+                    const preset = CONFIG.LATTICE_PRESETS[this.currentLattice];
+                    overlay.innerHTML = `
+                        <div>${preset.name}</div>
+                        <div>a = ${this.latticeConstant.toFixed(2)} Å</div>
+                    `;
+                    
+                    // Update properties
+                    this.updateProperties();
+                    
+                    // Redraw
+                    this.draw();
+                }
+                
+                updateProperties() {
+                    const preset = CONFIG.LATTICE_PRESETS[this.currentLattice];
+                    const volume = Math.pow(this.latticeConstant, 3);
+                    const z = preset.basis.length / (this.currentLattice === 'nacl' ? 2 : 1);
+                    
+                    // For demonstration, using Cu as default element
+                    const element = 'Cu';
+                    const mass = CONFIG.ELEMENT_DATA[element].mass;
+                    const density = (z * mass) / (CONFIG.AVOGADRO * volume * 1e-24); // g/cm³
+                    
+                    // Update property displays
+                    document.querySelectorAll('.property-item')[0].querySelector('.property-value').textContent = `${volume.toFixed(2)} Å³`;
+                    document.querySelectorAll('.property-item')[1].querySelector('.property-value').textContent = z;
+                    document.querySelectorAll('.property-item')[2].querySelector('.property-value').textContent = `${density.toFixed(2)} g/cm³`;
+                    
+                    // Packing fraction and coordination number are preset-specific
+                    let packingFraction, coordination;
+                    switch(this.currentLattice) {
+                        case 'sc':
+                            packingFraction = 0.52;
+                            coordination = 6;
+                            break;
+                        case 'bcc':
+                            packingFraction = 0.68;
+                            coordination = 8;
+                            break;
+                        case 'fcc':
+                            packingFraction = 0.74;
+                            coordination = 12;
+                            break;
+                        case 'nacl':
+                            packingFraction = 0.67;
+                            coordination = 6;
+                            break;
+                        default:
+                            packingFraction = 0.74;
+                            coordination = 12;
+                    }
+                    
+                    document.querySelectorAll('.property-item')[3].querySelector('.property-value').textContent = `${Math.round(packingFraction * 100)}%`;
+                    document.querySelectorAll('.property-item')[4].querySelector('.property-value').textContent = coordination;
+                    
+                    // Nearest neighbor distance
+                    let nnDistance;
+                    if (this.currentLattice === 'fcc') {
+                        nnDistance = this.latticeConstant * Math.sqrt(2) / 2;
+                    } else if (this.currentLattice === 'bcc') {
+                        nnDistance = this.latticeConstant * Math.sqrt(3) / 2;
+                    } else {
+                        nnDistance = this.latticeConstant;
+                    }
+                    
+                    document.querySelectorAll('.property-item')[5].querySelector('.property-value').textContent = `${nnDistance.toFixed(2)} Å`;
+                }
+                
+                updateMillerPlane() {
+                    // Update d-spacing display
+                    const dSpacing = this.calculateDSpacing();
+                    document.querySelector('#planes-tab .property-value').textContent = `${dSpacing.toFixed(2)} Å`;
+                    
+                    // Redraw to show the plane
+                    this.draw();
+                }
+                
+                calculateDSpacing() {
+                    // For cubic lattice: d = a / sqrt(h² + k² + l²)
+                    const { h, k, l } = this.millerIndices;
+                    if (h === 0 && k === 0 && l === 0) return 0;
+                    return this.latticeConstant / Math.sqrt(h*h + k*k + l*l);
+                }
+                
+                setMillerIndicesFromString(planeStr) {
+                    const h = parseInt(planeStr[0]);
+                    const k = parseInt(planeStr[1]);
+                    const l = parseInt(planeStr[2]);
+                    
+                    this.millerIndices = { h, k, l };
+                    
+                    document.getElementById('millerH').value = h;
+                    document.getElementById('millerK').value = k;
+                    document.getElementById('millerL').value = l;
+                    
+                    this.updateMillerPlane();
+                }
+                
+                switchTab(tabName) {
+                    // Update active tab
+                    document.querySelectorAll('.tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                    
+                    // Update active tab content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
+                }
+                
+                setInteractionMode(mode) {
+                    this.interactionMode = mode;
+                    // In a full implementation, this would change cursor and behavior
+                }
+                
+                addEdgeDislocation() {
+                    // Simplified implementation - just add a visual marker
+                    this.defects.push({ type: 'dislocation', x: 0, y: 0, z: 0 });
+                    this.draw();
+                }
+                
+                clearDefects() {
+                    this.defects = [];
+                    this.draw();
+                }
+                
+                resetView() {
+                    this.camera.rotationX = 0.5;
+                    this.camera.rotationY = 0.5;
+                    this.camera.scale = 100;
+                    this.draw();
+                }
+                
+                // Mouse interaction handlers
+                handleMouseDown(e) {
+                    this.isDragging = true;
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                }
+                
+                handleMouseMove(e) {
+                    if (!this.isDragging) return;
+                    
+                    const deltaX = e.clientX - this.lastMouseX;
+                    const deltaY = e.clientY - this.lastMouseY;
+                    
+                    this.camera.rotationY += deltaX * 0.01;
+                    this.camera.rotationX += deltaY * 0.01;
+                    
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                    
+                    this.draw();
+                }
+                
+                handleMouseUp() {
+                    this.isDragging = false;
+                }
+                
+                handleWheel(e) {
+                    e.preventDefault();
+                    this.camera.scale += e.deltaY * -0.1;
+                    this.camera.scale = Math.max(10, Math.min(500, this.camera.scale));
+                    this.draw();
+                }
+                
+                // Drawing methods
+                draw() {
+                    const { width, height } = this.canvas;
+                    
+                    // Clear canvas
+                    this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary');
+                    this.ctx.fillRect(0, 0, width, height);
+                    
+                    // Draw coordinate system
+                    this.drawCoordinateSystem();
+                    
+                    // Draw lattice
+                    this.drawLattice();
+                    
+                    // Draw Miller plane if applicable
+                    if (this.millerIndices.h !== 0 || this.millerIndices.k !== 0 || this.millerIndices.l !== 0) {
+                        this.drawMillerPlane();
+                    }
+                    
+                    // Draw defects
+                    this.drawDefects();
+                }
+                
+                drawCoordinateSystem() {
+                    const { width, height } = this.canvas;
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    const axisLength = 50;
+                    
+                    // X axis (red)
+                    this.ctx.strokeStyle = '#ff6b6b';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(centerX, centerY);
+                    this.ctx.lineTo(centerX + axisLength, centerY);
+                    this.ctx.stroke();
+                    
+                    // Y axis (green)
+                    this.ctx.strokeStyle = '#4caf50';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(centerX, centerY);
+                    this.ctx.lineTo(centerX, centerY - axisLength);
+                    this.ctx.stroke();
+                    
+                    // Z axis (blue)
+                    this.ctx.strokeStyle = '#4a9eff';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(centerX, centerY);
+                    this.ctx.lineTo(centerX - axisLength/2, centerY + axisLength/2);
+                    this.ctx.stroke();
+                    
+                    // Labels
+                    this.ctx.fillStyle = '#ffffff';
+                    this.ctx.font = '12px Arial';
+                    this.ctx.fillText('X', centerX + axisLength + 5, centerY);
+                    this.ctx.fillText('Y', centerX, centerY - axisLength - 5);
+                    this.ctx.fillText('Z', centerX - axisLength/2 - 15, centerY + axisLength/2 + 5);
+                }
+                
+                drawLattice() {
+                    const preset = CONFIG.LATTICE_PRESETS[this.currentLattice];
+                    const { width, height } = this.canvas;
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    
+                    const atomRadius = 15 * this.atomRadiusScale;
+                    
+                    // Draw unit cell
+                    if (document.getElementById('showCell').checked) {
+                        this.drawUnitCell();
+                    }
+                    
+                    // Draw atoms
+                    for (let i = -this.replication; i <= this.replication; i++) {
+                        for (let j = -this.replication; j <= this.replication; j++) {
+                            for (let k = -this.replication; k <= this.replication; k++) {
+                                // For each lattice point, add basis atoms
+                                for (let b = 0; b < preset.basis.length; b++) {
+                                    const basis = preset.basis[b];
+                                    const x = (i + basis.x) * this.latticeConstant;
+                                    const y = (j + basis.y) * this.latticeConstant;
+                                    const z = (k + basis.z) * this.latticeConstant;
+                                    
+                                    // Apply thermal vibration if temperature > 0
+                                    const vibrationScale = this.temperature / 1000 * 0.1;
+                                    const vx = vibrationScale * (Math.random() - 0.5);
+                                    const vy = vibrationScale * (Math.random() - 0.5);
+                                    const vz = vibrationScale * (Math.random() - 0.5);
+                                    
+                                    const screenPos = this.project3DTo2D(x + vx, y + vy, z + vz);
+                                    
+                                    // Draw atom
+                                    this.ctx.fillStyle = preset.colors[b] || '#4a9eff';
+                                    this.ctx.beginPath();
+                                    this.ctx.arc(screenPos.x, screenPos.y, atomRadius, 0, Math.PI * 2);
+                                    this.ctx.fill();
+                                    
+                                    // Add a highlight for 3D effect
+                                    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                                    this.ctx.beginPath();
+                                    this.ctx.arc(screenPos.x - atomRadius/3, screenPos.y - atomRadius/3, atomRadius/2, 0, Math.PI * 2);
+                                    this.ctx.fill();
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                drawUnitCell() {
+                    const { width, height } = this.canvas;
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    const cellSize = this.latticeConstant * this.camera.scale / 10;
+                    
+                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                    this.ctx.lineWidth = 1;
+                    this.ctx.setLineDash([5, 5]);
+                    
+                    // Draw cube edges
+                    const corners = [
+                        this.project3DTo2D(0, 0, 0),
+                        this.project3DTo2D(1, 0, 0),
+                        this.project3DTo2D(1, 1, 0),
+                        this.project3DTo2D(0, 1, 0),
+                        this.project3DTo2D(0, 0, 1),
+                        this.project3DTo2D(1, 0, 1),
+                        this.project3DTo2D(1, 1, 1),
+                        this.project3DTo2D(0, 1, 1)
+                    ];
+                    
+                    // Bottom face
+                    this.drawLine(corners[0], corners[1]);
+                    this.drawLine(corners[1], corners[2]);
+                    this.drawLine(corners[2], corners[3]);
+                    this.drawLine(corners[3], corners[0]);
+                    
+                    // Top face
+                    this.drawLine(corners[4], corners[5]);
+                    this.drawLine(corners[5], corners[6]);
+                    this.drawLine(corners[6], corners[7]);
+                    this.drawLine(corners[7], corners[4]);
+                    
+                    // Vertical edges
+                    this.drawLine(corners[0], corners[4]);
+                    this.drawLine(corners[1], corners[5]);
+                    this.drawLine(corners[2], corners[6]);
+                    this.drawLine(corners[3], corners[7]);
+                    
+                    this.ctx.setLineDash([]);
+                }
+                
+                drawLine(p1, p2) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(p1.x, p1.y);
+                    this.ctx.lineTo(p2.x, p2.y);
+                    this.ctx.stroke();
+                }
+                
+                drawMillerPlane() {
+                    const { h, k, l } = this.millerIndices;
+                    if (h === 0 && k === 0 && l === 0) return;
+                    
+                    const d = this.calculateDSpacing();
+                    const offset = this.planeOffset * this.latticeConstant;
+                    
+                    // For simplicity, we'll draw a plane through the unit cell
+                    // In a full implementation, this would be more accurate
+                    
+                    const { width, height } = this.canvas;
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    
+                    this.ctx.fillStyle = 'rgba(255, 255, 0, 0.2)';
+                    this.ctx.strokeStyle = 'rgba(255, 255, 0, 0.7)';
+                    this.ctx.lineWidth = 2;
+                    
+                    // Draw a rectangle representing the plane
+                    const size = this.latticeConstant * this.replication * this.camera.scale / 10;
+                    const planeCorners = [
+                        this.project3DTo2D(-size, -size, offset),
+                        this.project3DTo2D(size, -size, offset),
+                        this.project3DTo2D(size, size, offset),
+                        this.project3DTo2D(-size, size, offset)
+                    ];
+                    
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(planeCorners[0].x, planeCorners[0].y);
+                    this.ctx.lineTo(planeCorners[1].x, planeCorners[1].y);
+                    this.ctx.lineTo(planeCorners[2].x, planeCorners[2].y);
+                    this.ctx.lineTo(planeCorners[3].x, planeCorners[3].y);
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                    this.ctx.stroke();
+                    
+                    // Label the plane
+                    this.ctx.fillStyle = '#ffff00';
+                    this.ctx.font = '14px Arial';
+                    this.ctx.fillText(`(${h}${k}${l}) Plane`, planeCorners[0].x + 10, planeCorners[0].y - 10);
+                }
+                
+                drawDefects() {
+                    // Draw any defects that have been added
+                    this.defects.forEach(defect => {
+                        const screenPos = this.project3DTo2D(defect.x, defect.y, defect.z);
+                        
+                        if (defect.type === 'dislocation') {
+                            // Draw a dislocation symbol
+                            this.ctx.strokeStyle = '#ff0000';
+                            this.ctx.lineWidth = 3;
+                            this.ctx.beginPath();
+                            this.ctx.arc(screenPos.x, screenPos.y, 20, 0, Math.PI * 2);
+                            this.ctx.stroke();
+                            
+                            this.ctx.fillStyle = '#ff0000';
+                            this.ctx.font = '12px Arial';
+                            this.ctx.fillText('⊥', screenPos.x - 5, screenPos.y + 5);
+                        }
+                    });
+                }
+                
+                project3DTo2D(x, y, z) {
+                    const { width, height } = this.canvas;
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    
+                    // Apply rotation
+                    const cosX = Math.cos(this.camera.rotationX);
+                    const sinX = Math.sin(this.camera.rotationX);
+                    const cosY = Math.cos(this.camera.rotationY);
+                    const sinY = Math.sin(this.camera.rotationY);
+                    
+                    // Rotate around Y axis
+                    let x1 = x * cosY - z * sinY;
+                    let z1 = x * sinY + z * cosY;
+                    
+                    // Rotate around X axis
+                    let y1 = y * cosX - z1 * sinX;
+                    z1 = y * sinX + z1 * cosX;
+                    
+                    // Apply perspective and scale
+                    const scale = this.camera.scale / (10 + z1);
+                    const screenX = centerX + x1 * scale;
+                    const screenY = centerY - y1 * scale;
+                    
+                    return { x: screenX, y: screenY };
+                }
+                
+                animate() {
+                    if (this.isAnimating) {
+                        // Slowly rotate the view
+                        this.camera.rotationY += 0.005;
+                        this.draw();
+                    }
+                    
+                    requestAnimationFrame(() => this.animate());
+                }
+                
+                // Export functionality (simplified)
+                exportScene() {
+                    const dataURL = this.canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = 'crystal-lattice.png';
+                    link.href = dataURL;
+                    link.click();
+                }
+            }
+
+            // Initialize the application when the DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                new CrystalLatticeVisualizer();
+            });
+        })();
+    </script>
+</body>
+</html>
