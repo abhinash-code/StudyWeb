@@ -525,6 +525,10 @@
         .feature-icon.modules { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
         .feature-icon.formulas { background: linear-gradient(135deg, #10b981, #06b6d4); }
         .feature-icon.tests { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+        .feature-icon.lab { 
+  background: linear-gradient(135deg, #00f3ff, #ff00ff);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
 
         .feature-title {
             font-size: 1.5rem;
@@ -812,7 +816,7 @@
         <section class="features-section">
             <div class="features-grid">
                 <div class="feature-card fade-in">
-                    <div class="feature-icon projects">
+                    <div class="feature-icon projects" style="cursor:default;"  onclick="window.location.href='MainProjects.html'">
                         <i class="fas fa-project-diagram"></i>
                     </div>
                     <h3 class="feature-title">Projects</h3>
@@ -821,7 +825,7 @@
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
+                <div class="feature-card fade-in" style="cursor:default;"  onclick="window.location.href='modul.html'">
                     <div class="feature-icon modules">
                         <i class="fas fa-book"></i>
                     </div>
@@ -831,7 +835,7 @@
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
+                <div class="feature-card fade-in" style="cursor:default;"  onclick="window.location.href='FormulaChart.html'">
                     <div class="feature-icon formulas">
                         <i class="fas fa-calculator"></i>
                     </div>
@@ -841,13 +845,27 @@
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
+                <div class="feature-card fade-in" style="cursor:default;"  onclick="window.location.href='test.html'">
                     <div class="feature-icon tests">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
                     <h3 class="feature-title">Tests</h3>
                     <p class="feature-description">
                         Practice tests and assessments to evaluate and improve your knowledge.
+                    </p>
+                </div>
+                 <div class="feature-card fade-in" style="cursor:default;"  onclick="window.location.href='Practical_Demo.html'">
+                    <div class="feature-icon lab">
+                        <i><svg width="40" height="40" viewBox="0 0 40 40">
+  <circle cx="20" cy="15" r="12" fill="none" stroke="#00f3ff" stroke-width="2"/>
+  <circle cx="20" cy="15" r="4" fill="none" stroke="#00f3ff" stroke-width="1"/>
+  <path d="M8 15 L32 15" stroke="#ff00ff" stroke-width="2"/>
+  <path d="M20 27 L20 35 L16 35 L24 35" stroke="#ffff00" stroke-width="2"/>
+</svg></i>
+                    </div>
+                    <h3 class="feature-title">Virtual Lab</h3>
+                    <p class="feature-description">
+                        Interactive physics & chemistry experiments simulator with real-time visualizations and hands-on learning.
                     </p>
                 </div>
             </div>
@@ -1063,6 +1081,7 @@ menuItems.forEach(item => {
     </script>
 </body>
 </html>
+
 
 
 
