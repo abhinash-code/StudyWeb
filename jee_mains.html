@@ -1,418 +1,302 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ExamHub — Physics • Chemistry • Maths</title>
-  <meta name="description" content="ExamHub — Clean, professional landing page linking to subject pages for JEE-style preparation." />
-  <!--
-    Single-file landing page for three subjects: Physics, Chemistry, Maths
-    Instructions:
-      - Replace the href values in the subject buttons with your real subject page links.
-        Example: <a class="subject-btn" href="./physics/index.html">Open Physics</a>
-      - All icons are inline SVG inside <i> wrappers for easy styling.
-      - This file is intentionally verbose and commented to make future edits simple.
-  -->
-  <style>
-    :root{
-      --bg:#0f1724; /* deep indigo slate */
-      --card:#0b1220;
-      --glass: rgba(255,255,255,0.04);
-      --muted: rgba(255,255,255,0.65);
-      --accent:#7c3aed; /* violet */
-      --accent-2:#06b6d4; /* cyan */
-      --success:#10b981;
-      --radius:14px;
-      --card-padding:18px;
-      --max-width:1100px;
-      --shadow-lg: 0 10px 30px rgba(2,6,23,0.7);
-      --glass-border: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      color-scheme: dark;
-    }
-
-    /* Basic reset */
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 10%),
-                  radial-gradient(800px 400px at 90% 90%, rgba(6,182,212,0.08), transparent 8%),
-                  var(--bg);
-      color:#e6eef8;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding:40px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-    }
-
-    /* Page container */
-    .container{
-      width:100%;
-      max-width:var(--max-width);
-      margin:0 auto;
-    }
-
-    /* Header */
-    .hero{
-      display:flex;
-      gap:20px;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:26px;
-    }
-
-    .brand{
-      display:flex;
-      gap:16px;
-      align-items:center;
-    }
-
-    .logo-wrap{
-      width:72px;
-      height:72px;
-      display:grid;
-      place-items:center;
-      border-radius:18px;
-      background:linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.08));
-      box-shadow: 0 6px 18px rgba(6,11,28,0.6), inset 0 -6px 18px rgba(0,0,0,0.25);
-      backdrop-filter: blur(6px);
-    }
-
-    .brand h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:0.4px;
-      line-height:1;
-    }
-
-    .brand p{
-      margin:0;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    /* Headline - large, atmospheric */
-    .headline{
-      margin:18px 0 28px 0;
-      font-size:28px;
-      line-height:1.05;
-      letter-spacing:0.2px;
-      font-weight:600;
-      text-shadow: 0 4px 28px rgba(124,58,237,0.12);
-    }
-
-    .subhead{
-      color:var(--muted);
-      font-size:14px;
-      margin-top:8px;
-    }
-
-    /* Card grid */
-    .grid{
-      display:grid;
-      gap:18px;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-
-    @media(min-width:520px){
-      .grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
-    }
-    @media(min-width:980px){
-      .grid{grid-template-columns: repeat(3, minmax(0, 1fr));}
-    }
-
-    /* Subject card */
-    .subject{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
-      border-radius:var(--radius);
-      padding:var(--card-padding);
-      box-shadow:var(--shadow-lg);
-      border:1px solid rgba(255,255,255,0.03);
-      display:flex;
-      gap:12px;
-      align-items:center;
-      transition: transform 280ms cubic-bezier(.2,.9,.1,1), box-shadow 280ms ease, background 280ms ease;
-    }
-
-    .subject:focus-within, .subject:hover{
-      transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(2,6,23,0.75);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    }
-
-    .subject i{
-      width:68px;
-      height:68px;
-      min-width:68px;
-      display:grid;
-      place-items:center;
-      border-radius:12px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 -6px 18px rgba(0,0,0,0.12);
-      transition: transform 220ms ease;
-      position:relative;
-      overflow:visible;
-    }
-
-    /* subtle glow */
-    .subject i svg{width:36px;height:36px;display:block;filter:drop-shadow(0 6px 12px rgba(124,58,237,0.08));}
-
-    .subject h3{margin:0;font-size:16px}
-    .subject p{margin:4px 0 0 0;color:var(--muted);font-size:13px}
-
-    .subject-body{flex:1}
-
-    .subject-actions{display:flex;flex-direction:column;gap:10px}
-
-    .subject .open-btn{
-      appearance:none;
-      border:0;
-      padding:10px 14px;
-      border-radius:10px;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:white;font-weight:600;font-size:14px;cursor:pointer;
-      box-shadow: 0 8px 20px rgba(124,58,237,0.18);
-      text-decoration:none;
-      display:inline-flex;align-items:center;gap:10px;
-    }
-
-    .subject .open-btn i{width:18px;height:18px;display:inline-grid;place-items:center}
-
-    /* footer small note */
-    .help{
-      margin-top:18px;color:var(--muted);font-size:13px;text-align:center;
-    }
-
-    /* Focus styles */
-    .open-btn:focus{outline:3px solid rgba(124,58,237,0.22);outline-offset:3px}
-
-    /* Big hero card at top for emphasis */
-    .hero-card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-      border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,0.03);
-      display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow: 0 20px 50px rgba(2,6,23,0.6);
-    }
-
-    .hero-cta{
-      display:flex;gap:10px;align-items:center
-    }
-
-    .ghost{
-      background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted);font-weight:600;cursor:pointer
-    }
-
-    /* small subtle animation for icon glow */
-    @keyframes pulseGlow{
-      0%{filter: drop-shadow(0 6px 10px rgba(124,58,237,0.06)); transform: translateY(0)}
-      50%{filter: drop-shadow(0 10px 20px rgba(124,58,237,0.12)); transform: translateY(-2px)}
-      100%{filter: drop-shadow(0 6px 10px rgba(124,58,237,0.06)); transform: translateY(0)}
-    }
-
-    .subject i{animation: pulseGlow 2.6s ease-in-out infinite}
-
-    @media (prefers-reduced-motion: reduce){
-      .subject i{animation:none}
-      *{transition:none!important}
-    }
-
-    /* small accessibility helpers */
-    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
-
-    /* footer */
-    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
-
-  </style>
-</head>
-<body>
-  <div class="container" role="main">
-
-    <header class="hero" aria-label="ExamHub header">
-      <div class="brand">
-        <div class="logo-wrap" aria-hidden="true">
-          <!-- Mini monogram / emblem SVG -->
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1">
-                <stop offset="0" stop-color="#7c3aed"/>
-                <stop offset="1" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#g1)" opacity="0.14"></rect>
-            <path d="M6 16s3-6 6-6 6 6 6 6" stroke="#fff" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h1>ExamHub</h1>
-          <p class="subhead">High-focus landing — Physics • Chemistry • Maths (JEE-style)</p>
-        </div>
-      </div>
-      <div class="hero-cta" aria-hidden="false">
-        <button class="ghost" aria-label="View quick tips">Quick Tips</button>
-        <button class="ghost" aria-label="Theme toggle" id="themeToggle">Theme</button>
-      </div>
-    </header>
-
-    <section class="hero-card" aria-labelledby="main-heading">
-      <div>
-        <h2 id="main-heading" class="headline">Sharpen the fundamentals. Master the tricks. Ace the exam.</h2>
-        <p class="subhead">Choose a subject below to open your subject hub. Links open the prebuilt pages you provide (replace placeholders).</p>
-      </div>
-      <div style="min-width:220px;text-align:right">
-        <p style="margin:0;color:var(--muted)">Designed for focused study sessions</p>
-        <p style="margin:6px 0 0 0;color:var(--muted);font-size:12px">Mobile-first • Keyboard accessible • Lightweight</p>
-      </div>
-    </section>
-
-    <div style="height:18px"></div>
-
-    <section class="grid" aria-label="Subjects list">
-
-      <!-- Physics card -->
-      <article class="subject" aria-labelledby="physics-title" tabindex="0">
-        <i class="physics-icon" aria-hidden="true">
-          <!-- Physics SVG: atom / orbit style -->
-          <svg viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true">
-            <circle cx="12" cy="12" r="1.6" fill="#fff" opacity="0.95"></circle>
-            <path d="M2 12c0 0 3.5-6 10-6s10 6 10 6" stroke="#7c3aed" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
-            <path d="M2 12c0 0 3.5 6 10 6s10-6 10-6" stroke="#06b6d4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-          </svg>
-        </i>
-        <div class="subject-body">
-          <h3 id="physics-title">Physics</h3>
-          <p>Mechanics, Electricity, Optics — concept clarity and problem practice for JEE.</p>
-        </div>
-        <div class="subject-actions">
-          <!-- Replace href with your physics page link -->
-          <a class="open-btn" href="jee mains physics.html" aria-label="Open Physics page">
-            <i aria-hidden="true">
-              <!-- small book / chapter icon -->
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-                <path d="M4 6h14v12H4z" stroke="#fff" stroke-opacity="0.95" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 6v12" stroke="#fff" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </i>
-            Open Physics
-          </a>
-        </div>
-      </article>
-
-      <!-- Chemistry card -->
-      <article class="subject" aria-labelledby="chem-title" tabindex="0">
-        <i class="chem-icon" aria-hidden="true">
-          <!-- Chemistry SVG: flask + molecule -->
-          <svg viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true">
-            <path d="M8 2v4.5l2 2v0l0 6.5a3 3 0 01-3 3H7" stroke="#f97316" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="17" cy="7" r="2" stroke="#fff" stroke-width="1.1" fill="#fff" opacity="0.9"></circle>
-            <path d="M17 9v4" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/>
-          </svg>
-        </i>
-        <div class="subject-body">
-          <h3 id="chem-title">Chemistry</h3>
-          <p>Physical, Organic, Inorganic — reaction logic and numerical mastery.</p>
-        </div>
-        <div class="subject-actions">
-          <!-- Replace href with your chemistry page link -->
-          <a class="open-btn" href="#" aria-label="Open Chemistry page">
-            <i aria-hidden="true">
-              <!-- laboratory icon -->
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-                <path d="M7 2v6l3 3v7" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 2v6l-3 3v7" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </i>
-            Open Chemistry
-          </a>
-        </div>
-      </article>
-
-      <!-- Maths card -->
-      <article class="subject" aria-labelledby="maths-title" tabindex="0">
-        <i class="math-icon" aria-hidden="true">
-          <!-- Maths SVG: integral + grid -->
-          <svg viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true">
-            <path d="M8 3c0 0 1 3 0 6s-1 8 4 12" stroke="#10b981" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M16 6v9" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M12 18h6" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </i>
-        <div class="subject-body">
-          <h3 id="maths-title">Mathematics</h3>
-          <p>Algebra, Calculus, Coordinate Geometry — speed and precision drills for top scores.</p>
-        </div>
-        <div class="subject-actions">
-          <!-- Replace href with your maths page link -->
-          <a class="open-btn" href="#" aria-label="Open Maths page">
-            <i aria-hidden="true">
-              <!-- calculator / grid icon -->
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-                <path d="M6 3h12v18H6z" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 7h8M8 11h8M8 15h8" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </i>
-            Open Mathematics
-          </a>
-        </div>
-      </article>
-
-    </section>
-
-    <p class="help">Tip: Replace each "Open …" link with the real subject page URL. Buttons are keyboard accessible (Tab → Enter).</p>
-
-    <footer>
-      © ExamHub — created for study-focused sessions • Replace links to connect to real subject pages.
-    </footer>
-
-  </div>
-
-  <script>
-    // Minimal JS: theme toggle + keyboard friendly behavior
-    (function(){
-      const themeBtn = document.getElementById('themeToggle');
-      const root = document.documentElement;
-      const stored = localStorage.getItem('examhub-theme');
-      if(stored === 'light'){
-        root.style.setProperty('--bg','#f7fafc');
-        root.style.setProperty('--card','#ffffff');
-        root.style.setProperty('--muted','rgba(15,23,42,0.7)');
-        document.body.style.color = '#071033';
-      }
-
-      themeBtn.addEventListener('click', ()=>{
-        const current = localStorage.getItem('examhub-theme');
-        if(current === 'light'){
-          localStorage.removeItem('examhub-theme');
-          location.reload();
-        } else {
-          localStorage.setItem('examhub-theme','light');
-          location.reload();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamHub — Physics • Chemistry • Maths (Pro)</title>
+    <meta name="description" content="Enhanced ExamHub landing page with modern aesthetics and professional vibe for JEE-style preparation." />
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Tailwind Configuration (Variables from original code adapted) */
+        :root {
+            /* Using deep slate-950 for background, but enhancing the glow */
+            --color-accent: #7c3aed; /* violet */
+            --color-accent-2: #06b6d4; /* cyan */
+            --radius: 12px;
         }
-      });
 
-      // Make the whole .subject clickable via Enter when focused (a11y improvement)
-      document.querySelectorAll('.subject').forEach(s => {
-        s.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' ') {
-            const link = s.querySelector('.open-btn');
-            if(link){ link.click(); }
-          }
+        /* Set Inter font and dark background */
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            /* Enhanced background gradient for a deep, professional look */
+            background: #020617; /* Slate-950 */
+            background-image: 
+                radial-gradient(circle 800px at 10% 20%, rgba(124, 58, 237, 0.15), transparent),
+                radial-gradient(circle 600px at 80% 90%, rgba(6, 182, 212, 0.1), transparent);
+            color: #e2e8f0; /* Slate-200 */
+        }
+
+        /* Card Hover Effect */
+        .subject-card {
+            position: relative;
+            background: rgba(15, 23, 42, 0.6); /* Slate-900 with transparency */
+            backdrop-filter: blur(8px);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.25);
+            border-color: rgba(124, 58, 237, 0.4);
+        }
+        
+        /* Specific Glow for Icons */
+        .icon-wrap {
+            position: relative;
+            z-index: 10;
+            transition: all 300ms ease;
+        }
+        
+        .icon-wrap svg {
+            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+        }
+
+        /* CTA Button Styling */
+        .open-btn-gradient {
+            background-image: linear-gradient(to right, var(--color-accent), var(--color-accent-2));
+            transition: transform 150ms ease-in-out;
+        }
+        
+        .open-btn-gradient:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 300ms ease;
+        }
+
+        .modal-content {
+            z-index: 60;
+            background: #0f172a;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-open .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container max-w-5xl mx-auto" role="main">
+
+        <!-- Header and Branding -->
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8 p-4 bg-slate-800/20 backdrop-blur-sm rounded-xl border border-slate-700/50 shadow-xl" aria-label="ExamHub header">
+            <div class="flex items-center gap-4">
+                <div class="p-4 rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 shadow-inner" aria-hidden="true">
+                    <!-- Logo SVG: More abstract and vibrant -->
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-white">
+                        <path d="M12 2L2 7l10 5 10-5L12 2z" fill="url(#grad1)"/>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#grad2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#7c3aed"/>
+                                <stop offset="100%" stop-color="#06b6d4"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#a78bfa"/>
+                                <stop offset="100%" stop-color="#67e8f9"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight leading-none text-white">
+                        ExamHub
+                    </h1>
+                    <p class="text-sm mt-1 text-slate-400">
+                        High-Focus Landing Page for Competitive Exams
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-3 sm:gap-4 ml-auto sm:ml-0">
+                <button id="quickTipsBtn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-700/50 hover:bg-slate-700 transition duration-150 text-slate-300">
+                    <i data-lucide="book-open" class="w-4 h-4 inline-block mr-1"></i> Quick Tips
+                </button>
+                <button id="authBtn" class="px-4 py-2 text-sm font-semibold rounded-lg open-btn-gradient text-white shadow-lg shadow-violet-500/20">
+                    <i data-lucide="log-in" class="w-4 h-4 inline-block mr-1"></i> Sign In
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Headline Card -->
+        <section class="p-6 bg-slate-900/50 border border-slate-700/50 rounded-xl shadow-2xl shadow-slate-900/60 mb-8" aria-labelledby="main-heading">
+            <h2 id="main-heading" class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-snug text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-300 mb-3">
+                Sharpen the fundamentals. Master the tricks. Ace the exam.
+            </h2>
+            <p class="text-lg text-slate-400">
+                Choose a subject below to open your dedicated hub for comprehensive study resources and practice materials.
+            </p>
+            <div class="mt-4 flex items-center gap-4 text-sm text-slate-500">
+                 <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
+                <span class="font-medium">JEE 2024 / NEET / Competitive Focus</span>
+            </div>
+        </section>
+
+        <!-- Subject Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Subjects list">
+
+            <!-- Physics card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="physics-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-violet-600/20 text-violet-400">
+                    <i data-lucide="atom" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="physics-title" class="text-xl font-bold mb-1 text-white">Physics</h3>
+                    <p class="text-sm text-slate-400 mb-4">Mechanics, Electricity, Optics — concept clarity and problem practice for JEE.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-violet-500/20 inline-flex items-center gap-2" 
+                       href="jee-mains-physics.html" aria-label="Open Physics page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Physics Hub
+                    </a>
+                </div>
+            </article>
+
+            <!-- Chemistry card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="chem-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-orange-500/20 text-orange-400">
+                    <i data-lucide="flask-conical" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="chem-title" class="text-xl font-bold mb-1 text-white">Chemistry</h3>
+                    <p class="text-sm text-slate-400 mb-4">Physical, Organic, Inorganic — reaction logic and numerical mastery.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-orange-500/20 inline-flex items-center gap-2" 
+                       href="#" data-subject="Chemistry" aria-label="Open Chemistry page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Chemistry Hub
+                    </a>
+                </div>
+            </article>
+
+            <!-- Maths card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="maths-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-green-500/20 text-green-400">
+                    <!-- Changed from "square-root" to "sigma" for a more professional math symbol -->
+                    <i data-lucide="sigma" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="maths-title" class="text-xl font-bold mb-1 text-white">Mathematics</h3>
+                    <p class="text-sm text-slate-400 mb-4">Algebra, Calculus, Coordinate Geometry — speed and precision drills for top scores.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-green-500/20 inline-flex items-center gap-2" 
+                       href="#" data-subject="Mathematics" aria-label="Open Maths page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Maths Hub
+                    </a>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Footer / Credits -->
+        <footer class="mt-12 pt-6 border-t border-slate-800 text-center text-sm text-slate-500">
+            © 2024 StudyWeb. Designed for maximum focus and minimal distraction. 
+            
+        </footer>
+
+    </div>
+
+    <!-- Custom Modal for Placeholder Alert (Hidden by default) -->
+    <div id="placeholderModal" class="modal-overlay fixed inset-0 flex items-center justify-center opacity-0 pointer-events-none" aria-modal="true" role="dialog" aria-hidden="true" tabindex="-1">
+        <div id="modalContent" class="modal-content w-full max-w-sm p-6 rounded-xl border border-violet-600/50">
+            <h3 class="text-xl font-semibold text-white mb-3 flex items-center">
+                <i data-lucide="alert-triangle" class="w-6 h-6 mr-2 text-yellow-400"></i> 
+                Link Not Set
+            </h3>
+            <p class="text-slate-300 mb-5" id="modalMessage">
+                The link for this subject is currently a placeholder. Please replace the `href="#"` with the actual page URL to enable navigation.
+            </p>
+            <button id="closeModalBtn" class="w-full px-4 py-2 text-sm font-bold rounded-lg open-btn-gradient text-white shadow-lg shadow-violet-500/20">
+                Got It
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactivity and Custom Modal -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        const modal = document.getElementById('placeholderModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        /**
+         * Shows the custom modal with a message.
+         * @param {string} subjectName - The name of the subject.
+         */
+        function showPlaceholderModal(subjectName) {
+            modalMessage.textContent = `The link for "${subjectName}" is currently a placeholder (#). Please replace the 'href="#"' with the actual page URL to enable navigation.`;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto', 'modal-open');
+            modal.setAttribute('aria-hidden', 'false');
+            modalContent.focus();
+        }
+
+        /**
+         * Hides the custom modal.
+         */
+        function hidePlaceholderModal() {
+            modal.classList.remove('opacity-100', 'pointer-events-auto', 'modal-open');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        closeModalBtn.addEventListener('click', hidePlaceholderModal);
+
+        // Close modal when clicking outside of the content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hidePlaceholderModal();
+            }
         });
-      });
 
-      // Improve link placeholders: warn in console if href is '#'
-      document.querySelectorAll('.open-btn').forEach(a => {
-        a.addEventListener('click', (e)=>{
-          if(a.getAttribute('href') === '#'){
-            e.preventDefault();
-            alert('Link not set. Replace the href in the file with the page URL (e.g., ./chemistry/index.html).');
-          }
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('modal-open')) {
+                hidePlaceholderModal();
+            }
         });
-      });
 
-    })();
-  </script>
+
+        // Handle Clicks on Subject Links
+        document.querySelectorAll('.open-btn-gradient').forEach(a => {
+            a.addEventListener('click', (e) => {
+                const href = a.getAttribute('href');
+                if (href === '#' || href === 'undefined' || !href) {
+                    e.preventDefault();
+                    const subject = a.getAttribute('data-subject') || a.textContent.replace('Open ', '').replace(' Hub', '').trim();
+                    showPlaceholderModal(subject);
+                }
+            });
+        });
+
+        // Add keyboard accessibility to the entire card (Enter/Space on card clicks the link)
+        document.querySelectorAll('.subject-card').forEach(s => {
+            s.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const link = s.querySelector('.open-btn-gradient');
+                    if (link) { link.click(); }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
