@@ -3,507 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JEE Mains Mathematics Chapters Hub</title>
+    <title>ExamHub — Physics • Chemistry • Maths (Pro)</title>
+    <meta name="description" content="Enhanced ExamHub landing page with modern aesthetics and professional vibe for JEE-style preparation." />
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Mathematics Theme Colors (Deep Violet/Purple Vibe - Distinct from Blue/Indigo) */
+        /* Custom Tailwind Configuration (Variables from original code adapted) */
         :root {
-            --primary: #9333ea; /* Violet 600 (Main Maths Color) */
-            --primary-light: #c084fc; /* Violet 400 */
-            --primary-dark: #7e22ce; /* Violet 700 */
-            --bg: #fbf5ff; /* Very Light Violet Background */
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #f3e8ff; /* Light Violet Border */
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* Using deep slate-950 for background, but enhancing the glow */
+            --color-accent: #7c3aed; /* violet */
+            --color-accent-2: #06b6d4; /* cyan */
             --radius: 12px;
-            --transition: all 0.3s ease;
         }
 
-        [data-theme="dark"] {
-            --primary: #a78bfa; /* Light Violet for contrast */
-            --primary-dark: #8b5cf6;
-            --bg: #1c0d3a; /* Dark Purple Background */
-            --card-bg: #2d1852; /* Darker Card */
-            --text: #f3f4f6;
-            --text-light: #d1d5db;
-            --border: #3d276b;
-        }
-
-        /* Base Styles */
+        /* Set Inter font and dark background */
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            color: var(--text);
-            transition: background-color var(--transition), color var(--transition);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-            color: white;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Search & Controls - Sticky */
-        .controls {
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: var(--card-bg); 
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            position: sticky; 
-            top: 0; 
-            z-index: 10; 
-        }
-        
-        /* Input and Button Styling */
-        .search-sort-group { display: flex; gap: 15px; }
-        #search-input { flex-grow: 1; padding: 12px 15px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--bg); color: var(--text); }
-        #search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2); outline: none; }
-        .sort-btn, .theme-toggle { padding: 12px 20px; background-color: var(--primary); color: white; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
-        .sort-btn:hover, .theme-toggle:hover { background-color: var(--primary-dark); transform: translateY(-1px); }
-        .sort-btn:active, .theme-toggle:active { transform: translateY(1px); }
-        .sort-btn.active { background-color: var(--primary-dark); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); }
-        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .filter-btn { padding: 8px 15px; background-color: var(--bg); color: var(--primary-dark); border: 2px solid var(--primary-light); border-radius: var(--radius); cursor: pointer; font-weight: 500; transition: var(--transition); }
-        .filter-btn:hover { background-color: var(--primary-light); color: white; }
-        .filter-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 4px rgba(147, 51, 234, 0.3); }
-
-        /* Chapter Grid and Cards */
-        #chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .chapter-card { background-color: var(--card-bg); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease; border-left: 5px solid var(--primary-light); display: flex; flex-direction: column; }
-        .chapter-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-left-color: var(--primary); }
-        .card-title { font-size: 1.4rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
-        .card-class { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-bottom: 15px; }
-        
-        /* Specific Class Colors (now using Violet range) */
-        .class-11 { background-color: #f3e8ff; color: #581c87; border: 1px solid #d8b4fe; } /* Light Violet */
-        .class-12 { background-color: #ede9fe; color: #4c1d95; border: 1px solid #c4b5fd; } /* Slightly different Light Violet */
-        [data-theme="dark"] .class-11 { background-color: #581c87; color: #f3e8ff; }
-        [data-theme="dark"] .class-12 { background-color: #4c1d95; color: #ede9fe; }
-
-        .card-description { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; flex-grow: 1; }
-        .card-link { display: block; text-align: center; padding: 10px; background-color: var(--primary); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background-color var(--transition); margin-top: auto; cursor: pointer; }
-        .card-link:hover { background-color: var(--primary-dark); }
-        .hidden { display: none !important; }
-        .no-results { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-light); font-size: 1.2rem; }
-        .icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        
-        /* --- MODAL STYLES --- */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            padding: 2rem 1rem;
+            /* Enhanced background gradient for a deep, professional look */
+            background: #020617; /* Slate-950 */
+            background-image: 
+                radial-gradient(circle 800px at 10% 20%, rgba(124, 58, 237, 0.15), transparent),
+                radial-gradient(circle 600px at 80% 90%, rgba(6, 182, 212, 0.1), transparent);
+            color: #e2e8f0; /* Slate-200 */
+        }
+
+        /* Card Hover Effect */
+        .subject-card {
+            position: relative;
+            background: rgba(15, 23, 42, 0.6); /* Slate-900 with transparency */
+            backdrop-filter: blur(8px);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.25);
+            border-color: rgba(124, 58, 237, 0.4);
+        }
+        
+        /* Specific Glow for Icons */
+        .icon-wrap {
+            position: relative;
+            z-index: 10;
+            transition: all 300ms ease;
+        }
+        
+        .icon-wrap svg {
+            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+        }
+
+        /* CTA Button Styling */
+        .open-btn-gradient {
+            background-image: linear-gradient(to right, var(--color-accent), var(--color-accent-2));
+            transition: transform 150ms ease-in-out;
+        }
+        
+        .open-btn-gradient:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 300ms ease;
         }
 
         .modal-content {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 600px;
+            z-index: 60;
+            background: #0f172a;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
             transform: scale(0.95);
             opacity: 0;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            position: relative;
+            transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal-backdrop:not(.hidden) .modal-content {
+        .modal-open .modal-content {
             transform: scale(1);
             opacity: 1;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            color: var(--primary-dark);
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: color 0.2s;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: var(--primary);
-        }
-
-        .modal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .modal-actions a {
-            display: block;
-            padding: 15px;
-            border-radius: var(--radius);
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .btn-questions { background-color: #10b981; color: white; } /* Green - Kept for Practice Button */
-        .btn-questions:hover { background-color: #059669; }
-
-        .btn-solutions { background-color: #f59e0b; color: white; } /* Amber/Orange - Kept for View Solutions Button */
-        .btn-solutions:hover { background-color: #d97706; }
-
-        .btn-download { background-color: var(--primary); color: white; } /* Now uses the new Violet Primary */
-        .btn-download:hover { background-color: var(--primary-dark); }
-        /* --- END MODAL STYLES --- */
-
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .search-sort-group { flex-direction: column; }
-            .sort-btn { width: 100%; justify-content: center; }
-        }
     </style>
 </head>
-<body>
-    <script>
-        // Check for theme preference on load
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-    </script>
-    
-    <header>
-        <h1>JEE Mains Mathematics: Chapter Hub</h1>
-        <p>Access notes, questions, and solutions for essential Class 11 & 12 Mathematics chapters for JEE Mains preparation.</p>
-    </header>
+<body class="antialiased">
 
-    <div class="container">
-        <div class="controls">
-            <div class="search-sort-group">
-                <input type="text" id="search-input" placeholder="Search chapter name (e.g., Vectors, Calculus)..." aria-label="Search Chapters">
-                
-                <button id="sort-toggle" class="sort-btn" aria-label="Sort chapters alphabetically">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 6h18M3 12h12M3 18h9"/>
-                        <path d="M17 10l3-3m0 0l3 3m-3-3v14"/>
+    <div class="container max-w-5xl mx-auto" role="main">
+
+        <!-- Header and Branding -->
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8 p-4 bg-slate-800/20 backdrop-blur-sm rounded-xl border border-slate-700/50 shadow-xl" aria-label="ExamHub header">
+            <div class="flex items-center gap-4">
+                <div class="p-4 rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 shadow-inner" aria-hidden="true">
+                    <!-- Logo SVG: More abstract and vibrant -->
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-white">
+                        <path d="M12 2L2 7l10 5 10-5L12 2z" fill="url(#grad1)"/>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#grad2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#7c3aed"/>
+                                <stop offset="100%" stop-color="#06b6d4"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#a78bfa"/>
+                                <stop offset="100%" stop-color="#67e8f9"/>
+                            </linearGradient>
+                        </defs>
                     </svg>
-                    <span>Sort A-Z</span>
-                </button>
-                
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light theme">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M12 3v1M12 20v1M4 4l.7.7M20 20l-.7-.7M4 20l.7-.7M20 4l-.7.7M1 12h1M22 12h1M12 17a5 5 0 100-10 5 5 0 000 10z"/>
-                    </svg>
-                </button>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight leading-none text-white">
+                        StudyWeb
+                    </h1>
+                    <p class="text-sm mt-1 text-slate-400">
+                        High-Focus Landing Page for Competitive Exams
+                    </p>
+                </div>
             </div>
             
-            <div class="filter-group" role="group" aria-label="Chapter Class Filter">
-                <button class="filter-btn active" data-filter="all">All Chapters</button>
-                <button class="filter-btn" data-filter="11">Class 11</button>
-                <button class="filter-btn" data-filter="12">Class 12</button>
+            <div class="flex flex-wrap gap-3 sm:gap-4 ml-auto sm:ml-0">
+                <button id="quickTipsBtn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-700/50 hover:bg-slate-700 transition duration-150 text-slate-300">
+                    <i data-lucide="book-open" class="w-4 h-4 inline-block mr-1"></i> Quick Tips
+                </button>
+                <button id="authBtn" class="px-4 py-2 text-sm font-semibold rounded-lg open-btn-gradient text-white shadow-lg shadow-violet-500/20">
+                    <i data-lucide="log-in" class="w-4 h-4 inline-block mr-1"></i> Sign In
+                </button>
             </div>
-        </div>
+        </header>
 
-        <div id="chapters">
-            <!-- Chapter Cards will be injected here -->
-        </div>
-        
-        <p id="no-results" class="no-results hidden">No results found. Please modify your search term.</p>
+        <!-- Main Headline Card -->
+        <section class="p-6 bg-slate-900/50 border border-slate-700/50 rounded-xl shadow-2xl shadow-slate-900/60 mb-8" aria-labelledby="main-heading">
+            <h2 id="main-heading" class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-snug text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-300 mb-3">
+                Sharpen the fundamentals. Master the tricks. Ace the exam.
+            </h2>
+            <p class="text-lg text-slate-400">
+                Choose a subject below to open your dedicated hub for comprehensive study resources and practice materials.
+            </p>
+            <div class="mt-4 flex items-center gap-4 text-sm text-slate-500">
+                 <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
+                <span class="font-medium">JEE 2026 Competitive Focus</span>
+            </div>
+        </section>
+
+        <!-- Subject Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Subjects list">
+
+            <!-- Physics card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="physics-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-violet-600/20 text-violet-400">
+                    <i data-lucide="atom" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="physics-title" class="text-xl font-bold mb-1 text-white">Physics</h3>
+                    <p class="text-sm text-slate-400 mb-4">Mechanics, Electricity, Optics — concept clarity and problem practice for JEE.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-violet-500/20 inline-flex items-center gap-2" 
+                       href="jee-mains-physics.html" aria-label="Open Physics page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Physics Hub
+                    </a>
+                </div>
+            </article>
+
+            <!-- Chemistry card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="chem-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-orange-500/20 text-orange-400">
+                    <i data-lucide="flask-conical" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="chem-title" class="text-xl font-bold mb-1 text-white">Chemistry</h3>
+                    <p class="text-sm text-slate-400 mb-4">Physical, Organic, Inorganic — reaction logic and numerical mastery.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-orange-500/20 inline-flex items-center gap-2" 
+                       href="jee_chemistry.html" data-subject="Chemistry" aria-label="Open Chemistry page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Chemistry Hub
+                    </a>
+                </div>
+            </article>
+
+            <!-- Maths card -->
+            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="maths-title" tabindex="0">
+                <div class="icon-wrap p-4 rounded-xl bg-green-500/20 text-green-400">
+                    <!-- Changed from "square-root" to "sigma" for a more professional math symbol -->
+                    <i data-lucide="sigma" class="w-8 h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="maths-title" class="text-xl font-bold mb-1 text-white">Mathematics</h3>
+                    <p class="text-sm text-slate-400 mb-4">Algebra, Calculus, Coordinate Geometry — speed and precision drills for top scores.</p>
+                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-green-500/20 inline-flex items-center gap-2" 
+                       href="jee_maths.html" data-subject="Mathematics" aria-label="Open Maths page">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Maths Hub
+                    </a>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Footer / Credits -->
+        <footer class="mt-12 pt-6 border-t border-slate-800 text-center text-sm text-slate-500">
+            © 2024 StudyWeb. Designed for maximum focus and minimal distraction. 
+            
+        </footer>
+
     </div>
 
-    <!-- The Modal/Popup Structure -->
-    <div id="modal-backdrop" class="modal-backdrop hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-chapter-title">Chapter Title</h2>
-                <button class="modal-close" aria-label="Close Modal">&times;</button>
-            </div>
-            <p id="modal-description" style="color: var(--text-light); margin-bottom: 25px;">Detailed description of the chapter content and resources.</p>
-            <div class="modal-actions">
-                <a href="#" id="btn-questions" class="btn-questions">Practice Questions</a>
-                <a href="#" id="btn-solutions" class="btn-solutions">View Solutions</a>
-                <a href="#" id="btn-download" class="btn-download">Download PDF Notes</a>
-            </div>
+    <!-- Custom Modal for Placeholder Alert (Hidden by default) -->
+    <div id="placeholderModal" class="modal-overlay fixed inset-0 flex items-center justify-center opacity-0 pointer-events-none" aria-modal="true" role="dialog" aria-hidden="true" tabindex="-1">
+        <div id="modalContent" class="modal-content w-full max-w-sm p-6 rounded-xl border border-violet-600/50">
+            <h3 class="text-xl font-semibold text-white mb-3 flex items-center">
+                <i data-lucide="alert-triangle" class="w-6 h-6 mr-2 text-yellow-400"></i> 
+                Link Not Set
+            </h3>
+            
         </div>
     </div>
 
+    <!-- JavaScript for Interactivity and Custom Modal -->
     <script>
-        // 11th aur 12th ke JEE Mains Mathematics Chapters
-        const mathsChapters = [
-            // Class 11 Mathematics
-            { title: "Sets, Relations, and Functions", class: 11, description: "Set operations, domain, range, types of relations and functions, equivalence relations.", link: "#" },
-            { title: "Complex Numbers and Quadratic Equations", class: 11, description: "Algebra of complex numbers, Argand plane, De Moivre's Theorem, roots of quadratic equations.", link: "#" },
-            { title: "Trigonometric Functions", class: 11, description: "Trigonometric ratios, identities, compound angles, conditional identities, heights and distances.", link: "#" },
-            { title: "Permutations and Combinations (P&C)", class: 11, description: "Counting principles, arrangement and selection, circular permutations, divisibility rules applications.", link: "#" },
-            { title: "Binomial Theorem", class: 11, description: "General term, properties of binomial coefficients, middle term, application for approximations.", link: "#" },
-            { title: "Sequences and Series", class: 11, description: "Arithmetic (AP), Geometric (GP), Harmonic Progressions (HP), arithmetic-geometric progression (AGP), special series summation.", link: "#" },
-            { title: "Straight Lines", class: 11, description: "Slope, various forms of a line, distance of a point from a line, family of lines, locus problems.", link: "#" },
-            { title: "Conic Sections", class: 11, description: "Circle, Parabola, Ellipse, Hyperbola - standard equations, tangents, normals, and focal properties.", link: "#" },
-            { title: "Introduction to 3D Geometry", class: 11, description: "Coordinates in space, distance formula, section formula, direction cosines and ratios.", link: "#" },
-            { title: "Limits and Derivatives", class: 11, description: "Fundamental limits, indeterminate forms, L'Hopital's Rule, differentiation rules, first principle.", link: "#" },
-            { title: "Mathematical Reasoning", class: 11, description: "Statements, logical operations (AND, OR, NOT), tautology, contradiction, contrapositive.", link: "#" },
-            { title: "Statistics", class: 11, description: "Measures of Central Tendency (Mean, Median, Mode), Measures of Dispersion (Variance and Standard Deviation).", link: "#" },
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-            // Class 12 Mathematics
-            { title: "Relations and Functions", class: 12, description: "Types of relations (Equivalence), composition of functions, invertible functions, Inverse Trigonometric Functions (ITF) properties.", link: "#" },
-            { title: "Matrices and Determinants", class: 12, description: "Algebra of matrices, transpose, symmetric/skew-symmetric matrices, adjoint, inverse, solving system of linear equations (Cramer's Rule).", link: "#" },
-            { title: "Continuity and Differentiability (Calculus)", class: 12, description: "Checking continuity at a point, differentiation methods, chain rule, implicit functions, logarithmic differentiation, Rolle's and LMV theorems.", link: "#" },
-            { title: "Application of Derivatives (AOD)", class: 12, description: "Rate of change, tangents and normals, approximations, increasing/decreasing functions, Maxima and Minima (first and second derivative tests).", link: "#" },
-            { title: "Indefinite and Definite Integrals", class: 12, description: "Integration techniques (substitution, by parts, partial fractions), properties of definite integrals, reduction formulae.", link: "#" },
-            { title: "Application of Integrals (AOI)", class: 12, description: "Area under simple curves, area between two curves, area of regions using integration.", link: "#" },
-            { title: "Differential Equations", class: 12, description: "Order and degree, formation of differential equations, solution methods (variable separable, homogeneous, linear differential equations).", link: "#" },
-            { title: "Vector Algebra", class: 12, description: "Vector addition, Dot and Cross product, scalar and vector triple product, geometric applications.", link: "#" },
-            { title: "Three Dimensional Geometry (3D)", class: 12, description: "Equations of line and plane in space, coplanarity, shortest distance between skew lines, projection.", link: "#" },
-            { title: "Probability", class: 12, description: "Conditional probability, multiplication theorem, independent events, Bayes' theorem, Bernoulli trials, and Binomial distribution.", link: "#" },
-        ];
+        const modal = document.getElementById('placeholderModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
-        const chaptersContainer = document.getElementById('chapters');
-        const searchInput = document.getElementById('search-input');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const sortToggleBtn = document.getElementById('sort-toggle');
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const noResultsMessage = document.getElementById('no-results');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const modalCloseBtn = document.querySelector('.modal-close');
-        const modalTitle = document.getElementById('modal-chapter-title');
-        const modalDescription = document.getElementById('modal-description');
-        const btnQuestions = document.getElementById('btn-questions');
-        const btnSolutions = document.getElementById('btn-solutions');
-        const btnDownload = document.getElementById('btn-download');
-
-        let isSorted = false;
-
-        // --- MODAL FUNCTIONS ---
-        function openModal(chapterTitle) {
-            const chapter = mathsChapters.find(c => c.title === chapterTitle);
-            if (!chapter) return;
-
-            modalTitle.textContent = chapter.title;
-            modalDescription.textContent = chapter.description;
-
-            // In a real app, these links would point to specific chapter resources.
-            // For this example, they link to the chapter's generic link.
-            btnQuestions.href = `${chapter.link}-questions`;
-            btnSolutions.href = `${chapter.link}-solutions`;
-            btnDownload.href = `${chapter.link}-download`;
-
-            // Display the modal
-            modalBackdrop.classList.remove('hidden');
+        /**
+         * Shows the custom modal with a message.
+         * @param {string} subjectName - The name of the subject.
+         */
+        function showPlaceholderModal(subjectName) {
+            modalMessage.textContent = `The link for "${subjectName}" is currently a placeholder (#). Please replace the 'href="#"' with the actual page URL to enable navigation.`;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto', 'modal-open');
+            modal.setAttribute('aria-hidden', 'false');
+            modalContent.focus();
         }
 
-        function closeModal() {
-            modalBackdrop.classList.add('hidden');
+        /**
+         * Hides the custom modal.
+         */
+        function hidePlaceholderModal() {
+            modal.classList.remove('opacity-100', 'pointer-events-auto', 'modal-open');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.setAttribute('aria-hidden', 'true');
         }
 
-        modalCloseBtn.addEventListener('click', closeModal);
-        modalBackdrop.addEventListener('click', (e) => {
-            if (e.target === modalBackdrop) {
-                closeModal();
+        closeModalBtn.addEventListener('click', hidePlaceholderModal);
+
+        // Close modal when clicking outside of the content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hidePlaceholderModal();
             }
         });
-        // --- END MODAL FUNCTIONS ---
 
-
-        // Function to render all chapter cards
-        function renderChapters(chapters) {
-            chaptersContainer.innerHTML = ''; 
-            noResultsMessage.classList.add('hidden');
-            
-            if (chapters.length === 0) {
-                noResultsMessage.classList.remove('hidden');
-                return;
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('modal-open')) {
+                hidePlaceholderModal();
             }
+        });
 
-            chapters.forEach(chapter => {
-                const card = document.createElement('div');
-                card.className = `chapter-card ${chapter.class === 11 ? 'class-11-chapter' : 'class-12-chapter'}`;
-                card.setAttribute('data-class', chapter.class);
-                card.setAttribute('data-title', chapter.title.toLowerCase());
-                
-                card.innerHTML = `
-                    <span class="card-class class-${chapter.class}">Class ${chapter.class}</span>
-                    <h2 class="card-title">${chapter.title}</h2>
-                    <p class="card-description">${chapter.description}</p>
-                    <a href="#" class="card-link" data-title="${chapter.title}">View Details</a>
-                `;
-                chaptersContainer.appendChild(card);
-            });
-            
-            // Attach 'View Details' click listeners
-            document.querySelectorAll('.chapter-card .card-link').forEach(link => {
-                link.addEventListener('click', (e) => {
+
+        // Handle Clicks on Subject Links
+        document.querySelectorAll('.open-btn-gradient').forEach(a => {
+            a.addEventListener('click', (e) => {
+                const href = a.getAttribute('href');
+                if (href === '#' || href === 'undefined' || !href) {
                     e.preventDefault();
-                    const title = e.target.getAttribute('data-title');
-                    openModal(title);
-                });
-            });
-            
-            // Re-apply sorting after rendering, if active
-            if (isSorted) {
-                sortChapters(true);
-            }
-        }
-
-        // Filter and Search logic
-        function filterAndSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-
-            let listToSort = [...mathsChapters]; 
-
-            const filteredChapters = listToSort.filter(chapter => {
-                const matchesSearch = chapter.title.toLowerCase().includes(query);
-                const matchesFilter = activeFilter === 'all' || chapter.class.toString() === activeFilter;
-                
-                return matchesSearch && matchesFilter;
-            });
-            
-            renderChapters(filteredChapters); 
-        }
-
-        // Event listener for search input (debounced for performance)
-        const debouncedSearch = debounce(filterAndSearch, 300);
-        searchInput.addEventListener('input', debouncedSearch);
-
-        // Event listener for filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterAndSearch();
+                    const subject = a.getAttribute('data-subject') || a.textContent.replace('Open ', '').replace(' Hub', '').trim();
+                    showPlaceholderModal(subject);
+                }
             });
         });
-        
-        // Sorting function
-        function sortChapters(shouldSort) {
-            const container = document.getElementById('chapters');
-            const cards = Array.from(container.querySelectorAll('.chapter-card'));
-            
-            if (shouldSort) {
-                // Alphabetical Sort (A-Z)
-                cards.sort((a, b) => {
-                    const titleA = a.querySelector('.card-title').textContent.toLowerCase();
-                    const titleB = b.querySelector('.card-title').textContent.toLowerCase();
-                    return titleA.localeCompare(titleB);
-                });
-            } else {
-                // Restore Original Order (Class 11 then Class 12)
-                cards.sort((a, b) => {
-                    const classA = parseInt(a.getAttribute('data-class'));
-                    const classB = parseInt(b.getAttribute('data-class'));
-                    
-                    if (classA !== classB) {
-                        return classA - classB; // Sort by class (11 before 12)
-                    }
-                    // Find original index to restore relative order. 
-                    const originalIndexA = mathsChapters.findIndex(c => c.title === a.querySelector('.card-title').textContent);
-                    const originalIndexB = mathsChapters.findIndex(c => c.title === b.querySelector('.card-title').textContent);
-                    return originalIndexA - originalIndexB; 
-                });
-            }
-            
-            // Reorder DOM
-            cards.forEach(card => {
-                container.appendChild(card);
+
+        // Add keyboard accessibility to the entire card (Enter/Space on card clicks the link)
+        document.querySelectorAll('.subject-card').forEach(s => {
+            s.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const link = s.querySelector('.open-btn-gradient');
+                    if (link) { link.click(); }
+                }
             });
-        }
-
-        // Event listener for sort toggle button
-        sortToggleBtn.addEventListener('click', () => {
-            isSorted = !isSorted;
-            sortToggleBtn.classList.toggle('active', isSorted);
-            
-            if (isSorted) {
-                sortToggleBtn.querySelector('span').textContent = 'Original Order'; 
-            } else {
-                sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-            }
-            
-            sortChapters(isSorted);
         });
-
-        // Theme toggle logic
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-
-
-        // Utility function for debouncing
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-        
-        // Initial render on page load
-        window.onload = () => {
-             renderChapters(mathsChapters);
-             sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-        };
     </script>
 </body>
 </html>
