@@ -3,474 +3,1386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathematics Chapters Hub - Class 11 & 12 / JEE Prep</title>
+    <title>Mathematics Chapters Hub - Class 12 / JEE Prep</title>
     <style>
-        /* Mathematics Theme Colors (Indigo/Purple Vibe) */
         :root {
-            --primary: #4f46e5; /* Indigo 600 - Maths Vibe */
-            --primary-light: #818cf8; /* Indigo 400 */
-            --primary-dark: #3730a3; /* Indigo 700 */
-            --bg: #f5f5ff; /* Light Violet Background */
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
+            --primary-dark: #7c3aed;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
             --text-light: #64748b;
-            --border: #e0e7ff; /* Light Indigo Border */
+            --border: #e2e8f0;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            --radius: 8px;
+            --transition: all 0.2s ease;
         }
 
         [data-theme="dark"] {
-            --primary: #818cf8; /* Light Indigo for contrast */
-            --primary-dark: #6366f1;
-            --bg: #111827; /* Dark Grey Background */
-            --card-bg: #1f2937; /* Darker Card */
-            --text: #f3f4f6;
-            --text-light: #d1d5db;
-            --border: #374151;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
-        /* Base Styles */
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--bg);
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
             color: var(--text);
-            transition: background-color var(--transition), color var(--transition);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-            color: white;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Search & Controls - Now Sticky! */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: var(--card-bg); 
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            
-            /* --- STICKY POSITIONING --- */
-            position: sticky; /* Makes the element stick */
-            top: 0; /* Sticks it to the top edge */
-            z-index: 10; /* Ensures it is on top of the chapter cards */
-            /* --- END STICKY POSITIONING --- */
-        }
-
-        .search-sort-group {
-            display: flex;
-            gap: 15px;
-        }
-        
-        #search-input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: border-color var(--transition), box-shadow var(--transition);
             background-color: var(--bg);
-            color: var(--text);
-        }
-
-        #search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); /* Indigo Shadow */
-            outline: none;
-        }
-
-        .sort-btn, .theme-toggle {
-            padding: 12px 20px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color var(--transition), transform 0.1s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sort-btn:hover, .theme-toggle:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-        
-        .sort-btn:active, .theme-toggle:active {
-            transform: translateY(1px);
-        }
-
-        .sort-btn.active {
-            background-color: var(--primary-dark);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background-color: var(--bg);
-            color: var(--primary-dark);
-            border: 2px solid var(--primary-light);
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 500;
             transition: var(--transition);
         }
 
-        .filter-btn:hover {
-            background-color: var(--primary-light);
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
             color: white;
+            padding: 8px;
+            z-index: 1000;
+            text-decoration: none;
+            border-radius: 0 0 var(--radius) 0;
         }
 
-        .filter-btn.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3); /* Indigo Shadow */
+        .skip-link:focus {
+            top: 0;
         }
 
-        /* Chapter Grid */
-        #chapters {
+        header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--bg);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        #search:focus {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 1px;
+        }
+
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #sort-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        #sort-toggle:hover {
+            background-color: var(--border);
+        }
+
+        #theme-toggle {
+            background: none;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #theme-toggle:hover {
+            background-color: var(--border);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 1.5rem;
         }
 
         .chapter-card {
             background-color: var(--card-bg);
-            padding: 20px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            border-left: 5px solid var(--primary-light);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
+            gap: 1rem;
+            transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
-        .chapter-card:hover {
-            transform: translateY(-5px);
+        .chapter-card:hover, .chapter-card:focus-within {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
-            border-left-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            animation: pulse 2.5s infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card-icon {
+                animation: none;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-        }
-
-        .card-class {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 1.125rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            color: var(--text);
+            line-height: 1.3;
         }
-
-        /* Class Tag Colors */
-        .class-11 {
-            background-color: #ede9fe; /* Light Violet */
-            color: #4c1d95; /* Dark Violet */
-            border: 1px solid #c4b5fd;
-        }
-
-        .class-12 {
-            background-color: #e0f2fe; /* Light Blue */
-            color: #0369a1; /* Dark Blue */
-            border: 1px solid #93c5fd;
-        }
-        
-        [data-theme="dark"] .class-11 {
-            background-color: #5b21b6;
-            color: #f5f3ff;
-        }
-
-        [data-theme="dark"] .class-12 {
-            background-color: #0369a1;
-            color: #e0f2fe;
-        }
-
 
         .card-description {
-            font-size: 0.9rem;
             color: var(--text-light);
-            margin-bottom: 20px;
-            flex-grow: 1;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
-        .card-link {
-            display: block;
-            text-align: center;
-            padding: 10px;
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .view-btn {
             background-color: var(--primary);
             color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color var(--transition);
-            margin-top: auto; /* Push to bottom */
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            flex: 1;
+            transition: var(--transition);
+            font-weight: 500;
         }
 
-        .card-link:hover {
+        .view-btn:hover, .view-btn:focus {
             background-color: var(--primary-dark);
         }
-        
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover, .modal-close:focus {
+            background-color: var(--border);
+            color: var(--text);
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .tab-panel p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .download-btn:hover, .download-btn:focus {
+            background-color: var(--primary-dark);
+        }
+
+        .download-btn:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
         .hidden {
             display: none !important;
         }
-        
-        /* Utility */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-            font-size: 1.2rem;
-        }
-        
-        /* Icons (Simplified SVG for better integration) */
-        .icon {
-            width: 18px;
-            height: 18px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+            .chapters-grid {
+                grid-template-columns: 1fr;
             }
-            .search-sort-group {
+            
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .controls {
                 flex-direction: column;
             }
-            .sort-btn {
-                width: 100%;
-                justify-content: center;
+            
+            .search-container {
+                min-width: auto;
+            }
+            
+            .modal-overlay {
+                padding: 0;
+            }
+            
+            .modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .modal-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                justify-content: flex-start;
+                border-bottom: 1px solid var(--border);
+                border-left: 2px solid transparent;
+            }
+            
+            .tab-btn.active {
+                border-bottom-color: var(--border);
+                border-left-color: var(--primary);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .chapters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .chapters-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <script>
-        // Check for theme preference on load
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-    </script>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <header>
-        <h1>JEE Mains Mathematics: Chapter Hub</h1>
-        <p>11th aur 12th Class ke zaroori Ganit (Maths) chapters ke PDF/Notes download karein. JEE Mains ki taiyaari ke liye!</p>
+        <div class="header-content">
+            <h1>Mathematics Chapters Hub</h1>
+            <div class="controls">
+                <div class="search-container">
+                    <i class="search-icon" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </i>
+                    <input type="text" id="search" placeholder="Search chapters..." aria-label="Search chapters">
+                </div>
+                <div class="sort-container">
+                    <button id="sort-toggle" aria-label="Sort chapters by name">
+                        <i aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M7 12h10M11 18h6"></path>
+                            </svg>
+                        </i>
+                        Sort by name
+                    </button>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </i>
+                </button>
+            </div>
+        </div>
     </header>
+    
+    <main id="main-content">
+        <div id="chapters" class="chapters-grid">
+            <!-- 11th Mathematics Chapters -->
+            
+            <!-- Chapter 1 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Sets</h3>
+                </div>
+                <p class="card-description">Sets and their representations, types of sets, subsets, Venn diagrams, operations on sets.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 2 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Relations and Functions</h3>
+                </div>
+                <p class="card-description">Cartesian product of sets, relations, functions, domain, range, and types of functions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 3 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Trigonometric Functions</h3>
+                </div>
+                <p class="card-description">Angles, trigonometric ratios, identities, graphs of trigonometric functions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 4 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Principle of Mathematical Induction</h3>
+                </div>
+                <p class="card-description">Process of the proof by induction, motivating applications of mathematical induction.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 5 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Complex Numbers and Quadratic Equations</h3>
+                </div>
+                <p class="card-description">Complex numbers, algebra of complex numbers, quadratic equations in complex number system.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 6 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Linear Inequalities</h3>
+                </div>
+                <p class="card-description">Algebraic solutions of linear inequalities in one variable and their graphical representation.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 7 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Permutations and Combinations</h3>
+                </div>
+                <p class="card-description">Fundamental principle of counting, permutations, combinations, and simple applications.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 8 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Binomial Theorem</h3>
+                </div>
+                <p class="card-description">Binomial theorem for positive integral indices, general and middle terms in binomial expansion.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 9 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Sequences and Series</h3>
+                </div>
+                <p class="card-description">Arithmetic and Geometric progressions, arithmetic mean, geometric mean, special series.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 10 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Straight Lines</h3>
+                </div>
+                <p class="card-description">Slope of a line, various forms of equations of a line, distance of a point from a line.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 11 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Conic Sections</h3>
+                </div>
+                <p class="card-description">Sections of a cone, circle, parabola, ellipse, hyperbola, and their standard equations.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 12 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Introduction to Three-dimensional Geometry</h3>
+                </div>
+                <p class="card-description">Coordinate axes and coordinate planes in three dimensions, distance between two points.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 13 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Limits and Derivatives</h3>
+                </div>
+                <p class="card-description">Intuitive idea of limits, derivatives, algebra of derivatives, basic differentiation rules.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 14 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Mathematical Reasoning</h3>
+                </div>
+                <p class="card-description">Mathematically acceptable statements, validating statements, implications, contradictions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 15 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Statistics</h3>
+                </div>
+                <p class="card-description">Measures of dispersion, mean deviation, variance, standard deviation, analysis of frequency distributions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 16 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Probability</h3>
+                </div>
+                <p class="card-description">Random experiments, events, axiomatic approach to probability, conditional probability.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
 
-    <div class="container">
-        <div class="controls">
-            <div class="search-sort-group">
-                <input type="text" id="search-input" placeholder="Chapter ka naam dhoondein (e.g., Vectors, Calculus)..." aria-label="Search Chapters">
-                
-                <button id="sort-toggle" class="sort-btn" aria-label="Sort chapters alphabetically">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 6h18M3 12h12M3 18h9"/>
-                        <path d="M17 10l3-3m0 0l3 3m-3-3v14"/>
-                    </svg>
-                    <span>Sort A-Z</span>
-                </button>
-                
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light theme">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M12 3v1M12 20v1M4 4l.7.7M20 20l-.7-.7M4 20l.7-.7M20 4l-.7.7M1 12h1M22 12h1M12 17a5 5 0 100-10 5 5 0 000 10z"/>
-                    </svg>
+            <!-- 12th Mathematics Chapters -->
+            
+            <!-- Chapter 17 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Relations and Functions</h3>
+                </div>
+                <p class="card-description">Types of relations, composition of functions, invertible functions, binary operations.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 18 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Inverse Trigonometric Functions</h3>
+                </div>
+                <p class="card-description">Definition, range, domain, principal value branches, properties of inverse trigonometric functions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 19 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Matrices</h3>
+                </div>
+                <p class="card-description">Concept, notation, order, types, operations on matrices, transpose, symmetric and skew symmetric matrices.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 20 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Determinants</h3>
+                </div>
+                <p class="card-description">Determinant of a square matrix, properties of determinants, area of triangles, minors and cofactors.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 21 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Continuity and Differentiability</h3>
+                </div>
+                <p class="card-description">Continuity, differentiability, derivatives of composite and implicit functions, logarithmic differentiation.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 22 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Applications of Derivatives</h3>
+                </div>
+                <p class="card-description">Rate of change, increasing/decreasing functions, tangents and normals, approximations, maxima and minima.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 23 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Integrals</h3>
+                </div>
+                <p class="card-description">Integration as inverse process of differentiation, methods of integration, definite integrals.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 24 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Applications of Integrals</h3>
+                </div>
+                <p class="card-description">Area under simple curves, area between two curves, applications in finding areas using integration.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 25 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Differential Equations</h3>
+                </div>
+                <p class="card-description">Basic concepts, formation, order and degree, general and particular solutions, methods of solving.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 26 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Vector Algebra</h3>
+                </div>
+                <p class="card-description">Vectors and scalars, magnitude and direction, types of vectors, addition and multiplication of vectors.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 27 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Three-dimensional Geometry</h3>
+                </div>
+                <p class="card-description">Direction cosines and ratios, equation of a line, angle between two lines, shortest distance.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 28 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Linear Programming</h3>
+                </div>
+                <p class="card-description">Mathematical formulation of LPP, graphical method of solution, different types of linear programming problems.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 29 -->
+            <div class="chapter-card" data-questions-pdf="" data-solutions-pdf="">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Probability</h3>
+                </div>
+                <p class="card-description">Conditional probability, multiplication theorem, independent events, Bayes' theorem, random variables.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- Modal Structure -->
+    <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-title" class="modal-title">Chapter Title</h3>
+                    <p id="modal-description" class="modal-description">Chapter description will appear here.</p>
+                </div>
+                <button class="modal-close" id="modal-close" aria-label="Close modal">
+                    <i aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </i>
                 </button>
             </div>
             
-            <div class="filter-group" role="group" aria-label="Chapter Class Filter">
-                <button class="filter-btn active" data-filter="all">Saare Chapters</button>
-                <button class="filter-btn" data-filter="11">Class 11</button>
-                <button class="filter-btn" data-filter="12">Class 12</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tab-questions" aria-controls="questions-panel" aria-selected="true">
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </i>
+                    Questions
+                </button>
+                <button class="tab-btn" id="tab-solutions" aria-controls="solutions-panel" aria-selected="false">
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </i>
+                    Solutions
+                </button>
+            </div>
+            
+            <div class="modal-content">
+                <div id="questions-panel" class="tab-panel active" role="tabpanel" aria-labelledby="tab-questions">
+                    <h3>Practice Questions</h3>
+                    <p>Click the "Questions" tab to open the Questions PDF, or use the download button below to download it directly.</p>
+                </div>
+                
+                <div id="solutions-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab-solutions">
+                    <h3>Solutions</h3>
+                    <p>Click the "Solutions" tab to open the Solutions PDF, or use the download button below to download it directly.</p>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <a class="download-btn" id="questions-download" download>
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </i>
+                    Download Questions PDF
+                </a>
+                <a class="download-btn" id="solutions-download" download>
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </i>
+                    Download Solutions PDF
+                </a>
             </div>
         </div>
-
-        <div id="chapters">
-            <!-- Chapter Cards will be injected here -->
-        </div>
-        
-        <p id="no-results" class="no-results hidden">Koi result nahi mila. Kripya apna search term badlein.</p>
     </div>
-
+    
     <script>
-        // 11th aur 12th ke JEE Mains Mathematics Chapters
-        const mathsChapters = [
-            // Class 11 Mathematics
-            { title: "Sets, Relations, and Functions", class: 11, description: "Set operations, domain, range, types of relations and functions.", link: "#" },
-            { title: "Complex Numbers and Quadratic Equations", class: 11, description: "Algebra of complex numbers, De Moivre's Theorem, roots of quadratic equations.", link: "#" },
-            { title: "Trigonometric Functions", class: 11, description: "Trigonometric ratios, identities, heights and distances.", link: "#" },
-            { title: "Permutations and Combinations (P&C)", class: 11, description: "Counting principles, arrangement and selection, factorial notation.", link: "#" },
-            { title: "Binomial Theorem", class: 11, description: "General term, properties of binomial coefficients, simple applications.", link: "#" },
-            { title: "Sequences and Series", class: 11, description: "Arithmetic, Geometric, Harmonic Progressions (AP, GP, HP), special series.", link: "#" },
-            { title: "Straight Lines", class: 11, description: "Slope, forms of a line, distance of a point from a line, family of lines.", link: "#" },
-            { title: "Conic Sections", class: 11, description: "Circle, Parabola, Ellipse, Hyperbola - their equations and properties.", link: "#" },
-            { title: "Introduction to 3D Geometry", class: 11, description: "Coordinates in space, distance formula, section formula.", link: "#" },
-            { title: "Limits and Derivatives", class: 11, description: "Fundamental limits, differentiation rules, first principle.", link: "#" },
-            { title: "Mathematical Reasoning", class: 11, description: "Statements, logical operations, tautology and contradiction.", link: "#" },
-            { title: "Statistics", class: 11, description: "Mean, median, mode, variance, and standard deviation.", link: "#" },
-
-            // Class 12 Mathematics
-            { title: "Relations and Functions", class: 12, description: "Types of relations (Equivalence), Inverse Trigonometric Functions (ITF).", link: "#" },
-            { title: "Matrices and Determinants", class: 12, description: "Algebra of matrices, adjoint, inverse, solving system of linear equations.", link: "#" },
-            { title: "Continuity and Differentiability (Calculus)", class: 12, description: "Checking continuity, differentiation methods, chain rule, Rolle's and LMV theorems.", link: "#" },
-            { title: "Application of Derivatives (AOD)", class: 12, description: "Rate of change, tangents and normals, increasing/decreasing functions, Maxima and Minima.", link: "#" },
-            { title: "Indefinite and Definite Integrals", class: 12, description: "Integration techniques (substitution, parts), properties of definite integrals.", link: "#" },
-            { title: "Application of Integrals (AOI)", class: 12, description: "Area under curves and between two curves.", link: "#" },
-            { title: "Differential Equations", class: 12, description: "Order and degree, variable separable, homogeneous, and linear differential equations.", link: "#" },
-            { title: "Vector Algebra", class: 12, description: "Dot and Cross product, scalar and vector triple product, applications.", link: "#" },
-            { title: "Three Dimensional Geometry (3D)", class: 12, description: "Lines and Planes in space, shortest distance between lines.", link: "#" },
-            { title: "Probability", class: 12, description: "Conditional probability, Bayes' theorem, Bernoulli trials, and Binomial distribution.", link: "#" },
-        ];
-
-        const chaptersContainer = document.getElementById('chapters');
-        const searchInput = document.getElementById('search-input');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const sortToggleBtn = document.getElementById('sort-toggle');
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const noResultsMessage = document.getElementById('no-results');
-
-        let isSorted = false; // Tracks if the list is currently sorted alphabetically
-
-        // Function to render all chapter cards
-        function renderChapters(chapters) {
-            chaptersContainer.innerHTML = ''; // Clear previous content
-            noResultsMessage.classList.add('hidden');
-            
-            if (chapters.length === 0) {
-                noResultsMessage.classList.remove('hidden');
-                return;
-            }
-
-            chapters.forEach(chapter => {
-                const card = document.createElement('div');
-                card.className = `chapter-card ${chapter.class === 11 ? 'class-11-chapter' : 'class-12-chapter'}`;
-                card.setAttribute('data-class', chapter.class);
-                card.setAttribute('data-title', chapter.title.toLowerCase());
-                
-                // Card HTML content (using simplified structure)
-                card.innerHTML = `
-                    <span class="card-class class-${chapter.class}">Class ${chapter.class}</span>
-                    <h2 class="card-title">${chapter.title}</h2>
-                    <p class="card-description">${chapter.description}</p>
-                    <a href="${chapter.link}" target="_blank" class="card-link">Notes/PDF Download karein</a>
-                `;
-                chaptersContainer.appendChild(card);
-            });
-            
-            // Re-apply sorting after rendering, if active
-            if (isSorted) {
-                sortChapters(true);
-            }
-        }
-
-        // Filter and Search logic
-        function filterAndSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-
-            // Start with the original list of chapters
-            let listToSort = [...mathsChapters]; 
-
-            // Apply filtering
-            const filteredChapters = listToSort.filter(chapter => {
-                const matchesSearch = chapter.title.toLowerCase().includes(query);
-                const matchesFilter = activeFilter === 'all' || chapter.class.toString() === activeFilter;
-                
-                return matchesSearch && matchesFilter;
-            });
-            
-            renderChapters(filteredChapters); // Render the filtered list
-        }
-
-        // Event listener for search input (debounced for performance)
-        const debouncedSearch = debounce(filterAndSearch, 300);
-        searchInput.addEventListener('input', debouncedSearch);
-
-        // Event listener for filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterAndSearch();
-            });
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initUI();
         });
-        
-        // Sorting function
-        function sortChapters(shouldSort) {
+
+        function initUI() {
+            // Set up theme
+            applyTheme();
+            
+            // Attach event listeners
+            attachCardListeners();
+            attachSearchListener();
+            attachSortListener();
+            attachThemeToggle();
+        }
+
+        // Theme functionality
+        function applyTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        function attachThemeToggle() {
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
+        // Card and modal functionality
+        function attachCardListeners() {
+            const chaptersContainer = document.getElementById('chapters');
+            
+            // Event delegation for view buttons
+            chaptersContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-btn')) {
+                    const card = e.target.closest('.chapter-card');
+                    openModal(card);
+                }
+            });
+        }
+
+        function openModal(cardElement) {
+            const overlay = document.getElementById('modal-overlay');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const questionsDownloadBtn = document.getElementById('questions-download');
+            const solutionsDownloadBtn = document.getElementById('solutions-download');
+            
+            // Get data from the clicked card
+            const title = cardElement.querySelector('.card-title').textContent;
+            const description = cardElement.querySelector('.card-description').textContent;
+            
+            // Get PDF URLs
+            const questionsPdfUrl = cardElement.getAttribute('data-questions-pdf');
+            const solutionsPdfUrl = cardElement.getAttribute('data-solutions-pdf');
+            
+            // Update modal content
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            
+            // Set up download buttons
+            if (questionsPdfUrl) {
+                questionsDownloadBtn.href = questionsPdfUrl;
+                questionsDownloadBtn.removeAttribute('disabled');
+                questionsDownloadBtn.setAttribute('aria-label', `Download Questions PDF for ${title}`);
+            } else {
+                questionsDownloadBtn.removeAttribute('href');
+                questionsDownloadBtn.setAttribute('disabled', 'true');
+                questionsDownloadBtn.setAttribute('aria-label', 'Questions PDF not available for this chapter');
+            }
+            
+            if (solutionsPdfUrl) {
+                solutionsDownloadBtn.href = solutionsPdfUrl;
+                solutionsDownloadBtn.removeAttribute('disabled');
+                solutionsDownloadBtn.setAttribute('aria-label', `Download Solutions PDF for ${title}`);
+            } else {
+                solutionsDownloadBtn.removeAttribute('href');
+                solutionsDownloadBtn.setAttribute('disabled', 'true');
+                solutionsDownloadBtn.setAttribute('aria-label', 'Solutions PDF not available for this chapter');
+            }
+            
+            // Show modal
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+            
+            // Set up modal events
+            setupModalEvents(cardElement, questionsPdfUrl, solutionsPdfUrl);
+            
+            // Trap focus inside modal
+            trapFocus(overlay);
+        }
+
+        function setupModalEvents(originalCard, questionsUrl, solutionsUrl) {
+            const overlay = document.getElementById('modal-overlay');
+            const closeBtn = document.getElementById('modal-close');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+            
+            // Close modal events
+            function closeModal() {
+                overlay.classList.remove('active');
+                overlay.setAttribute('aria-hidden', 'true');
+                
+                // Remove event listeners to prevent memory leaks
+                document.removeEventListener('keydown', handleEsc);
+                overlay.removeEventListener('click', handleOverlayClick);
+                closeBtn.removeEventListener('click', closeModal);
+                tabButtons.forEach(btn => btn.removeEventListener('click', handleTabClick));
+                
+                // Return focus to the original card's view button
+                if (originalCard) {
+                    const viewBtn = originalCard.querySelector('.view-btn');
+                    if (viewBtn) viewBtn.focus();
+                }
+            }
+            
+            // Handle ESC key
+            function handleEsc(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            }
+            
+            // Handle overlay click
+            function handleOverlayClick(e) {
+                if (e.target === overlay) {
+                    closeModal();
+                }
+            }
+            
+            // Handle tab clicks - Open PDF when tab is clicked
+            function handleTabClick(e) {
+                const tabId = e.currentTarget.id;
+                
+                // Update active tab
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                e.currentTarget.classList.add('active');
+                e.currentTarget.setAttribute('aria-selected', 'true');
+                
+                // Show corresponding panel
+                tabPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                
+                if (tabId === 'tab-questions') {
+                    document.getElementById('questions-panel').classList.add('active');
+                    // Open Questions PDF in new tab
+                    if (questionsUrl) {
+                        window.open(questionsUrl, '_blank');
+                    }
+                } else if (tabId === 'tab-solutions') {
+                    document.getElementById('solutions-panel').classList.add('active');
+                    // Open Solutions PDF in new tab
+                    if (solutionsUrl) {
+                        window.open(solutionsUrl, '_blank');
+                    }
+                }
+            }
+            
+            // Attach event listeners
+            document.addEventListener('keydown', handleEsc);
+            overlay.addEventListener('click', handleOverlayClick);
+            closeBtn.addEventListener('click', closeModal);
+            tabButtons.forEach(btn => btn.addEventListener('click', handleTabClick));
+        }
+
+        // Focus trap for modal
+        function trapFocus(modalElement) {
+            const focusableElements = modalElement.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            modalElement.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        lastElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Focus first element
+            if (firstElement) firstElement.focus();
+        }
+
+        // Search functionality
+        function attachSearchListener() {
+            const searchInput = document.getElementById('search');
+            const debouncedFilter = debounce(filterCards, 150);
+            
+            searchInput.addEventListener('input', function(e) {
+                debouncedFilter(e.target.value);
+            });
+        }
+
+        function filterCards(query) {
+            const cards = document.querySelectorAll('.chapter-card');
+            const normalizedQuery = query.toLowerCase().trim();
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                
+                if (title.includes(normalizedQuery) || description.includes(normalizedQuery)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Sort functionality
+        function attachSortListener() {
+            const sortToggle = document.getElementById('sort-toggle');
+            let isSorted = false;
+            
+            sortToggle.addEventListener('click', function() {
+                isSorted = !isSorted;
+                sortCards(isSorted);
+                
+                // Update button text
+                sortToggle.innerHTML = isSorted ? 
+                    '<i aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h6"></path></svg></i> Sort by default' : 
+                    '<i aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h6"></path></svg></i> Sort by name';
+            });
+        }
+
+        function sortCards(shouldSort) {
             const container = document.getElementById('chapters');
-            const cards = Array.from(container.querySelectorAll('.chapter-card'));
+            const cards = Array.from(container.querySelectorAll('.chapter-card:not(.hidden)'));
             
             if (shouldSort) {
-                // Alphabetical Sort (A-Z)
                 cards.sort((a, b) => {
                     const titleA = a.querySelector('.card-title').textContent.toLowerCase();
                     const titleB = b.querySelector('.card-title').textContent.toLowerCase();
                     return titleA.localeCompare(titleB);
                 });
             } else {
-                // Restore Original Order (Class 11 then Class 12)
+                // Restore original order based on data attributes or position
+                // Since we don't have explicit order data, we'll rely on DOM order
+                // which should be the original order if we haven't modified it
                 cards.sort((a, b) => {
-                    const classA = parseInt(a.getAttribute('data-class'));
-                    const classB = parseInt(b.getAttribute('data-class'));
-                    
-                    if (classA !== classB) {
-                        return classA - classB; // Sort by class (11 before 12)
-                    }
-                    // For chapters in the same class, maintain their relative order (as in the array)
-                    return 0; 
+                    return Array.from(container.children).indexOf(a) - Array.from(container.children).indexOf(b);
                 });
             }
             
@@ -479,31 +1391,6 @@
                 container.appendChild(card);
             });
         }
-
-        // Event listener for sort toggle button
-        sortToggleBtn.addEventListener('click', () => {
-            isSorted = !isSorted;
-            sortToggleBtn.classList.toggle('active', isSorted);
-            
-            if (isSorted) {
-                // If now sorted alphabetically (A-Z), the button should show the reverse action.
-                sortToggleBtn.querySelector('span').textContent = 'Original Order'; 
-            } else {
-                // If now back to original (Class Wise), the button should show the A-Z action.
-                sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-            }
-            
-            sortChapters(isSorted);
-        });
-
-        // Theme toggle logic
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-
 
         // Utility function for debouncing
         function debounce(func, wait) {
@@ -517,13 +1404,6 @@
                 timeout = setTimeout(later, wait);
             };
         }
-        
-        // Initial render on page load
-        window.onload = () => {
-             renderChapters(mathsChapters);
-             // Set initial button text to show the action (Sort A-Z)
-             sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-        };
     </script>
 </body>
 </html>
