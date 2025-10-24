@@ -3,473 +3,1387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemistry Chapters Hub - Class 11 & 12 / JEE Prep</title>
+    <title>Chemistry Chapters Hub - Class 12 / JEE Prep</title>
     <style>
-        /* Chemistry Theme Colors (Teal/Cyan Vibe) */
         :root {
-            --primary: #06b6d4; /* Cyan 600 - Chemistry Vibe */
-            --primary-light: #22d3ee; /* Cyan 400 */
-            --primary-dark: #0e7490; /* Cyan 700 */
-            --bg: #f0fdfa; /* Light Teal Background */
+            --primary: #10b981;
+            --primary-light: #34d399;
+            --primary-dark: #059669;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
             --text-light: #64748b;
-            --border: #ccfbf1; /* Light Cyan Border */
+            --border: #e2e8f0;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            --radius: 8px;
+            --transition: all 0.2s ease;
         }
 
         [data-theme="dark"] {
-            --bg: #042f2e; /* Darker Teal Background */
-            --card-bg: #0e7490; /* Dark Cyan Card */
-            --text: #f0fdfa;
-            --text-light: #a7f3d0; /* Lighter Cyan Text */
-            --border: #0e7490;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
-        /* Base Styles */
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--bg);
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
             color: var(--text);
-            transition: background-color var(--transition), color var(--transition);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-            color: white;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Search & Controls */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .search-sort-group {
-            display: flex;
-            gap: 15px;
-        }
-        
-        #search-input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: border-color var(--transition), box-shadow var(--transition);
             background-color: var(--bg);
-            color: var(--text);
-        }
-
-        #search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); /* Cyan Shadow */
-            outline: none;
-        }
-
-        .sort-btn, .theme-toggle {
-            padding: 12px 20px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color var(--transition), transform 0.1s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sort-btn:hover, .theme-toggle:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-        
-        .sort-btn:active, .theme-toggle:active {
-            transform: translateY(1px);
-        }
-
-        .sort-btn.active {
-            background-color: var(--primary-dark);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background-color: var(--bg);
-            color: var(--primary-dark);
-            border: 2px solid var(--primary-light);
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 500;
             transition: var(--transition);
         }
 
-        .filter-btn:hover {
-            background-color: var(--primary-light);
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
             color: white;
+            padding: 8px;
+            z-index: 1000;
+            text-decoration: none;
+            border-radius: 0 0 var(--radius) 0;
         }
 
-        .filter-btn.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 2px 4px rgba(6, 182, 212, 0.3); /* Cyan Shadow */
+        .skip-link:focus {
+            top: 0;
         }
 
-        /* Chapter Grid */
-        #chapters {
+        header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--bg);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        #search:focus {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 1px;
+        }
+
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #sort-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        #sort-toggle:hover {
+            background-color: var(--border);
+        }
+
+        #theme-toggle {
+            background: none;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #theme-toggle:hover {
+            background-color: var(--border);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 1.5rem;
         }
 
         .chapter-card {
             background-color: var(--card-bg);
-            padding: 20px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            border-left: 5px solid var(--primary-light);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
+            gap: 1rem;
+            transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
-        .chapter-card:hover {
-            transform: translateY(-5px);
+        .chapter-card:hover, .chapter-card:focus-within {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
-            border-left-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            animation: pulse 2.5s infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card-icon {
+                animation: none;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-        }
-
-        .card-class {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 1.125rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            color: var(--text);
+            line-height: 1.3;
         }
-
-        .class-11 {
-            background-color: #ecfdf5; /* Light Green */
-            color: #047857; /* Dark Green */
-            border: 1px solid #a7f3d0;
-        }
-
-        .class-12 {
-            background-color: #f0f9ff; /* Light Blue */
-            color: #065f46; /* Dark Blue */
-            border: 1px solid #bae6fd;
-        }
-        
-        [data-theme="dark"] .class-11 {
-            background-color: #047857;
-            color: #d1fae5;
-        }
-
-        [data-theme="dark"] .class-12 {
-            background-color: #0e7490;
-            color: #e0f2f1;
-        }
-
 
         .card-description {
-            font-size: 0.9rem;
             color: var(--text-light);
-            margin-bottom: 20px;
-            flex-grow: 1;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
-        .card-link {
-            display: block;
-            text-align: center;
-            padding: 10px;
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .view-btn {
             background-color: var(--primary);
             color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color var(--transition);
-            margin-top: auto; /* Push to bottom */
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            flex: 1;
+            transition: var(--transition);
+            font-weight: 500;
         }
 
-        .card-link:hover {
+        .view-btn:hover, .view-btn:focus {
             background-color: var(--primary-dark);
         }
-        
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover, .modal-close:focus {
+            background-color: var(--border);
+            color: var(--text);
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .tab-panel p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .download-btn:hover, .download-btn:focus {
+            background-color: var(--primary-dark);
+        }
+
+        .download-btn:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
         .hidden {
             display: none !important;
         }
-        
-        /* Utility */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-            font-size: 1.2rem;
-        }
-        
-        /* Icons (Simplified SVG for better integration) */
-        .icon {
-            width: 18px;
-            height: 18px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+            .chapters-grid {
+                grid-template-columns: 1fr;
             }
-            .search-sort-group {
+            
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .controls {
                 flex-direction: column;
             }
-            .sort-btn {
-                width: 100%;
-                justify-content: center;
+            
+            .search-container {
+                min-width: auto;
+            }
+            
+            .modal-overlay {
+                padding: 0;
+            }
+            
+            .modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .modal-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                justify-content: flex-start;
+                border-bottom: 1px solid var(--border);
+                border-left: 2px solid transparent;
+            }
+            
+            .tab-btn.active {
+                border-bottom-color: var(--border);
+                border-left-color: var(--primary);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .chapters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .chapters-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <script>
-        // Check for theme preference on load
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-    </script>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <header>
-        <h1>JEE Mains Chemistry: Chapter Hub</h1>
-        <p>11th aur 12th Class ke zaroori Chemistry chapters ke PDF/Notes download karein. JEE Mains ki taiyaari ke liye!</p>
+        <div class="header-content">
+            <h1>Chemistry Chapters Hub</h1>
+            <div class="controls">
+                <div class="search-container">
+                    <i class="search-icon" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </i>
+                    <input type="text" id="search" placeholder="Search chapters..." aria-label="Search chapters">
+                </div>
+                <div class="sort-container">
+                    <button id="sort-toggle" aria-label="Sort chapters by name">
+                        <i aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M7 12h10M11 18h6"></path>
+                            </svg>
+                        </i>
+                        Sort by name
+                    </button>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </i>
+                </button>
+            </div>
+        </div>
     </header>
+    
+    <main id="main-content">
+        <div id="chapters" class="chapters-grid">
+            <!-- 11th Chemistry Chapters -->
+            
+            <!-- Chapter 1 -->
+            <div class="chapter-card" data-questions-pdf="some_basic_concepts_questions.pdf" data-solutions-pdf="some_basic_concepts_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Some Basic Concepts of Chemistry</h3>
+                </div>
+                <p class="card-description">Matter, laws of chemical combination, atomic and molecular masses, mole concept.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 2 -->
+            <div class="chapter-card" data-questions-pdf="structure_of_atom_questions.pdf" data-solutions-pdf="structure_of_atom_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Structure of Atom</h3>
+                </div>
+                <p class="card-description">Atomic models, quantum numbers, electronic configuration, and atomic spectra.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 3 -->
+            <div class="chapter-card" data-questions-pdf="classification_elements_questions.pdf" data-solutions-pdf="classification_elements_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Classification of Elements and Periodicity</h3>
+                </div>
+                <p class="card-description">Modern periodic law, periodic trends in properties of elements.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 4 -->
+            <div class="chapter-card" data-questions-pdf="chemical_bonding_questions.pdf" data-solutions-pdf="chemical_bonding_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="8" cy="8" r="2"></circle>
+                            <circle cx="16" cy="8" r="2"></circle>
+                            <line x1="8" y1="14" x2="16" y2="14"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Chemical Bonding and Molecular Structure</h3>
+                </div>
+                <p class="card-description">Ionic bonding, covalent bonding, VSEPR theory, and molecular orbital theory.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 5 -->
+            <div class="chapter-card" data-questions-pdf="states_of_matter_questions.pdf" data-solutions-pdf="states_of_matter_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">States of Matter: Gases and Liquids</h3>
+                </div>
+                <p class="card-description">Gas laws, kinetic molecular theory, liquid state, and intermolecular forces.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 6 -->
+            <div class="chapter-card" data-questions-pdf="thermodynamics_questions.pdf" data-solutions-pdf="thermodynamics_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Thermodynamics</h3>
+                </div>
+                <p class="card-description">First law of thermodynamics, enthalpy, entropy, and Gibbs free energy.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 7 -->
+            <div class="chapter-card" data-questions-pdf="equilibrium_questions.pdf" data-solutions-pdf="equilibrium_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Equilibrium</h3>
+                </div>
+                <p class="card-description">Chemical equilibrium, acid-base equilibrium, and solubility product.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 8 -->
+            <div class="chapter-card" data-questions-pdf="redox_reactions_questions.pdf" data-solutions-pdf="redox_reactions_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Redox Reactions</h3>
+                </div>
+                <p class="card-description">Oxidation-reduction reactions, balancing redox equations, and electrochemical cells.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 9 -->
+            <div class="chapter-card" data-questions-pdf="hydrogen_questions.pdf" data-solutions-pdf="hydrogen_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Hydrogen</h3>
+                </div>
+                <p class="card-description">Position of hydrogen in periodic table, isotopes, properties, and uses of hydrogen.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 10 -->
+            <div class="chapter-card" data-questions-pdf="s_block_questions.pdf" data-solutions-pdf="s_block_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                            <line x1="15" y1="3" x2="15" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">s-Block Elements</h3>
+                </div>
+                <p class="card-description">Group 1 and Group 2 elements, their compounds, and important trends.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 11 -->
+            <div class="chapter-card" data-questions-pdf="p_block_11_questions.pdf" data-solutions-pdf="p_block_11_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">p-Block Elements (Group 13-14)</h3>
+                </div>
+                <p class="card-description">Boron, carbon family elements, their compounds, and important reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 12 -->
+            <div class="chapter-card" data-questions-pdf="organic_basics_questions.pdf" data-solutions-pdf="organic_basics_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                            <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                            <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Organic Chemistry: Basic Principles</h3>
+                </div>
+                <p class="card-description">IUPAC nomenclature, isomerism, reaction mechanisms, and purification methods.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 13 -->
+            <div class="chapter-card" data-questions-pdf="hydrocarbons_questions.pdf" data-solutions-pdf="hydrocarbons_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Hydrocarbons</h3>
+                </div>
+                <p class="card-description">Alkanes, alkenes, alkynes, aromatic hydrocarbons, and their chemical reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 14 -->
+            <div class="chapter-card" data-questions-pdf="environmental_chemistry_questions.pdf" data-solutions-pdf="environmental_chemistry_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Environmental Chemistry</h3>
+                </div>
+                <p class="card-description">Environmental pollution, atmospheric chemistry, water pollution, and green chemistry.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
 
-    <div class="container">
-        <div class="controls">
-            <div class="search-sort-group">
-                <input type="text" id="search-input" placeholder="Chapter ka naam dhoondein (e.g., Mole Concept, Electrochemistry)..." aria-label="Search Chapters">
-                
-                <button id="sort-toggle" class="sort-btn" aria-label="Sort chapters alphabetically">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 6h18M3 12h12M3 18h9"/>
-                        <path d="M17 10l3-3m0 0l3 3m-3-3v14"/>
-                    </svg>
-                    <span>Sort A-Z</span>
-                </button>
-                
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light theme">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M12 3v1M12 20v1M4 4l.7.7M20 20l-.7-.7M4 20l.7-.7M20 4l-.7.7M1 12h1M22 12h1M12 17a5 5 0 100-10 5 5 0 000 10z"/>
-                    </svg>
+            <!-- 12th Chemistry Chapters -->
+            
+            <!-- Chapter 15 -->
+            <div class="chapter-card" data-questions-pdf="solid_state_questions.pdf" data-solutions-pdf="solid_state_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                            <line x1="15" y1="3" x2="15" y2="21"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">The Solid State</h3>
+                </div>
+                <p class="card-description">Crystal lattices, unit cells, packing efficiency, and defects in solids.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 16 -->
+            <div class="chapter-card" data-questions-pdf="solutions_questions.pdf" data-solutions-pdf="solutions_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Solutions</h3>
+                </div>
+                <p class="card-description">Types of solutions, concentration units, colligative properties, and abnormal molar masses.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 17 -->
+            <div class="chapter-card" data-questions-pdf="electrochemistry_questions.pdf" data-solutions-pdf="electrochemistry_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Electrochemistry</h3>
+                </div>
+                <p class="card-description">Electrochemical cells, Nernst equation, conductance, and batteries.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 18 -->
+            <div class="chapter-card" data-questions-pdf="chemical_kinetics_questions.pdf" data-solutions-pdf="chemical_kinetics_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Chemical Kinetics</h3>
+                </div>
+                <p class="card-description">Rate of reaction, order of reaction, and theories of reaction rates.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 19 -->
+            <div class="chapter-card" data-questions-pdf="surface_chemistry_questions.pdf" data-solutions-pdf="surface_chemistry_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Surface Chemistry</h3>
+                </div>
+                <p class="card-description">Adsorption, catalysis, colloids, and emulsions in surface chemistry.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 20 -->
+            <div class="chapter-card" data-questions-pdf="isolation_elements_questions.pdf" data-solutions-pdf="isolation_elements_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Isolation of Elements</h3>
+                </div>
+                <p class="card-description">Principles and methods of extraction of metals from their ores.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 21 -->
+            <div class="chapter-card" data-questions-pdf="p_block_12_questions.pdf" data-solutions-pdf="p_block_12_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">p-Block Elements (Group 15-18)</h3>
+                </div>
+                <p class="card-description">Nitrogen, oxygen, halogen family elements and noble gases with their compounds.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 22 -->
+            <div class="chapter-card" data-questions-pdf="d_f_block_questions.pdf" data-solutions-pdf="d_f_block_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">d and f Block Elements</h3>
+                </div>
+                <p class="card-description">Transition elements, lanthanoids, actinoids, and their important properties.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 23 -->
+            <div class="chapter-card" data-questions-pdf="coordination_compounds_questions.pdf" data-solutions-pdf="coordination_compounds_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Coordination Compounds</h3>
+                </div>
+                <p class="card-description">Werner's theory, bonding, isomerism, and importance of coordination compounds.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 24 -->
+            <div class="chapter-card" data-questions-pdf="haloalkanes_haloarenes_questions.pdf" data-solutions-pdf="haloalkanes_haloarenes_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Haloalkanes and Haloarenes</h3>
+                </div>
+                <p class="card-description">Nomenclature, nature of C-X bond, methods of preparation, and reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 25 -->
+            <div class="chapter-card" data-questions-pdf="alcohols_phenols_ethers_questions.pdf" data-solutions-pdf="alcohols_phenols_ethers_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Alcohols, Phenols and Ethers</h3>
+                </div>
+                <p class="card-description">Classification, nomenclature, methods of preparation, and chemical reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 26 -->
+            <div class="chapter-card" data-questions-pdf="aldehydes_ketones_questions.pdf" data-solutions-pdf="aldehydes_ketones_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Aldehydes, Ketones and Carboxylic Acids</h3>
+                </div>
+                <p class="card-description">Nomenclature, nature of carbonyl group, methods of preparation, and reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 27 -->
+            <div class="chapter-card" data-questions-pdf="organic_nitrogen_questions.pdf" data-solutions-pdf="organic_nitrogen_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Organic Compounds Containing Nitrogen</h3>
+                </div>
+                <p class="card-description">Amines, cyanides, isocyanides, and diazonium salts with their reactions.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 28 -->
+            <div class="chapter-card" data-questions-pdf="biomolecules_questions.pdf" data-solutions-pdf="biomolecules_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Biomolecules</h3>
+                </div>
+                <p class="card-description">Carbohydrates, proteins, enzymes, vitamins, nucleic acids, and hormones.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 29 -->
+            <div class="chapter-card" data-questions-pdf="polymers_questions.pdf" data-solutions-pdf="polymers_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Polymers</h3>
+                </div>
+                <p class="card-description">Classification of polymers, types of polymerization, and important polymers.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+            <!-- Chapter 30 -->
+            <div class="chapter-card" data-questions-pdf="chemistry_everyday_questions.pdf" data-solutions-pdf="chemistry_everyday_solutions.pdf">
+                <div class="card-header">
+                    <i class="card-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </i>
+                    <h3 class="card-title">Chemistry in Everyday Life</h3>
+                </div>
+                <p class="card-description">Drugs, medicines, chemicals in food, cleansing agents, and their applications.</p>
+                <div class="card-actions">
+                    <button class="view-btn">View</button>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- Modal Structure -->
+    <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-title" class="modal-title">Chapter Title</h3>
+                    <p id="modal-description" class="modal-description">Chapter description will appear here.</p>
+                </div>
+                <button class="modal-close" id="modal-close" aria-label="Close modal">
+                    <i aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </i>
                 </button>
             </div>
             
-            <div class="filter-group" role="group" aria-label="Chapter Class Filter">
-                <button class="filter-btn active" data-filter="all">Saare Chapters</button>
-                <button class="filter-btn" data-filter="11">Class 11</button>
-                <button class="filter-btn" data-filter="12">Class 12</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tab-questions" aria-controls="questions-panel" aria-selected="true">
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </i>
+                    Questions
+                </button>
+                <button class="tab-btn" id="tab-solutions" aria-controls="solutions-panel" aria-selected="false">
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </i>
+                    Solutions
+                </button>
+            </div>
+            
+            <div class="modal-content">
+                <div id="questions-panel" class="tab-panel active" role="tabpanel" aria-labelledby="tab-questions">
+                    <h3>Practice Questions</h3>
+                    <p>Click the "Questions" tab to open the Questions PDF, or use the download button below to download it directly.</p>
+                </div>
+                
+                <div id="solutions-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab-solutions">
+                    <h3>Solutions</h3>
+                    <p>Click the "Solutions" tab to open the Solutions PDF, or use the download button below to download it directly.</p>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <a class="download-btn" id="questions-download" download>
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </i>
+                    Download Questions PDF
+                </a>
+                <a class="download-btn" id="solutions-download" download>
+                    <i aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </i>
+                    Download Solutions PDF
+                </a>
             </div>
         </div>
-
-        <div id="chapters">
-            <!-- Chapter Cards will be injected here -->
-        </div>
-        
-        <p id="no-results" class="no-results hidden">Koi result nahi mila. Kripya apna search term badlein.</p>
     </div>
-
+    
     <script>
-        // 11th aur 12th ke JEE Mains Chemistry Chapters
-        const chemistryChapters = [
-            // Class 11 Chemistry (Physical, Inorganic, Organic)
-            { title: "Mole Concept & Stoichiometry", class: 11, description: "Chemical calculations, concentration terms, limiting reagent.", link: "#" },
-            { title: "Atomic Structure", class: 11, description: "Bohr's model, quantum numbers, electronic configuration.", link: "#" },
-            { title: "Classification of Elements & Periodicity", class: 11, description: "Modern Periodic Table, atomic properties trends.", link: "#" },
-            { title: "Chemical Bonding & Molecular Structure", class: 11, description: "Ionic, Covalent bond, VSEPR, Hybridization, MOT.", link: "#" },
-            { title: "States of Matter (Gases & Liquids)", class: 11, description: "Gas laws, Kinetic Theory, Van der Waals Equation.", link: "#" },
-            { title: "Chemical Thermodynamics", class: 11, description: "First Law, Enthalpy, Entropy, Gibb's Free Energy.", link: "#" },
-            { title: "Equilibrium (Chemical & Ionic)", class: 11, description: "Law of Mass Action, Le Chatelier's Principle, pH, Solubility.", link: "#" },
-            { title: "Redox Reactions", class: 11, description: "Oxidation number, balancing redox reactions.", link: "#" },
-            { title: "Hydrogen", class: 11, description: "Position, preparation, properties and uses of Hydrogen.", link: "#" },
-            { title: "s-Block Elements (Alkali & Alkaline Earth)", class: 11, description: "Group 1 and 2 elements, compounds.", link: "#" },
-            { title: "p-Block Elements (Group 13 & 14)", class: 11, description: "Boron and Carbon families, important compounds.", link: "#" },
-            { title: "Organic Chemistry: Some Basic Principles and Techniques (GOC)", class: 11, description: "Nomenclature, Isomerism, Electronic effects, Reaction intermediates.", link: "#" },
-            { title: "Hydrocarbons", class: 11, description: "Alkanes, Alkenes, Alkynes, Aromatic Hydrocarbons.", link: "#" },
-            { title: "Environmental Chemistry", class: 11, description: "Pollution, Green Chemistry principles.", link: "#" },
-
-            // Class 12 Chemistry (Physical, Inorganic, Organic)
-            { title: "Solid State", class: 12, description: "Classification of solids, unit cell, crystal defects.", link: "#" },
-            { title: "Solutions", class: 12, description: "Concentration, Colligative Properties, Osmosis.", link: "jee_mains_Solution.pdf" },
-            { title: "Electrochemistry", class: 12, description: "Electrochemical cells, Nernst equation, Conductance.", link: "#" },
-            { title: "Chemical Kinetics", class: 12, description: "Rate of reaction, Order, Molecularity, Arrhenius equation.", link: "#" },
-            { title: "Surface Chemistry", class: 12, description: "Adsorption, Catalysis, Colloids.", link: "#" },
-            { title: "General Principles and Processes of Isolation of Elements (Metallurgy)", class: 12, description: "Concentration, Extraction, Refining of metals.", link: "#" },
-            { title: "p-Block Elements (Group 15 to 18)", class: 12, description: "Group 15, 16, 17, 18 elements and their compounds (e.g., Nitrogen, Sulphur, Halogens).", link: "#" },
-            { title: "d- and f-Block Elements", class: 12, description: "Transition and Inner Transition elements, properties.", link: "#" },
-            { title: "Coordination Compounds", class: 12, description: "Nomenclature, Isomerism, VBT, CFT.", link: "#" },
-            { title: "Haloalkanes and Haloarenes", class: 12, description: "Preparation, properties and reactions (SN1, SN2).", link: "#" },
-            { title: "Alcohols, Phenols and Ethers", class: 12, description: "Preparation, reactions and acidic strength.", link: "#" },
-            { title: "Aldehydes, Ketones and Carboxylic Acids", class: 12, description: "Nomenclature, Preparation, Nucleophilic Addition reactions.", link: "#" },
-            { title: "Organic Compounds containing Nitrogen (Amines)", class: 12, description: "Nomenclature, Basicity, Diazotisation.", link: "#" },
-            { title: "Biomolecules", class: 12, description: "Carbohydrates, Proteins, Nucleic Acids, Vitamins.", link: "#" },
-            { title: "Polymers", class: 12, description: "Classification, Polymerization types, important Polymers.", link: "#" },
-            { title: "Chemistry in Everyday Life", class: 12, description: "Drugs, Food preservatives, Soaps and Detergents.", link: "#" }
-        ];
-
-        const chaptersContainer = document.getElementById('chapters');
-        const searchInput = document.getElementById('search-input');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const sortToggleBtn = document.getElementById('sort-toggle');
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const noResultsMessage = document.getElementById('no-results');
-
-        let isSorted = false; // Tracks if the list is currently sorted alphabetically
-
-        // Function to render all chapter cards
-        function renderChapters(chapters) {
-            chaptersContainer.innerHTML = ''; // Clear previous content
-            noResultsMessage.classList.add('hidden');
-            
-            if (chapters.length === 0) {
-                noResultsMessage.classList.remove('hidden');
-                return;
-            }
-
-            chapters.forEach(chapter => {
-                const card = document.createElement('div');
-                card.className = `chapter-card ${chapter.class === 11 ? 'class-11-chapter' : 'class-12-chapter'}`;
-                card.setAttribute('data-class', chapter.class);
-                card.setAttribute('data-title', chapter.title.toLowerCase());
-                
-                // Card HTML content (using simplified structure)
-                card.innerHTML = `
-                    <span class="card-class class-${chapter.class}">Class ${chapter.class}</span>
-                    <h2 class="card-title">${chapter.title}</h2>
-                    <p class="card-description">${chapter.description}</p>
-                    <a href="${chapter.link}" target="_blank" class="card-link">Notes/PDF Download karein</a>
-                `;
-                chaptersContainer.appendChild(card);
-            });
-            
-            // Re-apply sorting after rendering, if active
-            if (isSorted) {
-                sortChapters(true);
-            }
-        }
-
-        // Filter and Search logic
-        function filterAndSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-
-            // Start with the original list of chapters
-            let listToSort = [...chemistryChapters]; 
-
-            // Apply filtering
-            const filteredChapters = listToSort.filter(chapter => {
-                const matchesSearch = chapter.title.toLowerCase().includes(query);
-                const matchesFilter = activeFilter === 'all' || chapter.class.toString() === activeFilter;
-                
-                return matchesSearch && matchesFilter;
-            });
-            
-            renderChapters(filteredChapters); // Render the filtered list
-        }
-
-        // Event listener for search input (debounced for performance)
-        const debouncedSearch = debounce(filterAndSearch, 300);
-        searchInput.addEventListener('input', debouncedSearch);
-
-        // Event listener for filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterAndSearch();
-            });
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initUI();
         });
-        
-        // Sorting function
-        function sortChapters(shouldSort) {
+
+        function initUI() {
+            // Set up theme
+            applyTheme();
+            
+            // Attach event listeners
+            attachCardListeners();
+            attachSearchListener();
+            attachSortListener();
+            attachThemeToggle();
+        }
+
+        // Theme functionality
+        function applyTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        function attachThemeToggle() {
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
+        // Card and modal functionality
+        function attachCardListeners() {
+            const chaptersContainer = document.getElementById('chapters');
+            
+            // Event delegation for view buttons
+            chaptersContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-btn')) {
+                    const card = e.target.closest('.chapter-card');
+                    openModal(card);
+                }
+            });
+        }
+
+        function openModal(cardElement) {
+            const overlay = document.getElementById('modal-overlay');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const questionsDownloadBtn = document.getElementById('questions-download');
+            const solutionsDownloadBtn = document.getElementById('solutions-download');
+            
+            // Get data from the clicked card
+            const title = cardElement.querySelector('.card-title').textContent;
+            const description = cardElement.querySelector('.card-description').textContent;
+            
+            // Get PDF URLs
+            const questionsPdfUrl = cardElement.getAttribute('data-questions-pdf');
+            const solutionsPdfUrl = cardElement.getAttribute('data-solutions-pdf');
+            
+            // Update modal content
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            
+            // Set up download buttons
+            if (questionsPdfUrl) {
+                questionsDownloadBtn.href = questionsPdfUrl;
+                questionsDownloadBtn.removeAttribute('disabled');
+                questionsDownloadBtn.setAttribute('aria-label', `Download Questions PDF for ${title}`);
+            } else {
+                questionsDownloadBtn.removeAttribute('href');
+                questionsDownloadBtn.setAttribute('disabled', 'true');
+                questionsDownloadBtn.setAttribute('aria-label', 'Questions PDF not available for this chapter');
+            }
+            
+            if (solutionsPdfUrl) {
+                solutionsDownloadBtn.href = solutionsPdfUrl;
+                solutionsDownloadBtn.removeAttribute('disabled');
+                solutionsDownloadBtn.setAttribute('aria-label', `Download Solutions PDF for ${title}`);
+            } else {
+                solutionsDownloadBtn.removeAttribute('href');
+                solutionsDownloadBtn.setAttribute('disabled', 'true');
+                solutionsDownloadBtn.setAttribute('aria-label', 'Solutions PDF not available for this chapter');
+            }
+            
+            // Show modal
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+            
+            // Set up modal events
+            setupModalEvents(cardElement, questionsPdfUrl, solutionsPdfUrl);
+            
+            // Trap focus inside modal
+            trapFocus(overlay);
+        }
+
+        function setupModalEvents(originalCard, questionsUrl, solutionsUrl) {
+            const overlay = document.getElementById('modal-overlay');
+            const closeBtn = document.getElementById('modal-close');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+            
+            // Close modal events
+            function closeModal() {
+                overlay.classList.remove('active');
+                overlay.setAttribute('aria-hidden', 'true');
+                
+                // Remove event listeners to prevent memory leaks
+                document.removeEventListener('keydown', handleEsc);
+                overlay.removeEventListener('click', handleOverlayClick);
+                closeBtn.removeEventListener('click', closeModal);
+                tabButtons.forEach(btn => btn.removeEventListener('click', handleTabClick));
+                
+                // Return focus to the original card's view button
+                if (originalCard) {
+                    const viewBtn = originalCard.querySelector('.view-btn');
+                    if (viewBtn) viewBtn.focus();
+                }
+            }
+            
+            // Handle ESC key
+            function handleEsc(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            }
+            
+            // Handle overlay click
+            function handleOverlayClick(e) {
+                if (e.target === overlay) {
+                    closeModal();
+                }
+            }
+            
+            // Handle tab clicks - Open PDF when tab is clicked
+            function handleTabClick(e) {
+                const tabId = e.currentTarget.id;
+                
+                // Update active tab
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                e.currentTarget.classList.add('active');
+                e.currentTarget.setAttribute('aria-selected', 'true');
+                
+                // Show corresponding panel
+                tabPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                
+                if (tabId === 'tab-questions') {
+                    document.getElementById('questions-panel').classList.add('active');
+                    // Open Questions PDF in new tab
+                    if (questionsUrl) {
+                        window.open(questionsUrl, '_blank');
+                    }
+                } else if (tabId === 'tab-solutions') {
+                    document.getElementById('solutions-panel').classList.add('active');
+                    // Open Solutions PDF in new tab
+                    if (solutionsUrl) {
+                        window.open(solutionsUrl, '_blank');
+                    }
+                }
+            }
+            
+            // Attach event listeners
+            document.addEventListener('keydown', handleEsc);
+            overlay.addEventListener('click', handleOverlayClick);
+            closeBtn.addEventListener('click', closeModal);
+            tabButtons.forEach(btn => btn.addEventListener('click', handleTabClick));
+        }
+
+        // Focus trap for modal
+        function trapFocus(modalElement) {
+            const focusableElements = modalElement.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            modalElement.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        lastElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Focus first element
+            if (firstElement) firstElement.focus();
+        }
+
+        // Search functionality
+        function attachSearchListener() {
+            const searchInput = document.getElementById('search');
+            const debouncedFilter = debounce(filterCards, 150);
+            
+            searchInput.addEventListener('input', function(e) {
+                debouncedFilter(e.target.value);
+            });
+        }
+
+        function filterCards(query) {
+            const cards = document.querySelectorAll('.chapter-card');
+            const normalizedQuery = query.toLowerCase().trim();
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                
+                if (title.includes(normalizedQuery) || description.includes(normalizedQuery)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Sort functionality
+        function attachSortListener() {
+            const sortToggle = document.getElementById('sort-toggle');
+            let isSorted = false;
+            
+            sortToggle.addEventListener('click', function() {
+                isSorted = !isSorted;
+                sortCards(isSorted);
+                
+                // Update button text
+                sortToggle.innerHTML = isSorted ? 
+                    '<i aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h6"></path></svg></i> Sort by default' : 
+                    '<i aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h6"></path></svg></i> Sort by name';
+            });
+        }
+
+        function sortCards(shouldSort) {
             const container = document.getElementById('chapters');
-            const cards = Array.from(container.querySelectorAll('.chapter-card'));
+            const cards = Array.from(container.querySelectorAll('.chapter-card:not(.hidden)'));
             
             if (shouldSort) {
-                // Alphabetical Sort (A-Z)
                 cards.sort((a, b) => {
                     const titleA = a.querySelector('.card-title').textContent.toLowerCase();
                     const titleB = b.querySelector('.card-title').textContent.toLowerCase();
                     return titleA.localeCompare(titleB);
                 });
             } else {
-                // Restore Original Order (Class 11 then Class 12)
+                // Restore original order based on data attributes or position
+                // Since we don't have explicit order data, we'll rely on DOM order
+                // which should be the original order if we haven't modified it
                 cards.sort((a, b) => {
-                    const classA = parseInt(a.getAttribute('data-class'));
-                    const classB = parseInt(b.getAttribute('data-class'));
-                    
-                    if (classA !== classB) {
-                        return classA - classB; // Sort by class (11 before 12)
-                    }
-                    // For chapters in the same class, maintain their relative order (as in the array)
-                    return 0; 
+                    return Array.from(container.children).indexOf(a) - Array.from(container.children).indexOf(b);
                 });
             }
             
@@ -478,31 +1392,6 @@
                 container.appendChild(card);
             });
         }
-
-        // Event listener for sort toggle button
-        sortToggleBtn.addEventListener('click', () => {
-            isSorted = !isSorted;
-            sortToggleBtn.classList.toggle('active', isSorted);
-            
-            if (isSorted) {
-                // If now sorted alphabetically (A-Z), the button should show the reverse action.
-                sortToggleBtn.querySelector('span').textContent = 'Original Order'; 
-            } else {
-                // If now back to original (Class Wise), the button should show the A-Z action.
-                sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-            }
-            
-            sortChapters(isSorted);
-        });
-
-        // Theme toggle logic
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-
 
         // Utility function for debouncing
         function debounce(func, wait) {
@@ -516,14 +1405,6 @@
                 timeout = setTimeout(later, wait);
             };
         }
-        
-        // Initial render on page load
-        window.onload = () => {
-             renderChapters(chemistryChapters);
-             // Set initial button text to show the action (Sort A-Z)
-             sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
-        };
     </script>
 </body>
 </html>
-
