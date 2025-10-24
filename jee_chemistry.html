@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Chapters Hub - Class 11 & 12 / JEE Prep</title>
+    <style>
+        /* Chemistry Theme Colors (Teal/Cyan Vibe) */
+        :root {
+            --primary: #06b6d4; /* Cyan 600 - Chemistry Vibe */
+            --primary-light: #22d3ee; /* Cyan 400 */
+            --primary-dark: #0e7490; /* Cyan 700 */
+            --bg: #f0fdfa; /* Light Teal Background */
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #ccfbf1; /* Light Cyan Border */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #042f2e; /* Darker Teal Background */
+            --card-bg: #0e7490; /* Dark Cyan Card */
+            --text: #f0fdfa;
+            --text-light: #a7f3d0; /* Lighter Cyan Text */
+            --border: #0e7490;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Search & Controls */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .search-sort-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        #search-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        #search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); /* Cyan Shadow */
+            outline: none;
+        }
+
+        .sort-btn, .theme-toggle {
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color var(--transition), transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-btn:hover, .theme-toggle:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .sort-btn:active, .theme-toggle:active {
+            transform: translateY(1px);
+        }
+
+        .sort-btn.active {
+            background-color: var(--primary-dark);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: var(--bg);
+            color: var(--primary-dark);
+            border: 2px solid var(--primary-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 4px rgba(6, 182, 212, 0.3); /* Cyan Shadow */
+        }
+
+        /* Chapter Grid */
+        #chapters {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border-left: 5px solid var(--primary-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .card-class {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .class-11 {
+            background-color: #ecfdf5; /* Light Green */
+            color: #047857; /* Dark Green */
+            border: 1px solid #a7f3d0;
+        }
+
+        .class-12 {
+            background-color: #f0f9ff; /* Light Blue */
+            color: #065f46; /* Dark Blue */
+            border: 1px solid #bae6fd;
+        }
+        
+        [data-theme="dark"] .class-11 {
+            background-color: #047857;
+            color: #d1fae5;
+        }
+
+        [data-theme="dark"] .class-12 {
+            background-color: #0e7490;
+            color: #e0f2f1;
+        }
+
+
+        .card-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color var(--transition);
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .card-link:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Utility */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        
+        /* Icons (Simplified SVG for better integration) */
+        .icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .search-sort-group {
+                flex-direction: column;
+            }
+            .sort-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Check for theme preference on load
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+    
+    <header>
+        <h1>JEE Mains Chemistry: Chapter Hub</h1>
+        <p>11th aur 12th Class ke zaroori Chemistry chapters ke PDF/Notes download karein. JEE Mains ki taiyaari ke liye!</p>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="search-sort-group">
+                <input type="text" id="search-input" placeholder="Chapter ka naam dhoondein (e.g., Mole Concept, Electrochemistry)..." aria-label="Search Chapters">
+                
+                <button id="sort-toggle" class="sort-btn" aria-label="Sort chapters alphabetically">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M3 6h18M3 12h12M3 18h9"/>
+                        <path d="M17 10l3-3m0 0l3 3m-3-3v14"/>
+                    </svg>
+                    <span>Sort A-Z</span>
+                </button>
+                
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light theme">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 3v1M12 20v1M4 4l.7.7M20 20l-.7-.7M4 20l.7-.7M20 4l-.7.7M1 12h1M22 12h1M12 17a5 5 0 100-10 5 5 0 000 10z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="filter-group" role="group" aria-label="Chapter Class Filter">
+                <button class="filter-btn active" data-filter="all">Saare Chapters</button>
+                <button class="filter-btn" data-filter="11">Class 11</button>
+                <button class="filter-btn" data-filter="12">Class 12</button>
+            </div>
+        </div>
+
+        <div id="chapters">
+            <!-- Chapter Cards will be injected here -->
+        </div>
+        
+        <p id="no-results" class="no-results hidden">Koi result nahi mila. Kripya apna search term badlein.</p>
+    </div>
+
+    <script>
+        // 11th aur 12th ke JEE Mains Chemistry Chapters
+        const chemistryChapters = [
+            // Class 11 Chemistry (Physical, Inorganic, Organic)
+            { title: "Mole Concept & Stoichiometry", class: 11, description: "Chemical calculations, concentration terms, limiting reagent.", link: "#" },
+            { title: "Atomic Structure", class: 11, description: "Bohr's model, quantum numbers, electronic configuration.", link: "#" },
+            { title: "Classification of Elements & Periodicity", class: 11, description: "Modern Periodic Table, atomic properties trends.", link: "#" },
+            { title: "Chemical Bonding & Molecular Structure", class: 11, description: "Ionic, Covalent bond, VSEPR, Hybridization, MOT.", link: "#" },
+            { title: "States of Matter (Gases & Liquids)", class: 11, description: "Gas laws, Kinetic Theory, Van der Waals Equation.", link: "#" },
+            { title: "Chemical Thermodynamics", class: 11, description: "First Law, Enthalpy, Entropy, Gibb's Free Energy.", link: "#" },
+            { title: "Equilibrium (Chemical & Ionic)", class: 11, description: "Law of Mass Action, Le Chatelier's Principle, pH, Solubility.", link: "#" },
+            { title: "Redox Reactions", class: 11, description: "Oxidation number, balancing redox reactions.", link: "#" },
+            { title: "Hydrogen", class: 11, description: "Position, preparation, properties and uses of Hydrogen.", link: "#" },
+            { title: "s-Block Elements (Alkali & Alkaline Earth)", class: 11, description: "Group 1 and 2 elements, compounds.", link: "#" },
+            { title: "p-Block Elements (Group 13 & 14)", class: 11, description: "Boron and Carbon families, important compounds.", link: "#" },
+            { title: "Organic Chemistry: Some Basic Principles and Techniques (GOC)", class: 11, description: "Nomenclature, Isomerism, Electronic effects, Reaction intermediates.", link: "#" },
+            { title: "Hydrocarbons", class: 11, description: "Alkanes, Alkenes, Alkynes, Aromatic Hydrocarbons.", link: "#" },
+            { title: "Environmental Chemistry", class: 11, description: "Pollution, Green Chemistry principles.", link: "#" },
+
+            // Class 12 Chemistry (Physical, Inorganic, Organic)
+            { title: "Solid State", class: 12, description: "Classification of solids, unit cell, crystal defects.", link: "#" },
+            { title: "Solutions", class: 12, description: "Concentration, Colligative Properties, Osmosis.", link: "#" },
+            { title: "Electrochemistry", class: 12, description: "Electrochemical cells, Nernst equation, Conductance.", link: "#" },
+            { title: "Chemical Kinetics", class: 12, description: "Rate of reaction, Order, Molecularity, Arrhenius equation.", link: "#" },
+            { title: "Surface Chemistry", class: 12, description: "Adsorption, Catalysis, Colloids.", link: "#" },
+            { title: "General Principles and Processes of Isolation of Elements (Metallurgy)", class: 12, description: "Concentration, Extraction, Refining of metals.", link: "#" },
+            { title: "p-Block Elements (Group 15 to 18)", class: 12, description: "Group 15, 16, 17, 18 elements and their compounds (e.g., Nitrogen, Sulphur, Halogens).", link: "#" },
+            { title: "d- and f-Block Elements", class: 12, description: "Transition and Inner Transition elements, properties.", link: "#" },
+            { title: "Coordination Compounds", class: 12, description: "Nomenclature, Isomerism, VBT, CFT.", link: "#" },
+            { title: "Haloalkanes and Haloarenes", class: 12, description: "Preparation, properties and reactions (SN1, SN2).", link: "#" },
+            { title: "Alcohols, Phenols and Ethers", class: 12, description: "Preparation, reactions and acidic strength.", link: "#" },
+            { title: "Aldehydes, Ketones and Carboxylic Acids", class: 12, description: "Nomenclature, Preparation, Nucleophilic Addition reactions.", link: "#" },
+            { title: "Organic Compounds containing Nitrogen (Amines)", class: 12, description: "Nomenclature, Basicity, Diazotisation.", link: "#" },
+            { title: "Biomolecules", class: 12, description: "Carbohydrates, Proteins, Nucleic Acids, Vitamins.", link: "#" },
+            { title: "Polymers", class: 12, description: "Classification, Polymerization types, important Polymers.", link: "#" },
+            { title: "Chemistry in Everyday Life", class: 12, description: "Drugs, Food preservatives, Soaps and Detergents.", link: "#" }
+        ];
+
+        const chaptersContainer = document.getElementById('chapters');
+        const searchInput = document.getElementById('search-input');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const sortToggleBtn = document.getElementById('sort-toggle');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const noResultsMessage = document.getElementById('no-results');
+
+        let isSorted = false; // Tracks if the list is currently sorted alphabetically
+
+        // Function to render all chapter cards
+        function renderChapters(chapters) {
+            chaptersContainer.innerHTML = ''; // Clear previous content
+            noResultsMessage.classList.add('hidden');
+            
+            if (chapters.length === 0) {
+                noResultsMessage.classList.remove('hidden');
+                return;
+            }
+
+            chapters.forEach(chapter => {
+                const card = document.createElement('div');
+                card.className = `chapter-card ${chapter.class === 11 ? 'class-11-chapter' : 'class-12-chapter'}`;
+                card.setAttribute('data-class', chapter.class);
+                card.setAttribute('data-title', chapter.title.toLowerCase());
+                
+                // Card HTML content (using simplified structure)
+                card.innerHTML = `
+                    <span class="card-class class-${chapter.class}">Class ${chapter.class}</span>
+                    <h2 class="card-title">${chapter.title}</h2>
+                    <p class="card-description">${chapter.description}</p>
+                    <a href="${chapter.link}" target="_blank" class="card-link">Notes/PDF Download karein</a>
+                `;
+                chaptersContainer.appendChild(card);
+            });
+            
+            // Re-apply sorting after rendering, if active
+            if (isSorted) {
+                sortChapters(true);
+            }
+        }
+
+        // Filter and Search logic
+        function filterAndSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+
+            // Start with the original list of chapters
+            let listToSort = [...chemistryChapters]; 
+
+            // Apply filtering
+            const filteredChapters = listToSort.filter(chapter => {
+                const matchesSearch = chapter.title.toLowerCase().includes(query);
+                const matchesFilter = activeFilter === 'all' || chapter.class.toString() === activeFilter;
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            renderChapters(filteredChapters); // Render the filtered list
+        }
+
+        // Event listener for search input (debounced for performance)
+        const debouncedSearch = debounce(filterAndSearch, 300);
+        searchInput.addEventListener('input', debouncedSearch);
+
+        // Event listener for filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterAndSearch();
+            });
+        });
+        
+        // Sorting function
+        function sortChapters(shouldSort) {
+            const container = document.getElementById('chapters');
+            const cards = Array.from(container.querySelectorAll('.chapter-card'));
+            
+            if (shouldSort) {
+                // Alphabetical Sort (A-Z)
+                cards.sort((a, b) => {
+                    const titleA = a.querySelector('.card-title').textContent.toLowerCase();
+                    const titleB = b.querySelector('.card-title').textContent.toLowerCase();
+                    return titleA.localeCompare(titleB);
+                });
+            } else {
+                // Restore Original Order (Class 11 then Class 12)
+                cards.sort((a, b) => {
+                    const classA = parseInt(a.getAttribute('data-class'));
+                    const classB = parseInt(b.getAttribute('data-class'));
+                    
+                    if (classA !== classB) {
+                        return classA - classB; // Sort by class (11 before 12)
+                    }
+                    // For chapters in the same class, maintain their relative order (as in the array)
+                    return 0; 
+                });
+            }
+            
+            // Reorder DOM
+            cards.forEach(card => {
+                container.appendChild(card);
+            });
+        }
+
+        // Event listener for sort toggle button
+        sortToggleBtn.addEventListener('click', () => {
+            isSorted = !isSorted;
+            sortToggleBtn.classList.toggle('active', isSorted);
+            
+            if (isSorted) {
+                // If now sorted alphabetically (A-Z), the button should show the reverse action.
+                sortToggleBtn.querySelector('span').textContent = 'Original Order'; 
+            } else {
+                // If now back to original (Class Wise), the button should show the A-Z action.
+                sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
+            }
+            
+            sortChapters(isSorted);
+        });
+
+        // Theme toggle logic
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+
+        // Utility function for debouncing
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Initial render on page load
+        window.onload = () => {
+             renderChapters(chemistryChapters);
+             // Set initial button text to show the action (Sort A-Z)
+             sortToggleBtn.querySelector('span').textContent = 'Sort A-Z'; 
+        };
+    </script>
+</body>
+</html>
