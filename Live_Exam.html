@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Exam PYQ Selector</title>
+    <!-- Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Poppins Font for professional look (using multiple weights) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. Custom CSS Variables and Base Styles (Neumorphism Feel) --- */
+        :root {
+            /* Neumorphic Colors - Brighter for more contrast */
+            --bg-light: #eff1f5;
+            --shadow-dark: rgba(160, 165, 175, 0.9);
+            --shadow-light: #ffffff;
+            
+            /* Subject Colors - More vibrant */
+            --phys-grad-start: #06b6d4; /* Cyan */
+            --phys-grad-end: #0891b2;
+            
+            --chem-grad-start: #f43f5e; /* Rose */
+            --chem-grad-end: #e11d48;
+            
+            --math-grad-start: #8b5cf6; /* Violet */
+            --math-grad-end: #7c3aed;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: #374151; 
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* --- 2. Header Style --- */
+        header {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            padding: 2.5rem;
+            border-radius: 2rem;
+            /* Header Neumorphic Lift (Deeper Shadow) */
+            box-shadow: 12px 12px 30px var(--shadow-dark), -12px -12px 30px var(--shadow-light);
+            background: #e9ecf2;
+        }
+
+        h1 {
+            color: #1f2937;
+            font-weight: 900; /* Extra bold font style */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* --- 3. Grid Layout (Main Content) --- */
+        .exam-grid-container {
+            /* 4 Columns: Year | Physics | Chemistry | Maths */
+            grid-template-columns: 100px repeat(3, 1fr); 
+            gap: 1.25rem; /* Increased gap */
+            max-width: 1300px; /* Increased max width */
+            width: 100%;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: inset 8px 8px 15px var(--shadow-dark), inset -8px -8px 15px var(--shadow-light);
+        }
+
+        /* Grid Headers */
+        .grid-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 0.5rem;
+            font-weight: 800;
+            font-size: 1.125rem;
+            color: var(--bg-light);
+            border-radius: 0.75rem;
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            background: linear-gradient(135deg, #374151, #111827); /* Very Dark Gradient */
+        }
+        
+        /* Subject Icon Styling within Headers */
+        .grid-header svg {
+            stroke: var(--bg-light);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-header:hover svg {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        /* Year Label Style (Left Column) */
+        .year-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            color: #4b5563;
+            background-color: #e0e2e6;
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+        }
+
+        /* --- 4. Exam Button Styling and Animations --- */
+        .exam-button {
+            position: relative;
+            overflow: hidden; 
+            text-decoration: none;
+            padding: 1.1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Slower, smoother transition */
+            border: none;
+            cursor: pointer;
+            outline: none;
+            display: block;
+            box-shadow: 8px 8px 15px var(--shadow-dark), -8px -8px 15px var(--shadow-light);
+            animation: fadeInSlideUp 0.6s ease-out forwards; /* Updated initial animation */
+        }
+
+        /* Subject Specific Gradients */
+        .physics {
+            background: linear-gradient(145deg, var(--phys-grad-start), var(--phys-grad-end));
+        }
+
+        .chemistry {
+            background: linear-gradient(145deg, var(--chem-grad-start), var(--chem-grad-end));
+        }
+
+        .maths {
+            background: linear-gradient(145deg, var(--math-grad-start), var(--math-grad-end));
+        }
+
+        /* HOVER: Enhanced Lifted, Shadow, and Gradient Shift Effect */
+        .exam-button:hover {
+            transform: translateY(-5px) scale(1.03); /* More pronounced lift */
+            /* Intense shadow with a colored glow */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 
+                        -5px -5px 20px var(--shadow-light), 
+                        5px 5px 20px var(--shadow-dark); 
+            
+            /* Gradient shift for visual feedback */
+            filter: brightness(1.1);
+        }
+
+        /* ACTIVE: Pressed In Effect (Simulating click) */
+        .exam-button:active {
+            transform: translateY(0);
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2), inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+            filter: brightness(0.9);
+        }
+
+        /* --- 5. Ripple Effect CSS --- */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5); /* Whiter ripple */
+            transform: scale(0);
+            animation: ripple-animation 0.7s cubic-bezier(0.65, 0, 0.4, 1);
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4.5);
+                opacity: 0;
+            }
+        }
+        
+        /* --- 6. Initial Load Animation --- */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Apply a slight animation delay to buttons based on their position (for visual flow) */
+        .exam-grid-container > a {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+        .exam-grid-container > a:nth-child(4n) { animation-delay: 0.15s; }
+        .exam-grid-container > a:nth-child(4n + 1) { animation-delay: 0.25s; }
+        .exam-grid-container > a:nth-child(4n + 2) { animation-delay: 0.35s; }
+        .exam-grid-container > a:nth-child(4n + 3) { animation-delay: 0.45s; }
+
+
+        /* --- 7. Mobile Responsiveness --- */
+        @media (max-width: 640px) {
+            body { padding: 1rem; }
+            header { padding: 1rem; margin-bottom: 1.5rem; border-radius: 1rem; }
+            h1 { font-size: 1.8rem; }
+            
+            .exam-grid-container {
+                /* Switch to two columns: Year | Button */
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+            
+            /* Hide the subject headers on small screens and use a single combined header */
+            .grid-header {
+                display: none;
+            }
+            .grid-header:first-child {
+                display: flex;
+                grid-column: 1 / span 2;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+            }
+            
+            /* On small screen, make year label span 1 column, and button span 1 column */
+            .year-label {
+                 font-size: 0.9rem;
+                 padding: 0.6rem;
+                 grid-column: 1 / span 1;
+            }
+
+            .exam-button {
+                font-size: 0.8rem;
+                padding: 0.75rem;
+                grid-column: 2 / span 1; /* Button takes the second column */
+            }
+            
+            /* Since the new mobile grid is Year | Button, we need to manually adjust */
+            /* We will change the HTML structure slightly for mobile to stack P, C, M buttons 
+               with the year label on the left for clarity. But to maintain the 4-column structure 
+               for desktop, we stick to the 4-column HTML and adjust the CSS */
+            
+            /* This section ensures that year label appears 3 times (once for P, C, M) on mobile */
+            .exam-grid-container > div.year-label:nth-of-type(3n + 2) { 
+                display: none; /* Hide the 2nd and 3rd year label for each year */
+            }
+            
+            .exam-grid-container > div.year-label {
+                grid-row: span 3;
+            }
+            
+            /* Re-enabling the correct display for mobile where all 4 items appear */
+            /* Resetting the mobile grid to be more intuitive: Year | Physics | Chemistry | Maths */
+            /* We will revert to the 4-column structure but let the buttons shrink */
+            .exam-grid-container {
+                 grid-template-columns: 50px repeat(3, 1fr);
+            }
+            .grid-header { display: flex; font-size: 0.75rem; }
+            .grid-header:first-child { grid-column: auto; }
+            .year-label { font-size: 0.8rem; }
+            .exam-button { font-size: 0.7rem; padding: 0.6rem 0.3rem; }
+        }
+
+    </style>
+</head>
+<body class="p-8 min-h-screen">
+    <header>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-2">
+            <!-- Rocket Icon SVG Restored for professional look -->
+            <svg width="100" height="40" viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Red pulsing circle -->
+  <circle cx="15" cy="20" r="8" fill="red">
+    <animate 
+      attributeName="r" 
+      values="6;10;6" 
+      dur="1s" 
+      repeatCount="indefinite"/>
+    <animate 
+      attributeName="opacity" 
+      values="1;0.6;1" 
+      dur="1s" 
+      repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Text LIVE -->
+  <text x="30" y="25" font-family="Arial" font-size="18" font-weight="bold" fill="white">
+</svg>Live Exam PYQ Selector
+        </h1>
+        <p class="text-lg text-gray-600">
+            वर्ष और विषय चुनें और अपनी परीक्षा की तैयारी शुरू करें। 
+            <span class="font-semibold text-blue-500">2010 से 2025 तक के PYQ उपलब्ध हैं।</span>
+        </p>
+    </header>
+
+    <main class="exam-grid-container grid">
+        <!-- Grid Headers with Subject Icons -->
+        <div class="grid-header">वर्ष</div>
+        <div class="grid-header">
+            <!-- Physics Icon (Atom) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2 inline-block"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1.51-1V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Physics
+        </div>
+        <div class="grid-header">
+            <!-- Chemistry Icon (Flask) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2 inline-block"><path d="M14.5 2H9.5L8 14h8l-1.5-12z"/><path d="M3 3h20"/><path d="M12 14v8"/><path d="M8 22h8"/></svg>
+            Chemistry
+        </div>
+        <div class="grid-header">
+            <!-- Maths Icon (Sigma) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2 inline-block"><path d="M18 10h-6l5.5-10H18l-5.5 10H18v4h-6.5l-5.5 10H6l5.5-10H6V6h12z"/></svg>
+            Maths
+        </div>
+
+        <!-- Dynamic Content Rows (2025 to 2010) -->
+        
+        <!-- Year: 2025 -->
+        <div class="year-label">2025</div>
+        <a href="exam/2025_physics.html" class="exam-button physics" data-year="2025">Start Exam</a>
+        <a href="exam/2025_chemistry.html" class="exam-button chemistry" data-year="2025">Start Exam</a>
+        <a href="exam/2025_maths.html" class="exam-button maths" data-year="2025">Start Exam</a>
+        
+        <!-- Year: 2024 -->
+        <div class="year-label">2024</div>
+        <a href="exam/2024_physics.html" class="exam-button physics" data-year="2024">Start Exam</a>
+        <a href="exam/2024_chemistry.html" class="exam-button chemistry" data-year="2024">Start Exam</a>
+        <a href="exam/2024_maths.html" class="exam-button maths" data-year="2024">Start Exam</a>
+
+        <!-- Year: 2023 -->
+        <div class="year-label">2023</div>
+        <a href="exam/2023_physics.html" class="exam-button physics" data-year="2023">Start Exam</a>
+        <a href="exam/2023_chemistry.html" class="exam-button chemistry" data-year="2023">Start Exam</a>
+        <a href="exam/2023_maths.html" class="exam-button maths" data-year="2023">Start Exam</a>
+
+        <!-- Year: 2022 -->
+        <div class="year-label">2022</div>
+        <a href="exam/2022_physics.html" class="exam-button physics" data-year="2022">Start Exam</a>
+        <a href="exam/2022_chemistry.html" class="exam-button chemistry" data-year="2022">Start Exam</a>
+        <a href="exam/2022_maths.html" class="exam-button maths" data-year="2022">Start Exam</a>
+
+        <!-- Year: 2021 -->
+        <div class="year-label">2021</div>
+        <a href="exam/2021_physics.html" class="exam-button physics" data-year="2021">Start Exam</a>
+        <a href="exam/2021_chemistry.html" class="exam-button chemistry" data-year="2021">Start Exam</a>
+        <a href="exam/2021_maths.html" class="exam-button maths" data-year="2021">Start Exam</a>
+
+        <!-- Year: 2020 -->
+        <div class="year-label">2020</div>
+        <a href="exam/2020_physics.html" class="exam-button physics" data-year="2020">Start Exam</a>
+        <a href="exam/2020_chemistry.html" class="exam-button chemistry" data-year="2020">Start Exam</a>
+        <a href="exam/2020_maths.html" class="exam-button maths" data-year="2020">Start Exam</a>
+
+        <!-- Year: 2019 -->
+        <div class="year-label">2019</div>
+        <a href="exam/2019_physics.html" class="exam-button physics" data-year="2019">Start Exam</a>
+        <a href="exam/2019_chemistry.html" class="exam-button chemistry" data-year="2019">Start Exam</a>
+        <a href="exam/2019_maths.html" class="exam-button maths" data-year="2019">Start Exam</a>
+
+        <!-- Year: 2018 -->
+        <div class="year-label">2018</div>
+        <a href="exam/2018_physics.html" class="exam-button physics" data-year="2018">Start Exam</a>
+        <a href="exam/2018_chemistry.html" class="exam-button chemistry" data-year="2018">Start Exam</a>
+        <a href="exam/2018_maths.html" class="exam-button maths" data-year="2018">Start Exam</a>
+
+        <!-- Year: 2017 -->
+        <div class="year-label">2017</div>
+        <a href="exam/2017_physics.html" class="exam-button physics" data-year="2017">Start Exam</a>
+        <a href="exam/2017_chemistry.html" class="exam-button chemistry" data-year="2017">Start Exam</a>
+        <a href="exam/2017_maths.html" class="exam-button maths" data-year="2017">Start Exam</a>
+
+        <!-- Year: 2016 -->
+        <div class="year-label">2016</div>
+        <a href="exam/2016_physics.html" class="exam-button physics" data-year="2016">Start Exam</a>
+        <a href="exam/2016_chemistry.html" class="exam-button chemistry" data-year="2016">Start Exam</a>
+        <a href="exam/2016_maths.html" class="exam-button maths" data-year="2016">Start Exam</a>
+
+        <!-- Year: 2015 -->
+        <div class="year-label">2015</div>
+        <a href="exam/2015_physics.html" class="exam-button physics" data-year="2015">Start Exam</a>
+        <a href="exam/2015_chemistry.html" class="exam-button chemistry" data-year="2015">Start Exam</a>
+        <a href="exam/2015_maths.html" class="exam-button maths" data-year="2015">Start Exam</a>
+
+        <!-- Year: 2014 -->
+        <div class="year-label">2014</div>
+        <a href="exam/2014_physics.html" class="exam-button physics" data-year="2014">Start Exam</a>
+        <a href="exam/2014_chemistry.html" class="exam-button chemistry" data-year="2014">Start Exam</a>
+        <a href="exam/2014_maths.html" class="exam-button maths" data-year="2014">Start Exam</a>
+
+        <!-- Year: 2013 -->
+        <div class="year-label">2013</div>
+        <a href="exam/2013_physics.html" class="exam-button physics" data-year="2013">Start Exam</a>
+        <a href="exam/2013_chemistry.html" class="exam-button chemistry" data-year="2013">Start Exam</a>
+        <a href="exam/2013_maths.html" class="exam-button maths" data-year="2013">Start Exam</a>
+
+        <!-- Year: 2012 -->
+        <div class="year-label">2012</div>
+        <a href="exam/2012_physics.html" class="exam-button physics" data-year="2012">Start Exam</a>
+        <a href="exam/2012_chemistry.html" class="exam-button chemistry" data-year="2012">Start Exam</a>
+        <a href="exam/2012_maths.html" class="exam-button maths" data-year="2012">Start Exam</a>
+
+        <!-- Year: 2011 -->
+        <div class="year-label">2011</div>
+        <a href="exam/2011_physics.html" class="exam-button physics" data-year="2011">Start Exam</a>
+        <a href="exam/2011_chemistry.html" class="exam-button chemistry" data-year="2011">Start Exam</a>
+        <a href="exam/2011_maths.html" class="exam-button maths" data-year="2011">Start Exam</a>
+        
+        <!-- Year: 2010 -->
+        <div class="year-label">2010</div>
+        <a href="exam/2010_physics.html" class="exam-button physics" data-year="2010">Start Exam</a>
+        <a href="exam/2010_chemistry.html" class="exam-button chemistry" data-year="2010">Start Exam</a>
+        <a href="exam/2010_maths.html" class="exam-button maths" data-year="2010">Start Exam</a>
+        
+    </main>
+
+    <script>
+        // --- JavaScript for Interactive Ripple Effect ---
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.exam-button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const buttonRect = this.getBoundingClientRect();
+                    
+                    // 1. Ripple Element Creation
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    
+                    // 2. Calculate Click Position relative to the button
+                    const diameter = Math.max(buttonRect.width, buttonRect.height);
+                    const radius = diameter / 2;
+                    
+                    // Position the ripple element at the click point
+                    ripple.style.width = ripple.style.height = `${diameter}px`;
+                    ripple.style.left = `${e.clientX - (buttonRect.left + radius)}px`;
+                    ripple.style.top = `${e.clientY - (buttonRect.top + radius)}px`;
+                    
+                    // 3. Remove any previous ripple and append the new one
+                    this.querySelectorAll('.ripple').forEach(r => r.remove());
+                    this.appendChild(ripple);
+
+                    // The actual navigation will happen via the href, but the ripple provides instant feedback
+                });
+            });
+        });
+    </script>
+</body>
+</html>
