@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bihar Class-12 — Physics — Year 2022 | Exam Player</title>
+    <style>
+      :root {
+        --bg: #f7f9fc;
+        --fg: #1f2a37;
+        --primary: #3b82f6;
+        --primary-light: rgba(59, 130, 246, 0.15);
+        --accent: #f59e0b;
+        --danger: #ef4444;
+        --muted: #94a3b8;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --palette-answered: #34d399;
+        --palette-current: #3b82f6;
+        --palette-flagged: #facc15;
+        --palette-subjective: #f472b6;
+        --shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+        --radius: 16px;
+        --transition: 0.25s ease;
+      }
+      body.dark {
+        --bg: #0f172a;
+        --fg: #e2e8f0;
+        --card: #1e293b;
+        --border: #334155;
+        --shadow: 0 14px 34px rgba(2, 6, 23, 0.55);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        min-height: 100vh;
+        transition: background var(--transition), color var(--transition);
+      }
+      .developer-note {
+        background: var(--primary-light);
+        color: var(--fg);
+        padding: 12px 20px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+      .app-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .top-bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 12px clamp(16px, 4vw, 48px);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .top-bar h1 {
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      .countdown {
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+      .countdown.warning {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+        animation: pulse 1s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .spacer {
+        flex: 1;
+      }
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition),
+          background var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+      }
+      .btn-secondary {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--fg);
+        border-radius: 10px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding: 20px clamp(16px, 4vw, 48px);
+        flex: 1;
+      }
+      .exam-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+      }
+      .question-card,
+      .palette-card,
+      .panel {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: clamp(16px, 3vw, 28px);
+        box-shadow: var(--shadow);
+      }
+      .question-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+      }
+      .question-meta {
+        display: flex;
+        gap: 12px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        flex-wrap: wrap;
+      }
+      .omr-options {
+        display: grid;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .omr-option {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition: transform var(--transition), border var(--transition),
+          background var(--transition);
+      }
+      .omr-option[data-selected="true"] {
+        border-color: var(--primary);
+        background: var(--primary-light);
+      }
+      .omr-bubble {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        transition: background var(--transition), color var(--transition),
+          border var(--transition);
+      }
+      .omr-option[data-selected="true"] .omr-bubble {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+      }
+      textarea {
+        width: 100%;
+        min-height: 140px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        padding: 12px;
+        font-size: 1rem;
+        background: rgba(148, 163, 184, 0.1);
+        color: inherit;
+      }
+      .nav-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .nav-controls .btn {
+        flex: 1 1 140px;
+        justify-content: center;
+      }
+      .palette-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+        gap: 8px;
+      }
+      .palette-btn {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 0;
+        text-align: center;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background var(--transition), transform var(--transition),
+          color var(--transition), border var(--transition);
+        font-size: 0.9rem;
+      }
+      .palette-btn[data-state="current"] {
+        background: var(--palette-current);
+        color: #fff;
+      }
+      .palette-btn[data-state="answered"] {
+        background: var(--palette-answered);
+        color: #0f172a;
+      }
+      .palette-btn[data-state="flagged"] {
+        background: var(--palette-flagged);
+      }
+      .palette-btn[data-state="subjective"] {
+        background: var(--palette-subjective);
+        color: #fff;
+      }
+      .palette-btn:hover {
+        transform: translateY(-2px);
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .filters button {
+        border: 1px solid var(--border);
+        background: transparent;
+        padding: 6px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background var(--transition), color var(--transition),
+          border var(--transition);
+      }
+      .filters button.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+      .start-screen,
+      .finished-screen,
+      .question-paper-panel,
+      .resume-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.8);
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        z-index: 20;
+      }
+      .start-card,
+      .finish-card,
+      .panel-modal {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: clamp(18px, 5vw, 32px);
+        width: min(520px, 100%);
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .question-paper-content {
+        width: min(900px, 100%);
+        height: 80vh;
+        overflow: auto;
+        padding: clamp(16px, 4vw, 32px);
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .question-paper-item {
+        border-bottom: 1px solid var(--border);
+        padding: 16px 0;
+      }
+      .question-paper-item:last-child {
+        border-bottom: none;
+      }
+      .quick-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+        align-items: center;
+      }
+      .quick-controls input {
+        flex: 1;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: inherit;
+      }
+      .dev-panel {
+        margin-top: 60px;
+        border-top: 1px dashed var(--border);
+        padding-top: 24px;
+      }
+      .dev-panel textarea {
+        min-height: 200px;
+        font-family: "JetBrains Mono", Consolas, monospace;
+      }
+      .dev-panel .btn {
+        border-radius: 12px;
+      }
+      .warnings {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+        font-size: 0.9rem;
+      }
+      .palette-print {
+        display: none;
+      }
+      body.print-omr .palette-print {
+        display: block;
+      }
+      @media print {
+        body:not(.print-omr) * {
+          visibility: hidden;
+        }
+        body.print-omr .palette-print,
+        body.print-omr .palette-print * {
+          visibility: visible;
+        }
+        body.print-omr .palette-print {
+          position: absolute;
+          inset: 0;
+          padding: 40px;
+        }
+      }
+      @media (min-width: 960px) {
+        .exam-grid {
+          grid-template-columns: 2fr minmax(320px, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="app-shell" aria-live="polite">
+      <header class="top-bar" aria-label="Exam header">
+        <h1 id="examTitle">Physics — 2022</h1>
+        <span id="statusChip" class="countdown" aria-live="assertive">00:00:00</span>
+        <button id="paletteToggle" class="btn btn-ghost" aria-expanded="true">
+          Question Panel
+        </button>
+        <button id="viewPaperBtn" class="btn btn-secondary">
+          View Paper
+        </button>
+        <button id="printOmrBtn" class="btn btn-secondary">Print OMR</button>
+        <div class="spacer"></div>
+        <button id="darkToggle" class="btn btn-ghost" aria-pressed="false">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" 
+     width="26" height="26" viewBox="0 0 24 24" 
+     fill="currentColor">
+  <path d="M12 4.75a.75.75 0 0 1-.75-.75V2a.75.75 0 0 1 1.5 0v2c0 .414-.336.75-.75.75zm0 14.5a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2c0-.414.336-.75.75-.75zm8-7.25a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 20 12zm-18 0a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 2 12zm14.657-5.657a.75.75 0 0 1 1.06-1.06l1.414 1.414a.75.75 0 1 1-1.06 1.06L16.657 6.343zm-11.314 11.314a.75.75 0 0 1 1.06-1.06l1.414 1.414a.75.75 0 1 1-1.06 1.06L5.343 17.657zm12.374 1.414a.75.75 0 0 1-1.06 0l-1.414-1.414a.75.75 0 1 1 1.06-1.06l1.414 1.414a.75.75 0 0 1 0 1.06zm-12.374-12.374a.75.75 0 0 1-1.06 0L4.616 4.616a.75.75 0 1 1 1.06-1.06l1.414 1.414a.75.75 0 0 1 0 1.06zM12 7c-2.755 0-5 2.245-5 5s2.245 5 5 5 5-2.245 5-5-2.245-5-5-5z"/>
+</svg>
+
+        </button>
+      </header>
+
+      <div class="layout">
+        <div class="exam-grid">
+          <section class="question-card" id="questionCard" aria-live="polite"></section>
+          <aside class="palette-card" id="paletteCard">
+            <div class="filters" role="group" aria-label="Question filters">
+              <button data-filter="all" class="active">All</button>
+              <button data-filter="objective">Objective</button>
+              <button data-filter="subjective">Descriptive</button>
+              <button data-filter="flagged">Flagged</button>
+            </div>
+            <div class="palette-grid" id="paletteGrid"></div>
+          </aside>
+        </div>
+
+        <section class="panel">
+          <h2>Quick Tools</h2>
+          <div class="quick-controls">
+            <input
+              type="search"
+              id="quickJumpInput"
+              placeholder="प्रश्न खोजें (उदा. वेक्टर)"
+              aria-label="Quick jump search"
+            />
+            <button id="quickJumpBtn" class="btn btn-primary">Jump</button>
+            <button id="exportJsonBtn" class="btn btn-secondary">
+              Export JSON
+            </button>
+            <button id="exportCsvBtn" class="btn btn-secondary">Export CSV</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <button id="developerToggle" class="btn btn-ghost">
+            Developer / Dataset Tools
+          </button>
+          <div class="dev-panel hidden" id="developerPanel">
+            <p>
+             Only the JS data present below will be loaded for candidates.
+To add objective questions, copy from the comment block above and paste them into this JSON.
+Ensure that each <code>id</code> is unique and that all Hindi text is in Devanagari script.
+            </p>
+            <textarea id="datasetTextarea"></textarea>
+            <div class="nav-controls">
+              <button id="refreshDatasetBtn" class="btn btn-secondary">
+                View Dataset
+              </button>
+              <button id="replaceDatasetBtn" class="btn btn-primary">
+                Replace with Pasted JSON
+              </button>
+              <button id="clipboardImportBtn" class="btn btn-secondary">
+                Import from Clipboard
+              </button>
+              <button id="validateDatasetBtn" class="btn btn-secondary">
+                Validate dataset
+              </button>
+            </div>
+            <div id="validationWarnings" class="warnings hidden"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="palette-print" id="printPalette">
+        <h2>OMR Palette — Bihar Class-12 Physics 2022</h2>
+        <div id="printPaletteGrid" class="palette-grid"></div>
+      </div>
+    </div>
+
+    <div class="start-screen" id="startOverlay">
+      <div class="start-card" role="dialog" aria-modal="true">
+        <h2>Physics — Year 2022</h2>
+        <p>Duration: 120 minutes · Objective Questions: 70 · Descriptive Enabled</p>
+        <div id="resumeBlock" class="hidden">
+          <p>A saved attempt was found. Would you like to continue or start a new attempt?</p>
+          <div class="nav-controls">
+            <button id="resumeBtn" class="btn btn-primary">Resume</button>
+            <button id="freshStartBtn" class="btn btn-secondary">
+              Restart
+            </button>
+          </div>
+        </div>
+        <button id="startBtn" class="btn btn-primary">Start Exam</button>
+      </div>
+    </div>
+
+    <div class="finished-screen hidden" id="finishedOverlay">
+      <div class="finish-card" role="alertdialog" aria-modal="true">
+        <h2>Exam Finished</h2>
+        <p>
+          Your answers have been saved locally. You can export them or reopen the exam to review your responses.
+           This app does not display any kind of result.
+        </p>
+        <button id="closeFinishedBtn" class="btn btn-primary">
+         OK
+        </button>
+      </div>
+    </div>
+
+    <div class="question-paper-panel hidden" id="questionPaperPanel">
+      <div class="question-paper-content">
+        <div class="nav-controls" style="justify-content: flex-end">
+          <button id="closePaperBtn" class="btn btn-secondary">बंद करें</button>
+        </div>
+        <div id="questionPaperList"></div>
+      </div>
+    </div>
+
+    <div class="resume-modal hidden" id="resumeModal">
+      <div class="panel-modal">
+        <p>Saved attempt loaded.</p>
+      </div>
+    </div>
+
+    <script>
+      // ----------------------------------------------
+      // Editable examination configuration
+      // ----------------------------------------------
+      const EXAM_CONFIG = {
+        title: "Bihar Class-12 — Physics — Year 2022",
+        year: 2022,
+        subject: "Physics",
+        durationMinutes: 120,
+        objectiveCount: 70,
+        includeSubjective: true,
+        allowMultipleAnswer: false,
+        autoSaveIntervalSec: 30,
+      };
+    const QUESTIONS = [
+  {
+    id: "Q001",
+    type: "objective",
+    text: "प्रत्यावर्ती धारा परिपथ में यथार्थ माध्य शक्ति का व्यंजक होता है",
+    options: ["(A) Pav = Erms cos φ", "(B) Pav = Irms Cos φ", "(C) Pav = Erms Irms sin φ", "(D) Pav = Erms Irms cos φ"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q002",
+    type: "objective",
+    text: "शक्ति गुणांक के बराबर होता है",
+    options: ["(A) R/Z", "(B) Z/R", "(C) R.Z", "(D) W.L"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q003",
+    type: "objective",
+    text: "(LR) परिपथ में कलांतर होता है",
+    options: ["(A) sin⁻¹(XL/R)", "(B) cos⁻¹(R/Z)", "(C) tan⁻¹(XL/R)", "(D) tan(XL/R)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q004",
+    type: "objective",
+    text: "ट्रांसफॉर्मर में परिणमन अनुपात होता है",
+    options: ["(A) Vs/Vp", "(B) Vp/Vs", "(C) 1/(Vs.Vp)", "(D) 1/(Is.Ip)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q005",
+    type: "objective",
+    text: "R.C. का विमीय सूत्र होता है",
+    options: ["(A) M⁰L⁰T⁻¹", "(B) M⁰L⁰T⁻²", "(C) M⁰L⁰T⁰", "(D) M⁰L⁰T"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q006",
+    type: "objective",
+    text: "ध्रुव प्राबल्य का S.I. मात्रक होता है",
+    options: ["(A) Am⁻¹", "(B) Am⁻²", "(C) Am", "(D) Fm"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q007",
+    type: "objective",
+    text: "एकसमान चुम्बकीय क्षेत्र में चुम्बक के विक्षेपण में किया गया कार्य",
+    options: ["(A) W = MB(1-sinθ)", "(B) W = MB sinθ", "(C) W = MB(1-cosθ)", "(D) W = MB cosθ"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q008",
+    type: "objective",
+    text: "निम्नलिखित में कौन संबंध द्रव्यमान और ऊर्जा के लिए नहीं है ?",
+    options: ["(A) m = E/c²", "(B) m² = E", "(C) mc² = E", "(D) m = E/c²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q009",
+    type: "objective",
+    text: "दशमिक संख्या (8)₁₀ की द्विआधारी संख्या होती है",
+    options: ["(A) (1000)₂", "(B) (1001)₂", "(C) (111)₂", "(D) (110)₂"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q010",
+    type: "objective",
+    text: "NAND गेट का संकेत होता है",
+    options: ["(A) विकल्प A", "(B) विकल्प B", "(C) विकल्प C", "(D) विकल्प D"],
+    needs_manual_check: true
+  },
+  {
+    id: "Q011",
+    type: "objective",
+    text: "अर्द्ध-आयु काल T₁/₂ एवं क्षय नियतांक λ में सम्बन्ध होता है",
+    options: ["(A) T₁/₂ = 0.693/λ", "(B) T₁/₂ = 0.693λ", "(C) T₁/₂ = 0.693λ²", "(D) T₁/₂ = 0.693/λ²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q012",
+    type: "objective",
+    text: "निम्नलिखित में कौन α-कण के लिए सही है ?",
+    options: ["(A) इलेक्ट्रॉन", "(B) विद्युत-चुम्बकीय विकिरण", "(C) हीलियम नाभिक", "(D) हाइड्रोजन नाभिक"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q013",
+    type: "objective",
+    text: "निम्नलिखित में कौन समीकरण सही है ?",
+    options: ["(A) ²³⁸U → ²३४U + ⁴He", "(B) ²³⁸U → ²३४Th + ⁴He", "(C) ²³⁸U → ²३९Th + ⁴He", "(D) ²३⁸U → ²⁴²Th + ⁴He"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q014",
+    type: "objective",
+    text: "निम्नलिखित में कौन बायो-सावर्ट नियम के सदिश समीकरण का सही रूप है ?",
+    options: ["(A) dB = (μ₀/4π) × I(dl×r)/r²", "(B) dB = (μ₀/4π) × I(dl)/r²", "(C) dB = (μ₀/4π) × I(dl×r)/r³", "(D) dB = (μ₀/4π) × Ir/r²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q015",
+    type: "objective",
+    text: "किसी बिन्दु पर विद्युत क्षेत्र की तीव्रता होती है",
+    options: ["(A) E = Fq", "(B) E = F/q", "(C) E = Fq²", "(D) E = q/F"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q016",
+    type: "objective",
+    text: "आवेश का पृष्ठ-घनत्व होता है",
+    options: ["(A) σ = Q/A", "(B) σ = A/Q", "(C) σ = Q/V", "(D) σ = Q.A"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q017",
+    type: "objective",
+    text: "गोलीय संधारित्र की धारिता होती है",
+    options: ["(A) C = 4πε₀(rR/(r-R))", "(B) C = 4πε₀(R/(r+R))", "(C) C = 4πε₀(rR²/r)", "(D) C = 4πε₀(2R/(r-R))"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q018",
+    type: "objective",
+    text: "1/μ₀ε₀ के बराबर होता है",
+    options: ["(A) c²", "(B) 1/c²", "(C) 1/c", "(D) c"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q019",
+    type: "objective",
+    text: "रेटिना पर बनने वाला प्रतिबिंब होता है",
+    options: ["(A) वास्तविक एवं सीधा", "(B) वास्तविक एवं उलटा", "(C) काल्पनिक एवं सीधा", "(D) काल्पनिक एवं उलटा"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q020",
+    type: "objective",
+    text: "खगोलीय दूरबीन की आवर्द्धन क्षमता होती है",
+    options: ["(A) f₀/fe", "(B) fe/f₀", "(C) f₀ × fe", "(D) fe + f₀"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q021",
+    type: "objective",
+    text: "निम्नलिखित में कौन इंद्रधनुष के निर्माण का कारण होता है ?",
+    options: ["(A) प्रकीर्णन", "(B) विवर्तन", "(C) वर्ण-विक्षेपण", "(D) अपवर्तन"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q022",
+    type: "objective",
+    text: "निम्नलिखित में कौन विद्युत चुम्बकीय तरंग नहीं है ?",
+    options: ["(A) प्रकाश तरंगें", "(B) X-किरणें", "(C) ध्वनि तरंगें", "(D) अवरक्त किरणें"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q023",
+    type: "objective",
+    text: "पारदर्शी माध्यम हीरा के लिए क्रांतिक कोण होता है",
+    options: ["(A) 48.75°", "(B) 41.14°", "(C) 37.31°", "(D) 24.41°"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q024",
+    type: "objective",
+    text: "फोटॉन की ऊर्जा बराबर होता है",
+    options: ["(A) hν", "(B) h/ν", "(C) √(hν)", "(D) h/ν²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q025",
+    type: "objective",
+    text: "चुम्बकन क्षेत्र की तीव्रता (H) के बराबर होता है",
+    options: ["(A) B₀/μ₀", "(B) μ₀/B₀", "(C) B₀μ₀", "(D) B₀/μ₀²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q026",
+    type: "objective",
+    text: "निम्नलिखित में कौन उच्चायी ट्रान्सफॉर्मर के लिए सही है ?",
+    options: ["(A) Vs < Vp", "(B) Vs > Vp", "(C) Vs = Vp", "(D) Vs << Vp"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q027",
+    type: "objective",
+    text: "दिष्ट धारा के लिए प्रेणिक प्रतिघात होता है",
+    options: ["(A) शुन्य", "(B) अनन्त", "(C) ωL", "(D) 1/ωL"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q028",
+    type: "objective",
+    text: "धारावाही कुंडली का विद्युत-चुम्बकीय आघूर्ण होता है",
+    options: ["(A) NIA", "(B) NA/I", "(C) N/IA", "(D) IA/N"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q029",
+    type: "objective",
+    text: "विद्युत तीव्रता का S.I. मात्रक है",
+    options: ["(A) N/C", "(B) N.C", "(C) N.C²", "(D) N/C²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q030",
+    type: "objective",
+    text: "निम्नलिखित में धारा-घनत्व के लिए कौन सही है ?",
+    options: ["(A) J = I-A", "(B) J = I/A", "(C) J = I/A²", "(D) J = I²A"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q031",
+    type: "objective",
+    text: "निम्नलिखित में गतिशीलता के लिए कौन सही है ?",
+    options: ["(A) μ = Vd/E", "(B) μ = E/Vd", "(C) μ = VdE", "(D) μ = E²/Vd"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q032",
+    type: "objective",
+    text: "निम्नलिखित में कौन सही है ?",
+    options: ["(A) 1 watt = 1 Js⁻¹", "(B) 1 watt = 1 Vs", "(C) 1 watt = 1 V⁻¹s", "(D) 1 watt = 1 Fs⁻¹"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q033",
+    type: "objective",
+    text: "नीला रंग के लिए कार्बन प्रतिरोध का कलर कोड होता है",
+    options: ["(A) 3", "(B) 4", "(C) 5", "(D) 6"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q034",
+    type: "objective",
+    text: "एम्पियर-घंटा मात्रक होता है",
+    options: ["(A) शक्ति का", "(B) आवेश का", "(C) ऊर्जा का", "(D) विभवान्तर का"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q035",
+    type: "objective",
+    text: "निम्नलिखित में लॉरेंट्ज बल के लिए कौन सही है ?",
+    options: ["(A) F = q(E + V×B)", "(B) F = q(E + V)", "(C) F = q(B + V×B)", "(D) F = q(E + B×V)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q036",
+    type: "objective",
+    text: "4 डायोप्टर क्षमता वाले लेंस की फोकस दूरी होती है",
+    options: ["(A) 0.25 m", "(B) 0.25 cm", "(C) 0.35 m", "(D) 0.35 cm"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q037",
+    type: "objective",
+    text: "निम्नलिखित में कौन वर्ण-विक्षेपण क्षमता के लिए सही है ?",
+    options: ["(A) w = (μv - μr)/(μ - 1)", "(B) w = (μv + μr)/(μ - 1)", "(C) w = (μv - μr)/(μ + 1)", "(D) w = (μv + μr)/(μ + 1)"],
+    needs_manual_check: true
+  },
+  {
+    id: "Q038",
+    type: "objective",
+    text: "यदि काँच के एक लेन्स (μ = 3/2) की हवा में फोकस दूरी fa हो और पानी (μ = 4/3) में fw हो तो",
+    options: ["(A) fw = fa", "(B) fw = 2fa", "(C) fw = 3fa", "(D) fw = 4fa"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q039",
+    type: "objective",
+    text: "निम्नलिखित में कौन संबंध प्रकीर्णित प्रकाश की तीव्रता (I) और प्रकाश के तरंगदैध्र्य (λ) के लिए सही है ?",
+    options: ["(A) I ∝ 1/λ", "(B) I ∝ 1/λ²", "(C) I ∝ 1/λ³", "(D) I ∝ 1/λ⁴"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q040",
+    type: "objective",
+    text: "निम्नलिखित में कौन इलेक्ट्रॉन पर आवेश के लिए सही है ?",
+    options: ["(A) e = 1.602 × 10⁻¹⁶ C", "(B) e = 1.602 × 10⁻¹⁷ C", "(C) e = 1.602 × 10⁻¹⁸ C", "(D) e = 1.602 × 10⁻¹⁹ C"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q041",
+    type: "objective",
+    text: "निम्नलिखित में कौन सोडियम का कार्य-फलन होता है ?",
+    options: ["(A) Φ₀ = 2.55 eV", "(B) Φ₀ = 2.65 eV", "(C) Φ₀ = 2.75 eV", "(D) Φ₀ = 2.85 eV"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q042",
+    type: "objective",
+    text: "नाभिक में न्यूट्रॉनों की संख्या होती है",
+    options: ["(A) A + Z", "(B) A - Z", "(C) Z + A/2", "(D) Z"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q043",
+    type: "objective",
+    text: "निम्नलिखित में छोटे चुम्बक के लिए कौन सही है ?",
+    options: ["(A) (B)अक्षीय = (B)निरक्षीय", "(B) (B)अक्षीय = 2(B)निरक्षीय", "(C) (B)निरक्षीय = 2(B)अक्षीय", "(D) (B)अक्षीय = 3(B)निरक्षीय"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q044",
+    type: "objective",
+    text: "एकसमान चुम्बकीय क्षेत्र में दोलनशील चुम्बक के आवर्तकाल का व्यंजक होता है",
+    options: ["(A) T = 2π√(I/MBH)", "(B) T = 2π√(M/BH)", "(C) T = 2π√(MBH/I)", "(D) T = 2π√(MB/I)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q045",
+    type: "objective",
+    text: "निम्नलिखित में कौन सम्बन्ध पृथ्वी के चुम्बकीय क्षेत्र (BH) और चुम्बकीय सूई की आवृत्ति (n) के लिए सही है ?",
+    options: ["(A) n² ∝ BH", "(B) n ∝ BH", "(C) n² ∝ 1/BH", "(D) n ∝ 1/BH"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q046",
+    type: "objective",
+    text: "निम्नलिखित में कौन टैंजेंट नियम के लिए सही है ?",
+    options: ["(A) B = BH tanθ", "(B) B = BH tan²θ", "(C) B = BH/tanθ", "(D) B = BH tan(θ/2)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q047",
+    type: "objective",
+    text: "आपेक्षिक चुम्बकशीलता बराबर होता है",
+    options: ["(A) μr = μ/μ₀", "(B) μr = μ₀/μ", "(C) μr = μ.μ₀", "(D) μr = √(μ.μ₀)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q048",
+    type: "objective",
+    text: "निम्नलिखित में कौन सम्बन्ध सही है ?",
+    options: ["(A) B² = B₀² - BH²", "(B) B² = B₀² + BH²", "(C) B² = B₀ - BH", "(D) B² = B₀/BH"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q049",
+    type: "objective",
+    text: "निम्नलिखित में कौन निर्वात में विद्युत चुम्बकीय तरंग की चाल के लिए सही है ?",
+    options: ["(A) c = √(μ₀ε₀)", "(B) c = 1/√(μ₀ε₀)", "(C) c = √(μ₀/ε₀)", "(D) c = √(ε₀/μ₀)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q050",
+    type: "objective",
+    text: "पृथ्वी के पृष्ठ पर B का मान होता है",
+    options: ["(A) 10⁻¹ टेसला", "(B) 10⁻² टेसला", "(C) 10⁻³ टेसला", "(D) 10⁻⁵ टेसला"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q051",
+    type: "objective",
+    text: "धारावाही कुंडली का विद्युत-चुम्बकीय आघूर्ण होता है",
+    options: ["(A) m = NA/I", "(B) m = NI/A", "(C) m = NIA", "(D) m = IA/N"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q052",
+    type: "objective",
+    text: "निम्नलिखित में कौन गैलवेनोमीटर नियतांक के लिए सही है ?",
+    options: ["(A) C = θ/(NAB)", "(B) C = (NAB)/θ", "(C) C = θ/(NB)", "(D) C = (AB)/θ"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q053",
+    type: "objective",
+    text: "आदर्श ऐमीटर का प्रतिरोध होता है",
+    options: ["(A) अनन्त", "(B) शून्य", "(C) 100 ओम", "(D) 50 ओम"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q054",
+    type: "objective",
+    text: "चुम्बकीय फ्लक्स का S.I. मात्रक होता है",
+    options: ["(A) वेबर", "(B) वाट", "(C) टेसला", "(D) जूल"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q055",
+    type: "objective",
+    text: "लेंज का नियम किसके संरक्षण के सिद्धान्त का परिणाम है ?",
+    options: ["(A) धारा", "(B) संवेग", "(C) ऊर्जा", "(D) आवेश"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q056",
+    type: "objective",
+    text: "प्रेरणिक प्रतिघात होता है",
+    options: ["(A) XL = 2πfL", "(B) XL = 2πf²L", "(C) XL = 2πf/L²", "(D) XL = 2πf²/L²"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q057",
+    type: "objective",
+    text: "सरल सूक्ष्मदर्शी की आवर्द्धन क्षमता होती है",
+    options: ["(A) M = 1 - D/f", "(B) M = 1 + D/f", "(C) M = 1 - θ", "(D) M = 1 + θ"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q058",
+    type: "objective",
+    text: "संपर्कित दो लेंसों की शक्ति होती है",
+    options: ["(A) P = P₁ + P₂", "(B) P = P₁ × P₂", "(C) P = P₁/P₂", "(D) P = P₁(P₂ + P₁)/2"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q059",
+    type: "objective",
+    text: "यदि μकाँच = 3/2 और μपानी = 4/3 तब μवायु होता है",
+    options: ["(A) 2", "(B) 9/8", "(C) 1", "(D) 8/9"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q060",
+    type: "objective",
+    text: "काँच के लिए क्रांतिक कोण होता है",
+    options: ["(A) 20°", "(B) 30°", "(C) 48°", "(D) 42° (लगभग)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q061",
+    type: "objective",
+    text: "विद्युत-चुंबकीय तरंगों की प्रकृति होती है",
+    options: ["(A) अनुप्रस्थ", "(B) अनुदैर्ध्य", "(C) (A) और (B) दोनों", "(D) विद्युतीय"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q062",
+    type: "objective",
+    text: "त्रिपार्श्व के पदार्थ का अपवर्तनांक होता है",
+    options: ["(A) μ = sin(A+δm)/sin(A/2)", "(B) μ = sin(A/2)/sin(A+δm)", "(C) μ = sin(A+δm/2)/sin(A/2)", "(D) μ = sin(A/2)/sin(A+δm/2)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q063",
+    type: "objective",
+    text: "प्रकाशीय पथ के बराबर होता है",
+    options: ["(A) अपवर्तनांक × पथ की लम्बाई", "(B) अपवर्तनांक/पथ की लम्बाई", "(C) पथ की लम्बाई", "(D) पथ की लम्बाई/अपवर्तनांक"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q064",
+    type: "objective",
+    text: "निर्वात का परावैद्युतांक होता है",
+    options: ["(A) 8.85×10⁻¹² F/m", "(B) 8.85×10⁻¹¹ F/m", "(C) 8.85×10¹² F/m", "(D) 8.85×10¹¹ F/m"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q065",
+    type: "objective",
+    text: "वैद्युत-द्विध्रुव का S.I. मात्रक होता है",
+    options: ["(A) C/N", "(B) Cm", "(C) C²", "(D) C/m"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q066",
+    type: "objective",
+    text: "कूलॉम नियम का सदिश रूप होता है",
+    options: ["(A) F = (1/4πε₀) × (q₁q₂r̂/|r|³)", "(B) F = (1/4πε₀) × (q₁q₂r̂/|r|²)", "(C) F = (1/4πε₀) × (q₁q₂r̂/r²)", "(D) F = (1/4πε₀) × (q₁q₂r̂/r³)"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q067",
+    type: "objective",
+    text: "किसी चालक की धारिता होती है",
+    options: ["(A) C = q·V", "(B) C = V/q", "(C) C = (1/2)q·V", "(D) C = q/V"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q068",
+    type: "objective",
+    text: "आवेशित चालक की ऊर्जा होती है",
+    options: ["(A) E = (1/2)C·V", "(B) E = (1/2)CV²", "(C) E = (1/2)C²V", "(D) E = C·V"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q069",
+    type: "objective",
+    text: "यदि समान धारिता C₁ के n संधारित्र समान्तर क्रम में जोड़े जायें तो तुल्य धारिता होगी",
+    options: ["(A) C = nC₁", "(B) C = C₁/n", "(C) C = √(nC₁)", "(D) C = n²C₁"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q070",
+    type: "objective",
+    text: "वायु के लिए परावैद्युत सामर्थ्य होता है",
+    options: ["(A) 3×10⁶ Vm⁻¹", "(B) 4×10⁶ Vm⁻¹", "(C) 5×10⁶ Vm⁻¹", "(D) 10⁶ Vm⁻¹"],
+    needs_manual_check: false
+  },
+  {
+    id: "Q071",
+    type: "subjective",
+    text: "विद्युत चुम्बकीय तरंग क्या है ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q072",
+    type: "subjective",
+    text: "लॉरेंट्ज बल क्या है ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q073",
+    type: "subjective",
+    text: "विभवमापी के दो उपयोगों को लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q074",
+    type: "subjective",
+    text: "प्रतिरोधका के समांतर क्रम के संयोजन को समझाइये।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q075",
+    type: "subjective",
+    text: "माध्यम के अपवर्तनांक से आप क्या समझते हैं ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q076",
+    type: "subjective",
+    text: "तरंगाग्र की परिभाषा लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q077",
+    type: "subjective",
+    text: "चुम्बक की अक्षीय स्थिति से आप क्या समझते हैं ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q078",
+    type: "subjective",
+    text: "विद्युतीय विभव की परिभाषा लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q079",
+    type: "subjective",
+    text: "एल्फा (α) किरणों के दो गुणों को लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q080",
+    type: "subjective",
+    text: "द्विआधारी अंक पद्धति को समझायें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q081",
+    type: "subjective",
+    text: "प्रकाश के वर्ण विक्षेपण को समझायें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q082",
+    type: "subjective",
+    text: "प्रकाश के विवर्तन से आप क्या समझते हैं ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q083",
+    type: "subjective",
+    text: "धारितीय प्रतिघात को समझायें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q084",
+    type: "subjective",
+    text: "नारंगी और पीला रंगों के लिए कार्बन प्रतिरोध का कलर कोड लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q085",
+    type: "subjective",
+    text: "चुम्बकीय आघूर्ण को समझायें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q086",
+    type: "subjective",
+    text: "नमन कोण की परिभाषा लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q087",
+    type: "subjective",
+    text: "चुम्बकीय फ्लक्स की परिभाषा एवं S.I. मात्रक लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q088",
+    type: "subjective",
+    text: "NOT तथा OR गेट की सत्यता सारणी तथा बूलियन व्यंजक लिखें।",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q089",
+    type: "subjective",
+    text: "आवेश संरक्षण का सिद्धान्त क्या है ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q090",
+    type: "subjective",
+    text: "आभासी नमन से आप क्या समझते हैं ?",
+    expectedType: "short",
+    needs_manual_check: false
+  },
+  {
+    id: "Q091",
+    type: "subjective",
+    text: "संपर्क में रखे दो लेंसों की समतुल्य फोकस दूरी का व्यंजक प्राप्त करें।",
+    expectedType: "long",
+    needs_manual_check: false
+  },
+  {
+    id: "Q092",
+    type: "subjective",
+    text: "व्यतिकरण फ्रिज की चौड़ाई का व्यंजक स्थापित करें।",
+    expectedType: "long",
+    needs_manual_check: false
+  },
+  {
+    id: "Q093",
+    type: "subjective",
+    text: "ट्रांसफार्मर की बनावट, क्रिया और उपयोगों को समझायें।",
+    expectedType: "long",
+    needs_manual_check: false
+  },
+  {
+    id: "Q094",
+    type: "subjective",
+    text: "धारा के प्रवाह के कारण चालक में उत्पन्न ऊष्मा के लिए व्यंजक स्थापित करें। विद्युत-शक्ति और विद्युत ऊर्जा से आप क्या समझते हैं ?",
+    expectedType: "long",
+    needs_manual_check: false
+  },
+  {
+    id: "Q095",
+    type: "subjective",
+    text: "निरक्षीय स्थिति में किसी चुम्बक का चुम्बकीय क्षेत्र के लिए व्यंजक स्थापित करें।",
+    expectedType: "long",
+    needs_manual_check: false
+  },
+  {
+    id: "Q096",
+    type: "subjective",
+    text: "गॉस के प्रमेय को लिखें और इसे प्रमाणित करें।",
+    expectedType: "long",
+    needs_manual_check: false
+  }
+];
+
+      
+
+     
+      // ----------------------------------------------
+      (function examPlayer() {
+        const STORAGE_KEY = "offlineExam_physics2022";
+        const state = {
+          started: false,
+          finished: false,
+          currentIndex: 0,
+          answers: {},
+          subjectiveNotes: {},
+          flagged: new Set(),
+          startTime: null,
+          endTime: null,
+          filter: "all",
+          countdownInterval: null,
+          autoSaveInterval: null,
+          manualCheckIds: new Set(),
+        };
+
+        const elements = {
+          title: document.getElementById("examTitle"),
+          timer: document.getElementById("statusChip"),
+          questionCard: document.getElementById("questionCard"),
+          paletteGrid: document.getElementById("paletteGrid"),
+          printPaletteGrid: document.getElementById("printPaletteGrid"),
+          startOverlay: document.getElementById("startOverlay"),
+          finishedOverlay: document.getElementById("finishedOverlay"),
+          startBtn: document.getElementById("startBtn"),
+          resumeBtn: document.getElementById("resumeBtn"),
+          freshStartBtn: document.getElementById("freshStartBtn"),
+          resumeBlock: document.getElementById("resumeBlock"),
+          closeFinishedBtn: document.getElementById("closeFinishedBtn"),
+          developerToggle: document.getElementById("developerToggle"),
+          developerPanel: document.getElementById("developerPanel"),
+          datasetTextarea: document.getElementById("datasetTextarea"),
+          refreshDatasetBtn: document.getElementById("refreshDatasetBtn"),
+          replaceDatasetBtn: document.getElementById("replaceDatasetBtn"),
+          clipboardImportBtn: document.getElementById("clipboardImportBtn"),
+          validateDatasetBtn: document.getElementById("validateDatasetBtn"),
+          validationWarnings: document.getElementById("validationWarnings"),
+          filters: document.querySelectorAll(".filters button"),
+          paletteToggle: document.getElementById("paletteToggle"),
+          paletteCard: document.getElementById("paletteCard"),
+          quickJumpInput: document.getElementById("quickJumpInput"),
+          quickJumpBtn: document.getElementById("quickJumpBtn"),
+          exportJsonBtn: document.getElementById("exportJsonBtn"),
+          exportCsvBtn: document.getElementById("exportCsvBtn"),
+          darkToggle: document.getElementById("darkToggle"),
+          viewPaperBtn: document.getElementById("viewPaperBtn"),
+          questionPaperPanel: document.getElementById("questionPaperPanel"),
+          questionPaperList: document.getElementById("questionPaperList"),
+          closePaperBtn: document.getElementById("closePaperBtn"),
+          printOmrBtn: document.getElementById("printOmrBtn"),
+          printPalette: document.getElementById("printPalette"),
+          finishedText: document.getElementById("finishedOverlay"),
+        };
+
+        function init() {
+          elements.title.textContent = EXAM_CONFIG.title;
+          setupStartScreen();
+          renderQuestion();
+          renderPalette();
+          syncPalettePrint();
+          bindEvents();
+          runDatasetValidation();
+          elements.datasetTextarea.value = JSON.stringify(QUESTIONS, null, 2);
+        }
+
+        function bindEvents() {
+          elements.startBtn.addEventListener("click", () => startExam());
+          elements.resumeBtn.addEventListener("click", () => resumeSaved());
+          elements.freshStartBtn.addEventListener("click", () => clearSaved());
+          elements.closeFinishedBtn.addEventListener("click", () =>
+            elements.finishedOverlay.classList.add("hidden")
+          );
+          elements.developerToggle.addEventListener("click", () => {
+            elements.developerPanel.classList.toggle("hidden");
+          });
+          elements.refreshDatasetBtn.addEventListener("click", () => {
+            elements.datasetTextarea.value = JSON.stringify(QUESTIONS, null, 2);
+          });
+          elements.replaceDatasetBtn.addEventListener("click", replaceDataset);
+          elements.clipboardImportBtn.addEventListener("click", importClipboard);
+          elements.validateDatasetBtn.addEventListener("click", runDatasetValidation);
+          elements.filters.forEach((btn) =>
+            btn.addEventListener("click", () => {
+              elements.filters.forEach((b) => b.classList.remove("active"));
+              btn.classList.add("active");
+              state.filter = btn.dataset.filter;
+              renderPalette();
+            })
+          );
+          elements.paletteToggle.addEventListener("click", () => {
+            elements.paletteCard.classList.toggle("hidden");
+            const expanded = elements.paletteCard.classList.contains("hidden");
+            elements.paletteToggle.setAttribute("aria-expanded", (!expanded).toString());
+          });
+          elements.quickJumpBtn.addEventListener("click", quickJump);
+          elements.quickJumpInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") quickJump();
+          });
+          elements.exportJsonBtn.addEventListener("click", () =>
+            exportAnswers("json")
+          );
+          elements.exportCsvBtn.addEventListener("click", () =>
+            exportAnswers("csv")
+          );
+          elements.darkToggle.addEventListener("click", toggleDarkMode);
+          elements.viewPaperBtn.addEventListener("click", openQuestionPaper);
+          elements.closePaperBtn.addEventListener("click", closeQuestionPaper);
+          elements.printOmrBtn.addEventListener("click", printOmr);
+          document.addEventListener("keydown", handleKeydown);
+        }
+
+        function setupStartScreen() {
+          const saved = loadSaved();
+          if (saved) {
+            elements.resumeBlock.classList.remove("hidden");
+            elements.startBtn.classList.add("hidden");
+          } else {
+            elements.resumeBlock.classList.add("hidden");
+            elements.startBtn.classList.remove("hidden");
+          }
+        }
+
+        function renderQuestion() {
+          const question = QUESTIONS[state.currentIndex];
+          if (!question) return;
+          const answeredValue = state.answers[question.id] || "";
+          const note = state.subjectiveNotes[question.id] || "";
+          const flagged = state.flagged.has(question.id);
+
+          const html = `
+            <div class="question-title">
+              <span>#${state.currentIndex + 1}</span>
+              <strong>${question.text}</strong>
+            </div>
+            <div class="question-meta">
+              <span>${question.type === "objective" ? "वस्तुनिष्ठ" : "वर्णनात्मक"}</span>
+              ${
+                question.expectedType
+                  ? `<span>उत्तर शैली: ${question.expectedType}</span>`
+                  : ""
+              }
+              ${flagged ? "<span>फ्लैग्ड</span>" : ""}
+              ${
+                question.needs_manual_check
+                  ? '<span style="color:#ef4444;">needs_manual_check</span>'
+                  : ""
+              }
+            </div>
+            ${
+              question.type === "objective"
+                ? renderObjective(question, answeredValue)
+                : renderSubjective(question, note)
+            }
+            ${renderNavigation()}
+          `;
+          elements.questionCard.innerHTML = html;
+          bindOptionEvents(question);
+          bindNavButtons();
+          updateQuestionPaperList();
+        }
+
+        function renderObjective(question, answeredValue) {
+          const options = question.options || [];
+          return `
+            <div role="radiogroup" aria-label="Objective options" class="omr-options">
+              ${options
+                .map(
+                  (opt, index) => `
+                <div class="omr-option" tabindex="0" data-option="${index}" data-question="${
+                    question.id
+                  }" role="radio" aria-checked="${answeredValue === String(index)}" data-selected="${
+                    answeredValue === String(index)
+                  }">
+                  <div class="omr-bubble">${String.fromCharCode(65 + index)}</div>
+                  <div>${opt}</div>
+                </div>`
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        function renderSubjective(question, note) {
+          return `
+            <label>
+              उत्तर/नोट्स:
+              <textarea id="subjectiveNote" data-question="${question.id}" placeholder="यहाँ उत्तर लिखें">${note}</textarea>
+            </label>
+          `;
+        }
+
+        function renderNavigation() {
+          return `
+            <div class="nav-controls">
+              <button class="btn btn-secondary" data-nav="prev">पिछला</button>
+              <button class="btn btn-secondary" data-nav="next">अगला</button>
+              <button class="btn btn-ghost" data-nav="flag">मार्क फॉर रिव्यू</button>
+              <button class="btn btn-ghost" data-nav="clear">उत्तर साफ़ करें</button>
+              <button class="btn btn-primary" data-nav="submit">Submit</button>
+            </div>
+          `;
+        }
+
+        function handleKeydown(e) {
+          if (!state.started || state.finished) return;
+          const question = QUESTIONS[state.currentIndex];
+          if (question?.type !== "objective") return;
+          const keyIndex = ["1", "2", "3", "4"].indexOf(e.key);
+          if (keyIndex !== -1 && question.options?.[keyIndex]) {
+            selectOption(question.id, String(keyIndex));
+          }
+        }
+
+        function bindOptionEvents(question) {
+          if (question.type === "objective") {
+            elements.questionCard
+              .querySelectorAll(".omr-option")
+              .forEach((optionEl) => {
+                optionEl.addEventListener("click", () => {
+                  selectOption(question.id, optionEl.dataset.option);
+                });
+                optionEl.addEventListener("keydown", (e) => {
+                  if (["Enter", " "].includes(e.key)) {
+                    e.preventDefault();
+                    selectOption(question.id, optionEl.dataset.option);
+                  }
+                });
+              });
+          } else {
+            const textarea = elements.questionCard.querySelector("#subjectiveNote");
+            textarea.addEventListener("input", (e) => {
+              state.subjectiveNotes[question.id] = e.target.value;
+              persistState();
+              renderPalette();
+              syncPalettePrint();
+            });
+          }
+        }
+
+        function bindNavButtons() {
+          elements.questionCard.querySelectorAll("[data-nav]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const action = btn.dataset.nav;
+              if (action === "prev") changeQuestion(-1);
+              if (action === "next") changeQuestion(1);
+              if (action === "flag") toggleFlag();
+              if (action === "clear") clearAnswer();
+              if (action === "submit") submitExam();
+            });
+          });
+        }
+
+        function selectOption(questionId, optionIndex) {
+          state.answers[questionId] = optionIndex;
+          persistState();
+          renderQuestion();
+          renderPalette();
+          syncPalettePrint();
+        }
+
+        function changeQuestion(delta) {
+          state.currentIndex = Math.min(
+            Math.max(0, state.currentIndex + delta),
+            QUESTIONS.length - 1
+          );
+          renderQuestion();
+          renderPalette();
+        }
+
+        function toggleFlag() {
+          const q = QUESTIONS[state.currentIndex];
+          if (state.flagged.has(q.id)) {
+            state.flagged.delete(q.id);
+          } else {
+            state.flagged.add(q.id);
+          }
+          persistState();
+          renderQuestion();
+          renderPalette();
+          syncPalettePrint();
+        }
+
+        function clearAnswer() {
+          const q = QUESTIONS[state.currentIndex];
+          delete state.answers[q.id];
+          delete state.subjectiveNotes[q.id];
+          persistState();
+          renderQuestion();
+          renderPalette();
+          syncPalettePrint();
+        }
+
+        function renderPalette() {
+          elements.paletteGrid.innerHTML = "";
+          QUESTIONS.forEach((question, index) => {
+            const stateTag = getQuestionState(question, index);
+            const shouldShow = filterAllows(question, stateTag);
+            const btn = document.createElement("button");
+            btn.className = "palette-btn";
+            btn.textContent = index + 1;
+            btn.dataset.state = stateTag;
+            btn.disabled = !shouldShow;
+            btn.style.opacity = shouldShow ? "1" : "0.25";
+            btn.addEventListener("click", () => {
+              state.currentIndex = index;
+              renderQuestion();
+              renderPalette();
+            });
+            elements.paletteGrid.appendChild(btn);
+          });
+        }
+
+        function getQuestionState(question, index) {
+          if (state.currentIndex === index) return "current";
+          if (state.flagged.has(question.id)) return "flagged";
+          if (question.type === "subjective") {
+            return state.subjectiveNotes[question.id] ? "answered" : "subjective";
+          }
+          return state.answers[question.id] ? "answered" : "unanswered";
+        }
+
+        function filterAllows(question, stateTag) {
+          if (state.filter === "all") return true;
+          if (state.filter === "objective") return question.type === "objective";
+          if (state.filter === "subjective") return question.type === "subjective";
+          if (state.filter === "flagged") return stateTag === "flagged";
+          return true;
+        }
+
+        function startExam(preloaded) {
+          if (state.started) return;
+          state.started = true;
+          state.startTime = preloaded?.startTime || Date.now();
+          const durationMs = EXAM_CONFIG.durationMinutes * 60 * 1000;
+          state.endTime = preloaded?.endTime || state.startTime + durationMs;
+          state.answers = preloaded?.answers || {};
+          state.subjectiveNotes = preloaded?.subjectiveNotes || {};
+          state.flagged = new Set(preloaded?.flagged || []);
+          state.currentIndex = preloaded?.currentIndex || 0;
+          elements.startOverlay.classList.add("hidden");
+          startCountdown();
+          startAutosave();
+          renderQuestion();
+          renderPalette();
+          syncPalettePrint();
+        }
+
+        function resumeSaved() {
+          const saved = loadSaved();
+          if (saved) {
+            startExam(saved);
+          }
+        }
+
+        function clearSaved() {
+          localStorage.removeItem(STORAGE_KEY);
+          state.answers = {};
+          state.subjectiveNotes = {};
+          state.flagged.clear();
+          elements.resumeBlock.classList.add("hidden");
+          elements.startBtn.classList.remove("hidden");
+        }
+
+        function loadSaved() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : null;
+          } catch (error) {
+            console.error("Failed to parse saved data", error);
+            return null;
+          }
+        }
+
+        function persistState() {
+          const saveObject = {
+            answers: state.answers,
+            subjectiveNotes: state.subjectiveNotes,
+            flagged: Array.from(state.flagged),
+            currentIndex: state.currentIndex,
+            startTime: state.startTime,
+            endTime: state.endTime,
+            savedAt: Date.now(),
+            configSnapshot: EXAM_CONFIG,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(saveObject));
+        }
+
+        function startCountdown() {
+          updateTimer();
+          state.countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+          const remaining = Math.max(0, state.endTime - Date.now());
+          const hours = Math.floor(remaining / (1000 * 60 * 60));
+          const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+          elements.timer.textContent = `${pad(hours)}:${pad(minutes)}:${pad(
+            seconds
+          )}`;
+          if (remaining <= 5 * 60 * 1000) {
+            elements.timer.classList.add("warning");
+          } else {
+            elements.timer.classList.remove("warning");
+          }
+          if (remaining <= 0) {
+            submitExam(true);
+          }
+        }
+
+        function startAutosave() {
+          if (state.autoSaveInterval) clearInterval(state.autoSaveInterval);
+          state.autoSaveInterval = setInterval(
+            () => persistState(),
+            EXAM_CONFIG.autoSaveIntervalSec * 1000
+          );
+        }
+
+        function submitExam(auto = false) {
+          if (state.finished) return;
+          state.finished = true;
+          persistState();
+          clearInterval(state.countdownInterval);
+          clearInterval(state.autoSaveInterval);
+          elements.finishedOverlay.classList.remove("hidden");
+          if (auto) {
+            elements.finishedOverlay.querySelector(
+              "p"
+            ).textContent = "निर्धारित समय समाप्त हो गया है। उत्तर सहेजे जा चुके हैं।";
+          }
+        }
+
+        function quickJump() {
+          const term = elements.quickJumpInput.value.trim();
+          if (!term) return;
+          const idx = QUESTIONS.findIndex((q) => q.text.includes(term));
+          if (idx >= 0) {
+            state.currentIndex = idx;
+            renderQuestion();
+            renderPalette();
+          } else {
+            alert("टेक्स्ट मेल नहीं खाया।");
+          }
+        }
+
+        function exportAnswers(type) {
+          const payload = {
+            exam: EXAM_CONFIG,
+            answers: state.answers,
+            subjectiveNotes: state.subjectiveNotes,
+            flagged: Array.from(state.flagged),
+            timestamp: new Date().toISOString(),
+          };
+          if (type === "json") {
+            downloadFile(
+              JSON.stringify(payload, null, 2),
+              "physics-2022-answers.json",
+              "application/json"
+            );
+          } else {
+            const rows = [
+              ["Question ID", "Type", "Answer/Note", "Flagged"].join(","),
+              ...QUESTIONS.map((q) => {
+                const answer =
+                  q.type === "objective"
+                    ? state.answers[q.id] ?? ""
+                    : (state.subjectiveNotes[q.id] || "").replace(/,/g, ";");
+                return [q.id, q.type, answer, state.flagged.has(q.id)].join(",");
+              }),
+            ];
+            downloadFile(rows.join("\n"), "physics-2022-answers.csv", "text/csv");
+          }
+        }
+
+        function downloadFile(content, filename, type) {
+          const blob = new Blob([content], { type });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
+
+        function toggleDarkMode() {
+          document.body.classList.toggle("dark");
+          const enabled = document.body.classList.contains("dark");
+          elements.darkToggle.setAttribute("aria-pressed", enabled.toString());
+        }
+
+        function openQuestionPaper() {
+          elements.questionPaperPanel.classList.remove("hidden");
+          updateQuestionPaperList();
+        }
+
+        function closeQuestionPaper() {
+          elements.questionPaperPanel.classList.add("hidden");
+        }
+
+        function updateQuestionPaperList() {
+          if (!elements.questionPaperList) return;
+          elements.questionPaperList.innerHTML = QUESTIONS.map(
+            (q, index) => `
+            <div class="question-paper-item">
+              <strong>${index + 1}. ${q.text}</strong>
+              ${
+                q.type === "objective"
+                  ? `
+                <div role="radiogroup">
+                  ${q.options
+                    .map(
+                      (opt, idx) => `
+                    <label style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                      <input type="radio" name="paper-${q.id}" data-paper-question="${q.id}" value="${idx}" ${
+                        state.answers[q.id] == idx ? "checked" : ""
+                      } />
+                      <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
+                    </label>`
+                    )
+                    .join("")}
+                </div>
+              `
+                  : `
+                <textarea data-paper-note="${q.id}" placeholder="उत्तर नोट करें">${state.subjectiveNotes[q.id] || ""}</textarea>
+              `
+              }
+            </div>
+          `
+          ).join("");
+          elements.questionPaperList
+            .querySelectorAll("[data-paper-question]")
+            .forEach((input) =>
+              input.addEventListener("change", (e) => {
+                selectOption(e.target.dataset.paperQuestion, e.target.value);
+              })
+            );
+          elements.questionPaperList
+            .querySelectorAll("[data-paper-note]")
+            .forEach((textarea) =>
+              textarea.addEventListener("input", (e) => {
+                state.subjectiveNotes[e.target.dataset.paperNote] = e.target.value;
+                persistState();
+                renderPalette();
+              })
+            );
+        }
+
+        function syncPalettePrint() {
+          if (!elements.printPaletteGrid) return;
+          elements.printPaletteGrid.innerHTML = QUESTIONS.map((q, index) => {
+            const status = getQuestionState(q, index);
+            return `<div class="palette-btn" data-state="${status}">${index + 1}</div>`;
+          }).join("");
+        }
+
+        function printOmr() {
+          document.body.classList.add("print-omr");
+          syncPalettePrint();
+          setTimeout(() => {
+            window.print();
+            document.body.classList.remove("print-omr");
+          }, 100);
+        }
+
+        function replaceDataset() {
+          try {
+            const parsed = JSON.parse(elements.datasetTextarea.value);
+            if (!Array.isArray(parsed)) throw new Error("Array अपेक्षित है");
+            alert("यह डेमो केवल उदाहरण दिखाता है। वास्तविक उपयोग हेतु फ़ाइल संपादित करें।");
+          } catch (err) {
+            alert("JSON त्रुटि: " + err.message);
+          }
+        }
+
+        async function importClipboard() {
+          try {
+            const text = await navigator.clipboard.readText();
+            elements.datasetTextarea.value = text;
+            alert("Clipboard सामग्री पेस्ट कर दी गयी है।");
+          } catch (err) {
+            alert("Clipboard अनुमति आवश्यक: " + err.message);
+          }
+        }
+
+        function runDatasetValidation() {
+          const warnings = [];
+          const seen = new Set();
+          const devanagariRegex = /[\u0900-\u097F]/;
+          QUESTIONS.forEach((q) => {
+            q.needs_manual_check = false;
+            if (seen.has(q.id)) {
+              warnings.push(`needs_manual_check (${q.id}): Duplicate ID`);
+              state.manualCheckIds.add(q.id);
+              q.needs_manual_check = true;
+            } else {
+              seen.add(q.id);
+            }
+            if (!devanagariRegex.test(q.text)) {
+              warnings.push(`needs_manual_check (${q.id}): गैर-देवनागरी पाठ`);
+              state.manualCheckIds.add(q.id);
+              q.needs_manual_check = true;
+            }
+            if (q.type === "objective") {
+              if (!q.options || q.options.length < 4) {
+                warnings.push(`needs_manual_check (${q.id}): विकल्प अपूर्ण`);
+                state.manualCheckIds.add(q.id);
+                q.needs_manual_check = true;
+              }
+            }
+          });
+          if (warnings.length) {
+            elements.validationWarnings.classList.remove("hidden");
+            elements.validationWarnings.innerHTML = warnings
+              .map((w) => `<div>[चेतावनी] ${w}</div>`)
+              .join("");
+          } else {
+            elements.validationWarnings.classList.add("hidden");
+            elements.validationWarnings.textContent = "";
+          }
+        }
+
+        function pad(num) {
+          return String(num).padStart(2, "0");
+        }
+
+        window.addEventListener("beforeunload", () => persistState());
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
+
