@@ -1,187 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Take a Test</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 85%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take a Test - Professional</title>
+    <!-- Importing Poppins and Roboto for a professional feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* General Reset and Setup */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Modern, deep gradient background */
+            background: linear-gradient(135deg, #1f013d 0%, #300350 50%, #1f013d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #fff;
+        }
 
-    .container {
-      max-width: 600px;
-      width: 100%;
-      background: #ffffffee;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      text-align: center;
-    }
+        /* Container Styling - Frosted Glass Effect */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
 
-    h2 {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 2rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .subject-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: #e0f7fa; /* Light cyan color */
+            margin-bottom: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            font-weight: 800;
+        }
 
-    .subject-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #17256d;
-      color: #fff;
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .subject-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
+        .subject-list {
+            display: grid;
+            gap: 1.5rem;
+        }
 
-    .subject-name {
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
+        /* Card Styling for Subjects */
+        .subject-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05); /* Slightly visible background */
+            padding: 1.25rem 2rem;
+            border-radius: 1rem;
+            border: 1px solid transparent;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-    .subject-link a {
-      text-decoration: none;
-      background: #fff;
-      color: #17256d;
-      padding: 0.4rem 0.8rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      transition: background 0.3s, color 0.3s;
-    }
+        .subject-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px #4dd0e1;
+            border-color: #4dd0e1;
+        }
 
-    .subject-link a:hover {
-      background: #ff4b5c;
-      color: #fff;
-    }
+        .subject-info {
+            text-align: left;
+        }
 
-    @media (max-width: 500px) {
-      .subject-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-      }
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: fixed; 
-      top: 0;
-      left: 0;
-      margin-top: 10px;
-      margin-left: 10px;
-      z-index: 1000;
+        .subject-title {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        
+        .subject-description {
+            font-size: 0.9rem;
+            color: #b0bec5;
+        }
 
-    }
+        /* NEW LIVE EXAM Button Styling (Top Priority) */
+        .live-exam-card {
+            background: linear-gradient(90deg, #ff4b5c, #ff6b6b);
+            box-shadow: 0 0 20px rgba(255, 75, 92, 0.6);
+            border: 2px solid #fff;
+            padding: 1.5rem 2rem;
+            order: -1; /* Place at the very top */
+        }
+        .live-exam-card .subject-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .live-exam-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 75, 92, 0.8), 0 0 5px #fff;
+        }
+        
+        .new-tag {
+            display: inline-block;
+            background: #00e676;
+            color: #1b5e20;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
 
-    .logo-circle {
-      width: 80px;
-      height: 80px;
-      background: radial-gradient(circle at center, #00ffe1, #0051ff);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
-      animation: rotateCircle 2s linear infinite;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 3px solid rgba(255, 255, 255, 0.2);
-    }
+        .new-tag .fa-bolt {
+            margin-right: 0.3rem; /* Icon aur text ke beech space */
+        }
 
-    .logo-circle:hover {
-      transform: scale(1.15) rotate(20deg);
-      box-shadow: 0 0 30px #00ffe1, 0 0 50px #0088ff;
-      border-color: #ffffff55;
-    }
+        @keyframes neonGlow {
+            from { text-shadow: 0 0 5px #00e676; }
+            to { text-shadow: 0 0 10px #00e676, 0 0 15px #00e676; }
+        }
 
-    @keyframes rotateCircle {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+        /* CTA Button Styling (The professional buttons) */
+        .cta-button {
+            text-decoration: none;
+            display: inline-block;
+            padding: 0.7rem 1.8rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            /* Default button gradient */
+            background: linear-gradient(45deg, #00b0ff, #0088ff); 
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 176, 255, 0.4);
+            transition: all 0.3s ease, transform 0.1s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
 
-    .logo-circle span {
-      color: white;
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 12px #00ffe1, 0 0 5px #0088ff;
-      pointer-events: none;
-    }
+        /* Hover Effect: Shine & Shadow */
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 176, 255, 0.6), 0 0 30px #00b0ff;
+        }
+        
+        /* Click Effect: Press Down */
+        .cta-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
 
-    .logo-text {
-      color: #00ffe1;
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
+        /* Pseudo-element for hover shine effect */
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-20deg);
+            transition: all 0.5s;
+            z-index: -1;
+        }
 
-    .logo-text:hover {
-      color: #ffffff;
-      text-shadow: 0 0 10px #00ffe1, 0 0 20px #0088ff;
-    }
-  </style>
+        .cta-button:hover::after {
+            left: 100%;
+        }
+
+        /* Specific style for Live Exam button */
+        .live-exam-card .cta-button {
+            /* Distinct color for the primary CTA */
+            background: #ffffff; 
+            color: #ff4b5c;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+        }
+        
+        /* Pulse Animation for Live Exam Start Button */
+        .pulse-effect {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            .subject-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+                align-items: flex-start; /* Resetting alignment for smaller screens */
+            }
+            .subject-info {
+                width: 100%;
+                text-align: center;
+            }
+            .action-link {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="logo-container">
-    <div class="logo-circle">
-      <span>SW</span>
+    <div class="container">
+        <h2>Select Your Test Module</h2>
+        <div class="subject-list">
+            
+            <!-- 1. NEW FEATURE: LIVE EXAM (Added at the top) -->
+            <div class="subject-card live-exam-card">
+                <div class="subject-info">
+                    <!-- EMOJI REPLACED WITH FONT AWESOME ICON -->
+                    <span class="new-tag"><i class="fas fa-bolt"></i> New Update</span>
+                    <div class="subject-title">Live Exam</div>
+                    <p class="subject-description">Timed, full-syllabus mock exams for practice.</p>
+                </div>
+                <div class="action-link">
+                    <!-- LOCATION PRESERVED: live_exam.html -->
+                    <a href="Live_Exam.html" class="cta-button pulse-effect">Start Now</a>
+                </div>
+            </div>
+
+            <!-- 2. PHYSICS (Original Location Preserved) -->
+            <div class="subject-card">
+                <div class="subject-info">
+                    <div class="subject-title">Physics</div>
+                    <p class="subject-description">Detailed chapter-wise tests covering core concepts.</p>
+                </div>
+                <div class="action-link">
+                    <!-- LOCATION PRESERVED: PhysicsChaptersTest.html -->
+                    <a href="PhysicsChaptersTest.html" class="cta-button">Take Test</a>
+                </div>
+            </div>
+
+            <!-- 3. CHEMISTRY (Original Location Preserved) -->
+            <div class="subject-card">
+                <div class="subject-info">
+                    <div class="subject-title">Chemistry</div>
+                    <p class="subject-description">Practice inorganic, organic, and physical chemistry.</p>
+                </div>
+                <div class="action-link">
+                    <!-- LOCATION PRESERVED: ChemistryChaptersTest.html -->
+                    <a href="ChemistryChaptersTest.html" class="cta-button">Take Test</a>
+                </div>
+            </div>
+
+            <!-- 4. MATHEMATICS (Original Location Preserved) -->
+            <div class="subject-card">
+                <div class="subject-info">
+                    <div class="subject-title">Mathematics</div>
+                    <p class="subject-description">Test your skills in Calculus, Algebra, and Geometry.</p>
+                </div>
+                <div class="action-link">
+                    <!-- LOCATION PRESERVED: MathsChaptersTest.html -->
+                    <a href="MathsChaptersTest.html" class="cta-button">Take Test</a>
+                </div>
+            </div>
+
+            <!-- 5. BIOLOGY (Original Location Preserved) -->
+            <div class="subject-card">
+                <div class="subject-info">
+                    <div class="subject-title">Biology</div>
+                    <p class="subject-description">Comprehensive tests on Zoology and Botany concepts.</p>
+                </div>
+                <div class="action-link">
+                    <!-- LOCATION PRESERVED: BiologyChaptersTest.html -->
+                    <a href="BiologyChaptersTest.html" class="cta-button">Take Test</a>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="logo-text">StudyWeb</div>
-  </div>
-  <div class="container">
-    <h2>In which subject would you like to take the test?</h2>
-    <div class="subject-list">
-      <div class="subject-item">
-        <div class="subject-name">Physics</div>
-        <div class="subject-link"><a href="PhysicsChaptersTest.html">Take Test</a></div>
-      </div>
-      <div class="subject-item">
-        <div class="subject-name">Chemistry</div>
-        <div class="subject-link"><a href="ChemistryChaptersTest.html">Take Test</a></div>
-      </div>
-      <div class="subject-item">
-        <div class="subject-name">Mathematics</div>
-        <div class="subject-link"><a href="MathsChaptersTest.html">Take Test</a></div>
-      </div>
-      <div class="subject-item">
-        <div class="subject-name">Biology</div>
-        <div class="subject-link"><a href="BiologyChaptersTest.html">Take Test</a></div>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
-
