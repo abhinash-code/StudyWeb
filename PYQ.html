@@ -266,62 +266,96 @@
     </footer>
 
     <script>
-        // Data Configuration
-        const startYear = 2025;
-        const endYear = 2010;
-        const container = document.getElementById('papers-container');
+    // Data Configuration
+    const startYear = 2025;
+    const endYear = 2010;
+    const container = document.getElementById('papers-container');
 
-        // Function to create a card for each year
-        function generateCards() {
-            let delay = 0; // For staggered animation
+    /*
+      Custom links map:
+      - Agar kisi specific year/subject ka real link chahta ho, yahan add karo.
+      - Format: links[year] = { physics: 'link-or-filename', chemistry: 'link', maths: 'link' }
+      - For the two files you gave, I have already set correct filenames for 2025.
+      - For other years, code will fallback to default placeholders:
+            pdfs/physics_<year>.pdf
+            pdfs/chemistry_<year>.pdf
+            pdfs/maths_<year>.pdf
+      - Replace placeholders or add more real links in this object as you get them.
+    */
+    const links = {
+        2025: {
+            physics: "12th bihar board physics 2025 questions paper.pdf",
+            chemistry: "#", // add real link when available
+            maths: "12th bihar board maths 2025 questions paper.pdf"
+        },
+        
+    };
 
-            for (let year = startYear; year >= endYear; year--) {
-                const card = document.createElement('div');
-                card.className = 'year-card animate-card';
-                card.style.animationDelay = `${delay}s`;
-
-                // HTML Structure for the card
-                card.innerHTML = `
-                    <div class="year-badge">
-                        <i class="fa-regular fa-calendar-check"></i>
-                        <span>${year}</span>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="button-group">
-                        <a href="pdfs/physics_${year}.pdf" class="btn btn-physics" download>
-                            <div class="btn-content">
-                                <i class="fa-solid fa-atom subject-icon"></i>
-                                <span>Physics</span>
-                            </div>
-                            <i class="fa-solid fa-download download-icon"></i>
-                        </a>
-                        
-                        <a href="pdfs/chemistry_${year}.pdf" class="btn btn-chemistry" download>
-                            <div class="btn-content">
-                                <i class="fa-solid fa-flask subject-icon"></i>
-                                <span>Chemistry</span>
-                            </div>
-                            <i class="fa-solid fa-download download-icon"></i>
-                        </a>
-                        
-                        <a href="pdfs/maths_${year}.pdf" class="btn btn-maths" download>
-                            <div class="btn-content">
-                                <i class="fa-solid fa-calculator subject-icon"></i>
-                                <span>Mathematics</span>
-                            </div>
-                            <i class="fa-solid fa-download download-icon"></i>
-                        </a>
-                    </div>
-                `;
-
-                container.appendChild(card);
-                delay += 0.05; // Increase delay for the next card to create a cascade effect
-            }
+    // Function to get link for a subject and year (prefers custom map, otherwise default placeholder)
+    function getLink(year, subject) {
+        if (links[year] && links[year][subject]) {
+            return links[year][subject];
         }
+        // default placeholder path (you can change base folder if needed)
+        return `pdfs/${subject}_${year}.pdf`;
+    }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', generateCards);
-    </script>
+    // Function to create a card for each year
+    function generateCards() {
+        let delay = 0; // For staggered animation
+
+        for (let year = startYear; year >= endYear; year--) {
+            const card = document.createElement('div');
+            card.className = 'year-card animate-card';
+            card.style.animationDelay = `${delay}s`;
+
+            // Resolve links (either custom or default)
+            const physicsLink = getLink(year, 'physics');
+            const chemistryLink = getLink(year, 'chemistry');
+            const mathsLink = getLink(year, 'maths');
+
+            // HTML Structure for the card
+            card.innerHTML = `
+                <div class="year-badge">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>${year}</span>
+                </div>
+                <div class="divider"></div>
+                <div class="button-group">
+                    <a href="${physicsLink}" class="btn btn-physics" download>
+                        <div class="btn-content">
+                            <i class="fa-solid fa-atom subject-icon"></i>
+                            <span>Physics</span>
+                        </div>
+                        <i class="fa-solid fa-download download-icon"></i>
+                    </a>
+                    
+                    <a href="${chemistryLink}" class="btn btn-chemistry" download>
+                        <div class="btn-content">
+                            <i class="fa-solid fa-flask subject-icon"></i>
+                            <span>Chemistry</span>
+                        </div>
+                        <i class="fa-solid fa-download download-icon"></i>
+                    </a>
+                    
+                    <a href="${mathsLink}" class="btn btn-maths" download>
+                        <div class="btn-content">
+                            <i class="fa-solid fa-calculator subject-icon"></i>
+                            <span>Mathematics</span>
+                        </div>
+                        <i class="fa-solid fa-download download-icon"></i>
+                    </a>
+                </div>
+            `;
+
+            container.appendChild(card);
+            delay += 0.05; // Increase delay for the next card to create a cascade effect
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', generateCards);
+</script>
 
 </body>
 </html>
