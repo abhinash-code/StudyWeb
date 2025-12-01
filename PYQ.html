@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bihar Board Past Papers (2010-2025)</title>
+    
+    <!-- Fonts: Poppins for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-bg: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --text-color: #ffffff;
+            --accent-physics: #3b82f6; /* Blue */
+            --accent-chem: #10b981;    /* Emerald */
+            --accent-math: #f43f5e;    /* Rose */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            /* Deep animated gradient background */
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                              radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            color: var(--text-color);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* --- Header Styling --- */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* --- Grid Container --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* --- Card Styling (Glassmorphism) --- */
+        .year-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .year-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .year-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .year-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .year-badge {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .year-badge i {
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            margin-bottom: 10px;
+        }
+
+        /* --- Buttons Styling --- */
+        .button-group {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .btn i {
+            font-size: 1.2rem;
+        }
+
+        .btn .download-icon {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        /* Specific Subject Colors */
+        /* Physics */
+        .btn-physics {
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        .btn-physics:hover {
+            background: rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            border-color: var(--accent-physics);
+        }
+        .btn-physics i.subject-icon { color: var(--accent-physics); }
+
+        /* Chemistry */
+        .btn-chemistry {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .btn-chemistry:hover {
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+            border-color: var(--accent-chem);
+        }
+        .btn-chemistry i.subject-icon { color: var(--accent-chem); }
+
+        /* Maths */
+        .btn-maths {
+            border-color: rgba(244, 63, 94, 0.3);
+        }
+        .btn-maths:hover {
+            background: rgba(244, 63, 94, 0.15);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+            border-color: var(--accent-math);
+        }
+        .btn-maths i.subject-icon { color: var(--accent-math); }
+
+        .btn:hover .download-icon {
+            opacity: 1;
+            transform: translateY(2px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0; /* Starts hidden */
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .container { grid-template-columns: 1fr; } /* Single column */
+            .year-card { padding: 20px; }
+            .btn { padding: 12px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bihar Board Papers</h1>
+        <p class="subtitle">Official archive of BSEB Final Exam Question Papers<br>Physics, Chemistry, and Mathematics (2010 - 2025)</p>
+    </header>
+
+    <main class="container" id="papers-container">
+        <!-- Content will be generated by JavaScript -->
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Bihar Board Archives. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Data Configuration
+        const startYear = 2025;
+        const endYear = 2010;
+        const container = document.getElementById('papers-container');
+
+        // Function to create a card for each year
+        function generateCards() {
+            let delay = 0; // For staggered animation
+
+            for (let year = startYear; year >= endYear; year--) {
+                const card = document.createElement('div');
+                card.className = 'year-card animate-card';
+                card.style.animationDelay = `${delay}s`;
+
+                // HTML Structure for the card
+                card.innerHTML = `
+                    <div class="year-badge">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>${year}</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="button-group">
+                        <a href="pdfs/physics_${year}.pdf" class="btn btn-physics" download>
+                            <div class="btn-content">
+                                <i class="fa-solid fa-atom subject-icon"></i>
+                                <span>Physics</span>
+                            </div>
+                            <i class="fa-solid fa-download download-icon"></i>
+                        </a>
+                        
+                        <a href="pdfs/chemistry_${year}.pdf" class="btn btn-chemistry" download>
+                            <div class="btn-content">
+                                <i class="fa-solid fa-flask subject-icon"></i>
+                                <span>Chemistry</span>
+                            </div>
+                            <i class="fa-solid fa-download download-icon"></i>
+                        </a>
+                        
+                        <a href="pdfs/maths_${year}.pdf" class="btn btn-maths" download>
+                            <div class="btn-content">
+                                <i class="fa-solid fa-calculator subject-icon"></i>
+                                <span>Mathematics</span>
+                            </div>
+                            <i class="fa-solid fa-download download-icon"></i>
+                        </a>
+                    </div>
+                `;
+
+                container.appendChild(card);
+                delay += 0.05; // Increase delay for the next card to create a cascade effect
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', generateCards);
+    </script>
+
+</body>
+</html>
