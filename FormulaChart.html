@@ -67,7 +67,7 @@
       background: white;
       border-radius: var(--radius);
       padding: 30px;
-      margin-bottom: 50px;
+      margin-bottom: 30px; /* Changed margin to accommodate new box */
       box-shadow: var(--shadow);
       border-left: 5px solid var(--accent);
       display: flex;
@@ -75,6 +75,12 @@
       gap: 25px;
       animation: slideUp 0.8s ease;
       transition: transform 0.3s ease;
+    }
+
+    /* New Style for Dimensional Box (Orange Theme) */
+    .featured-box.orange-theme {
+      border-left: 5px solid #f59e0b;
+      margin-bottom: 50px; /* Add space before grid */
     }
 
     .featured-box:hover {
@@ -90,6 +96,11 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+    }
+    
+    /* Icon background for Orange Theme */
+    .featured-box.orange-theme .featured-icon {
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
     }
 
     .featured-icon i {
@@ -126,9 +137,19 @@
       box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
     }
 
+    /* Button background for Orange Theme */
+    .featured-box.orange-theme .btn-featured {
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+
     .btn-featured:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    
+    .featured-box.orange-theme .btn-featured:hover {
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
     }
 
     /* Subjects Grid */
@@ -328,7 +349,7 @@
       <p>Your ultimate collection of Maths and Physics formulas. Access all chapters with a single click!</p>
     </header>
 
-    <!-- All Collections Box -->
+    <!-- All Collections Box (Original) -->
     <div class="featured-box">
       <div class="featured-icon">
         <i class="fas fa-rocket"></i>
@@ -338,6 +359,20 @@
         <p>Get access to the complete formula library with advanced search, filters, and categorized collections. Perfect for last-minute revisions!</p>
         <a href="Formulas_Collection.html" class="btn-featured">
           <i class="fas fa-external-link-alt"></i> Explore All Collections
+        </a>
+      </div>
+    </div>
+
+    <!-- New Dimensional Formula Box (Added as requested) -->
+    <div class="featured-box orange-theme">
+      <div class="featured-icon">
+        <i class="fas fa-ruler"></i>
+      </div>
+      <div class="featured-content">
+        <h2>Dimensional Formulas</h2>
+        <p>Master dimensional analysis with our comprehensive list of physical quantities, SI units, and their specific dimensions.</p>
+        <a href="Dimenstion.html" class="btn-featured">
+          <i class="fas fa-ruler"></i> Dimensional Formula
         </a>
       </div>
     </div>
@@ -470,15 +505,17 @@
         });
       });
       
-      // Add animation to featured button
-      const featuredBtn = document.querySelector('.btn-featured');
-      featuredBtn.addEventListener('click', function(e) {
-        const originalText = this.innerHTML;
-        this.innerHTML = '<div class="loading"></div> Opening Collections...';
-        
-        setTimeout(() => {
-          this.innerHTML = originalText;
-        }, 1500);
+      // Add animation to featured buttons (Handles both now)
+      const featuredBtns = document.querySelectorAll('.btn-featured');
+      featuredBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<div class="loading"></div> Opening...';
+            
+            setTimeout(() => {
+            this.innerHTML = originalText;
+            }, 1500);
+        });
       });
     });
   </script>
