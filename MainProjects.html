@@ -327,25 +327,60 @@
             <!-- Project 10 -->
             <div class="project-card">
                 <div class="project-icon">
-                    <i class="fas fa-map-marked-alt"></i>
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="36" height="36">
+  <defs>
+    <linearGradient id="headGrad" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stop-color="#d9d9d9"/>
+      <stop offset="100%" stop-color="#a6a6a6"/>
+    </linearGradient>
+    <radialGradient id="eyeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#0055ff"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Head -->
+  <rect x="8" y="16" width="48" height="32" rx="12" ry="12" fill="url(#headGrad)" stroke="#666" stroke-width="2"/>
+
+  <!-- Eyes -->
+  <circle cx="22" cy="28" r="5" fill="url(#eyeGrad)" stroke="#0044aa" stroke-width="1"/>
+  <circle cx="42" cy="28" r="5" fill="url(#eyeGrad)" stroke="#0044aa" stroke-width="1"/>
+
+  <!-- Mouth -->
+  <rect x="24" y="40" width="16" height="4" rx="2" ry="2" fill="#333"/>
+
+  <!-- Antenna -->
+  <line x1="32" y1="16" x2="32" y2="6" stroke="#00c6ff" stroke-width="3"/>
+  <circle cx="32" cy="6" r="3" fill="#00c6ff"/>
+</svg>
+
                 </div>
-                <h3>Project 10</h3>
-                <p>coming soon...</p>
+                <h3>NEXA AI</h3>
+                <p>NEXA – A futuristic AI tool designed for intelligent automation, insights, and next-level productivity.</p>
                 <button class="btn" onclick="openProject10()">View Project</button>
             </div>
-            <!-- Project 11-->
-              <div class="project-card">
+             <!-- Project 11 -->
+            <div class="project-card">
                 <div class="project-icon">
                     <i class="fas fa-map-marked-alt"></i>
                 </div>
                 <h3>Project 11</h3>
                 <p>coming soon...</p>
-                <button class="btn" onclick="openProject10()">View Project</button>
+                <button class="btn" onclick="openProject11()">View Project</button>
+            </div>
+            <!-- Project 12-->
+              <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>Project 12</h3>
+                <p>coming soon...</p>
+                <button class="btn" onclick="openProject11()">View Project</button>
             </div>
         </div>
         
         <footer>
-            <p>© 2023 My Projects Portfolio. All rights reserved.</p>
+            <p>© 2026 My Projects Portfolio. All rights reserved.</p>
         </footer>
     </div>
 
@@ -388,14 +423,15 @@
     }
     
     function openProject10() {
-        window.location.href = "#"; 
+        window.location.href = "https://abhinash-code.github.io/NEXA-AI/"; 
     }
     
     
-    function openProject10() {
+    function openProject11() {
         alert("This Project is Not Available Yet");
     }
    </script>
 </body>
 </html>
+
 
