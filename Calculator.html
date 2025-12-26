@@ -1,14 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite Calculator | Dev by Abhinash</title>
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-color: #0d1117;
+            --calc-bg: #161b22;
+            --accent-cyan: #58a6ff;
+            --accent-purple: #bc8cff;
+            --accent-red: #f85149;
+            --btn-bg: #21262d;
+            --text-main: #c9d1d9;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -16,190 +31,218 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #181818;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            background-image: radial-gradient(circle at center, #1c2128 0%, #0d1117 100%);
+            font-family: 'Poppins', sans-serif;
+            padding: 15px;
+            overflow: hidden;
         }
 
+        /* --- CALCULATOR BODY --- */
         .calculator {
-            border: 1px solid #444;
+            width: 100%;
+            max-width: 360px;
+            background: var(--calc-bg);
             padding: 20px;
-            border-radius: 15px;
-            background: #222;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .calculator form input {
-            border: 0;
-            outline: 0;
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            box-shadow: -5px -5px 12px rgba(255, 255, 255, 0.1),
-                        5px 5px 12px rgba(0, 0, 0, 0.2);
-            background: #333;
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-            margin: 10px;
-            transition: 0.2s ease;
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .calculator form input:hover {
-            background: #444;
-        }
-
-        form .display {
-            display: flex;
-            justify-content: flex-end;
-            margin: 20px 0;
-        }
-      #display {
-       padding: 10px 12px; 
-       }
-
-        form .display input {
+        /* --- DISPLAY AREA --- */
+        .display-screen {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: right;
-            flex: 1;
-            font-size: 2rem;
-            box-shadow: none;
-            background: #000;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: all 0.3s ease;
         }
 
-        form input.equal {
-            width: 140px;
-            background: #0f0;
-            color: #000;
+        #history {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+            font-family: 'Orbitron', sans-serif;
+            min-height: 20px;
+            word-wrap: break-word;
         }
 
-        .copy-info {
-            font-size: 0.8rem;
-            color: #aaa;
-            margin-top: 10px;
+        #display {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2.2rem;
+            text-align: right;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+            pointer-events: none;
+        }
+
+        /* --- BUTTONS GRID --- */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        input[type="button"] {
+            height: 60px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            background: var(--btn-bg);
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-height: 700px) {
+            input[type="button"] { height: 50px; }
+            .display-screen { min-height: 80px; }
+        }
+
+        input[type="button"]:active {
+            transform: scale(0.92);
+            background: #30363d;
+        }
+
+        input[type="button"]:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: #30363d;
+        }
+
+        /* Specialized Buttons */
+        .btn-op { color: var(--accent-cyan); font-weight: 700; }
+        .btn-sci { font-size: 0.85rem; color: var(--accent-purple); background: rgba(188, 140, 255, 0.05); }
+        
+        .btn-ac { background: rgba(248, 81, 73, 0.1); color: var(--accent-red); }
+        .btn-ac:active { background: var(--accent-red); color: white; }
+
+        .btn-equal {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+        }
+
+        .btn-equal:active { transform: scale(0.96); box-shadow: none; }
+
+        /* --- FOOTER BRANDING --- */
+        .footer-info {
+            margin-top: 20px;
             text-align: center;
+            font-size: 0.75rem;
+            color: #8b949e;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
-        .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: fixed; 
-      top: 0;
-      left: 0;
-      margin-top: 10px;
-      margin-left: 10px;
-      z-index: 1000;
 
-    }
+        .dev-tag {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
 
-    .logo-circle {
-      width: 80px;
-      height: 80px;
-      background: radial-gradient(circle at center, #00ffe1, #0051ff);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
-      animation: rotateCircle 2s linear infinite;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 3px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .logo-circle:hover {
-      transform: scale(1.15) rotate(20deg);
-      box-shadow: 0 0 30px #00ffe1, 0 0 50px #0088ff;
-      border-color: #ffffff55;
-    }
-
-    @keyframes rotateCircle {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .logo-circle span {
-      color: white;
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 12px #00ffe1, 0 0 5px #0088ff;
-      pointer-events: none;
-    }
-
-    .logo-text {
-      color: #00ffe1;
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .logo-text:hover {
-      color: #ffffff;
-      text-shadow: 0 0 10px #00ffe1, 0 0 20px #0088ff;
-    }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-    <div class="logo-circle">
-      <span>SW</span>
-    </div>
-    <div class="logo-text">StudyWeb</div>
-  </div>
+
     <div class="calculator">
-        <form>
-            <div class="display">
-                <input type="text" name="display" id="display">
-            </div>
-            <div>
-                <input type="button" value="AC" onclick="clearDisplay()">
-                <input type="button" value="DE" onclick="deleteLast()">
-                <input type="button" value="." onclick="appendToDisplay('.')">
-                <input type="button" value="/" onclick="appendToDisplay('/')">
-            </div>
-            <div>
-                <input type="button" value="7" onclick="appendToDisplay('7')">
-                <input type="button" value="8" onclick="appendToDisplay('8')">
-                <input type="button" value="9" onclick="appendToDisplay('9')">
-                <input type="button" value="*" onclick="appendToDisplay('*')">
-            </div>
-            <div>
-                <input type="button" value="4" onclick="appendToDisplay('4')">
-                <input type="button" value="5" onclick="appendToDisplay('5')">
-                <input type="button" value="6" onclick="appendToDisplay('6')">
-                <input type="button" value="-" onclick="appendToDisplay('-')">
-            </div>
-            <div>
-                <input type="button" value="1" onclick="appendToDisplay('1')">
-                <input type="button" value="2" onclick="appendToDisplay('2')">
-                <input type="button" value="3" onclick="appendToDisplay('3')">
-                <input type="button" value="+" onclick="appendToDisplay('+')">
-            </div>
-            <div>
-                <input type="button" value="00" onclick="appendToDisplay('00')">
-                <input type="button" value="0" onclick="appendToDisplay('0')">
-                <input type="button" value="=" class="equal" onclick="calculate()">
-            </div>
-        </form>
-        <div class="copy-info" id="copy-info"></div>
+        <div class="display-screen">
+            <div id="history"></div>
+            <input type="text" id="display" placeholder="0" readonly>
+        </div>
+
+        <div class="buttons">
+            <!-- Row 1 -->
+            <input type="button" value="sin" class="btn-sci" onclick="sciFunc('sin')">
+            <input type="button" value="cos" class="btn-sci" onclick="sciFunc('cos')">
+            <input type="button" value="tan" class="btn-sci" onclick="sciFunc('tan')">
+            <input type="button" value="AC" class="btn-ac" onclick="clearDisplay()">
+
+            <!-- Row 2 -->
+            <input type="button" value="log" class="btn-sci" onclick="sciFunc('log')">
+            <input type="button" value="√" class="btn-sci" onclick="sciFunc('sqrt')">
+            <input type="button" value="^" class="btn-op" onclick="appendToDisplay('**')">
+            <input type="button" value="DE" class="btn-op" onclick="deleteLast()">
+
+            <!-- Row 3 -->
+            <input type="button" value="7" onclick="appendToDisplay('7')">
+            <input type="button" value="8" onclick="appendToDisplay('8')">
+            <input type="button" value="9" onclick="appendToDisplay('9')">
+            <input type="button" value="/" class="btn-op" onclick="appendToDisplay('/')">
+
+            <!-- Row 4 -->
+            <input type="button" value="4" onclick="appendToDisplay('4')">
+            <input type="button" value="5" onclick="appendToDisplay('5')">
+            <input type="button" value="6" onclick="appendToDisplay('6')">
+            <input type="button" value="*" class="btn-op" onclick="appendToDisplay('*')">
+
+            <!-- Row 5 -->
+            <input type="button" value="1" onclick="appendToDisplay('1')">
+            <input type="button" value="2" onclick="appendToDisplay('2')">
+            <input type="button" value="3" onclick="appendToDisplay('3')">
+            <input type="button" value="-" class="btn-op" onclick="appendToDisplay('-')">
+
+            <!-- Row 6 -->
+            <input type="button" value="0" onclick="appendToDisplay('0')">
+            <input type="button" value="." onclick="appendToDisplay('.')">
+            <input type="button" value="+" class="btn-op" onclick="appendToDisplay('+')">
+            <input type="button" value="%" class="btn-op" onclick="appendToDisplay('/100')">
+
+            <!-- Row 7 -->
+            <input type="button" value="(" class="btn-op" onclick="appendToDisplay('(')">
+            <input type="button" value=")" class="btn-op" onclick="appendToDisplay(')')">
+            <input type="button" value="=" class="btn-equal" onclick="calculate()">
+        </div>
+
+        <div class="footer-info">
+            Developed by <span class="dev-tag">Abhinash</span>
+        </div>
     </div>
 
     <script>
         const display = document.getElementById('display');
-        const copyInfo = document.getElementById('copy-info');
+        const historyDiv = document.getElementById('history');
 
+        // Sounds can be added here if needed, but keeping it clean as per age-appropriate rules
+        
         function appendToDisplay(value) {
-            display.value += value;
+            if (display.value === '0' || display.value === 'Error') {
+                display.value = value;
+            } else {
+                display.value += value;
+            }
+            // Mobile Friendly scrolling
+            display.scrollLeft = display.scrollWidth;
         }
 
         function clearDisplay() {
             display.value = '';
-            copyInfo.textContent = '';
+            historyDiv.textContent = '';
         }
 
         function deleteLast() {
@@ -208,27 +251,65 @@
 
         function calculate() {
             try {
-                let result = eval(display.value);
+                const expression = display.value;
+                if (!expression) return;
+                
+                historyDiv.textContent = expression + ' =';
+                // Using a safer evaluation approach for basic math
+                let result = eval(expression);
+                
+                // Result formatting
+                if (result.toString().includes('.') && result.toString().split('.')[1].length > 4) {
+                    result = parseFloat(result.toFixed(4));
+                }
+                
                 display.value = result;
-                showCopyMessage(result);
-            } catch {
+                
+                // Visual feedback animation
+                display.style.transform = "scale(1.05)";
+                setTimeout(() => display.style.transform = "scale(1)", 100);
+
+            } catch (e) {
+                display.value = 'Error';
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+
+        function sciFunc(type) {
+            try {
+                let currentVal = eval(display.value) || 0;
+                let result;
+                historyDiv.textContent = type + '(' + currentVal + ')';
+                
+                switch(type) {
+                    case 'sin': result = Math.sin(currentVal * Math.PI / 180); break;
+                    case 'cos': result = Math.cos(currentVal * Math.PI / 180); break;
+                    case 'tan': result = Math.tan(currentVal * Math.PI / 180); break;
+                    case 'log': result = Math.log10(currentVal); break;
+                    case 'sqrt': result = Math.sqrt(currentVal); break;
+                }
+                
+                display.value = parseFloat(result.toFixed(6));
+            } catch (e) {
                 display.value = 'Error';
             }
         }
 
-        function showCopyMessage(result) {
-            copyInfo.textContent = 'Result: ' + result + ' (Click to Copy)';
-            copyInfo.style.cursor = 'pointer';
-            copyInfo.onclick = () => {
-                try {
-                    navigator.clipboard.writeText(result);
-                    copyInfo.textContent = 'Copied to clipboard!';
-                } catch (e) {
-                    alert('Clipboard permission denied in this browser. Copy manually.');
-                }
-            };
-        }
+        // Keyboard support fix
+        window.addEventListener('keydown', (e) => {
+            if (e.key >= 0 && e.key <= 9) appendToDisplay(e.key);
+            if (e.key === '.') appendToDisplay('.');
+            if (e.key === '+') appendToDisplay('+');
+            if (e.key === '-') appendToDisplay('-');
+            if (e.key === '*') appendToDisplay('*');
+            if (e.key === '/') appendToDisplay('/');
+            if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                calculate();
+            }
+            if (e.key === 'Backspace') deleteLast();
+            if (e.key === 'Escape') clearDisplay();
+        });
     </script>
 </body>
 </html>
-
