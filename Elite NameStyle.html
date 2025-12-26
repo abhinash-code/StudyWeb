@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aggressive Premium Stylish Name & Font Generator - 300+ Styles for Gamers, Social Media, and Professionals.">
+    <title>Elite Stylish Name Generator | Abhinash</title>
+    <!-- 
+    DEVELOPER: Abhinash
+    UPGRADE: Ultra-Dense UI & 300+ Style Engine
+    -->
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: rgba(226, 232, 240, 0.8);
+            --radius-xl: 1.25rem;
+            --radius-2xl: 2rem;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #050505;
+            --card-bg: rgba(15, 15, 20, 0.8);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --primary-glow: rgba(99, 102, 241, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.6s ease;
+        }
+
+        /* --- Animated Mesh Background --- */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .mesh-ball {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.2); }
+        }
+
+        /* --- Typography & Hero --- */
+        .hero {
+            padding: 6rem 1.5rem 3rem;
+            text-align: center;
+        }
+
+        .title-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #06b6d4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: flow 5s linear infinite;
+        }
+
+        @keyframes flow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        /* --- Search & Controls --- */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            backdrop-filter: blur(20px);
+            background: rgba(var(--bg), 0.5);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .search-box {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 100px;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px var(--primary-glow);
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            color: var(--text);
+            outline: none;
+        }
+
+        /* --- Custom Filters --- */
+        .filter-strip {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding: 1rem 1.5rem;
+            scrollbar-width: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .filter-strip::-webkit-scrollbar { display: none; }
+
+        .tag {
+            padding: 0.6rem 1.5rem;
+            border-radius: 100px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .tag.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+
+        /* --- Grid & Dense Cards --- */
+        .results-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            position: relative;
+            transition: var(--transition);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+        }
+
+        /* --- Visual Tiers --- */
+        .card.tier-neon { box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); border-color: rgba(6, 182, 212, 0.3); }
+        .card.tier-neon::before { background: var(--accent); }
+        
+        .card.tier-royal { background: linear-gradient(145deg, var(--card-bg), rgba(245, 158, 11, 0.05)); border-color: rgba(245, 158, 11, 0.3); }
+        .card.tier-royal::before { background: #f59e0b; }
+
+        .card.tier-cyber { background: linear-gradient(145deg, var(--card-bg), rgba(99, 102, 241, 0.05)); }
+        .card.tier-cyber::before { background: var(--primary); }
+
+        .card:hover {
+            transform: scale(1.03) translateY(-10px);
+            z-index: 10;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+
+        .card-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-text {
+            font-size: 1.4rem;
+            color: var(--text);
+            word-break: break-all;
+            margin: 0.5rem 0;
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .icon-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* --- Toast --- */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--text);
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            transform: translateY(200%);
+            transition: var(--transition);
+            z-index: 1000;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        #toast.active { transform: translateY(0); }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 5rem;
+            padding: 4rem 1.5rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .main-title { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg">
+        <div class="mesh-ball" style="background: #6366f1; top: 10%; left: 10%;"></div>
+        <div class="mesh-ball" style="background: #ec4899; bottom: 10%; right: 10%; animation-delay: -5s;"></div>
+        <div class="mesh-ball" style="background: #06b6d4; top: 50%; left: 50%; animation-delay: -10s;"></div>
+    </div>
+
+    <header class="hero">
+        <div class="title-container">
+            <h1 class="main-title">ELITE STYLISH</h1>
+            <p style="color: var(--text-muted); font-weight: 500; margin-top: 1rem; letter-spacing: 0.1em;">THE ULTIMATE NAME GENERATOR PRO</p>
+        </div>
+    </header>
+
+    <div class="sticky-nav">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="nameInput" placeholder="Enter name (e.g. Abhinash)" maxlength="30" autocomplete="off">
+                <button class="tag active" id="themeBtn" style="margin-right: 0.5rem;">Theme</button>
+            </div>
+        </div>
+        
+        <div class="filter-strip" id="filterStrip">
+            <div class="tag active" data-cat="all">All Designs</div>
+            <div class="tag" data-cat="Royal">Royal</div>
+            <div class="tag" data-cat="Neon">Neon</div>
+            <div class="tag" data-cat="Cyber">Cyber</div>
+            <div class="tag" data-cat="Gamer">Gamer</div>
+            <div class="tag" data-cat="Cursive">Cursive</div>
+            <div class="tag" data-cat="Abstract">Abstract</div>
+            <div class="tag" data-cat="Minimal">Minimal</div>
+        </div>
+    </div>
+
+    <main class="results-container">
+        <div class="grid" id="mainGrid">
+            <!-- Dynamically injected -->
+        </div>
+    </main>
+
+    <footer>
+        <h2 style="margin-bottom: 1rem;">Elite Font Studio</h2>
+        <p>Premium Unicode Artistry for Modern Identities.</p>
+        <div style="margin: 2rem 0; opacity: 0.5;">••••••••</div>
+        <p style="font-weight: 700;">Developer: Abhinash</p>
+    </footer>
+
+    <div id="toast">Copied to Clipboard!</div>
+
+    <script>
+        const CONFIG = {
+            currentName: "Abhinash",
+            category: "all",
+            theme: localStorage.getItem('theme') || 'light'
+        };
+
+        const UNICODE_MAPS = {
+            bold: (t) => t.replace(/[A-Za-z0-9]/g, c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D400 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D41A + (code - 97));
+                if (code >= 48 && code <= 57) return String.fromCodePoint(0x1D7CE + (code - 48));
+                return c;
+            }),
+            cursive: (t) => t.replace(/[A-Za-z]/g, c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D49C + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D4B6 + (code - 97));
+                return c;
+            }),
+            cyber: (t) => t.replace(/[A-Za-z0-9]/g, c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D670 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D68A + (code - 97));
+                return c;
+            }),
+            fraktur: (t) => t.replace(/[A-Za-z]/g, c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D504 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D51E + (code - 97));
+                return c;
+            }),
+            double: (t) => t.replace(/[A-Za-z0-9]/g, c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D538 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D552 + (code - 97));
+                return c;
+            })
+        };
+
+        const TEMPLATES = [
+            { cat: 'Royal', tpl: '♔ {name} ♔', tier: 'royal' },
+            { cat: 'Royal', tpl: '『{name}』', tier: 'royal' },
+            { cat: 'Royal', tpl: '⚜ {name} ⚜', tier: 'royal' },
+            { cat: 'Royal', tpl: '꧁ {name} ꧂', tier: 'royal' },
+            { cat: 'Neon', tpl: '⚡ {name} ⚡', tier: 'neon' },
+            { cat: 'Neon', tpl: '✧ {name} ✧', tier: 'neon' },
+            { cat: 'Neon', tpl: '☽ {name} ☾', tier: 'neon' },
+            { cat: 'Cyber', tpl: '〔 {name} 〕', tier: 'cyber' },
+            { cat: 'Cyber', tpl: '█║ {name} ║█', tier: 'cyber' },
+            { cat: 'Cyber', tpl: '◢ {name} ◣', tier: 'cyber' },
+            { cat: 'Gamer', tpl: '亗 {name} 亗', tier: 'cyber' },
+            { cat: 'Gamer', tpl: '〆{name}〆', tier: 'neon' },
+            { cat: 'Gamer', tpl: '× {name} ×', tier: 'royal' },
+            { cat: 'Minimal', tpl: '• {name}', tier: 'minimal' },
+            { cat: 'Minimal', tpl: '{name} _', tier: 'minimal' },
+            { cat: 'Abstract', tpl: '░ {name} ░', tier: 'cyber' },
+            { cat: 'Abstract', tpl: '▤ {name} ▤', tier: 'neon' }
+        ];
+
+        const ACCENTS = ["✿", "★", "✪", "⚔", "☠", "⚛", "☣", "☯", "♛", "⚓", "⚡", "♥", "♦", "♣", "♠"];
+
+        function generate() {
+            const name = CONFIG.currentName || "Abhinash";
+            const styles = [];
+
+            // 1. Core Transforms (x5)
+            Object.keys(UNICODE_MAPS).forEach(key => {
+                styles.push({ text: UNICODE_MAPS[key](name), cat: 'Abstract', label: key, tier: 'minimal' });
+            });
+
+            // 2. Multi-Layer Compositions (The 300+ Engine)
+            TEMPLATES.forEach(t => {
+                // Combine each template with each font transform
+                Object.keys(UNICODE_MAPS).forEach(fKey => {
+                    const transformed = UNICODE_MAPS[fKey](name);
+                    styles.push({ 
+                        text: t.tpl.replace('{name}', transformed), 
+                        cat: t.cat, 
+                        label: `${fKey} ${t.cat}`,
+                        tier: t.tier 
+                    });
+                });
+                
+                // Add prefix/suffix variants
+                ACCENTS.forEach(acc => {
+                    styles.push({ 
+                        text: `${acc} ${t.tpl.replace('{name}', name)} ${acc}`, 
+                        cat: t.cat, 
+                        label: 'Accent Mix',
+                        tier: t.tier 
+                    });
+                });
+            });
+
+            // 3. Special "Cyber" glitch-like variations
+            for(let i=0; i<20; i++) {
+                const randomAcc = ACCENTS[Math.floor(Math.random() * ACCENTS.length)];
+                styles.push({
+                    text: `${randomAcc} ${UNICODE_MAPS.cyber(name)} ${randomAcc}`,
+                    cat: 'Cyber',
+                    label: 'Matrix Shift',
+                    tier: 'cyber'
+                });
+            }
+
+            return styles.filter(s => CONFIG.category === 'all' || s.cat === CONFIG.category);
+        }
+
+        const grid = document.getElementById('mainGrid');
+        function render() {
+            const data = generate();
+            grid.innerHTML = data.map((s, i) => `
+                <div class="card tier-${s.tier || 'minimal'}" style="animation: fadeUp 0.5s ease backwards ${i * 0.01}s">
+                    <div>
+                        <span class="card-label">${s.cat} / ${s.label}</span>
+                        <div class="card-text">${s.text}</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="icon-btn" onclick="copy('${s.text.replace(/'/g, "\\'")}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                        <button class="icon-btn" onclick="share('${s.text.replace(/'/g, "\\'")}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function copy(txt) {
+            const el = document.createElement('textarea');
+            el.value = txt;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const toast = document.getElementById('toast');
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 2000);
+        }
+
+        function share(txt) {
+            if (navigator.share) {
+                navigator.share({ title: 'Stylish Name', text: txt });
+            } else {
+                copy(txt);
+            }
+        }
+
+        // Input Listener
+        document.getElementById('nameInput').addEventListener('input', (e) => {
+            CONFIG.currentName = e.target.value.trim() || "Abhinash";
+            render();
+        });
+
+        // Filter Listener
+        document.getElementById('filterStrip').addEventListener('click', (e) => {
+            if (e.target.classList.contains('tag')) {
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                CONFIG.category = e.target.dataset.cat;
+                render();
+            }
+        });
+
+        // Theme Toggle
+        document.getElementById('themeBtn').addEventListener('click', () => {
+            CONFIG.theme = CONFIG.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', CONFIG.theme);
+            localStorage.setItem('theme', CONFIG.theme);
+        });
+
+        // Initial Theme Load
+        document.documentElement.setAttribute('data-theme', CONFIG.theme);
+
+        // Bootstrap
+        render();
+
+    </script>
+
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body>
+</html>
