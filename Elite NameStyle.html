@@ -72,56 +72,89 @@
             0% { transform: translate(-10%, -10%) scale(1); }
             100% { transform: translate(20%, 20%) scale(1.2); }
         }
+        @media (max-width: 768px) {
+            .mesh-ball {
+                width: 60vw;
+                height: 60vw;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .mesh-ball {
+                    animation: none;
+                }
+            }
+        }
 
         /* --- Typography & Hero --- */
         .hero {
-            padding: 6rem 1.5rem 3rem;
+            padding: 3rem 1rem 2rem;
             text-align: center;
         }
 
         .title-container {
             position: relative;
             display: inline-block;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .title-container p {
+            font-size: clamp(0.7rem, 2.5vw, 1rem);
+            padding: 0 0.5rem;
         }
 
         .main-title {
-            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 900;
             letter-spacing: -0.05em;
             background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #06b6d4 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: flow 5s linear infinite;
+            word-break: break-word;
+            line-height: 1.1;
         }
 
         @keyframes flow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .main-title {
+                animation: none;
+            }
+        }
 
         /* --- Search & Controls --- */
         .sticky-nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 1rem 0;
+            padding: 0.75rem 0;
             backdrop-filter: blur(20px);
-            background: rgba(var(--bg), 0.5);
+            background-color: var(--bg);
+            opacity: 0.95;
+        }
+        
+        [data-theme="dark"] .sticky-nav {
+            opacity: 0.9;
         }
 
         .search-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
 
         .search-box {
             background: var(--card-bg);
             border: 2px solid var(--border);
             border-radius: 100px;
-            padding: 0.5rem;
+            padding: 0.4rem;
             display: flex;
             align-items: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transition: var(--transition);
+            gap: 0.5rem;
         }
 
         .search-box:focus-within {
@@ -134,26 +167,36 @@
             flex: 1;
             background: transparent;
             border: none;
-            padding: 1rem 1.5rem;
-            font-size: 1.25rem;
+            padding: 0.875rem 1rem;
+            font-size: clamp(1rem, 4vw, 1.25rem);
             color: var(--text);
             outline: none;
+            min-width: 0;
+        }
+
+        .search-box #themeBtn {
+            margin-right: 0;
+            flex-shrink: 0;
+            min-width: 60px;
+            padding: 0.6rem 1rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
 
         /* --- Custom Filters --- */
         .filter-strip {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
             overflow-x: auto;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1rem;
             scrollbar-width: none;
             max-width: 1200px;
             margin: 0 auto;
+            -webkit-overflow-scrolling: touch;
         }
         .filter-strip::-webkit-scrollbar { display: none; }
 
         .tag {
-            padding: 0.6rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             border-radius: 100px;
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -161,7 +204,13 @@
             font-weight: 600;
             white-space: nowrap;
             transition: var(--transition);
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .tag.active {
             background: var(--primary);
@@ -173,28 +222,28 @@
         /* --- Grid & Dense Cards --- */
         .results-container {
             max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
+            gap: 1rem;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-xl);
-            padding: 1.5rem;
+            padding: 1.25rem;
             position: relative;
             transition: var(--transition);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 160px;
+            min-height: 140px;
         }
 
         .card::before {
@@ -225,7 +274,7 @@
         }
 
         .card-label {
-            font-size: 0.65rem;
+            font-size: clamp(0.6rem, 2.5vw, 0.65rem);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -235,11 +284,13 @@
         }
 
         .card-text {
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 4vw, 1.4rem);
             color: var(--text);
-            word-break: break-all;
+            word-break: break-word;
+            overflow-wrap: break-word;
             margin: 0.5rem 0;
             font-weight: 500;
+            line-height: 1.4;
         }
 
         .card-actions {
@@ -250,7 +301,7 @@
 
         .icon-btn {
             flex: 1;
-            padding: 0.6rem;
+            padding: 0.75rem;
             border-radius: 0.75rem;
             border: 1px solid var(--border);
             background: transparent;
@@ -260,43 +311,175 @@
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .icon-btn:hover {
+        .icon-btn:hover,
+        .icon-btn:active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
         }
 
+        .icon-btn svg {
+            width: clamp(16px, 4vw, 18px);
+            height: clamp(16px, 4vw, 18px);
+        }
+
         /* --- Toast --- */
         #toast {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 1rem;
+            right: 1rem;
+            left: 1rem;
             background: var(--text);
             color: var(--bg);
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             border-radius: 1rem;
             transform: translateY(200%);
             transition: var(--transition);
             z-index: 1000;
             font-weight: 600;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 300px;
+            margin: 0 auto;
         }
         #toast.active { transform: translateY(0); }
+        
+        @media (min-width: 640px) {
+            #toast {
+                left: auto;
+                right: 2rem;
+                max-width: none;
+                margin: 0;
+            }
+        }
 
         /* --- Footer --- */
         footer {
-            margin-top: 5rem;
-            padding: 4rem 1.5rem;
+            margin-top: 3rem;
+            padding: 2.5rem 1rem;
             background: var(--card-bg);
             border-top: 1px solid var(--border);
             text-align: center;
         }
 
+        footer h2 {
+            font-size: clamp(1.25rem, 5vw, 1.75rem);
+            margin-bottom: 0.75rem;
+        }
+
+        footer p {
+            font-size: clamp(0.875rem, 3vw, 1rem);
+            line-height: 1.6;
+        }
+
+        /* --- Mobile Responsive Styles --- */
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .main-title { font-size: 3rem; }
+            .hero {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            .sticky-nav {
+                padding: 0.5rem 0;
+            }
+
+            .search-container {
+                padding: 0 0.75rem;
+            }
+
+            .search-box {
+                padding: 0.3rem;
+                border-radius: 50px;
+            }
+
+            .search-box input {
+                padding: 0.75rem 0.875rem;
+            }
+
+            .filter-strip {
+                padding: 0.625rem 0.75rem;
+                gap: 0.4rem;
+            }
+
+            .results-container {
+                margin: 1rem auto;
+                padding: 0 0.75rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 0.875rem;
+            }
+
+            .card {
+                padding: 1rem;
+                min-height: 120px;
+            }
+
+            .card:hover {
+                transform: scale(1.02) translateY(-5px);
+            }
+
+            .card-actions {
+                margin-top: 0.75rem;
+                gap: 0.4rem;
+            }
+
+            footer {
+                margin-top: 2rem;
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 1.5rem 0.75rem 1rem;
+            }
+
+            .search-box #themeBtn {
+                min-width: 50px;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .tag {
+                padding: 0.625rem 1rem;
+                min-height: 40px;
+            }
+
+            .card {
+                padding: 0.875rem;
+                min-height: 110px;
+            }
+
+            .card-text {
+                font-size: 1rem;
+            }
+        }
+
+        /* --- Prevent horizontal scroll --- */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        * {
+            max-width: 100%;
+        }
+
+        /* --- Reduce motion for accessibility --- */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -311,15 +494,15 @@
     <header class="hero">
         <div class="title-container">
             <h1 class="main-title">ELITE STYLISH</h1>
-            <p style="color: var(--text-muted); font-weight: 500; margin-top: 1rem; letter-spacing: 0.1em;">THE ULTIMATE NAME GENERATOR PRO</p>
+            <p style="color: var(--text-muted); font-weight: 500; margin-top: 0.75rem; letter-spacing: 0.1em;">THE ULTIMATE NAME GENERATOR PRO</p>
         </div>
     </header>
 
     <div class="sticky-nav">
         <div class="search-container">
             <div class="search-box">
-                <input type="text" id="nameInput" placeholder="Enter name (e.g. Abhinash)" maxlength="30" autocomplete="off">
-                <button class="tag active" id="themeBtn" style="margin-right: 0.5rem;">Theme</button>
+                <input type="text" id="nameInput" placeholder="Enter name" maxlength="30" autocomplete="off">
+                <button class="tag active" id="themeBtn">Theme</button>
             </div>
         </div>
         
