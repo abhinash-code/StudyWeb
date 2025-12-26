@@ -455,6 +455,28 @@
             }
         }
     </style>
+    <style>
+        .icon-search{
+  display:inline-block;
+  width:18px;
+  height:18px;
+  border:2px solid currentColor;
+  border-radius:50%;
+  position:relative;
+}
+.icon-search::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:2px;
+  background:currentColor;
+  right:-6px;
+  bottom:-2px;
+  transform:rotate(45deg);
+  border-radius:2px;
+}
+
+    </style>
 </head>
 <body>
     
@@ -546,7 +568,18 @@
                 <p class="tool-description">Calculate exact age in years, months, days, and even seconds since your birth.</p>
                 <button class="tool-btn" onclick="redirectToTool('age')">Access Tool</button>
             </div>
-            
+                       
+            <!-- Elite Stylish Nmae Generator -->
+            <div class="tool-card floating">
+                <div class="tool-icon">
+                    <i class="icon-search"></i>
+                </div>
+                <h3 class="tool-title">Stylish Name Generator</h3>
+                <p class="tool-description">Instantly generate stylish names with beautiful fonts, 
+                    smart filters, and one-tap copy fast, clean, and mobile-friendly.</p>
+                <button class="tool-btn" onclick="redirectToTool('stylish')">Access Tool</button>
+            </div>
+
             <!-- Word Counter -->
             <div class="tool-card floating">
                 <div class="tool-icon">
@@ -644,6 +677,7 @@ function redirectToTool(toolName) {
         'password': 'PassGenerator.html',
         'quote': 'Random Quote Generator.html',
         'age': 'Age Calculator.html',
+        'stylish': 'Elite NameStyle.html',
         'wordcounter': 'Word Counter.html'
     };
     
@@ -764,4 +798,5 @@ function redirectToTool(toolName) {
         });
     </script>
 </body>
+
 </html>
