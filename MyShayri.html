@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shayri Magic | Explore & Share</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Search */
+        header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .brand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-row h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .search-container input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background: white; border: 1px solid #e2e8f0; color: var(--text-main); }
+        .btn-outline:hover { background: #f1f5f9; }
+
+        /* Grid */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .shayri-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.4s ease-out;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .shayri-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+
+        .shayri-text {
+            font-size: 1.15rem;
+            white-space: pre-wrap;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 1rem;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .action-icon:hover { color: var(--primary); }
+
+        /* Floating Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin: 1rem 0;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        mark { background: #fde047; color: black; padding: 0 2px; border-radius: 2px; }
+
+        @media (max-width: 640px) {
+            .fab { bottom: 1.5rem; right: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="brand-row">
+                <h1>Shayri Magic</h1>
+                <button class="btn btn-outline" id="aiBtn">
+                    <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    AI Magic
+                </button>
+            </div>
+            <div class="search-container">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" placeholder="Search by words, emotions...">
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <button class="btn btn-outline" id="copyAllBtn">
+            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+            Copy All
+        </button>
+    </div>
+
+    <main id="shayriContainer">
+        <!-- Shayris will be rendered here -->
+    </main>
+
+    <button class="fab" id="openAddModal">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+    </button>
+
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-content">
+            <h2>Write New Shayri</h2>
+            <textarea id="shayriText" placeholder="Write your thoughts here..."></textarea>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-outline" style="flex: 1" id="closeModal">Cancel</button>
+                <button class="btn btn-primary" style="flex: 1" id="saveShayri">Post Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Copied to clipboard!</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjaxVe6vWWyIFGXU2sTrYBVaPcNut5p-E",
+            authDomain: "shayri-937eb.firebaseapp.com",
+            projectId: "shayri-937eb",
+            storageBucket: "shayri-937eb.firebasestorage.app",
+            messagingSenderId: "901857704654",
+            appId: "1:901857704654:web:3b3019ee60675a3accae9f",
+            measurementId: "G-R4MFJ6X91B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const colRef = collection(db, "shayri");
+
+        let allShayris = [];
+        const container = document.getElementById('shayriContainer');
+        const searchInput = document.getElementById('searchInput');
+
+        // Real-time listener
+        const q = query(colRef, orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            allShayris = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderShayris(allShayris);
+        });
+
+        function renderShayris(data, filter = '') {
+            const fragment = document.createDocumentFragment();
+            container.innerHTML = '';
+
+            const filtered = data.filter(s => s.text.toLowerCase().includes(filter.toLowerCase()));
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'shayri-card';
+                
+                let displayText = item.text;
+                if (filter) {
+                    const regex = new RegExp(`(${filter})`, 'gi');
+                    displayText = displayText.replace(regex, '<mark>$1</mark>');
+                }
+
+                card.innerHTML = `
+                    <div class="shayri-text">${displayText}</div>
+                    <div class="card-actions">
+                        <svg class="action-icon copy-btn" data-text="${item.text.replace(/"/g, '&quot;')}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+                        <svg class="action-icon share-btn" data-text="${item.text.replace(/"/g, '&quot;')}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                    </div>
+                `;
+                fragment.appendChild(card);
+            });
+
+            container.appendChild(fragment);
+        }
+
+        // Search logic
+        searchInput.addEventListener('input', (e) => {
+            renderShayris(allShayris, e.target.value);
+        });
+
+        // Copy logic
+        document.addEventListener('click', async (e) => {
+            if (e.target.closest('.copy-btn')) {
+                const text = e.target.closest('.copy-btn').dataset.text;
+                copyToClipboard(text);
+            }
+            if (e.target.closest('.share-btn')) {
+                const text = e.target.closest('.share-btn').dataset.text;
+                if (navigator.share) {
+                    navigator.share({ text: text });
+                } else {
+                    copyToClipboard(text, "Link sharing not supported, text copied!");
+                }
+            }
+        });
+
+        document.getElementById('copyAllBtn').addEventListener('click', () => {
+            const allText = allShayris.map(s => s.text).join('\n\n---\n\n');
+            copyToClipboard(allText, "All Shayris copied!");
+        });
+
+        function copyToClipboard(text, msg = "Copied to clipboard!") {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast(msg);
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('addModal');
+        document.getElementById('openAddModal').addEventListener('click', () => modal.style.display = 'flex');
+        document.getElementById('closeModal').addEventListener('click', () => modal.style.display = 'none');
+        
+        document.getElementById('saveShayri').addEventListener('click', async () => {
+            const text = document.getElementById('shayriText').value.trim();
+            if (!text) return;
+            
+            try {
+                await addDoc(colRef, {
+                    text: text,
+                    createdAt: new Date()
+                });
+                document.getElementById('shayriText').value = '';
+                modal.style.display = 'none';
+                showToast("Shayri added successfully!");
+            } catch (err) {
+                showToast("Error adding shayri");
+            }
+        });
+
+        // AI Placeholder
+        document.getElementById('aiBtn').addEventListener('click', () => {
+            showToast("AI Generator coming soon in v2.0!");
+        });
+    </script>
+</body>
+</html>
