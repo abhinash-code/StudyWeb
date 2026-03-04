@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  HACKER TERMINAL — CINEMATIC DECORATIVE INTERFACE               ║
+  ║  This is a SIMULATED, FICTIONAL interface for visual/            ║
+  ║  cinematic and entertainment purposes ONLY.                     ║
+  ║  It contains no real tools, commands, or network access.        ║
+  ║                                                                  ║
+  ║  HOW TO CUSTOMIZE:                                               ║
+  ║  - Colors: Edit CSS variables in :root {}                        ║
+  ║  - Log messages: Edit LOG_MESSAGES array in JS                   ║
+  ║  - Terminal lines: Edit TERMINAL_SEQUENCE array in JS            ║
+  ║  - Toggle effects: Click anywhere for low-power mode             ║
+  ║  - Keyboard: Press T to focus terminal                           ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SYSTEM MONITOR — SIMULATED INTERFACE</title>
+
+  <!-- Google Fonts: Share Tech Mono + Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       CSS VARIABLES — edit these to retheme the page
+       ═══════════════════════════════════════════════ */
+    :root {
+      --green:       #00ff66;
+      --green-dim:   #00aa44;
+      --green-glow:  rgba(0,255,102,0.18);
+      --cyan:        #00e5ff;
+      --cyan-dim:    #0099bb;
+      --orange:      #ff6b35;
+      --bg:          #000000;
+      --panel-bg:    rgba(0,0,0,0.72);
+      --panel-border:rgba(0,255,102,0.12);
+      --grey1:       #0b0b0b;
+      --grey2:       #111111;
+      --grey3:       #1a1a1a;
+      --text-main:   #b8ffcc;
+      --text-dim:    #3a7a50;
+      --font-mono:   'Share Tech Mono', 'Courier New', monospace;
+      --font-hud:    'Orbitron', 'Share Tech Mono', monospace;
+      --anim-speed:  1;   /* reduce to 0.5 in low-power mode */
+    }
+
+    /* ═══════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    /* ═══════════════════════════════════════
+       BACKGROUND LAYERS
+       ═══════════════════════════════════════ */
+    #bg-canvas {
+      position: fixed; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* scanline overlay */
+    #scanlines {
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 4px
+      );
+      animation: scanSweep 8s linear infinite;
+    }
+    @keyframes scanSweep {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 100vh; }
+    }
+
+    /* vignette */
+    #vignette {
+      position: fixed; inset: 0; z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center,
+        transparent 40%, rgba(0,0,0,0.82) 100%);
+    }
+
+    /* grain / noise overlay */
+    #grain {
+      position: fixed; inset: 0; z-index: 3;
+      pointer-events: none;
+      opacity: 0.035;
+      animation: grainAnim 0.15s steps(1) infinite;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    @keyframes grainAnim {
+      0%  { background-position:   0   0; }
+      10% { background-position: -5%  -10%; }
+      20% { background-position: -15%  5%; }
+      30% { background-position:  7% -25%; }
+      40% { background-position: -5%  25%; }
+      50% { background-position: -15% 10%; }
+      60% { background-position: 15%   0; }
+      70% { background-position:  0%  15%; }
+      80% { background-position:  3%  35%; }
+      90% { background-position: -10% 10%; }
+     100% { background-position:  0    0; }
+    }
+
+    /* horizontal scan sweep bar */
+    #scan-bar {
+      position: fixed; left: 0; right: 0;
+      height: 2px; z-index: 4;
+      background: linear-gradient(to right, transparent, var(--green), transparent);
+      opacity: 0.35;
+      animation: scanBar 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanBar {
+      0%   { top: -2px; }
+      100% { top: 100vh; }
+    }
+
+    /* ═══════════════════════════════════════
+       MAIN LAYOUT
+       ═══════════════════════════════════════ */
+    #app {
+      position: relative; z-index: 10;
+      width: 100vw; height: 100vh;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header  header"
+        "left    globe"
+        "terminal terminal";
+      gap: 10px;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════
+       PANEL BASE STYLE
+       ═══════════════════════════════════════ */
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 4px;
+      box-shadow:
+        0 0 12px var(--green-glow),
+        inset 0 0 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 10px 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--green), transparent);
+      opacity: 0.5;
+    }
+
+    .panel-title {
+      font-family: var(--font-hud);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title::before {
+      content: '▶';
+      color: var(--cyan);
+      font-size: 8px;
+    }
+
+    /* corner decorations */
+    .corner-tl, .corner-tr, .corner-bl, .corner-br {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-color: var(--green);
+      border-style: solid;
+      opacity: 0.6;
+    }
+    .corner-tl { top: 2px; left: 2px;  border-width: 1px 0 0 1px; }
+    .corner-tr { top: 2px; right: 2px; border-width: 1px 1px 0 0; }
+    .corner-bl { bottom: 2px; left: 2px;  border-width: 0 0 1px 1px; }
+    .corner-br { bottom: 2px; right: 2px; border-width: 0 1px 1px 0; }
+
+    /* ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ */
+    #header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 14px;
+    }
+
+    #logo {
+      font-family: var(--font-hud);
+      font-size: clamp(14px, 2vw, 22px);
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      text-shadow: 0 0 20px var(--green), 0 0 40px rgba(0,255,102,0.3);
+      animation: glitchTitle 6s infinite;
+    }
+    @keyframes glitchTitle {
+      0%,90%,100% { transform: none; text-shadow: 0 0 20px var(--green); }
+      91%   { transform: translateX(-2px); clip-path: inset(0 0 80% 0);
+              text-shadow: -2px 0 var(--cyan), 2px 0 var(--orange); }
+      92%   { transform: translateX(2px);  clip-path: inset(50% 0 20% 0);
+              text-shadow: 2px 0 var(--cyan), -2px 0 var(--orange); }
+      93%   { transform: none; text-shadow: 0 0 20px var(--green); }
+      95%   { transform: translateX(-1px) skewX(-5deg);
+              text-shadow: 3px 0 var(--orange), -3px 0 var(--cyan); }
+      96%   { transform: none; text-shadow: 0 0 20px var(--green); }
+    }
+
+    #header-right {
+      display: flex; gap: 20px; align-items: center;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.2; }
+    }
+
+    #clock {
+      font-family: var(--font-hud);
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+    }
+
+    #power-toggle {
+      background: transparent;
+      border: 1px solid var(--green-dim);
+      color: var(--green-dim);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 3px 8px;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+    #power-toggle:hover {
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+    }
+
+    /* ═══════════════════════════════════════
+       LEFT HUD STACK
+       ═══════════════════════════════════════ */
+    #left-stack {
+      grid-area: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    /* — CPU / NETWORK BARS — */
+    .bar-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 5px;
+    }
+    .bar-label {
+      width: 60px; font-size: 10px;
+      color: var(--text-dim);
+      flex-shrink: 0;
+      letter-spacing: 0.08em;
+    }
+    .bar-track {
+      flex: 1; height: 6px;
+      background: rgba(0,255,102,0.07);
+      border: 1px solid rgba(0,255,102,0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--green-dim), var(--green));
+      border-radius: 2px;
+      transition: width 0.8s ease;
+      box-shadow: 0 0 6px var(--green);
+    }
+    .bar-val {
+      width: 36px; text-align: right;
+      font-size: 10px;
+      color: var(--green);
+    }
+
+    /* — SPARKLINE — */
+    #sparkline-svg { width: 100%; height: 40px; }
+
+    /* — LOG AREA — */
+    #log-area {
+      flex: 1;
+      min-height: 0;
+    }
+    #log-scroll {
+      height: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dim) transparent;
+    }
+    #log-scroll::-webkit-scrollbar { width: 3px; }
+    #log-scroll::-webkit-scrollbar-thumb { background: var(--green-dim); }
+
+    .log-line {
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--text-dim);
+      padding: 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+      transition: color 0.2s;
+    }
+    .log-line:hover { color: var(--text-main); }
+    .log-line .ts { color: var(--text-dim); }
+    .log-line .ok  { color: var(--green); }
+    .log-line .warn { color: var(--orange); }
+    .log-line .info { color: var(--cyan); }
+
+    /* — PROGRESS BAR — */
+    #progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(0,255,102,0.05);
+      border: 1px solid rgba(0,255,102,0.15);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    #progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--green-dim), var(--green), var(--cyan));
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 10px var(--green), 0 0 20px rgba(0,255,102,0.3);
+      animation: progressPulse 2s ease-in-out infinite;
+    }
+    @keyframes progressPulse {
+      0%,100% { filter: brightness(1); }
+      50%      { filter: brightness(1.4); }
+    }
+    #progress-label {
+      font-size: 10px; color: var(--text-dim);
+      margin-top: 3px; letter-spacing: 0.08em;
+    }
+
+    /* ═══════════════════════════════════════
+       GLOBE AREA
+       ═══════════════════════════════════════ */
+    #globe-area {
+      grid-area: globe;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #globe-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .globe-label {
+      position: absolute;
+      font-family: var(--font-hud);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--green-dim);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    #globe-title  { top: 12px; left: 14px; }
+    #globe-coords { bottom: 12px; right: 14px; color: var(--cyan-dim); }
+
+    /* orbiting ring decoration */
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(0,255,102,0.1);
+      pointer-events: none;
+      animation: rotateRing linear infinite;
+    }
+    @keyframes rotateRing {
+      from { transform: rotateZ(0deg) rotateX(70deg); }
+      to   { transform: rotateZ(360deg) rotateX(70deg); }
+    }
+
+    /* ═══════════════════════════════════════
+       TERMINAL PANEL
+       ═══════════════════════════════════════ */
+    #terminal-panel {
+      grid-area: terminal;
+      max-height: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #term-output {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dim) transparent;
+      font-size: 12px;
+      line-height: 1.65;
+      padding-bottom: 4px;
+    }
+    #term-output::-webkit-scrollbar { width: 3px; }
+    #term-output::-webkit-scrollbar-thumb { background: var(--green-dim); }
+
+    .term-line { color: var(--text-dim); }
+    .term-line.cmd { color: var(--green); }
+    .term-line.res { color: var(--text-main); padding-left: 10px; }
+    .term-line.ok  { color: var(--green); padding-left: 10px; }
+    .term-line.warn { color: var(--orange); padding-left: 10px; }
+
+    #term-input-row {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 6px;
+      border-top: 1px solid rgba(0,255,102,0.1);
+      padding-top: 6px;
+    }
+    .prompt-sym { color: var(--green); font-size: 13px; }
+    #term-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      caret-color: var(--green);
+    }
+
+    #run-btn {
+      background: transparent;
+      border: 1px solid var(--green-dim);
+      color: var(--green-dim);
+      font-family: var(--font-hud);
+      font-size: 9px;
+      padding: 4px 12px;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    #run-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 12px var(--green-glow);
+    }
+    #run-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ACCESS GRANTED splash */
+    #access-splash {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.85);
+      align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #access-splash.show { display: flex; }
+    #access-splash-text {
+      font-family: var(--font-hud);
+      font-size: clamp(28px, 5vw, 54px);
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      color: var(--green);
+      text-shadow: 0 0 30px var(--green), 0 0 80px rgba(0,255,102,0.5);
+      animation: splashPulse 0.4s ease-in-out infinite;
+    }
+    @keyframes splashPulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.7; }
+    }
+    #access-sub {
+      font-size: 13px; color: var(--cyan);
+      letter-spacing: 0.2em;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════ */
+    #footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      text-align: center;
+      font-size: 9px;
+      color: rgba(0,255,102,0.18);
+      padding: 3px;
+      z-index: 20;
+      letter-spacing: 0.15em;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════
+       LOW-POWER MODE
+       ═══════════════════════════════════════ */
+    body.low-power #scanlines,
+    body.low-power #grain,
+    body.low-power #scan-bar { display: none; }
+    body.low-power #logo { animation: none; }
+    body.low-power .orbit-ring { display: none; }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE: MOBILE
+       ═══════════════════════════════════════ */
+    @media (max-width: 700px) {
+      #app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 200px 1fr auto;
+        grid-template-areas:
+          "header"
+          "globe"
+          "left"
+          "terminal";
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+      }
+      #log-scroll { max-height: 120px; }
+      #terminal-panel { max-height: 160px; }
+      body { overflow-y: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════
+     BACKGROUND LAYERS (aria-hidden)
+     ══════════════════════════════════ -->
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="scanlines"  aria-hidden="true"></div>
+<div id="vignette"   aria-hidden="true"></div>
+<div id="grain"      aria-hidden="true"></div>
+<div id="scan-bar"   aria-hidden="true"></div>
+
+<!-- ACCESS GRANTED SPLASH -->
+<div id="access-splash" role="status" aria-live="assertive">
+  <div id="access-splash-text">ACCESS GRANTED</div>
+  <div id="access-sub">SIMULATION COMPLETE — ALL NODES VERIFIED</div>
+</div>
+
+<!-- ══════════════════════════════════
+     MAIN APP
+     ══════════════════════════════════ -->
+<main id="app" role="main">
+
+  <!-- HEADER -->
+  <header id="header" class="panel" aria-label="System Monitor Header">
+    <div class="corner-tl"></div><div class="corner-tr"></div>
+    <div class="corner-bl"></div><div class="corner-br"></div>
+    <div id="logo" aria-label="System Monitor">◈ SYSTEM MONITOR</div>
+    <div id="header-right" aria-hidden="true">
+      <span class="status-dot" title="System Online"></span>
+      <div id="clock">00:00:00</div>
+      <button id="power-toggle" title="Toggle low-power mode" aria-pressed="false">⚡ ECO MODE</button>
+    </div>
+  </header>
+
+  <!-- LEFT HUD STACK -->
+  <aside id="left-stack" aria-label="System Statistics">
+
+    <!-- CPU / NETWORK / MEM -->
+    <div class="panel" aria-label="Resource Metrics">
+      <div class="corner-tl"></div><div class="corner-tr"></div>
+      <div class="corner-bl"></div><div class="corner-br"></div>
+      <div class="panel-title">RESOURCE METRICS</div>
+      <div class="bar-row">
+        <span class="bar-label">CPU</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-cpu" style="width:45%"></div></div>
+        <span class="bar-val" id="val-cpu">45%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">NETWORK</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-net" style="width:62%;background:linear-gradient(to right,var(--cyan-dim),var(--cyan))"></div></div>
+        <span class="bar-val" id="val-net">62%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">MEMORY</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-mem" style="width:78%"></div></div>
+        <span class="bar-val" id="val-mem">78%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">LATENCY</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-lat" style="width:22%;background:linear-gradient(to right,var(--green-dim),var(--orange))"></div></div>
+        <span class="bar-val" id="val-lat">22ms</span>
+      </div>
+    </div>
+
+    <!-- SPARKLINE / TRAFFIC -->
+    <div class="panel" aria-label="Network Traffic Graph">
+      <div class="corner-tl"></div><div class="corner-tr"></div>
+      <div class="corner-bl"></div><div class="corner-br"></div>
+      <div class="panel-title">NETWORK TRAFFIC</div>
+      <svg id="sparkline-svg" viewBox="0 0 260 40" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--green)" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path id="spark-fill" fill="url(#sg)" />
+        <path id="spark-line" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- SYSTEM LOG -->
+    <div class="panel" id="log-area" aria-label="System Log">
+      <div class="corner-tl"></div><div class="corner-tr"></div>
+      <div class="corner-bl"></div><div class="corner-br"></div>
+      <div class="panel-title">SYSTEM LOG</div>
+      <div id="log-scroll" aria-live="polite" aria-atomic="false"></div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="panel" aria-label="Analysis Progress">
+      <div class="corner-tl"></div><div class="corner-tr"></div>
+      <div class="corner-bl"></div><div class="corner-br"></div>
+      <div class="panel-title">ANALYSIS PROGRESS</div>
+      <div id="progress-track" aria-hidden="true">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="progress-label">INITIALIZING...</div>
+    </div>
+
+  </aside>
+
+  <!-- GLOBE -->
+  <section id="globe-area" class="panel" aria-label="Global Node Map (decorative)">
+    <div class="corner-tl"></div><div class="corner-tr"></div>
+    <div class="corner-bl"></div><div class="corner-br"></div>
+    <canvas id="globe-canvas" aria-hidden="true"></canvas>
+    <div class="globe-label" id="globe-title" aria-hidden="true">GLOBAL NODE MAP</div>
+    <div class="globe-label" id="globe-coords" aria-hidden="true" id="globe-coords">LAT:00.00 LON:00.00</div>
+    <div class="orbit-ring" style="width:280px;height:280px;top:calc(50% - 140px);left:calc(50% - 140px);animation-duration:18s;" aria-hidden="true"></div>
+    <div class="orbit-ring" style="width:360px;height:360px;top:calc(50% - 180px);left:calc(50% - 180px);animation-duration:30s;animation-direction:reverse;border-color:rgba(0,229,255,0.07);" aria-hidden="true"></div>
+  </section>
+
+  <!-- TERMINAL -->
+  <section id="terminal-panel" class="panel" aria-label="Terminal">
+    <div class="corner-tl"></div><div class="corner-tr"></div>
+    <div class="corner-bl"></div><div class="corner-br"></div>
+    <div class="panel-title">TERMINAL</div>
+    <div id="term-output" aria-live="polite"></div>
+    <div id="term-input-row">
+      <span class="prompt-sym" aria-hidden="true">▶</span>
+      <input id="term-input" type="text" autocomplete="off" spellcheck="false"
+             placeholder="type command..." aria-label="Terminal input (decorative)" />
+      <button id="run-btn" aria-label="Run simulation sequence">▶ RUN SIM</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer id="footer" aria-label="Disclaimer">
+  ⚠ THIS IS A SIMULATED INTERFACE FOR VISUAL / CINEMATIC USE ONLY — NOT A REAL SYSTEM
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ──────────────────────────────────────────────────
+   SAMPLE DATA — edit these arrays to customise content
+   ────────────────────────────────────────────────── */
+
+const LOG_MESSAGES = [
+  { tag:'ok',   text:'AUTH CHECK: VERIFIED' },
+  { tag:'info', text:'NODE node-001 STATUS: ACTIVE | PING: 12ms' },
+  { tag:'ok',   text:'INTEGRITY SCAN: PASSED' },
+  { tag:'info', text:'GATEWAY gateway-9b RESPONSE: 200 OK' },
+  { tag:'warn', text:'SIGNAL VARIANCE DETECTED — node-alpha' },
+  { tag:'ok',   text:'ROUTE MAPPING: COMPLETE' },
+  { tag:'info', text:'NODE node-042 STATUS: ACTIVE | PING: 24ms' },
+  { tag:'ok',   text:'PACKET ANALYSIS: NOMINAL' },
+  { tag:'info', text:'SYNC PULSE: 60Hz — STABLE' },
+  { tag:'warn', text:'LATENCY SPIKE: 88ms — gateway-9b' },
+  { tag:'ok',   text:'AUTH TOKEN REFRESH: OK' },
+  { tag:'info', text:'NODE node-beta STATUS: STANDBY' },
+  { tag:'ok',   text:'DIAGNOSTIC CYCLE: PASS' },
+  { tag:'info', text:'UPLINK BANDWIDTH: 842 Mbps' },
+  { tag:'ok',   text:'CHECKSUM VERIFY: MATCH' },
+  { tag:'warn', text:'REDUNDANT PATH INACTIVE — rerouting' },
+  { tag:'info', text:'NODE node-007 STATUS: ACTIVE | PING: 9ms' },
+  { tag:'ok',   text:'TIMESTAMP SYNC: OK' },
+  { tag:'info', text:'CLUSTER ECHO: 4/4 NODES RESPOND' },
+  { tag:'ok',   text:'WATCHDOG TIMER: RESET' },
+  { tag:'info', text:'TRAFFIC ANALYSIS: LOW ANOMALY' },
+  { tag:'ok',   text:'PROTOCOL HANDSHAKE: ACCEPTED' },
+  { tag:'warn', text:'BUFFER UTILIZATION: 91% — node-delta' },
+  { tag:'info', text:'TELEMETRY STREAM: ACTIVE' },
+  { tag:'ok',   text:'STATUS REPORT: ALL NOMINAL' },
+  { tag:'info', text:'NODE node-gamma STATUS: ACTIVE | PING: 17ms' },
+  { tag:'ok',   text:'COMPRESSION MODULE: READY' },
+  { tag:'warn', text:'PACKET RETRY: node-042 × 3' },
+  { tag:'info', text:'ROUTING TABLE: 128 ENTRIES CACHED' },
+  { tag:'ok',   text:'SESSION KEEPALIVE: SENT' },
+  { tag:'info', text:'MIRROR NODE ECHO: 2ms' },
+  { tag:'ok',   text:'SYSTEM HEALTH: OPTIMAL' },
+];
+
+const TERMINAL_SEQUENCE = [
+  { type:'cmd', text:'> INITIALIZING SCAN SEQUENCE...' },
+  { type:'res', text:'  protocol: TCP/VIRTUAL | mode: PASSIVE MONITOR' },
+  { type:'cmd', text:'> SCANNING NETWORK...' },
+  { type:'res', text:'  node-001     | STATUS: ACTIVE  | PING:  12ms | LOAD: 34%' },
+  { type:'res', text:'  node-042     | STATUS: ACTIVE  | PING:  24ms | LOAD: 61%' },
+  { type:'res', text:'  node-alpha   | STATUS: STANDBY | PING:  --   | LOAD:  0%' },
+  { type:'res', text:'  gateway-9b   | STATUS: ACTIVE  | PING:   8ms | LOAD: 22%' },
+  { type:'res', text:'  node-beta    | STATUS: ACTIVE  | PING:  31ms | LOAD: 48%' },
+  { type:'cmd', text:'> VERIFY ROUTE TABLE...' },
+  { type:'res', text:'  128 entries cached | 3 dynamic | TTL: 3600s' },
+  { type:'cmd', text:'> RUN DIAGNOSTIC CYCLE...' },
+  { type:'res', text:'  CPU:    OK  | MEM:   OK  | DISK: OK' },
+  { type:'res', text:'  UPLINK: OK  | CLOCK: SYNC' },
+  { type:'ok',  text:'  ✓ ALL CHECKS PASSED — SYSTEM NOMINAL' },
+];
+
+/* ──────────────────────────────────────────────────
+   STATE
+   ────────────────────────────────────────────────── */
+let lowPower       = false;
+let logPaused      = false;
+let simRunning     = false;
+let mouseX = 0, mouseY = 0;
+
+/* ──────────────────────────────────────────────────
+   CLOCK
+   ────────────────────────────────────────────────── */
+const clockEl = document.getElementById('clock');
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  clockEl.textContent = `${hh}:${mm}:${ss}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ──────────────────────────────────────────────────
+   LOW-POWER TOGGLE
+   ────────────────────────────────────────────────── */
+const powerBtn = document.getElementById('power-toggle');
+powerBtn.addEventListener('click', () => {
+  lowPower = !lowPower;
+  document.body.classList.toggle('low-power', lowPower);
+  powerBtn.setAttribute('aria-pressed', String(lowPower));
+  powerBtn.textContent = lowPower ? '⚡ ECO: ON' : '⚡ ECO MODE';
+});
+
+/* ──────────────────────────────────────────────────
+   MOUSE PARALLAX
+   ────────────────────────────────────────────────── */
+document.addEventListener('mousemove', e => {
+  mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+/* ──────────────────────────────────────────────────
+   KEYBOARD SHORTCUT: T → focus terminal
+   ────────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 't' || e.key === 'T') {
+    document.getElementById('term-input').focus();
+  }
+});
+
+/* ──────────────────────────────────────────────────
+   BACKGROUND CANVAS (particles + matrix rain)
+   ────────────────────────────────────────────────── */
+(function initBgCanvas() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  /* — Particles — */
+  const PARTICLE_COUNT = 80;
+  const particles = [];
+
+  function resizeCanvas() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.5 + 0.1,
+    });
+  }
+
+  /* — Matrix Rain — */
+  const MATRIX_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>/\\|[]{}';
+  const COL_WIDTH = 16;
+  let cols, drops;
+
+  function initMatrix() {
+    cols  = Math.floor(W / COL_WIDTH);
+    drops = Array(cols).fill(0).map(() => -Math.random() * 30);
+  }
+  initMatrix();
+  window.addEventListener('resize', initMatrix);
+
+  /* — Connections between particles — */
+  const CONN_DIST = 100;
+
+  let lastTime = 0;
+  function drawFrame(ts) {
+    const dt = Math.min(ts - lastTime, 50);
+    lastTime = ts;
+
+    ctx.clearRect(0, 0, W, H);
+
+    /* matrix rain */
+    if (!lowPower) {
+      ctx.font = '12px Share Tech Mono, monospace';
+      for (let c = 0; c < cols; c++) {
+        /* only render left 12% and right 12% columns for side effect */
+        const px = c * COL_WIDTH;
+        const isLeft  = px < W * 0.12;
+        const isRight = px > W * 0.88;
+        if (!isLeft && !isRight) { drops[c] += 0.02; continue; }
+
+        const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+        const py   = drops[c] * COL_WIDTH;
+
+        /* bright head */
+        ctx.fillStyle = 'rgba(0,255,102,0.9)';
+        ctx.fillText(char, px, py);
+
+        /* fading trail - draw 20 chars above */
+        for (let t = 1; t < 20; t++) {
+          const alpha = (1 - t / 20) * 0.35;
+          ctx.fillStyle = `rgba(0,255,102,${alpha})`;
+          const tc = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+          ctx.fillText(tc, px, py - t * COL_WIDTH);
+        }
+
+        if (drops[c] * COL_WIDTH > H && Math.random() > 0.975) drops[c] = 0;
+        drops[c] += 0.35;
+      }
+    }
+
+    /* particles */
+    const speed = lowPower ? 0 : 1;
+    for (const p of particles) {
+      p.x += (p.vx + mouseX * 0.08) * speed;
+      p.y += (p.vy + mouseY * 0.04) * speed;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,255,102,${p.alpha})`;
+      ctx.fill();
+    }
+
+    /* connections */
+    if (!lowPower) {
+      ctx.strokeStyle = 'rgba(0,255,102,0.06)';
+      ctx.lineWidth   = 0.5;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d  = Math.sqrt(dx*dx + dy*dy);
+          if (d < CONN_DIST) {
+            ctx.globalAlpha = (1 - d / CONN_DIST) * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    requestAnimationFrame(drawFrame);
+  }
+  requestAnimationFrame(drawFrame);
+})();
+
+/* ──────────────────────────────────────────────────
+   GLOBE CANVAS
+   ────────────────────────────────────────────────── */
+(function initGlobe() {
+  const canvas = document.getElementById('globe-canvas');
+  const ctx    = canvas.getContext('2d');
+  const coordsEl = document.getElementById('globe-coords');
+
+  let CX, CY, R;
+  let rotY = 0, rotX = 0.3;
+  let hovered = false;
+
+  // Random connection lines state
+  const connections = [];
+  for (let i = 0; i < 12; i++) {
+    connections.push({
+      lat1: (Math.random() - 0.5) * Math.PI,
+      lon1: Math.random() * Math.PI * 2,
+      lat2: (Math.random() - 0.5) * Math.PI,
+      lon2: Math.random() * Math.PI * 2,
+      alpha: 0,
+      dAlpha: (Math.random() > 0.5 ? 1 : -1) * 0.006,
+      maxAlpha: Math.random() * 0.7 + 0.2,
+    });
+  }
+
+  // Dots on globe surface
+  const DOTS = 300;
+  const dotPositions = [];
+  for (let i = 0; i < DOTS; i++) {
+    const lat = Math.acos(1 - 2 * (i / DOTS));
+    const lon = Math.PI * (1 + Math.sqrt(5)) * i;
+    dotPositions.push({ lat, lon });
+  }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width;
+    canvas.height = rect.height;
+    CX = rect.width  / 2;
+    CY = rect.height / 2;
+    R  = Math.min(rect.width, rect.height) * 0.36;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  canvas.addEventListener('mouseenter', () => { hovered = true; });
+  canvas.addEventListener('mouseleave', () => { hovered = false; });
+
+  function project(lat, lon, rY, rX) {
+    // spherical to cartesian
+    const x0 =  Math.cos(lat) * Math.sin(lon);
+    const y0 = -Math.sin(lat);
+    const z0 =  Math.cos(lat) * Math.cos(lon);
+    // rotate Y
+    const x1 = x0 * Math.cos(rY) + z0 * Math.sin(rY);
+    const z1 = -x0 * Math.sin(rY) + z0 * Math.cos(rY);
+    // rotate X
+    const y2 = y0 * Math.cos(rX) - z1 * Math.sin(rX);
+    const z2 = y0 * Math.sin(rX) + z1 * Math.cos(rX);
+    return { x: CX + x1 * R, y: CY + y2 * R, z: z2 };
+  }
+
+  function drawGlobeFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // parallax tilt
+    const tiltY = rotY + mouseX * 0.05;
+    const tiltX = rotX + mouseY * 0.03;
+
+    // — wireframe latitude lines —
+    const LAT_LINES = 10;
+    for (let l = 0; l < LAT_LINES; l++) {
+      const lat = -Math.PI / 2 + Math.PI * l / (LAT_LINES - 1);
+      ctx.beginPath();
+      let started = false;
+      for (let s = 0; s <= 60; s++) {
+        const lon = (s / 60) * Math.PI * 2;
+        const p   = project(lat, lon, tiltY, tiltX);
+        if (p.z < 0) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.strokeStyle = 'rgba(0,255,102,0.12)';
+      ctx.lineWidth   = 0.6;
+      ctx.stroke();
+    }
+
+    // — wireframe longitude lines —
+    const LON_LINES = 12;
+    for (let l = 0; l < LON_LINES; l++) {
+      const lon = (l / LON_LINES) * Math.PI * 2;
+      ctx.beginPath();
+      let started = false;
+      for (let s = 0; s <= 60; s++) {
+        const lat = -Math.PI / 2 + Math.PI * s / 60;
+        const p   = project(lat, lon, tiltY, tiltX);
+        if (p.z < 0) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.strokeStyle = 'rgba(0,255,102,0.12)';
+      ctx.lineWidth   = 0.6;
+      ctx.stroke();
+    }
+
+    // — point cloud —
+    for (const dp of dotPositions) {
+      const p = project(dp.lat, dp.lon, tiltY, tiltX);
+      if (p.z < 0) continue;
+      const brightness = (p.z + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,255,102,${brightness * 0.7})`;
+      ctx.fill();
+    }
+
+    // — connection arcs between random nodes —
+    if (!lowPower) {
+      for (const c of connections) {
+        c.alpha += c.dAlpha;
+        if (c.alpha >= c.maxAlpha || c.alpha <= 0) c.dAlpha *= -1;
+        if (c.alpha < 0) c.alpha = 0;
+        if (c.alpha > 1) c.alpha = 1;
+
+        const p1 = project(c.lat1, c.lon1, tiltY, tiltX);
+        const p2 = project(c.lat2, c.lon2, tiltY, tiltX);
+        if (p1.z < 0 || p2.z < 0) continue;
+
+        ctx.beginPath();
+        const mx = (p1.x + p2.x) / 2;
+        const my = (p1.y + p2.y) / 2 - Math.hypot(p2.x-p1.x, p2.y-p1.y) * 0.35;
+        ctx.moveTo(p1.x, p1.y);
+        ctx.quadraticCurveTo(mx, my, p2.x, p2.y);
+        ctx.strokeStyle = `rgba(0,229,255,${c.alpha * 0.55})`;
+        ctx.lineWidth   = 0.8;
+        ctx.stroke();
+
+        // endpoint dots
+        ctx.beginPath();
+        ctx.arc(p1.x, p1.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,229,255,${c.alpha * 0.9})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p2.x, p2.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // — glow halo —
+    const grd = ctx.createRadialGradient(CX, CY, R * 0.85, CX, CY, R * 1.15);
+    grd.addColorStop(0, 'rgba(0,255,102,0.08)');
+    grd.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(CX, CY, R * 1.15, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // rotate
+    if (!hovered && !lowPower) rotY += 0.003;
+
+    // update coords label
+    const latDeg = ((rotX / Math.PI) * 180).toFixed(2);
+    const lonDeg = (((rotY % (Math.PI*2)) / (Math.PI*2)) * 360).toFixed(2);
+    coordsEl.textContent = `LAT:${latDeg} LON:${lonDeg}`;
+
+    requestAnimationFrame(drawGlobeFrame);
+  }
+  requestAnimationFrame(drawGlobeFrame);
+})();
+
+/* ──────────────────────────────────────────────────
+   RESOURCE BARS — animate randomly
+   ────────────────────────────────────────────────── */
+(function initBars() {
+  const bars = [
+    { fill: document.getElementById('bar-cpu'), val: document.getElementById('val-cpu'), cur: 45, unit:'%',  min:20, max:90 },
+    { fill: document.getElementById('bar-net'), val: document.getElementById('val-net'), cur: 62, unit:'%',  min:10, max:95 },
+    { fill: document.getElementById('bar-mem'), val: document.getElementById('val-mem'), cur: 78, unit:'%',  min:60, max:92 },
+    { fill: document.getElementById('bar-lat'), val: document.getElementById('val-lat'), cur: 22, unit:'ms', min: 5, max:90 },
+  ];
+
+  function updateBars() {
+    bars.forEach(b => {
+      b.cur += (Math.random() - 0.5) * 12;
+      b.cur = Math.max(b.min, Math.min(b.max, b.cur));
+      const pct = ((b.cur - b.min) / (b.max - b.min)) * 100;
+      b.fill.style.width = pct + '%';
+      b.val.textContent  = Math.round(b.cur) + b.unit;
+    });
+    setTimeout(updateBars, 1200 + Math.random() * 800);
+  }
+  setTimeout(updateBars, 1200);
+})();
+
+/* ──────────────────────────────────────────────────
+   SPARKLINE
+   ────────────────────────────────────────────────── */
+(function initSparkline() {
+  const lineEl = document.getElementById('spark-line');
+  const fillEl = document.getElementById('spark-fill');
+  const W = 260, H = 40;
+  const POINTS = 26;
+  const data = Array.from({length: POINTS}, () => Math.random() * 30 + 5);
+
+  function updateSparkline() {
+    data.shift();
+    data.push(Math.random() * 30 + 5);
+
+    const pts = data.map((v, i) => {
+      const x = (i / (POINTS - 1)) * W;
+      const y = H - (v / 40) * H;
+      return [x, y];
+    });
+
+    const linePath = 'M ' + pts.map(p => p.join(',')).join(' L ');
+    const fillPath = linePath + ` L ${W},${H} L 0,${H} Z`;
+
+    lineEl.setAttribute('d', linePath);
+    fillEl.setAttribute('d', fillPath);
+
+    setTimeout(updateSparkline, 600);
+  }
+  updateSparkline();
+})();
+
+/* ──────────────────────────────────────────────────
+   SYSTEM LOG
+   ────────────────────────────────────────────────── */
+(function initLog() {
+  const scroll = document.getElementById('log-scroll');
+  let idx = 0;
+
+  scroll.addEventListener('mouseenter', () => { logPaused = true; });
+  scroll.addEventListener('mouseleave', () => { logPaused = false; });
+
+  function addLogLine() {
+    if (!logPaused) {
+      const msg  = LOG_MESSAGES[idx % LOG_MESSAGES.length];
+      const now  = new Date();
+      const ts   = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.innerHTML = `<span class="ts">[${ts}]</span> <span class="${msg.tag}">${msg.text}</span>`;
+      scroll.appendChild(line);
+
+      // Keep last 60 lines
+      while (scroll.children.length > 60) scroll.removeChild(scroll.firstChild);
+
+      // Auto-scroll to bottom
+      scroll.scrollTop = scroll.scrollHeight;
+      idx++;
+    }
+    setTimeout(addLogLine, 800 + Math.random() * 1400);
+  }
+  addLogLine();
+})();
+
+/* ──────────────────────────────────────────────────
+   PROGRESS BAR — cycles through random values
+   ────────────────────────────────────────────────── */
+(function initProgress() {
+  const fill  = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+  const STAGES = [
+    { pct: 0,  text: 'INITIALIZING...' },
+    { pct: 23, text: 'SAMPLING NODES...' },
+    { pct: 58, text: 'ANALYZING TRAFFIC...' },
+    { pct: 73, text: 'VERIFYING ROUTES...' },
+    { pct: 100,text: 'ANALYSIS COMPLETE ✓' },
+  ];
+  let si = 0;
+
+  function nextStage() {
+    si = (si + 1) % STAGES.length;
+    const s = STAGES[si];
+    fill.style.width  = s.pct + '%';
+    label.textContent = s.pct + '% — ' + s.text;
+
+    const delay = si === 0 ? 2000 : 1200 + Math.random() * 1500;
+    setTimeout(nextStage, delay);
+  }
+  setTimeout(nextStage, 2000);
+})();
+
+/* ──────────────────────────────────────────────────
+   TERMINAL — typing sequence
+   ────────────────────────────────────────────────── */
+(function initTerminal() {
+  const output = document.getElementById('term-output');
+
+  function appendLine(cls, text) {
+    const d = document.createElement('div');
+    d.className = 'term-line ' + cls;
+    d.textContent = text;
+    output.appendChild(d);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  // Typing effect for a single line
+  function typeLine(cls, text, delay, cb) {
+    setTimeout(() => {
+      const d = document.createElement('div');
+      d.className = 'term-line ' + cls;
+      output.appendChild(d);
+
+      let i = 0;
+      const interval = setInterval(() => {
+        d.textContent = text.slice(0, ++i);
+        output.scrollTop = output.scrollHeight;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (cb) cb();
+        }
+      }, 28);
+    }, delay);
+  }
+
+  // Initial boot lines
+  appendLine('res', '  SYSTEM MONITOR v2.4.1 — SIMULATED INTERFACE');
+  appendLine('res', '  ─────────────────────────────────────────────');
+  appendLine('ok',  '  STATUS: ALL SYSTEMS NOMINAL');
+  appendLine('res', '  Press T to focus · Click RUN SIM to start demo');
+
+  // Auto-play the typing sequence once
+  let cumDelay = 1800;
+  TERMINAL_SEQUENCE.forEach(line => {
+    typeLine(line.type, line.text, cumDelay, null);
+    cumDelay += line.text.length * 28 + 400;
+  });
+})();
+
+/* ──────────────────────────────────────────────────
+   RUN SIMULATION BUTTON
+   ────────────────────────────────────────────────── */
+(function initRunBtn() {
+  const btn    = document.getElementById('run-btn');
+  const output = document.getElementById('term-output');
+  const fill   = document.getElementById('progress-fill');
+  const label  = document.getElementById('progress-label');
+  const splash = document.getElementById('access-splash');
+
+  function appendLine(cls, text) {
+    const d = document.createElement('div');
+    d.className = 'term-line ' + cls;
+    d.textContent = text;
+    output.appendChild(d);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  btn.addEventListener('click', () => {
+    if (simRunning) return;
+    simRunning = true;
+    btn.disabled = true;
+
+    appendLine('cmd', '> RUNNING FULL SIMULATION...');
+
+    const steps = [
+      [300,  'res',  '  [01/05] INITIALIZING VIRTUAL ENVIRONMENT...'],
+      [900,  'res',  '  [02/05] MAPPING NODE TOPOLOGY...'],
+      [1600, 'res',  '  [03/05] VALIDATING SIGNAL PATHS...'],
+      [2400, 'warn', '  [04/05] MINOR VARIANCE DETECTED — COMPENSATING...'],
+      [3200, 'res',  '  [05/05] FINALIZING REPORT...'],
+      [4000, 'ok',   '  ✓ SIMULATION COMPLETE — ALL NODES VERIFIED'],
+    ];
+
+    const progSteps = [
+      [200,  10,  'STARTING...'],
+      [800,  35,  'MAPPING NODES...'],
+      [1400, 60,  'VALIDATING...'],
+      [2200, 80,  'COMPENSATING...'],
+      [3000, 95,  'FINALIZING...'],
+      [3800, 100, 'COMPLETE ✓'],
+    ];
+
+    steps.forEach(([delay, cls, text]) => {
+      setTimeout(() => appendLine(cls, text), delay);
+    });
+
+    progSteps.forEach(([delay, pct, txt]) => {
+      setTimeout(() => {
+        fill.style.width  = pct + '%';
+        label.textContent = pct + '% — ' + txt;
+      }, delay);
+    });
+
+    // Show ACCESS GRANTED splash
+    setTimeout(() => {
+      splash.classList.add('show');
+      setTimeout(() => {
+        splash.classList.remove('show');
+        simRunning = false;
+        btn.disabled = false;
+      }, 2600);
+    }, 4200);
+  });
+})();
+
+/* ──────────────────────────────────────────────────
+   TERMINAL INPUT (decorative — no real execution)
+   ────────────────────────────────────────────────── */
+(function initTermInput() {
+  const input  = document.getElementById('term-input');
+  const output = document.getElementById('term-output');
+
+  const FAKE_RESPONSES = {
+    'help':    '  Available: scan | status | ping | nodes | clear',
+    'scan':    '  > SCANNING... 4 nodes found. All nominal.',
+    'status':  '  > SYSTEM STATUS: ONLINE | UPTIME: 99.97% | HEALTH: OK',
+    'ping':    '  > ECHO node-001: 12ms | node-042: 24ms | gateway-9b: 8ms',
+    'nodes':   '  > node-001, node-042, node-alpha, gateway-9b, node-beta',
+    'clear':   '__CLEAR__',
+  };
+
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const cmd = input.value.trim().toLowerCase();
+    input.value = '';
+
+    const d = document.createElement('div');
+    d.className = 'term-line cmd';
+    d.textContent = '> ' + (cmd || '');
+    output.appendChild(d);
+
+    if (FAKE_RESPONSES[cmd]) {
+      const r = FAKE_RESPONSES[cmd];
+      if (r === '__CLEAR__') {
+        output.innerHTML = '';
+      } else {
+        const rd = document.createElement('div');
+        rd.className = 'term-line res';
+        rd.textContent = r;
+        output.appendChild(rd);
+      }
+    } else if (cmd) {
+      const rd = document.createElement('div');
+      rd.className = 'term-line warn';
+      rd.textContent = `  > UNKNOWN COMMAND: "${cmd}" — type help`;
+      output.appendChild(rd);
+    }
+
+    output.scrollTop = output.scrollHeight;
+  });
+})();
+
+</script>
+</body>
+</html>
