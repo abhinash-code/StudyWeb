@@ -903,7 +903,7 @@ document.addEventListener('keydown',e=>{
     statusEl.textContent=`NODES ACTIVE: ${activeNodes}/10`;
     pingEl.textContent=`LAST ECHO: ${Math.floor(8+Math.sin(Date.now()/3000)*4)}ms`;
 
-    if(!hov&&!lp) rotY+=.003;
+    if(!hov&&!lp) rotY+=.02;
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
