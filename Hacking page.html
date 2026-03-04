@@ -1,1395 +1,1206 @@
 <!DOCTYPE html>
-<!--
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  HACKER TERMINAL — CINEMATIC DECORATIVE INTERFACE               ║
-  ║  This is a SIMULATED, FICTIONAL interface for visual/            ║
-  ║  cinematic and entertainment purposes ONLY.                     ║
-  ║  It contains no real tools, commands, or network access.        ║
-  ║                                                                  ║
-  ║  HOW TO CUSTOMIZE:                                               ║
-  ║  - Colors: Edit CSS variables in :root {}                        ║
-  ║  - Log messages: Edit LOG_MESSAGES array in JS                   ║
-  ║  - Terminal lines: Edit TERMINAL_SEQUENCE array in JS            ║
-  ║  - Toggle effects: Click anywhere for low-power mode             ║
-  ║  - Keyboard: Press T to focus terminal                           ║
-  ╚══════════════════════════════════════════════════════════════════╝
--->
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SYSTEM MONITOR — SIMULATED INTERFACE</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NEXUS COMMAND CENTER</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --g:#00ff66; --gd:#00cc44; --gx:#00ff9940;
+  --c:#00e5ff; --cd:#0099bb; --cx:#00e5ff30;
+  --o:#ff6b35; --r:#ff2255;
+  --bg:#000; --p:rgba(4,8,4,0.90);
+  --pb:rgba(0,255,102,0.09);
+  --mono:'Share Tech Mono','Courier New',monospace;
+  --hud:'Orbitron',monospace;
+  --body:'Rajdhani',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;color:var(--g);
+  font-family:var(--mono);font-size:13px;overflow:hidden;cursor:crosshair}
 
-  <!-- Google Fonts: Share Tech Mono + Orbitron -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+/* ── BG LAYERS ── */
+#bgc{position:fixed;inset:0;z-index:0}
+#scanlines{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(0,0,0,.13) 3px,rgba(0,0,0,.13) 4px);
+  animation:scanmove 10s linear infinite}
+@keyframes scanmove{0%{background-position:0 0}100%{background-position:0 200px}}
+#vignette{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.92) 100%)}
+#grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;animation:grainanim .12s steps(1) infinite}
+@keyframes grainanim{0%{transform:translate(0,0)}25%{transform:translate(-4px,3px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,4px)}100%{transform:translate(4px,-3px)}}
+#scanbar{position:fixed;left:0;right:0;height:3px;z-index:4;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--g),var(--c),transparent);
+  opacity:.5;animation:scanbar 5s linear infinite}
+@keyframes scanbar{0%{top:-3px}100%{top:100vh}}
+#chromaticBar{position:fixed;left:0;right:0;height:1px;z-index:4;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--c),transparent);
+  opacity:.3;animation:scanbar 5s linear infinite;animation-delay:0.15s}
 
-  <style>
-    /* ═══════════════════════════════════════════════
-       CSS VARIABLES — edit these to retheme the page
-       ═══════════════════════════════════════════════ */
-    :root {
-      --green:       #00ff66;
-      --green-dim:   #00aa44;
-      --green-glow:  rgba(0,255,102,0.18);
-      --cyan:        #00e5ff;
-      --cyan-dim:    #0099bb;
-      --orange:      #ff6b35;
-      --bg:          #000000;
-      --panel-bg:    rgba(0,0,0,0.72);
-      --panel-border:rgba(0,255,102,0.12);
-      --grey1:       #0b0b0b;
-      --grey2:       #111111;
-      --grey3:       #1a1a1a;
-      --text-main:   #b8ffcc;
-      --text-dim:    #3a7a50;
-      --font-mono:   'Share Tech Mono', 'Courier New', monospace;
-      --font-hud:    'Orbitron', 'Share Tech Mono', monospace;
-      --anim-speed:  1;   /* reduce to 0.5 in low-power mode */
-    }
+/* ── MAIN LAYOUT ── */
+#app{position:relative;z-index:10;width:100vw;height:100vh;
+  display:grid;
+  grid-template-columns:300px 1fr 280px;
+  grid-template-rows:52px 1fr 160px;
+  grid-template-areas:"hdr hdr hdr" "left globe right" "term term term";
+  gap:8px;padding:8px;overflow:hidden}
 
-    /* ═══════════════════════════════════════
-       RESET & BASE
-       ═══════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── PANEL ── */
+.panel{
+  background:var(--p);
+  border:1px solid rgba(0,255,102,0.13);
+  border-radius:3px;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 18px rgba(0,255,102,.07),inset 0 0 30px rgba(0,0,0,.6)}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:.5}
+.panel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,255,102,.2),transparent)}
+/* corner deco */
+.panel .c{position:absolute;width:12px;height:12px;border-color:var(--g);border-style:solid;opacity:.7}
+.panel .c.tl{top:3px;left:3px;border-width:1px 0 0 1px}
+.panel .c.tr{top:3px;right:3px;border-width:1px 1px 0 0}
+.panel .c.bl{bottom:3px;left:3px;border-width:0 0 1px 1px}
+.panel .c.br{bottom:3px;right:3px;border-width:0 1px 1px 0}
+/* panel title bar */
+.ptitle{font-family:var(--hud);font-size:9px;font-weight:700;letter-spacing:.22em;
+  color:var(--g);text-transform:uppercase;padding:8px 12px 6px;
+  border-bottom:1px solid rgba(0,255,102,.1);display:flex;align-items:center;gap:8px;
+  flex-shrink:0}
+.ptitle .dot{width:6px;height:6px;border-radius:50%;background:var(--g);
+  box-shadow:0 0 8px var(--g);animation:blink 1.4s ease-in-out infinite}
+.ptitle .dot.c2{background:var(--c);box-shadow:0 0 8px var(--c);animation-delay:.5s}
+.ptitle .dot.c3{background:var(--o);box-shadow:0 0 8px var(--o);animation-delay:1s}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.pcontent{padding:10px 12px;overflow:hidden;flex:1;min-height:0}
 
-    html, body {
-      width: 100%; height: 100%;
-      background: var(--bg);
-      color: var(--green);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      overflow: hidden;
-      cursor: crosshair;
-    }
+/* ── HEADER ── */
+#hdr{grid-area:hdr;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+#logo{font-family:var(--hud);font-size:clamp(13px,1.6vw,20px);font-weight:900;
+  letter-spacing:.25em;color:var(--g);
+  text-shadow:0 0 20px var(--g),0 0 40px rgba(0,255,102,.4);
+  animation:glitch 7s infinite}
+@keyframes glitch{
+  0%,88%,100%{transform:none;text-shadow:0 0 20px var(--g)}
+  89%{transform:translateX(-3px) skewX(-8deg);
+    text-shadow:-3px 0 var(--c),3px 0 var(--o);clip-path:inset(0 0 75% 0)}
+  90%{transform:translateX(3px);
+    text-shadow:3px 0 var(--c),-3px 0 var(--o);clip-path:inset(30% 0 40% 0)}
+  91%{transform:translateX(-1px) skewX(3deg);
+    text-shadow:0 0 20px var(--g);clip-path:none}
+  93%{transform:translateX(2px) skewX(-3deg);
+    text-shadow:2px 0 var(--o),-2px 0 var(--c)}
+  94%{transform:none;text-shadow:0 0 20px var(--g)}}
+#hdr-mid{display:flex;gap:20px;align-items:center}
+.hstat{font-size:10px;color:rgba(0,255,102,.5);letter-spacing:.1em;
+  display:flex;align-items:center;gap:5px}
+.hstat .v{color:var(--g)}
+.hstat .vo{color:var(--o)}
+.hstat .vc{color:var(--c)}
+#clock{font-family:var(--hud);font-size:13px;color:var(--c);letter-spacing:.12em;
+  text-shadow:0 0 10px var(--c)}
+#ecoBtn{background:transparent;border:1px solid rgba(0,255,102,.3);
+  color:rgba(0,255,102,.5);font-family:var(--mono);font-size:9px;
+  padding:4px 10px;cursor:pointer;letter-spacing:.12em;border-radius:2px;
+  transition:all .2s}
+#ecoBtn:hover{border-color:var(--g);color:var(--g);box-shadow:0 0 10px var(--gx)}
 
-    /* ═══════════════════════════════════════
-       BACKGROUND LAYERS
-       ═══════════════════════════════════════ */
-    #bg-canvas {
-      position: fixed; inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
+/* ── LEFT COLUMN ── */
+#left{grid-area:left;display:flex;flex-direction:column;gap:7px;overflow:hidden}
 
-    /* scanline overlay */
-    #scanlines {
-      position: fixed; inset: 0; z-index: 1;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 2px,
-        rgba(0,0,0,0.18) 2px,
-        rgba(0,0,0,0.18) 4px
-      );
-      animation: scanSweep 8s linear infinite;
-    }
-    @keyframes scanSweep {
-      0%   { background-position: 0 0; }
-      100% { background-position: 0 100vh; }
-    }
+/* bars */
+.brow{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.blbl{width:52px;font-size:9px;color:rgba(0,255,102,.45);letter-spacing:.08em;flex-shrink:0}
+.btrk{flex:1;height:5px;background:rgba(0,255,102,.05);
+  border:1px solid rgba(0,255,102,.12);border-radius:1px;overflow:hidden;position:relative}
+.bfill{height:100%;border-radius:1px;
+  background:linear-gradient(90deg,var(--gd),var(--g));
+  box-shadow:0 0 8px var(--g);
+  transition:width .9s cubic-bezier(.4,0,.2,1)}
+.bfill.blue{background:linear-gradient(90deg,var(--cd),var(--c));box-shadow:0 0 8px var(--c)}
+.bfill.orange{background:linear-gradient(90deg,var(--od),var(--o));box-shadow:0 0 8px var(--o)}
+.bval{width:38px;text-align:right;font-size:10px;color:var(--g);letter-spacing:.05em}
+/* sparkline */
+#spark{width:100%;height:44px}
+/* log */
+#logScroll{overflow-y:auto;height:100%;scrollbar-width:thin;scrollbar-color:var(--gd) transparent}
+#logScroll::-webkit-scrollbar{width:3px}
+#logScroll::-webkit-scrollbar-thumb{background:var(--gd)}
+.lline{font-size:10px;line-height:1.7;color:rgba(0,200,80,.55);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;
+  transition:color .15s;padding:0 2px}
+.lline:hover{color:var(--g)}
+.lline .ts{color:rgba(0,255,102,.3)}
+.lline .ok{color:var(--g)}.lline .warn{color:var(--o)}.lline .info{color:var(--c)}.lline .err{color:var(--r)}
+/* progress */
+#progTrack{width:100%;height:7px;background:rgba(0,255,102,.04);
+  border:1px solid rgba(0,255,102,.12);border-radius:2px;overflow:hidden;margin-top:4px}
+#progFill{height:100%;width:0%;transition:width .7s cubic-bezier(.4,0,.2,1);
+  background:linear-gradient(90deg,var(--gd),var(--g),var(--c));
+  box-shadow:0 0 14px var(--g),0 0 28px rgba(0,255,102,.3);
+  animation:progpulse 1.8s ease-in-out infinite}
+@keyframes progpulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.5)}}
+#progLbl{font-size:9px;color:rgba(0,255,102,.4);margin-top:3px;letter-spacing:.1em}
 
-    /* vignette */
-    #vignette {
-      position: fixed; inset: 0; z-index: 2;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center,
-        transparent 40%, rgba(0,0,0,0.82) 100%);
-    }
+/* ── GLOBE AREA ── */
+#globe{grid-area:globe;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden}
+#globeCanvas{display:block;width:100%;height:100%}
+.glbl{position:absolute;font-family:var(--hud);font-size:8px;
+  letter-spacing:.2em;color:rgba(0,255,102,.4);pointer-events:none;text-transform:uppercase}
+#glbTitle{top:12px;left:14px;font-size:10px;color:var(--g);
+  text-shadow:0 0 12px var(--g)}
+#glbCoords{bottom:12px;right:14px;color:var(--c);font-size:8px}
+#glbStatus{bottom:12px;left:14px;color:rgba(0,255,102,.4);font-size:8px}
+#glbPing{top:12px;right:14px;color:var(--o);font-size:8px;animation:blink 2s infinite}
+/* orbit rings */
+.oring{position:absolute;border-radius:50%;pointer-events:none;border:1px solid rgba(0,255,102,.07);
+  animation:spinRing linear infinite}
+@keyframes spinRing{from{transform:rotateZ(0) rotateX(68deg)}to{transform:rotateZ(360deg) rotateX(68deg)}}
+/* radar sweep on globe */
+#radarSweep{position:absolute;width:100%;height:100%;pointer-events:none;overflow:hidden;border-radius:50%}
+/* node blip dots */
+.nodeblip{position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--g);box-shadow:0 0 10px var(--g),0 0 20px rgba(0,255,102,.5);
+  animation:blippulse 2s ease-in-out infinite;transform:translate(-50%,-50%)}
+.nodeblip::after{content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid var(--g);animation:blipring 2s ease-out infinite;opacity:0}
+@keyframes blippulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.4)}}
+@keyframes blipring{0%{transform:scale(1);opacity:.7}100%{transform:scale(3);opacity:0}}
 
-    /* grain / noise overlay */
-    #grain {
-      position: fixed; inset: 0; z-index: 3;
-      pointer-events: none;
-      opacity: 0.035;
-      animation: grainAnim 0.15s steps(1) infinite;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-    }
-    @keyframes grainAnim {
-      0%  { background-position:   0   0; }
-      10% { background-position: -5%  -10%; }
-      20% { background-position: -15%  5%; }
-      30% { background-position:  7% -25%; }
-      40% { background-position: -5%  25%; }
-      50% { background-position: -15% 10%; }
-      60% { background-position: 15%   0; }
-      70% { background-position:  0%  15%; }
-      80% { background-position:  3%  35%; }
-      90% { background-position: -10% 10%; }
-     100% { background-position:  0    0; }
-    }
+/* ── RIGHT COLUMN ── */
+#right{grid-area:right;display:flex;flex-direction:column;gap:7px;overflow:hidden}
 
-    /* horizontal scan sweep bar */
-    #scan-bar {
-      position: fixed; left: 0; right: 0;
-      height: 2px; z-index: 4;
-      background: linear-gradient(to right, transparent, var(--green), transparent);
-      opacity: 0.35;
-      animation: scanBar 4s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes scanBar {
-      0%   { top: -2px; }
-      100% { top: 100vh; }
-    }
+/* tool panels */
+.toolpanel{display:flex;flex-direction:column;flex:1;min-height:0}
+.toolscroll{overflow-y:auto;flex:1;scrollbar-width:none}
+.toolscroll::-webkit-scrollbar{display:none}
+/* cipher tool */
+.cipherRow{display:flex;justify-content:space-between;align-items:center;
+  padding:2px 0;border-bottom:1px solid rgba(0,255,102,.05)}
+.cipherKey{font-size:9px;color:rgba(0,255,102,.4);letter-spacing:.08em}
+.cipherVal{font-family:var(--mono);font-size:10px;color:var(--c);letter-spacing:.05em}
+.cipherStatus{font-size:9px;padding:1px 5px;border-radius:1px;
+  border:1px solid rgba(0,255,102,.2);color:var(--g)}
+/* signal tool */
+.sigBar{display:flex;align-items:center;gap:5px;margin:3px 0}
+.sigLbl{font-size:9px;color:rgba(0,255,102,.4);width:55px;flex-shrink:0;letter-spacing:.06em}
+.sigBlks{display:flex;gap:2px}
+.sigBlk{width:8px;height:12px;background:rgba(0,255,102,.08);
+  border:1px solid rgba(0,255,102,.12);border-radius:1px;transition:background .3s}
+.sigBlk.on{background:var(--g);box-shadow:0 0 6px var(--g)}
+.sigBlk.on.c2{background:var(--c);box-shadow:0 0 6px var(--c)}
+.sigBlk.on.c3{background:var(--o);box-shadow:0 0 6px var(--o)}
+/* frequency display */
+.freqDisp{font-family:var(--hud);font-size:16px;font-weight:700;
+  color:var(--g);text-shadow:0 0 15px var(--g);
+  text-align:center;margin:4px 0;letter-spacing:.1em;
+  animation:freqflicker 4s ease-in-out infinite}
+@keyframes freqflicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.4}94%{opacity:1}97%{opacity:.7}98%{opacity:1}}
+/* node map mini */
+.nodeRow{display:flex;align-items:center;justify-content:space-between;
+  padding:3px 0;border-bottom:1px solid rgba(0,255,102,.05)}
+.nodeName{font-size:9px;color:rgba(0,255,102,.5);letter-spacing:.07em}
+.nodePing{font-size:9px;color:var(--c)}
+.nodeState{font-size:8px;padding:1px 5px;border-radius:1px}
+.nodeState.active{color:var(--g);border:1px solid rgba(0,255,102,.25)}
+.nodeState.standby{color:var(--o);border:1px solid rgba(255,107,53,.25)}
+.nodeState.offline{color:var(--r);border:1px solid rgba(255,34,85,.25)}
 
-    /* ═══════════════════════════════════════
-       MAIN LAYOUT
-       ═══════════════════════════════════════ */
-    #app {
-      position: relative; z-index: 10;
-      width: 100vw; height: 100vh;
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      grid-template-rows: auto 1fr auto;
-      grid-template-areas:
-        "header  header"
-        "left    globe"
-        "terminal terminal";
-      gap: 10px;
-      padding: 12px;
-      overflow: hidden;
-    }
+/* ── TERMINAL ── */
+#term{grid-area:term;display:flex;flex-direction:column;overflow:hidden}
+#termBody{display:flex;flex:1;min-height:0;gap:8px;padding:8px 12px 6px}
+#termOut{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gd) transparent;
+  font-size:11px;line-height:1.75}
+#termOut::-webkit-scrollbar{width:3px}
+#termOut::-webkit-scrollbar-thumb{background:var(--gd)}
+.tline{color:rgba(0,200,80,.55)}
+.tline.cmd{color:var(--g)}
+.tline.res{color:rgba(180,255,210,.8);padding-left:10px}
+.tline.ok{color:var(--g);padding-left:10px}
+.tline.warn{color:var(--o);padding-left:10px}
+.tline.err{color:var(--r);padding-left:10px}
+#termSide{width:200px;flex-shrink:0;border-left:1px solid rgba(0,255,102,.08);
+  padding-left:10px;display:flex;flex-direction:column;gap:6px}
+.tsideTitle{font-family:var(--hud);font-size:8px;letter-spacing:.2em;
+  color:rgba(0,255,102,.35);text-transform:uppercase}
+.tsideVal{font-family:var(--hud);font-size:14px;font-weight:700;
+  color:var(--g);text-shadow:0 0 10px var(--g);letter-spacing:.1em}
+.tsideVal.c2{color:var(--c);text-shadow:0 0 10px var(--c)}
+.tsideSub{font-size:9px;color:rgba(0,255,102,.3);letter-spacing:.08em}
+#termInput{display:flex;align-items:center;gap:6px;border-top:1px solid rgba(0,255,102,.1);
+  padding:6px 12px}
+.tprompt{color:var(--g);font-size:14px}
+#tinput{flex:1;background:transparent;border:none;outline:none;
+  color:var(--g);font-family:var(--mono);font-size:12px;caret-color:var(--g)}
+#tinput::placeholder{color:rgba(0,255,102,.2)}
+#runBtn{background:transparent;border:1px solid rgba(0,255,102,.35);
+  color:rgba(0,255,102,.7);font-family:var(--hud);font-size:8px;
+  padding:5px 14px;cursor:pointer;letter-spacing:.18em;border-radius:2px;
+  transition:all .2s;white-space:nowrap}
+#runBtn:hover{border-color:var(--g);color:var(--g);
+  box-shadow:0 0 16px rgba(0,255,102,.25),inset 0 0 10px rgba(0,255,102,.05)}
+#runBtn:disabled{opacity:.35;cursor:not-allowed}
 
-    /* ═══════════════════════════════════════
-       PANEL BASE STYLE
-       ═══════════════════════════════════════ */
-    .panel {
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 4px;
-      box-shadow:
-        0 0 12px var(--green-glow),
-        inset 0 0 20px rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 10px 12px;
-      position: relative;
-      overflow: hidden;
-    }
-    .panel::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--green), transparent);
-      opacity: 0.5;
-    }
+/* ── ACCESS GRANTED ── */
+#splash{display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.92);align-items:center;justify-content:center;flex-direction:column;gap:14px}
+#splash.show{display:flex;animation:splashin .3s ease}
+@keyframes splashin{from{opacity:0;transform:scale(1.1)}to{opacity:1;transform:scale(1)}}
+#splashTxt{font-family:var(--hud);font-size:clamp(26px,5vw,60px);font-weight:900;
+  letter-spacing:.35em;color:var(--g);
+  text-shadow:0 0 40px var(--g),0 0 80px rgba(0,255,102,.5),0 0 150px rgba(0,255,102,.2);
+  animation:splashpulse .5s ease-in-out infinite}
+@keyframes splashpulse{0%,100%{opacity:1}50%{opacity:.65}}
+#splashSub{font-size:12px;color:var(--c);letter-spacing:.3em;text-transform:uppercase}
+#splashProg{width:300px;height:3px;background:rgba(0,255,102,.1);border-radius:2px;margin-top:10px}
+#splashProgFill{width:0%;height:100%;background:linear-gradient(90deg,var(--g),var(--c));
+  border-radius:2px;transition:width .2s}
 
-    .panel-title {
-      font-family: var(--font-hud);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: var(--green);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .panel-title::before {
-      content: '▶';
-      color: var(--cyan);
-      font-size: 8px;
-    }
+/* ── FOOTER ── */
+#footer{position:fixed;bottom:0;left:0;right:0;text-align:center;z-index:20;
+  font-size:8px;color:rgba(0,255,102,.15);padding:2px;letter-spacing:.18em;pointer-events:none}
 
-    /* corner decorations */
-    .corner-tl, .corner-tr, .corner-bl, .corner-br {
-      position: absolute;
-      width: 10px; height: 10px;
-      border-color: var(--green);
-      border-style: solid;
-      opacity: 0.6;
-    }
-    .corner-tl { top: 2px; left: 2px;  border-width: 1px 0 0 1px; }
-    .corner-tr { top: 2px; right: 2px; border-width: 1px 1px 0 0; }
-    .corner-bl { bottom: 2px; left: 2px;  border-width: 0 0 1px 1px; }
-    .corner-br { bottom: 2px; right: 2px; border-width: 0 1px 1px 0; }
+/* ── LOW POWER ── */
+body.lp #scanlines,body.lp #grain,body.lp #scanbar,body.lp #chromaticBar,
+body.lp .oring{display:none}
+body.lp #logo{animation:none}
 
-    /* ═══════════════════════════════════════
-       HEADER
-       ═══════════════════════════════════════ */
-    #header {
-      grid-area: header;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 14px;
-    }
-
-    #logo {
-      font-family: var(--font-hud);
-      font-size: clamp(14px, 2vw, 22px);
-      font-weight: 900;
-      letter-spacing: 0.25em;
-      color: var(--green);
-      text-shadow: 0 0 20px var(--green), 0 0 40px rgba(0,255,102,0.3);
-      animation: glitchTitle 6s infinite;
-    }
-    @keyframes glitchTitle {
-      0%,90%,100% { transform: none; text-shadow: 0 0 20px var(--green); }
-      91%   { transform: translateX(-2px); clip-path: inset(0 0 80% 0);
-              text-shadow: -2px 0 var(--cyan), 2px 0 var(--orange); }
-      92%   { transform: translateX(2px);  clip-path: inset(50% 0 20% 0);
-              text-shadow: 2px 0 var(--cyan), -2px 0 var(--orange); }
-      93%   { transform: none; text-shadow: 0 0 20px var(--green); }
-      95%   { transform: translateX(-1px) skewX(-5deg);
-              text-shadow: 3px 0 var(--orange), -3px 0 var(--cyan); }
-      96%   { transform: none; text-shadow: 0 0 20px var(--green); }
-    }
-
-    #header-right {
-      display: flex; gap: 20px; align-items: center;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      animation: blink 1.4s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.2; }
-    }
-
-    #clock {
-      font-family: var(--font-hud);
-      font-size: 11px;
-      color: var(--cyan);
-      letter-spacing: 0.1em;
-    }
-
-    #power-toggle {
-      background: transparent;
-      border: 1px solid var(--green-dim);
-      color: var(--green-dim);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 3px 8px;
-      cursor: pointer;
-      letter-spacing: 0.1em;
-      transition: all 0.2s;
-      border-radius: 2px;
-    }
-    #power-toggle:hover {
-      border-color: var(--green);
-      color: var(--green);
-      box-shadow: 0 0 8px var(--green-glow);
-    }
-
-    /* ═══════════════════════════════════════
-       LEFT HUD STACK
-       ═══════════════════════════════════════ */
-    #left-stack {
-      grid-area: left;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      overflow: hidden;
-    }
-
-    /* — CPU / NETWORK BARS — */
-    .bar-row {
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 5px;
-    }
-    .bar-label {
-      width: 60px; font-size: 10px;
-      color: var(--text-dim);
-      flex-shrink: 0;
-      letter-spacing: 0.08em;
-    }
-    .bar-track {
-      flex: 1; height: 6px;
-      background: rgba(0,255,102,0.07);
-      border: 1px solid rgba(0,255,102,0.15);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--green-dim), var(--green));
-      border-radius: 2px;
-      transition: width 0.8s ease;
-      box-shadow: 0 0 6px var(--green);
-    }
-    .bar-val {
-      width: 36px; text-align: right;
-      font-size: 10px;
-      color: var(--green);
-    }
-
-    /* — SPARKLINE — */
-    #sparkline-svg { width: 100%; height: 40px; }
-
-    /* — LOG AREA — */
-    #log-area {
-      flex: 1;
-      min-height: 0;
-    }
-    #log-scroll {
-      height: 100%;
-      max-height: 200px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--green-dim) transparent;
-    }
-    #log-scroll::-webkit-scrollbar { width: 3px; }
-    #log-scroll::-webkit-scrollbar-thumb { background: var(--green-dim); }
-
-    .log-line {
-      font-size: 11px;
-      line-height: 1.6;
-      color: var(--text-dim);
-      padding: 0 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: default;
-      transition: color 0.2s;
-    }
-    .log-line:hover { color: var(--text-main); }
-    .log-line .ts { color: var(--text-dim); }
-    .log-line .ok  { color: var(--green); }
-    .log-line .warn { color: var(--orange); }
-    .log-line .info { color: var(--cyan); }
-
-    /* — PROGRESS BAR — */
-    #progress-track {
-      width: 100%;
-      height: 8px;
-      background: rgba(0,255,102,0.05);
-      border: 1px solid rgba(0,255,102,0.15);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-    #progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--green-dim), var(--green), var(--cyan));
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.6s cubic-bezier(.4,0,.2,1);
-      box-shadow: 0 0 10px var(--green), 0 0 20px rgba(0,255,102,0.3);
-      animation: progressPulse 2s ease-in-out infinite;
-    }
-    @keyframes progressPulse {
-      0%,100% { filter: brightness(1); }
-      50%      { filter: brightness(1.4); }
-    }
-    #progress-label {
-      font-size: 10px; color: var(--text-dim);
-      margin-top: 3px; letter-spacing: 0.08em;
-    }
-
-    /* ═══════════════════════════════════════
-       GLOBE AREA
-       ═══════════════════════════════════════ */
-    #globe-area {
-      grid-area: globe;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #globe-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .globe-label {
-      position: absolute;
-      font-family: var(--font-hud);
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: var(--green-dim);
-      text-transform: uppercase;
-      pointer-events: none;
-    }
-    #globe-title  { top: 12px; left: 14px; }
-    #globe-coords { bottom: 12px; right: 14px; color: var(--cyan-dim); }
-
-    /* orbiting ring decoration */
-    .orbit-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px dashed rgba(0,255,102,0.1);
-      pointer-events: none;
-      animation: rotateRing linear infinite;
-    }
-    @keyframes rotateRing {
-      from { transform: rotateZ(0deg) rotateX(70deg); }
-      to   { transform: rotateZ(360deg) rotateX(70deg); }
-    }
-
-    /* ═══════════════════════════════════════
-       TERMINAL PANEL
-       ═══════════════════════════════════════ */
-    #terminal-panel {
-      grid-area: terminal;
-      max-height: 180px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #term-output {
-      flex: 1;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--green-dim) transparent;
-      font-size: 12px;
-      line-height: 1.65;
-      padding-bottom: 4px;
-    }
-    #term-output::-webkit-scrollbar { width: 3px; }
-    #term-output::-webkit-scrollbar-thumb { background: var(--green-dim); }
-
-    .term-line { color: var(--text-dim); }
-    .term-line.cmd { color: var(--green); }
-    .term-line.res { color: var(--text-main); padding-left: 10px; }
-    .term-line.ok  { color: var(--green); padding-left: 10px; }
-    .term-line.warn { color: var(--orange); padding-left: 10px; }
-
-    #term-input-row {
-      display: flex; align-items: center; gap: 6px;
-      margin-top: 6px;
-      border-top: 1px solid rgba(0,255,102,0.1);
-      padding-top: 6px;
-    }
-    .prompt-sym { color: var(--green); font-size: 13px; }
-    #term-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--green);
-      font-family: var(--font-mono);
-      font-size: 12px;
-      caret-color: var(--green);
-    }
-
-    #run-btn {
-      background: transparent;
-      border: 1px solid var(--green-dim);
-      color: var(--green-dim);
-      font-family: var(--font-hud);
-      font-size: 9px;
-      padding: 4px 12px;
-      letter-spacing: 0.15em;
-      cursor: pointer;
-      transition: all 0.2s;
-      border-radius: 2px;
-      white-space: nowrap;
-    }
-    #run-btn:hover {
-      border-color: var(--green);
-      color: var(--green);
-      box-shadow: 0 0 12px var(--green-glow);
-    }
-    #run-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    /* ACCESS GRANTED splash */
-    #access-splash {
-      display: none;
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,0.85);
-      align-items: center; justify-content: center;
-      flex-direction: column;
-      gap: 16px;
-    }
-    #access-splash.show { display: flex; }
-    #access-splash-text {
-      font-family: var(--font-hud);
-      font-size: clamp(28px, 5vw, 54px);
-      font-weight: 900;
-      letter-spacing: 0.3em;
-      color: var(--green);
-      text-shadow: 0 0 30px var(--green), 0 0 80px rgba(0,255,102,0.5);
-      animation: splashPulse 0.4s ease-in-out infinite;
-    }
-    @keyframes splashPulse {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.7; }
-    }
-    #access-sub {
-      font-size: 13px; color: var(--cyan);
-      letter-spacing: 0.2em;
-    }
-
-    /* ═══════════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════════ */
-    #footer {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      text-align: center;
-      font-size: 9px;
-      color: rgba(0,255,102,0.18);
-      padding: 3px;
-      z-index: 20;
-      letter-spacing: 0.15em;
-      pointer-events: none;
-    }
-
-    /* ═══════════════════════════════════════
-       LOW-POWER MODE
-       ═══════════════════════════════════════ */
-    body.low-power #scanlines,
-    body.low-power #grain,
-    body.low-power #scan-bar { display: none; }
-    body.low-power #logo { animation: none; }
-    body.low-power .orbit-ring { display: none; }
-
-    /* ═══════════════════════════════════════
-       RESPONSIVE: MOBILE
-       ═══════════════════════════════════════ */
-    @media (max-width: 700px) {
-      #app {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 200px 1fr auto;
-        grid-template-areas:
-          "header"
-          "globe"
-          "left"
-          "terminal";
-        overflow-y: auto;
-        height: auto;
-        min-height: 100vh;
-      }
-      #log-scroll { max-height: 120px; }
-      #terminal-panel { max-height: 160px; }
-      body { overflow-y: auto; }
-    }
-  </style>
+/* ══════════════ MOBILE ══════════════ */
+@media(max-width:900px){
+  html,body{overflow-y:auto}
+  #app{
+    grid-template-columns:1fr;
+    grid-template-rows:50px auto 260px auto auto;
+    grid-template-areas:"hdr" "globe" "left" "right" "term";
+    height:auto;min-height:100vh;overflow-y:visible}
+  #hdr-mid{display:none}
+  #termSide{display:none}
+  #logScroll{max-height:150px}
+  .oring{display:none}
+}
+@media(max-width:500px){
+  #logo{font-size:11px;letter-spacing:.15em}
+  #globeCanvas{min-height:280px}
+}
+</style>
 </head>
-
 <body>
 
-<!-- ══════════════════════════════════
-     BACKGROUND LAYERS (aria-hidden)
-     ══════════════════════════════════ -->
-<canvas id="bg-canvas" aria-hidden="true"></canvas>
-<div id="scanlines"  aria-hidden="true"></div>
-<div id="vignette"   aria-hidden="true"></div>
-<div id="grain"      aria-hidden="true"></div>
-<div id="scan-bar"   aria-hidden="true"></div>
+<canvas id="bgc" aria-hidden="true"></canvas>
+<div id="scanlines" aria-hidden="true"></div>
+<div id="vignette"  aria-hidden="true"></div>
+<div id="grain"     aria-hidden="true"></div>
+<div id="scanbar"   aria-hidden="true"></div>
+<div id="chromaticBar" aria-hidden="true"></div>
 
-<!-- ACCESS GRANTED SPLASH -->
-<div id="access-splash" role="status" aria-live="assertive">
-  <div id="access-splash-text">ACCESS GRANTED</div>
-  <div id="access-sub">SIMULATION COMPLETE — ALL NODES VERIFIED</div>
+<!-- SPLASH -->
+<div id="splash" role="status">
+  <div id="splashTxt">ACCESS GRANTED</div>
+  <div id="splashSub">AUTHENTICATION SEQUENCE COMPLETE</div>
+  <div id="splashProg"><div id="splashProgFill"></div></div>
 </div>
 
-<!-- ══════════════════════════════════
-     MAIN APP
-     ══════════════════════════════════ -->
-<main id="app" role="main">
+<main id="app">
 
-  <!-- HEADER -->
-  <header id="header" class="panel" aria-label="System Monitor Header">
-    <div class="corner-tl"></div><div class="corner-tr"></div>
-    <div class="corner-bl"></div><div class="corner-br"></div>
-    <div id="logo" aria-label="System Monitor">◈ SYSTEM MONITOR</div>
-    <div id="header-right" aria-hidden="true">
-      <span class="status-dot" title="System Online"></span>
-      <div id="clock">00:00:00</div>
-      <button id="power-toggle" title="Toggle low-power mode" aria-pressed="false">⚡ ECO MODE</button>
+<!-- HEADER -->
+<header id="hdr" class="panel">
+  <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+  <div id="logo">◈ NEXUS COMMAND CENTER</div>
+  <div id="hdr-mid" aria-hidden="true">
+    <div class="hstat">NODES <span class="v" id="hNodeCount">0/12</span></div>
+    <div class="hstat">UPLINK <span class="vc" id="hUplink">0 Mbps</span></div>
+    <div class="hstat">THREAT <span class="vo" id="hThreat">LOW</span></div>
+    <div class="hstat">INTEGRITY <span class="v">99.97%</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="clock">00:00:00</div>
+    <button id="ecoBtn" aria-pressed="false">⚡ ECO</button>
+  </div>
+</header>
+
+<!-- LEFT -->
+<aside id="left" aria-label="System Stats">
+
+  <div class="panel" style="flex-shrink:0">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot"></span>RESOURCE METRICS</div>
+    <div class="pcontent">
+      <div class="brow"><span class="blbl">CPU CORE</span><div class="btrk"><div class="bfill" id="bCpu" style="width:45%"></div></div><span class="bval" id="vCpu">45%</span></div>
+      <div class="brow"><span class="blbl">NETWORK</span><div class="btrk"><div class="bfill blue" id="bNet" style="width:62%"></div></div><span class="bval" id="vNet">62%</span></div>
+      <div class="brow"><span class="blbl">MEMORY</span><div class="btrk"><div class="bfill" id="bMem" style="width:78%"></div></div><span class="bval" id="vMem">78%</span></div>
+      <div class="brow"><span class="blbl">DISK I/O</span><div class="btrk"><div class="bfill orange" id="bDsk" style="width:33%"></div></div><span class="bval" id="vDsk">33%</span></div>
+      <div class="brow"><span class="blbl">LATENCY</span><div class="btrk"><div class="bfill blue" id="bLat" style="width:18%"></div></div><span class="bval" id="vLat">18ms</span></div>
     </div>
-  </header>
+  </div>
 
-  <!-- LEFT HUD STACK -->
-  <aside id="left-stack" aria-label="System Statistics">
-
-    <!-- CPU / NETWORK / MEM -->
-    <div class="panel" aria-label="Resource Metrics">
-      <div class="corner-tl"></div><div class="corner-tr"></div>
-      <div class="corner-bl"></div><div class="corner-br"></div>
-      <div class="panel-title">RESOURCE METRICS</div>
-      <div class="bar-row">
-        <span class="bar-label">CPU</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-cpu" style="width:45%"></div></div>
-        <span class="bar-val" id="val-cpu">45%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">NETWORK</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-net" style="width:62%;background:linear-gradient(to right,var(--cyan-dim),var(--cyan))"></div></div>
-        <span class="bar-val" id="val-net">62%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">MEMORY</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-mem" style="width:78%"></div></div>
-        <span class="bar-val" id="val-mem">78%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">LATENCY</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-lat" style="width:22%;background:linear-gradient(to right,var(--green-dim),var(--orange))"></div></div>
-        <span class="bar-val" id="val-lat">22ms</span>
-      </div>
-    </div>
-
-    <!-- SPARKLINE / TRAFFIC -->
-    <div class="panel" aria-label="Network Traffic Graph">
-      <div class="corner-tl"></div><div class="corner-tr"></div>
-      <div class="corner-bl"></div><div class="corner-br"></div>
-      <div class="panel-title">NETWORK TRAFFIC</div>
-      <svg id="sparkline-svg" viewBox="0 0 260 40" preserveAspectRatio="none" aria-hidden="true">
+  <div class="panel" style="flex-shrink:0">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot c2"></span>TRAFFIC GRAPH</div>
+    <div class="pcontent" style="padding-top:6px">
+      <svg id="spark" viewBox="0 0 260 44" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--green)" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
+          <linearGradient id="sfg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00ff66" stop-opacity=".35"/>
+            <stop offset="100%" stop-color="#00ff66" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="sfg2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00e5ff" stop-opacity=".2"/>
+            <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <path id="spark-fill" fill="url(#sg)" />
-        <path id="spark-line" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+        <path id="spkF" fill="url(#sfg)"/>
+        <path id="spkL" fill="none" stroke="#00ff66" stroke-width="1.4"/>
+        <path id="spkF2" fill="url(#sfg2)"/>
+        <path id="spkL2" fill="none" stroke="#00e5ff" stroke-width=".8" opacity=".5"/>
       </svg>
     </div>
+  </div>
 
-    <!-- SYSTEM LOG -->
-    <div class="panel" id="log-area" aria-label="System Log">
-      <div class="corner-tl"></div><div class="corner-tr"></div>
-      <div class="corner-bl"></div><div class="corner-br"></div>
-      <div class="panel-title">SYSTEM LOG</div>
-      <div id="log-scroll" aria-live="polite" aria-atomic="false"></div>
+  <div class="panel" style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot"></span>SYSTEM LOG</div>
+    <div class="pcontent" style="flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:6px">
+      <div id="logScroll" aria-live="polite" style="flex:1;min-height:0"></div>
     </div>
+  </div>
 
-    <!-- PROGRESS -->
-    <div class="panel" aria-label="Analysis Progress">
-      <div class="corner-tl"></div><div class="corner-tr"></div>
-      <div class="corner-bl"></div><div class="corner-br"></div>
-      <div class="panel-title">ANALYSIS PROGRESS</div>
-      <div id="progress-track" aria-hidden="true">
-        <div id="progress-fill"></div>
+  <div class="panel" style="flex-shrink:0">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot c3"></span>ANALYSIS PROGRESS</div>
+    <div class="pcontent">
+      <div id="progTrack"><div id="progFill"></div></div>
+      <div id="progLbl">0% — INITIALIZING...</div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- GLOBE -->
+<section id="globe" class="panel" aria-label="Global Node Map">
+  <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+  <canvas id="globeCanvas" aria-hidden="true"></canvas>
+  <!-- orbit rings -->
+  <div class="oring" style="width:75%;padding-top:75%;top:12.5%;left:12.5%;animation-duration:22s" aria-hidden="true"></div>
+  <div class="oring" style="width:92%;padding-top:92%;top:4%;left:4%;animation-duration:38s;animation-direction:reverse;border-color:rgba(0,229,255,.05)" aria-hidden="true"></div>
+  <div class="oring" style="width:60%;padding-top:60%;top:20%;left:20%;animation-duration:14s;border-color:rgba(0,229,255,.08)" aria-hidden="true"></div>
+  <!-- labels -->
+  <div class="glbl" id="glbTitle" aria-hidden="true">◈ GLOBAL NODE MAP</div>
+  <div class="glbl" id="glbCoords" aria-hidden="true">LAT: 00.000°  LON: 00.000°</div>
+  <div class="glbl" id="glbStatus" aria-hidden="true">NODES ACTIVE: 0</div>
+  <div class="glbl" id="glbPing"   aria-hidden="true">LAST ECHO: 0ms</div>
+</section>
+
+<!-- RIGHT -->
+<aside id="right" aria-label="Tools">
+
+  <!-- SIGNAL ANALYZER -->
+  <div class="panel toolpanel">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot c2"></span>SIGNAL ANALYZER</div>
+    <div class="pcontent" style="display:flex;flex-direction:column;gap:2px">
+      <div class="freqDisp" id="freqDisp">482.7 MHz</div>
+      <div id="sigBars"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px">
+        <span style="font-size:8px;color:rgba(0,255,102,.35);letter-spacing:.1em">AMPLITUDE</span>
+        <span style="font-size:8px;color:var(--c)" id="ampVal">0.84 V</span>
       </div>
-      <div id="progress-label">INITIALIZING...</div>
+      <div style="display:flex;justify-content:space-between">
+        <span style="font-size:8px;color:rgba(0,255,102,.35);letter-spacing:.1em">MODULATION</span>
+        <span style="font-size:8px;color:var(--g)" id="modVal">QAM-64</span>
+      </div>
     </div>
+  </div>
 
-  </aside>
+  <!-- CIPHER ENGINE -->
+  <div class="panel toolpanel">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot"></span>CIPHER ENGINE</div>
+    <div class="pcontent toolscroll" id="cipherContent"></div>
+  </div>
 
-  <!-- GLOBE -->
-  <section id="globe-area" class="panel" aria-label="Global Node Map (decorative)">
-    <div class="corner-tl"></div><div class="corner-tr"></div>
-    <div class="corner-bl"></div><div class="corner-br"></div>
-    <canvas id="globe-canvas" aria-hidden="true"></canvas>
-    <div class="globe-label" id="globe-title" aria-hidden="true">GLOBAL NODE MAP</div>
-    <div class="globe-label" id="globe-coords" aria-hidden="true" id="globe-coords">LAT:00.00 LON:00.00</div>
-    <div class="orbit-ring" style="width:280px;height:280px;top:calc(50% - 140px);left:calc(50% - 140px);animation-duration:18s;" aria-hidden="true"></div>
-    <div class="orbit-ring" style="width:360px;height:360px;top:calc(50% - 180px);left:calc(50% - 180px);animation-duration:30s;animation-direction:reverse;border-color:rgba(0,229,255,0.07);" aria-hidden="true"></div>
-  </section>
+  <!-- NODE DIRECTORY -->
+  <div class="panel toolpanel" style="flex:1;min-height:0">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div class="ptitle"><span class="dot c3"></span>NODE DIRECTORY</div>
+    <div class="pcontent toolscroll" id="nodeDir"></div>
+  </div>
 
-  <!-- TERMINAL -->
-  <section id="terminal-panel" class="panel" aria-label="Terminal">
-    <div class="corner-tl"></div><div class="corner-tr"></div>
-    <div class="corner-bl"></div><div class="corner-br"></div>
-    <div class="panel-title">TERMINAL</div>
-    <div id="term-output" aria-live="polite"></div>
-    <div id="term-input-row">
-      <span class="prompt-sym" aria-hidden="true">▶</span>
-      <input id="term-input" type="text" autocomplete="off" spellcheck="false"
-             placeholder="type command..." aria-label="Terminal input (decorative)" />
-      <button id="run-btn" aria-label="Run simulation sequence">▶ RUN SIM</button>
+</aside>
+
+<!-- TERMINAL -->
+<section id="term" class="panel" aria-label="Terminal">
+  <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+  <div class="ptitle"><span class="dot"></span>TERMINAL <span style="margin-left:8px;color:rgba(0,255,102,.3);font-size:8px">PRESS T TO FOCUS</span></div>
+  <div id="termBody">
+    <div id="termOut" aria-live="polite"></div>
+    <div id="termSide" aria-hidden="true">
+      <div>
+        <div class="tsideTitle">PACKETS / SEC</div>
+        <div class="tsideVal" id="tsPkt">0</div>
+        <div class="tsideSub">ACTIVE STREAMS</div>
+      </div>
+      <div>
+        <div class="tsideTitle">DATA RATE</div>
+        <div class="tsideVal c2" id="tsDr">0 Mbps</div>
+        <div class="tsideSub">UPLINK / DOWNLINK</div>
+      </div>
+      <div>
+        <div class="tsideTitle">SESSION ID</div>
+        <div class="tsideVal" style="font-size:10px" id="tsSid">----</div>
+        <div class="tsideSub">CURRENT SESSION</div>
+      </div>
     </div>
-  </section>
+  </div>
+  <div id="termInput">
+    <span class="tprompt">▶</span>
+    <input id="tinput" type="text" autocomplete="off" spellcheck="false"
+           placeholder="type help for commands..." aria-label="Terminal input"/>
+    <button id="runBtn">▶ RUN SIMULATION</button>
+  </div>
+</section>
 
 </main>
 
-<!-- FOOTER -->
-<footer id="footer" aria-label="Disclaimer">
-  ⚠ THIS IS A SIMULATED INTERFACE FOR VISUAL / CINEMATIC USE ONLY — NOT A REAL SYSTEM
-</footer>
+<footer id="footer">⚠ SIMULATED INTERFACE — VISUAL / CINEMATIC USE ONLY</footer>
 
-<!-- ══════════════════════════════════════════════════════════
-     JAVASCRIPT
-     ══════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
-
-/* ──────────────────────────────────────────────────
-   SAMPLE DATA — edit these arrays to customise content
-   ────────────────────────────────────────────────── */
-
-const LOG_MESSAGES = [
-  { tag:'ok',   text:'AUTH CHECK: VERIFIED' },
-  { tag:'info', text:'NODE node-001 STATUS: ACTIVE | PING: 12ms' },
-  { tag:'ok',   text:'INTEGRITY SCAN: PASSED' },
-  { tag:'info', text:'GATEWAY gateway-9b RESPONSE: 200 OK' },
-  { tag:'warn', text:'SIGNAL VARIANCE DETECTED — node-alpha' },
-  { tag:'ok',   text:'ROUTE MAPPING: COMPLETE' },
-  { tag:'info', text:'NODE node-042 STATUS: ACTIVE | PING: 24ms' },
-  { tag:'ok',   text:'PACKET ANALYSIS: NOMINAL' },
-  { tag:'info', text:'SYNC PULSE: 60Hz — STABLE' },
-  { tag:'warn', text:'LATENCY SPIKE: 88ms — gateway-9b' },
-  { tag:'ok',   text:'AUTH TOKEN REFRESH: OK' },
-  { tag:'info', text:'NODE node-beta STATUS: STANDBY' },
-  { tag:'ok',   text:'DIAGNOSTIC CYCLE: PASS' },
-  { tag:'info', text:'UPLINK BANDWIDTH: 842 Mbps' },
-  { tag:'ok',   text:'CHECKSUM VERIFY: MATCH' },
-  { tag:'warn', text:'REDUNDANT PATH INACTIVE — rerouting' },
-  { tag:'info', text:'NODE node-007 STATUS: ACTIVE | PING: 9ms' },
-  { tag:'ok',   text:'TIMESTAMP SYNC: OK' },
-  { tag:'info', text:'CLUSTER ECHO: 4/4 NODES RESPOND' },
-  { tag:'ok',   text:'WATCHDOG TIMER: RESET' },
-  { tag:'info', text:'TRAFFIC ANALYSIS: LOW ANOMALY' },
-  { tag:'ok',   text:'PROTOCOL HANDSHAKE: ACCEPTED' },
-  { tag:'warn', text:'BUFFER UTILIZATION: 91% — node-delta' },
-  { tag:'info', text:'TELEMETRY STREAM: ACTIVE' },
-  { tag:'ok',   text:'STATUS REPORT: ALL NOMINAL' },
-  { tag:'info', text:'NODE node-gamma STATUS: ACTIVE | PING: 17ms' },
-  { tag:'ok',   text:'COMPRESSION MODULE: READY' },
-  { tag:'warn', text:'PACKET RETRY: node-042 × 3' },
-  { tag:'info', text:'ROUTING TABLE: 128 ENTRIES CACHED' },
-  { tag:'ok',   text:'SESSION KEEPALIVE: SENT' },
-  { tag:'info', text:'MIRROR NODE ECHO: 2ms' },
-  { tag:'ok',   text:'SYSTEM HEALTH: OPTIMAL' },
+/* ═══════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════ */
+const LOGS=[
+  {t:'ok',  m:'AUTH TOKEN VERIFIED — SESSION ESTABLISHED'},
+  {t:'info',m:'NODE node-001 | PING: 12ms | LOAD: 34% | STATUS: ACTIVE'},
+  {t:'ok',  m:'INTEGRITY CHECK PASSED — ALL SECTORS NOMINAL'},
+  {t:'info',m:'GATEWAY gateway-9b | RESPONSE: 200 | RTT: 8ms'},
+  {t:'warn',m:'SIGNAL VARIANCE +14% DETECTED — node-alpha'},
+  {t:'ok',  m:'ROUTE MAPPING COMPLETE — 128 ENTRIES CACHED'},
+  {t:'info',m:'NODE node-042 | PING: 24ms | LOAD: 61% | STATUS: ACTIVE'},
+  {t:'ok',  m:'PACKET ANALYSIS: NOMINAL — 0 ANOMALIES'},
+  {t:'info',m:'SYNC PULSE: 60Hz — OSCILLATOR STABLE'},
+  {t:'warn',m:'LATENCY SPIKE 88ms — gateway-9b — REROUTING'},
+  {t:'ok',  m:'AUTH TOKEN REFRESH COMPLETE'},
+  {t:'info',m:'NODE node-beta | STATUS: STANDBY | IDLE: 4m 22s'},
+  {t:'ok',  m:'DIAGNOSTIC CYCLE PASSED — 12/12 MODULES'},
+  {t:'info',m:'UPLINK BANDWIDTH: 842 Mbps — STABLE'},
+  {t:'ok',  m:'CHECKSUM VERIFIED — SECTOR 7 INTACT'},
+  {t:'warn',m:'REDUNDANT PATH INACTIVE — AUTO-REROUTING VIA node-007'},
+  {t:'info',m:'NODE node-007 | PING: 9ms | LOAD: 22% | STATUS: ACTIVE'},
+  {t:'ok',  m:'TIMESTAMP SYNC: OK — DRIFT: 0.0002s'},
+  {t:'info',m:'CLUSTER ECHO: 4/4 NODES RESPONDED'},
+  {t:'ok',  m:'WATCHDOG TIMER RESET — INTERVAL: 30s'},
+  {t:'info',m:'TRAFFIC ANALYSIS: LOW ANOMALY INDEX (0.03)'},
+  {t:'ok',  m:'PROTOCOL HANDSHAKE ACCEPTED — node-delta'},
+  {t:'warn',m:'BUFFER UTILIZATION 91% — node-delta — THROTTLING'},
+  {t:'info',m:'TELEMETRY STREAM ACTIVE — 14 CHANNELS'},
+  {t:'ok',  m:'SYSTEM HEALTH REPORT: ALL NOMINAL'},
+  {t:'info',m:'NODE node-gamma | PING: 17ms | LOAD: 55% | STATUS: ACTIVE'},
+  {t:'ok',  m:'COMPRESSION MODULE READY — RATIO: 4.2:1'},
+  {t:'warn',m:'PACKET RETRY ×3 — node-042 — RECOVERED'},
+  {t:'info',m:'MIRROR NODE ECHO: 2ms — SYNC: 100%'},
+  {t:'ok',  m:'SESSION KEEPALIVE SENT — TIMEOUT: 300s'},
+  {t:'err', m:'SEGMENT FAULT IN BUFFER — AUTO-CORRECTED'},
+  {t:'info',m:'CIPHER ROTATION — KEY: RSA-4096 → RENEWED'},
+  {t:'ok',  m:'FIREWALL RULES UPDATED — 2048 ENTRIES'},
+  {t:'info',m:'BANDWIDTH ALLOCATION REBALANCED'},
+  {t:'warn',m:'NODE node-zeta UNREACHABLE — PROBE TIMEOUT'},
 ];
 
-const TERMINAL_SEQUENCE = [
-  { type:'cmd', text:'> INITIALIZING SCAN SEQUENCE...' },
-  { type:'res', text:'  protocol: TCP/VIRTUAL | mode: PASSIVE MONITOR' },
-  { type:'cmd', text:'> SCANNING NETWORK...' },
-  { type:'res', text:'  node-001     | STATUS: ACTIVE  | PING:  12ms | LOAD: 34%' },
-  { type:'res', text:'  node-042     | STATUS: ACTIVE  | PING:  24ms | LOAD: 61%' },
-  { type:'res', text:'  node-alpha   | STATUS: STANDBY | PING:  --   | LOAD:  0%' },
-  { type:'res', text:'  gateway-9b   | STATUS: ACTIVE  | PING:   8ms | LOAD: 22%' },
-  { type:'res', text:'  node-beta    | STATUS: ACTIVE  | PING:  31ms | LOAD: 48%' },
-  { type:'cmd', text:'> VERIFY ROUTE TABLE...' },
-  { type:'res', text:'  128 entries cached | 3 dynamic | TTL: 3600s' },
-  { type:'cmd', text:'> RUN DIAGNOSTIC CYCLE...' },
-  { type:'res', text:'  CPU:    OK  | MEM:   OK  | DISK: OK' },
-  { type:'res', text:'  UPLINK: OK  | CLOCK: SYNC' },
-  { type:'ok',  text:'  ✓ ALL CHECKS PASSED — SYSTEM NOMINAL' },
+const NODES=[
+  {id:'node-001',  ping:'12ms', load:'34%', state:'active'},
+  {id:'node-042',  ping:'24ms', load:'61%', state:'active'},
+  {id:'node-alpha',ping:'--',   load:'0%',  state:'standby'},
+  {id:'gateway-9b',ping:'8ms',  load:'22%', state:'active'},
+  {id:'node-beta', ping:'31ms', load:'48%', state:'active'},
+  {id:'node-007',  ping:'9ms',  load:'19%', state:'active'},
+  {id:'node-gamma',ping:'17ms', load:'55%', state:'active'},
+  {id:'node-delta',ping:'44ms', load:'91%', state:'active'},
+  {id:'node-zeta', ping:'--',   load:'0%',  state:'offline'},
+  {id:'node-epsilon',ping:'28ms',load:'37%',state:'active'},
+  {id:'mirror-01', ping:'2ms',  load:'12%', state:'active'},
+  {id:'mirror-02', ping:'3ms',  load:'10%', state:'standby'},
 ];
 
-/* ──────────────────────────────────────────────────
+const CIPHERS=[
+  {lbl:'ALGORITHM',  val:'AES-256-GCM',  st:'ACTIVE'},
+  {lbl:'KEY LENGTH',  val:'4096 BIT',    st:'LOCKED'},
+  {lbl:'HASH',        val:'SHA-512',     st:'VERIFY'},
+  {lbl:'PROTOCOL',    val:'TLS v1.3',    st:'ACTIVE'},
+  {lbl:'IV ROTATION', val:'EVERY 300s',  st:'AUTO'},
+  {lbl:'ENTROPY',     val:'99.98%',      st:'OK'},
+];
+
+const MODS=['QAM-64','QAM-128','OFDM','PSK-8','FSK','BPSK','AM-DSB','FM-NB'];
+const FREQS=['482.7','319.4','741.2','256.8','603.1','418.5','877.3','124.9'];
+
+const TERM_SEQ=[
+  {c:'cmd', t:'> INITIALIZING NEXUS COMMAND SEQUENCE...'},
+  {c:'res', t:'  protocol    : NEXUS/v4.2 | cipher: AES-256'},
+  {c:'res', t:'  session-id  : NX-7F3A-9C2B-4E1D'},
+  {c:'cmd', t:'> SCANNING NODE TOPOLOGY...'},
+  {c:'res', t:'  node-001    | ACTIVE  | 12ms  | 34% load'},
+  {c:'res', t:'  node-042    | ACTIVE  | 24ms  | 61% load'},
+  {c:'res', t:'  gateway-9b  | ACTIVE  |  8ms  | 22% load'},
+  {c:'res', t:'  node-alpha  | STANDBY | --    |  0% load'},
+  {c:'res', t:'  node-zeta   | OFFLINE | --    |  0% load'},
+  {c:'cmd', t:'> VERIFY ROUTE TABLE...'},
+  {c:'res', t:'  128 entries | 3 dynamic | TTL: 3600s | OK'},
+  {c:'cmd', t:'> DIAGNOSTIC CYCLE...'},
+  {c:'res', t:'  CPU: OK  MEM: OK  DISK: OK  CLOCK: SYNC'},
+  {c:'ok',  t:'  ✓ ALL CHECKS PASSED — SYSTEM NOMINAL'},
+];
+
+/* ═══════════════════════════════════════════════════════
    STATE
-   ────────────────────────────────────────────────── */
-let lowPower       = false;
-let logPaused      = false;
-let simRunning     = false;
-let mouseX = 0, mouseY = 0;
+═══════════════════════════════════════════════════════ */
+let lp=false, logPaused=false, simRunning=false;
+let mx=0, my=0;
 
-/* ──────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════
    CLOCK
-   ────────────────────────────────────────────────── */
-const clockEl = document.getElementById('clock');
-function updateClock() {
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2,'0');
-  const mm = String(now.getMinutes()).padStart(2,'0');
-  const ss = String(now.getSeconds()).padStart(2,'0');
-  clockEl.textContent = `${hh}:${mm}:${ss}`;
+═══════════════════════════════════════════════════════ */
+const clockEl=document.getElementById('clock');
+function tick(){
+  const n=new Date();
+  clockEl.textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(tick,1000); tick();
 
-/* ──────────────────────────────────────────────────
-   LOW-POWER TOGGLE
-   ────────────────────────────────────────────────── */
-const powerBtn = document.getElementById('power-toggle');
-powerBtn.addEventListener('click', () => {
-  lowPower = !lowPower;
-  document.body.classList.toggle('low-power', lowPower);
-  powerBtn.setAttribute('aria-pressed', String(lowPower));
-  powerBtn.textContent = lowPower ? '⚡ ECO: ON' : '⚡ ECO MODE';
+/* ═══════════════════════════════════════════════════════
+   ECO TOGGLE
+═══════════════════════════════════════════════════════ */
+document.getElementById('ecoBtn').onclick=function(){
+  lp=!lp; document.body.classList.toggle('lp',lp);
+  this.setAttribute('aria-pressed',lp);
+  this.textContent=lp?'⚡ ECO: ON':'⚡ ECO';
+};
+
+/* ═══════════════════════════════════════════════════════
+   MOUSE
+═══════════════════════════════════════════════════════ */
+document.addEventListener('mousemove',e=>{
+  mx=(e.clientX/innerWidth-.5)*2;
+  my=(e.clientY/innerHeight-.5)*2;
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='t'||e.key==='T') document.getElementById('tinput').focus();
 });
 
-/* ──────────────────────────────────────────────────
-   MOUSE PARALLAX
-   ────────────────────────────────────────────────── */
-document.addEventListener('mousemove', e => {
-  mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
-  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-});
+/* ═══════════════════════════════════════════════════════
+   BACKGROUND CANVAS — particles + matrix rain
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const cv=document.getElementById('bgc'), cx=cv.getContext('2d');
+  let W,H,cols,drops;
+  const CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>/\\';
+  const CW=15;
 
-/* ──────────────────────────────────────────────────
-   KEYBOARD SHORTCUT: T → focus terminal
-   ────────────────────────────────────────────────── */
-document.addEventListener('keydown', e => {
-  if (e.key === 't' || e.key === 'T') {
-    document.getElementById('term-input').focus();
+  const particles=[];
+  function init(){
+    W=cv.width=innerWidth; H=cv.height=innerHeight;
+    cols=Math.floor(W/CW);
+    drops=Array(cols).fill(0).map(()=>-Math.random()*40);
+    if(!particles.length){
+      for(let i=0;i<90;i++) particles.push({
+        x:Math.random()*W,y:Math.random()*H,
+        r:Math.random()*1.4+.3,
+        vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
+        a:Math.random()*.5+.1,ca:Math.random()>.7
+      });
+    }
   }
-});
+  addEventListener('resize',init); init();
 
-/* ──────────────────────────────────────────────────
-   BACKGROUND CANVAS (particles + matrix rain)
-   ────────────────────────────────────────────────── */
-(function initBgCanvas() {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H;
+  let lt=0;
+  function frame(ts){
+    const dt=Math.min(ts-lt,50); lt=ts;
+    cx.clearRect(0,0,W,H);
 
-  /* — Particles — */
-  const PARTICLE_COUNT = 80;
-  const particles = [];
-
-  function resizeCanvas() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.2 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.5 + 0.1,
-    });
-  }
-
-  /* — Matrix Rain — */
-  const MATRIX_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>/\\|[]{}';
-  const COL_WIDTH = 16;
-  let cols, drops;
-
-  function initMatrix() {
-    cols  = Math.floor(W / COL_WIDTH);
-    drops = Array(cols).fill(0).map(() => -Math.random() * 30);
-  }
-  initMatrix();
-  window.addEventListener('resize', initMatrix);
-
-  /* — Connections between particles — */
-  const CONN_DIST = 100;
-
-  let lastTime = 0;
-  function drawFrame(ts) {
-    const dt = Math.min(ts - lastTime, 50);
-    lastTime = ts;
-
-    ctx.clearRect(0, 0, W, H);
-
-    /* matrix rain */
-    if (!lowPower) {
-      ctx.font = '12px Share Tech Mono, monospace';
-      for (let c = 0; c < cols; c++) {
-        /* only render left 12% and right 12% columns for side effect */
-        const px = c * COL_WIDTH;
-        const isLeft  = px < W * 0.12;
-        const isRight = px > W * 0.88;
-        if (!isLeft && !isRight) { drops[c] += 0.02; continue; }
-
-        const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
-        const py   = drops[c] * COL_WIDTH;
-
-        /* bright head */
-        ctx.fillStyle = 'rgba(0,255,102,0.9)';
-        ctx.fillText(char, px, py);
-
-        /* fading trail - draw 20 chars above */
-        for (let t = 1; t < 20; t++) {
-          const alpha = (1 - t / 20) * 0.35;
-          ctx.fillStyle = `rgba(0,255,102,${alpha})`;
-          const tc = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
-          ctx.fillText(tc, px, py - t * COL_WIDTH);
+    // matrix
+    if(!lp){
+      cx.font=`12px 'Share Tech Mono',monospace`;
+      for(let c=0;c<cols;c++){
+        const px=c*CW;
+        const side=px<W*.13||px>W*.87;
+        if(!side){drops[c]+=.03;continue;}
+        const char=CHARS[Math.floor(Math.random()*CHARS.length)];
+        const py=drops[c]*CW;
+        // bright head
+        cx.fillStyle='rgba(0,255,102,.92)';
+        cx.fillText(char,px,py);
+        // trail
+        for(let t=1;t<22;t++){
+          cx.fillStyle=`rgba(0,255,102,${(1-t/22)*.38})`;
+          cx.fillText(CHARS[Math.floor(Math.random()*CHARS.length)],px,py-t*CW);
         }
-
-        if (drops[c] * COL_WIDTH > H && Math.random() > 0.975) drops[c] = 0;
-        drops[c] += 0.35;
+        if(drops[c]*CW>H&&Math.random()>.97) drops[c]=0;
+        drops[c]+=.4;
       }
     }
 
-    /* particles */
-    const speed = lowPower ? 0 : 1;
-    for (const p of particles) {
-      p.x += (p.vx + mouseX * 0.08) * speed;
-      p.y += (p.vy + mouseY * 0.04) * speed;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,255,102,${p.alpha})`;
-      ctx.fill();
+    // particles
+    const spd=lp?0:1;
+    for(const p of particles){
+      p.x+=(p.vx+mx*.07)*spd; p.y+=(p.vy+my*.04)*spd;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      cx.beginPath();
+      cx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      cx.fillStyle=p.ca?`rgba(0,229,255,${p.a})`:`rgba(0,255,102,${p.a})`;
+      cx.fill();
     }
 
-    /* connections */
-    if (!lowPower) {
-      ctx.strokeStyle = 'rgba(0,255,102,0.06)';
-      ctx.lineWidth   = 0.5;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const d  = Math.sqrt(dx*dx + dy*dy);
-          if (d < CONN_DIST) {
-            ctx.globalAlpha = (1 - d / CONN_DIST) * 0.3;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+    // connections
+    if(!lp){
+      for(let i=0;i<particles.length;i++){
+        for(let j=i+1;j<particles.length;j++){
+          const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+          const d=Math.sqrt(dx*dx+dy*dy);
+          if(d<110){
+            cx.globalAlpha=(1-d/110)*.22;
+            cx.strokeStyle=particles[i].ca||particles[j].ca?'rgba(0,229,255,1)':'rgba(0,255,102,1)';
+            cx.lineWidth=.4;
+            cx.beginPath();cx.moveTo(particles[i].x,particles[i].y);
+            cx.lineTo(particles[j].x,particles[j].y);cx.stroke();
           }
         }
       }
-      ctx.globalAlpha = 1;
+      cx.globalAlpha=1;
     }
-
-    requestAnimationFrame(drawFrame);
+    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(drawFrame);
+  requestAnimationFrame(frame);
 })();
 
-/* ──────────────────────────────────────────────────
-   GLOBE CANVAS
-   ────────────────────────────────────────────────── */
-(function initGlobe() {
-  const canvas = document.getElementById('globe-canvas');
-  const ctx    = canvas.getContext('2d');
-  const coordsEl = document.getElementById('globe-coords');
+/* ═══════════════════════════════════════════════════════
+   GLOBE — large, detailed, cinematic
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const cv=document.getElementById('globeCanvas');
+  const cx=cv.getContext('2d');
+  const coordsEl=document.getElementById('glbCoords');
+  const statusEl=document.getElementById('glbStatus');
+  const pingEl=document.getElementById('glbPing');
 
-  let CX, CY, R;
-  let rotY = 0, rotX = 0.3;
-  let hovered = false;
+  let CX,CY,R, rotY=0, rotX=.35, hov=false;
+  let radarAngle=0;
+  let activeNodes=0;
 
-  // Random connection lines state
-  const connections = [];
-  for (let i = 0; i < 12; i++) {
-    connections.push({
-      lat1: (Math.random() - 0.5) * Math.PI,
-      lon1: Math.random() * Math.PI * 2,
-      lat2: (Math.random() - 0.5) * Math.PI,
-      lon2: Math.random() * Math.PI * 2,
-      alpha: 0,
-      dAlpha: (Math.random() > 0.5 ? 1 : -1) * 0.006,
-      maxAlpha: Math.random() * 0.7 + 0.2,
-    });
-  }
-
-  // Dots on globe surface
-  const DOTS = 300;
-  const dotPositions = [];
-  for (let i = 0; i < DOTS; i++) {
-    const lat = Math.acos(1 - 2 * (i / DOTS));
-    const lon = Math.PI * (1 + Math.sqrt(5)) * i;
-    dotPositions.push({ lat, lon });
-  }
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width  = rect.width;
-    canvas.height = rect.height;
-    CX = rect.width  / 2;
-    CY = rect.height / 2;
-    R  = Math.min(rect.width, rect.height) * 0.36;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  canvas.addEventListener('mouseenter', () => { hovered = true; });
-  canvas.addEventListener('mouseleave', () => { hovered = false; });
-
-  function project(lat, lon, rY, rX) {
-    // spherical to cartesian
-    const x0 =  Math.cos(lat) * Math.sin(lon);
-    const y0 = -Math.sin(lat);
-    const z0 =  Math.cos(lat) * Math.cos(lon);
-    // rotate Y
-    const x1 = x0 * Math.cos(rY) + z0 * Math.sin(rY);
-    const z1 = -x0 * Math.sin(rY) + z0 * Math.cos(rY);
-    // rotate X
-    const y2 = y0 * Math.cos(rX) - z1 * Math.sin(rX);
-    const z2 = y0 * Math.sin(rX) + z1 * Math.cos(rX);
-    return { x: CX + x1 * R, y: CY + y2 * R, z: z2 };
-  }
-
-  function drawGlobeFrame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // parallax tilt
-    const tiltY = rotY + mouseX * 0.05;
-    const tiltX = rotX + mouseY * 0.03;
-
-    // — wireframe latitude lines —
-    const LAT_LINES = 10;
-    for (let l = 0; l < LAT_LINES; l++) {
-      const lat = -Math.PI / 2 + Math.PI * l / (LAT_LINES - 1);
-      ctx.beginPath();
-      let started = false;
-      for (let s = 0; s <= 60; s++) {
-        const lon = (s / 60) * Math.PI * 2;
-        const p   = project(lat, lon, tiltY, tiltX);
-        if (p.z < 0) { started = false; continue; }
-        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.strokeStyle = 'rgba(0,255,102,0.12)';
-      ctx.lineWidth   = 0.6;
-      ctx.stroke();
-    }
-
-    // — wireframe longitude lines —
-    const LON_LINES = 12;
-    for (let l = 0; l < LON_LINES; l++) {
-      const lon = (l / LON_LINES) * Math.PI * 2;
-      ctx.beginPath();
-      let started = false;
-      for (let s = 0; s <= 60; s++) {
-        const lat = -Math.PI / 2 + Math.PI * s / 60;
-        const p   = project(lat, lon, tiltY, tiltX);
-        if (p.z < 0) { started = false; continue; }
-        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.strokeStyle = 'rgba(0,255,102,0.12)';
-      ctx.lineWidth   = 0.6;
-      ctx.stroke();
-    }
-
-    // — point cloud —
-    for (const dp of dotPositions) {
-      const p = project(dp.lat, dp.lon, tiltY, tiltX);
-      if (p.z < 0) continue;
-      const brightness = (p.z + 1) / 2;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,255,102,${brightness * 0.7})`;
-      ctx.fill();
-    }
-
-    // — connection arcs between random nodes —
-    if (!lowPower) {
-      for (const c of connections) {
-        c.alpha += c.dAlpha;
-        if (c.alpha >= c.maxAlpha || c.alpha <= 0) c.dAlpha *= -1;
-        if (c.alpha < 0) c.alpha = 0;
-        if (c.alpha > 1) c.alpha = 1;
-
-        const p1 = project(c.lat1, c.lon1, tiltY, tiltX);
-        const p2 = project(c.lat2, c.lon2, tiltY, tiltX);
-        if (p1.z < 0 || p2.z < 0) continue;
-
-        ctx.beginPath();
-        const mx = (p1.x + p2.x) / 2;
-        const my = (p1.y + p2.y) / 2 - Math.hypot(p2.x-p1.x, p2.y-p1.y) * 0.35;
-        ctx.moveTo(p1.x, p1.y);
-        ctx.quadraticCurveTo(mx, my, p2.x, p2.y);
-        ctx.strokeStyle = `rgba(0,229,255,${c.alpha * 0.55})`;
-        ctx.lineWidth   = 0.8;
-        ctx.stroke();
-
-        // endpoint dots
-        ctx.beginPath();
-        ctx.arc(p1.x, p1.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,229,255,${c.alpha * 0.9})`;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(p2.x, p2.y, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    // — glow halo —
-    const grd = ctx.createRadialGradient(CX, CY, R * 0.85, CX, CY, R * 1.15);
-    grd.addColorStop(0, 'rgba(0,255,102,0.08)');
-    grd.addColorStop(1, 'transparent');
-    ctx.beginPath();
-    ctx.arc(CX, CY, R * 1.15, 0, Math.PI * 2);
-    ctx.fillStyle = grd;
-    ctx.fill();
-
-    // rotate
-    if (!hovered && !lowPower) rotY += 0.003;
-
-    // update coords label
-    const latDeg = ((rotX / Math.PI) * 180).toFixed(2);
-    const lonDeg = (((rotY % (Math.PI*2)) / (Math.PI*2)) * 360).toFixed(2);
-    coordsEl.textContent = `LAT:${latDeg} LON:${lonDeg}`;
-
-    requestAnimationFrame(drawGlobeFrame);
-  }
-  requestAnimationFrame(drawGlobeFrame);
-})();
-
-/* ──────────────────────────────────────────────────
-   RESOURCE BARS — animate randomly
-   ────────────────────────────────────────────────── */
-(function initBars() {
-  const bars = [
-    { fill: document.getElementById('bar-cpu'), val: document.getElementById('val-cpu'), cur: 45, unit:'%',  min:20, max:90 },
-    { fill: document.getElementById('bar-net'), val: document.getElementById('val-net'), cur: 62, unit:'%',  min:10, max:95 },
-    { fill: document.getElementById('bar-mem'), val: document.getElementById('val-mem'), cur: 78, unit:'%',  min:60, max:92 },
-    { fill: document.getElementById('bar-lat'), val: document.getElementById('val-lat'), cur: 22, unit:'ms', min: 5, max:90 },
+  // Globe surface nodes (fictional locations)
+  const GLOBE_NODES=[
+    {lat:.7,  lon:.5,   id:'node-001',  active:true},
+    {lat:-.3, lon:2.1,  id:'node-042',  active:true},
+    {lat:.9,  lon:-.8,  id:'gateway-9b',active:true},
+    {lat:-.6, lon:1.1,  id:'node-beta', active:true},
+    {lat:.2,  lon:2.8,  id:'node-007',  active:true},
+    {lat:.5,  lon:-.2,  id:'node-gamma',active:true},
+    {lat:-.8, lon:-.5,  id:'node-delta',active:true},
+    {lat:.1,  lon:1.6,  id:'mirror-01', active:true},
+    {lat:-.4, lon:2.6,  id:'node-alpha',active:false},
+    {lat:.6,  lon:1.9,  id:'node-zeta', active:false},
   ];
 
-  function updateBars() {
-    bars.forEach(b => {
-      b.cur += (Math.random() - 0.5) * 12;
-      b.cur = Math.max(b.min, Math.min(b.max, b.cur));
-      const pct = ((b.cur - b.min) / (b.max - b.min)) * 100;
-      b.fill.style.width = pct + '%';
-      b.val.textContent  = Math.round(b.cur) + b.unit;
-    });
-    setTimeout(updateBars, 1200 + Math.random() * 800);
+  // Connection pairs
+  const CONNS=[[0,2],[0,5],[1,3],[1,7],[2,6],[3,4],[4,7],[5,8],[6,9],[0,7],[1,4]];
+  const connAlphas=CONNS.map(()=>Math.random());
+  const connDirs  =CONNS.map(()=>Math.random()>.5?1:-1);
+
+  // Dense point cloud
+  const DOTS=600;
+  const dotPts=[];
+  for(let i=0;i<DOTS;i++){
+    const lat=Math.acos(1-2*(i/DOTS));
+    const lon=Math.PI*(1+Math.sqrt(5))*i;
+    dotPts.push({lat,lon});
   }
-  setTimeout(updateBars, 1200);
+
+  function resize(){
+    const rc=cv.parentElement.getBoundingClientRect();
+    cv.width=rc.width; cv.height=rc.height;
+    CX=rc.width/2; CY=rc.height/2;
+    // Globe takes 80% of the available space
+    R=Math.min(rc.width,rc.height)*.40;
+    activeNodes=GLOBE_NODES.filter(n=>n.active).length;
+  }
+  addEventListener('resize',resize); resize();
+  cv.addEventListener('mouseenter',()=>hov=true);
+  cv.addEventListener('mouseleave',()=>hov=false);
+
+  function proj(lat,lon,ry,rx){
+    const x0=Math.cos(lat)*Math.sin(lon);
+    const y0=-Math.sin(lat);
+    const z0=Math.cos(lat)*Math.cos(lon);
+    const x1=x0*Math.cos(ry)+z0*Math.sin(ry);
+    const z1=-x0*Math.sin(ry)+z0*Math.cos(ry);
+    const y2=y0*Math.cos(rx)-z1*Math.sin(rx);
+    const z2=y0*Math.sin(rx)+z1*Math.cos(rx);
+    return{x:CX+x1*R, y:CY+y2*R, z:z2};
+  }
+
+  function frame(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    const ry=rotY+mx*.04, rx=rotX+my*.025;
+
+    // ── outer glow halo ──
+    const gHalo=cx.createRadialGradient(CX,CY,R*.7,CX,CY,R*1.5);
+    gHalo.addColorStop(0,'rgba(0,255,102,.06)');
+    gHalo.addColorStop(.6,'rgba(0,229,255,.03)');
+    gHalo.addColorStop(1,'transparent');
+    cx.beginPath(); cx.arc(CX,CY,R*1.5,0,Math.PI*2);
+    cx.fillStyle=gHalo; cx.fill();
+
+    // ── atmosphere glow ──
+    const gAtm=cx.createRadialGradient(CX,CY,R*.92,CX,CY,R*1.08);
+    gAtm.addColorStop(0,'rgba(0,255,102,.12)');
+    gAtm.addColorStop(1,'transparent');
+    cx.beginPath(); cx.arc(CX,CY,R*1.08,0,Math.PI*2);
+    cx.fillStyle=gAtm; cx.fill();
+
+    // ── base sphere (very faint fill) ──
+    const gSphere=cx.createRadialGradient(CX-R*.3,CY-R*.25,R*.05,CX,CY,R);
+    gSphere.addColorStop(0,'rgba(0,255,102,.04)');
+    gSphere.addColorStop(1,'rgba(0,0,0,.01)');
+    cx.beginPath(); cx.arc(CX,CY,R,0,Math.PI*2);
+    cx.fillStyle=gSphere; cx.fill();
+
+    // ── latitude lines ──
+    const LATS=16;
+    for(let l=0;l<LATS;l++){
+      const lat=-Math.PI/2+Math.PI*l/(LATS-1);
+      const cosLat=Math.cos(lat);
+      const isTropic=l===4||l===12, isEquator=l===8;
+      cx.beginPath(); let started=false;
+      for(let s=0;s<=72;s++){
+        const lon=(s/72)*Math.PI*2;
+        const p=proj(lat,lon,ry,rx);
+        if(p.z<0){started=false;continue;}
+        started?cx.lineTo(p.x,p.y):(cx.moveTo(p.x,p.y),started=true);
+      }
+      cx.strokeStyle=isEquator?'rgba(0,229,255,.35)':isTropic?'rgba(0,255,102,.2)':'rgba(0,255,102,.09)';
+      cx.lineWidth=isEquator?.8:isTropic?.6:.4;
+      cx.stroke();
+    }
+
+    // ── longitude lines ──
+    const LONS=24;
+    for(let l=0;l<LONS;l++){
+      const lon=(l/LONS)*Math.PI*2;
+      const isPrime=l===0||l===12;
+      cx.beginPath(); let started=false;
+      for(let s=0;s<=60;s++){
+        const lat=-Math.PI/2+Math.PI*s/60;
+        const p=proj(lat,lon,ry,rx);
+        if(p.z<0){started=false;continue;}
+        started?cx.lineTo(p.x,p.y):(cx.moveTo(p.x,p.y),started=true);
+      }
+      cx.strokeStyle=isPrime?'rgba(0,229,255,.22)':'rgba(0,255,102,.08)';
+      cx.lineWidth=isPrime?.6:.35;
+      cx.stroke();
+    }
+
+    // ── radar sweep ──
+    if(!lp){
+      cx.save();
+      cx.beginPath(); cx.arc(CX,CY,R,0,Math.PI*2); cx.clip();
+      const sweepGrad=cx.createConicalGradient
+        ?cx.createConicalGradient(radarAngle,CX,CY)
+        :null;
+      // fallback: simple arc wedge
+      cx.beginPath();
+      cx.moveTo(CX,CY);
+      cx.arc(CX,CY,R,radarAngle-Math.PI*.18,radarAngle,false);
+      cx.closePath();
+      const sg=cx.createRadialGradient(CX,CY,0,CX,CY,R);
+      sg.addColorStop(0,'rgba(0,255,102,.0)');
+      sg.addColorStop(.6,'rgba(0,255,102,.06)');
+      sg.addColorStop(1,'rgba(0,255,102,.0)');
+      cx.fillStyle=sg; cx.fill();
+      // leading edge line
+      cx.beginPath();
+      cx.moveTo(CX,CY);
+      cx.lineTo(CX+Math.cos(radarAngle)*R, CY+Math.sin(radarAngle)*R);
+      cx.strokeStyle='rgba(0,255,102,.55)';
+      cx.lineWidth=1; cx.stroke();
+      cx.restore();
+      radarAngle+=.012;
+    }
+
+    // ── point cloud ──
+    for(const d of dotPts){
+      const p=proj(d.lat,d.lon,ry,rx);
+      if(p.z<0) continue;
+      const br=(p.z+1)/2;
+      const isHighlight=br>.85;
+      cx.beginPath();
+      cx.arc(p.x,p.y,isHighlight?1.6:1,0,Math.PI*2);
+      cx.fillStyle=isHighlight?`rgba(0,255,102,${br*.9})`:`rgba(0,255,102,${br*.45})`;
+      cx.fill();
+    }
+
+    // ── connection arcs ──
+    if(!lp){
+      for(let i=0;i<CONNS.length;i++){
+        connAlphas[i]+= connDirs[i]*.007;
+        if(connAlphas[i]>1||connAlphas[i]<0) connDirs[i]*=-1;
+        const [a,b]=CONNS[i];
+        const p1=proj(GLOBE_NODES[a].lat,GLOBE_NODES[a].lon,ry,rx);
+        const p2=proj(GLOBE_NODES[b].lat,GLOBE_NODES[b].lon,ry,rx);
+        if(p1.z<0||p2.z<0) continue;
+        const alpha=connAlphas[i];
+        // arc
+        cx.beginPath();
+        const mx2=(p1.x+p2.x)/2, my2=(p1.y+p2.y)/2-Math.hypot(p2.x-p1.x,p2.y-p1.y)*.4;
+        cx.moveTo(p1.x,p1.y);
+        cx.quadraticCurveTo(mx2,my2,p2.x,p2.y);
+        cx.strokeStyle=`rgba(0,229,255,${alpha*.5})`;
+        cx.lineWidth=.8; cx.stroke();
+        // pulse dot travelling along path
+        const t=((Date.now()/2000)%1);
+        const bx=Math.pow(1-t,2)*p1.x+2*(1-t)*t*mx2+t*t*p2.x;
+        const by=Math.pow(1-t,2)*p1.y+2*(1-t)*t*my2+t*t*p2.y;
+        cx.beginPath(); cx.arc(bx,by,2.2,0,Math.PI*2);
+        cx.fillStyle=`rgba(0,229,255,${alpha*.9})`; cx.fill();
+      }
+    }
+
+    // ── globe nodes ──
+    for(const n of GLOBE_NODES){
+      const p=proj(n.lat,n.lon,ry,rx);
+      if(p.z<-.1) continue;
+      const col=n.active?'#00ff66':'#ff2255';
+      const dim=n.active?'rgba(0,255,102,':'rgba(255,34,85,';
+      // outer ring pulse
+      const pulse=(Math.sin(Date.now()/600+n.lat*3)+1)/2;
+      cx.beginPath(); cx.arc(p.x,p.y,5+pulse*4,0,Math.PI*2);
+      cx.strokeStyle=`${dim}${.25+pulse*.25})`; cx.lineWidth=1; cx.stroke();
+      // inner dot
+      cx.beginPath(); cx.arc(p.x,p.y,3.5,0,Math.PI*2);
+      cx.fillStyle=col; cx.shadowColor=col; cx.shadowBlur=12; cx.fill();
+      cx.shadowBlur=0;
+      // label
+      if(p.z>.3){
+        cx.font=`8px 'Orbitron',monospace`;
+        cx.fillStyle=`${dim}.7)`;
+        cx.fillText(n.id,p.x+7,p.y-4);
+      }
+    }
+
+    // ── equatorial ring glow ──
+    cx.beginPath(); cx.arc(CX,CY,R*1.01,0,Math.PI*2);
+    cx.strokeStyle='rgba(0,255,102,.15)'; cx.lineWidth=1.5; cx.stroke();
+    cx.beginPath(); cx.arc(CX,CY,R*1.02,0,Math.PI*2);
+    cx.strokeStyle='rgba(0,229,255,.06)'; cx.lineWidth=3; cx.stroke();
+
+    // update labels
+    const latDeg=((rx/Math.PI)*180).toFixed(3);
+    const lonDeg=(((ry%(Math.PI*2))/(Math.PI*2))*360).toFixed(3);
+    coordsEl.textContent=`LAT: ${latDeg}°  LON: ${lonDeg}°`;
+    statusEl.textContent=`NODES ACTIVE: ${activeNodes}/10`;
+    pingEl.textContent=`LAST ECHO: ${Math.floor(8+Math.sin(Date.now()/3000)*4)}ms`;
+
+    if(!hov&&!lp) rotY+=.003;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 
-/* ──────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════
+   HEADER STATS LIVE
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const nc=document.getElementById('hNodeCount');
+  const ul=document.getElementById('hUplink');
+  let base=842;
+  function upd(){
+    base+=(Math.random()-.5)*40; base=Math.max(400,Math.min(999,base));
+    nc.textContent=`${9+Math.floor(Math.random()*3)}/12`;
+    ul.textContent=`${Math.round(base)} Mbps`;
+    setTimeout(upd,1500+Math.random()*1000);
+  } upd();
+  // session id
+  const sid=document.getElementById('tsSid');
+  if(sid) sid.textContent='NX-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  // terminal side stats
+  function sidestats(){
+    const pkt=document.getElementById('tsPkt');
+    const dr=document.getElementById('tsDr');
+    if(pkt) pkt.textContent=Math.floor(1200+Math.random()*800).toLocaleString();
+    if(dr)  dr.textContent=(Math.random()*200+600).toFixed(1)+' Mbps';
+    setTimeout(sidestats,900+Math.random()*600);
+  } sidestats();
+})();
+
+/* ═══════════════════════════════════════════════════════
+   RESOURCE BARS
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const bars=[
+    {f:'bCpu',v:'vCpu',c:45,mn:15,mx:95,u:'%'},
+    {f:'bNet',v:'vNet',c:62,mn:10,mx:98,u:'%'},
+    {f:'bMem',v:'vMem',c:78,mn:60,mx:94,u:'%'},
+    {f:'bDsk',v:'vDsk',c:33,mn: 5,mx:80,u:'%'},
+    {f:'bLat',v:'vLat',c:18,mn: 5,mx:90,u:'ms'},
+  ];
+  function upd(){
+    bars.forEach(b=>{
+      b.c+=(Math.random()-.5)*14;
+      b.c=Math.max(b.mn,Math.min(b.mx,b.c));
+      const pct=((b.c-b.mn)/(b.mx-b.mn))*100;
+      document.getElementById(b.f).style.width=pct+'%';
+      document.getElementById(b.v).textContent=Math.round(b.c)+b.u;
+    });
+    setTimeout(upd,1100+Math.random()*900);
+  } setTimeout(upd,1100);
+})();
+
+/* ═══════════════════════════════════════════════════════
    SPARKLINE
-   ────────────────────────────────────────────────── */
-(function initSparkline() {
-  const lineEl = document.getElementById('spark-line');
-  const fillEl = document.getElementById('spark-fill');
-  const W = 260, H = 40;
-  const POINTS = 26;
-  const data = Array.from({length: POINTS}, () => Math.random() * 30 + 5);
-
-  function updateSparkline() {
-    data.shift();
-    data.push(Math.random() * 30 + 5);
-
-    const pts = data.map((v, i) => {
-      const x = (i / (POINTS - 1)) * W;
-      const y = H - (v / 40) * H;
-      return [x, y];
-    });
-
-    const linePath = 'M ' + pts.map(p => p.join(',')).join(' L ');
-    const fillPath = linePath + ` L ${W},${H} L 0,${H} Z`;
-
-    lineEl.setAttribute('d', linePath);
-    fillEl.setAttribute('d', fillPath);
-
-    setTimeout(updateSparkline, 600);
-  }
-  updateSparkline();
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const lEl=document.getElementById('spkL'), fEl=document.getElementById('spkF');
+  const lEl2=document.getElementById('spkL2'), fEl2=document.getElementById('spkF2');
+  const W=260,H=44,N=28;
+  const d1=Array.from({length:N},()=>Math.random()*26+8);
+  const d2=Array.from({length:N},()=>Math.random()*15+5);
+  function upd(){
+    d1.shift(); d1.push(Math.random()*26+8);
+    d2.shift(); d2.push(Math.random()*15+5);
+    const pts1=d1.map((v,i)=>[(i/(N-1))*W, H-(v/44)*H]);
+    const pts2=d2.map((v,i)=>[(i/(N-1))*W, H-(v/44)*H]);
+    const lp1='M '+pts1.map(p=>p.join(',')).join(' L ');
+    const lp2='M '+pts2.map(p=>p.join(',')).join(' L ');
+    lEl.setAttribute('d',lp1); fEl.setAttribute('d',lp1+` L ${W},${H} L 0,${H} Z`);
+    lEl2.setAttribute('d',lp2); fEl2.setAttribute('d',lp2+` L ${W},${H} L 0,${H} Z`);
+    setTimeout(upd,500);
+  } upd();
 })();
 
-/* ──────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════
    SYSTEM LOG
-   ────────────────────────────────────────────────── */
-(function initLog() {
-  const scroll = document.getElementById('log-scroll');
-  let idx = 0;
-
-  scroll.addEventListener('mouseenter', () => { logPaused = true; });
-  scroll.addEventListener('mouseleave', () => { logPaused = false; });
-
-  function addLogLine() {
-    if (!logPaused) {
-      const msg  = LOG_MESSAGES[idx % LOG_MESSAGES.length];
-      const now  = new Date();
-      const ts   = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-
-      const line = document.createElement('div');
-      line.className = 'log-line';
-      line.innerHTML = `<span class="ts">[${ts}]</span> <span class="${msg.tag}">${msg.text}</span>`;
-      scroll.appendChild(line);
-
-      // Keep last 60 lines
-      while (scroll.children.length > 60) scroll.removeChild(scroll.firstChild);
-
-      // Auto-scroll to bottom
-      scroll.scrollTop = scroll.scrollHeight;
-      idx++;
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const sc=document.getElementById('logScroll');
+  let idx=0;
+  sc.addEventListener('mouseenter',()=>logPaused=true);
+  sc.addEventListener('mouseleave',()=>logPaused=false);
+  function add(){
+    if(!logPaused){
+      const m=LOGS[idx%LOGS.length];
+      const n=new Date();
+      const ts=[n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+      const d=document.createElement('div');
+      d.className='lline';
+      d.innerHTML=`<span class="ts">[${ts}]</span> <span class="${m.t}">${m.m}</span>`;
+      sc.appendChild(d);
+      while(sc.children.length>80) sc.removeChild(sc.firstChild);
+      sc.scrollTop=sc.scrollHeight; idx++;
     }
-    setTimeout(addLogLine, 800 + Math.random() * 1400);
-  }
-  addLogLine();
+    setTimeout(add,700+Math.random()*1300);
+  } add();
 })();
 
-/* ──────────────────────────────────────────────────
-   PROGRESS BAR — cycles through random values
-   ────────────────────────────────────────────────── */
-(function initProgress() {
-  const fill  = document.getElementById('progress-fill');
-  const label = document.getElementById('progress-label');
-  const STAGES = [
-    { pct: 0,  text: 'INITIALIZING...' },
-    { pct: 23, text: 'SAMPLING NODES...' },
-    { pct: 58, text: 'ANALYZING TRAFFIC...' },
-    { pct: 73, text: 'VERIFYING ROUTES...' },
-    { pct: 100,text: 'ANALYSIS COMPLETE ✓' },
+/* ═══════════════════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const f=document.getElementById('progFill'), l=document.getElementById('progLbl');
+  const S=[
+    {p:0,  t:'INITIALIZING...'},
+    {p:23, t:'SAMPLING NODES...'},
+    {p:47, t:'MAPPING ROUTES...'},
+    {p:68, t:'ANALYZING TRAFFIC...'},
+    {p:84, t:'VERIFYING INTEGRITY...'},
+    {p:100,t:'ANALYSIS COMPLETE ✓'},
   ];
-  let si = 0;
-
-  function nextStage() {
-    si = (si + 1) % STAGES.length;
-    const s = STAGES[si];
-    fill.style.width  = s.pct + '%';
-    label.textContent = s.pct + '% — ' + s.text;
-
-    const delay = si === 0 ? 2000 : 1200 + Math.random() * 1500;
-    setTimeout(nextStage, delay);
-  }
-  setTimeout(nextStage, 2000);
+  let si=0;
+  function next(){
+    si=(si+1)%S.length;
+    f.style.width=S[si].p+'%';
+    l.textContent=S[si].p+'% — '+S[si].t;
+    setTimeout(next,si===0?2200:1400+Math.random()*1800);
+  } setTimeout(next,2200);
 })();
 
-/* ──────────────────────────────────────────────────
-   TERMINAL — typing sequence
-   ────────────────────────────────────────────────── */
-(function initTerminal() {
-  const output = document.getElementById('term-output');
-
-  function appendLine(cls, text) {
-    const d = document.createElement('div');
-    d.className = 'term-line ' + cls;
-    d.textContent = text;
-    output.appendChild(d);
-    output.scrollTop = output.scrollHeight;
-  }
-
-  // Typing effect for a single line
-  function typeLine(cls, text, delay, cb) {
-    setTimeout(() => {
-      const d = document.createElement('div');
-      d.className = 'term-line ' + cls;
-      output.appendChild(d);
-
-      let i = 0;
-      const interval = setInterval(() => {
-        d.textContent = text.slice(0, ++i);
-        output.scrollTop = output.scrollHeight;
-        if (i >= text.length) {
-          clearInterval(interval);
-          if (cb) cb();
-        }
-      }, 28);
-    }, delay);
-  }
-
-  // Initial boot lines
-  appendLine('res', '  SYSTEM MONITOR v2.4.1 — SIMULATED INTERFACE');
-  appendLine('res', '  ─────────────────────────────────────────────');
-  appendLine('ok',  '  STATUS: ALL SYSTEMS NOMINAL');
-  appendLine('res', '  Press T to focus · Click RUN SIM to start demo');
-
-  // Auto-play the typing sequence once
-  let cumDelay = 1800;
-  TERMINAL_SEQUENCE.forEach(line => {
-    typeLine(line.type, line.text, cumDelay, null);
-    cumDelay += line.text.length * 28 + 400;
+/* ═══════════════════════════════════════════════════════
+   SIGNAL ANALYZER (right panel)
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const fd=document.getElementById('freqDisp');
+  const av=document.getElementById('ampVal');
+  const mv=document.getElementById('modVal');
+  const sb=document.getElementById('sigBars');
+  // build signal bars
+  const CHANS=['CH1','CH2','CH3','CH4','CH5','CH6'];
+  CHANS.forEach((ch,i)=>{
+    const row=document.createElement('div'); row.className='sigBar';
+    const lbl=document.createElement('span'); lbl.className='sigLbl'; lbl.textContent=ch;
+    const blks=document.createElement('div'); blks.className='sigBlks'; blks.id='sb'+i;
+    for(let b=0;b<12;b++){const bk=document.createElement('div');bk.className='sigBlk';blks.appendChild(bk);}
+    row.appendChild(lbl); row.appendChild(blks); sb.appendChild(row);
   });
+  function upd(){
+    document.querySelectorAll('[id^="sb"]').forEach((row,ri)=>{
+      const lvl=Math.floor(Math.random()*12)+1;
+      Array.from(row.children).forEach((b,bi)=>{
+        b.className='sigBlk'+(bi<lvl?' on'+(bi>9?' c3':bi>6?' c2':''):'');
+      });
+    });
+    fd.textContent=FREQS[Math.floor(Math.random()*FREQS.length)]+' MHz';
+    av.textContent=(Math.random()*.4+.65).toFixed(2)+' V';
+    mv.textContent=MODS[Math.floor(Math.random()*MODS.length)];
+    setTimeout(upd,800+Math.random()*600);
+  } upd();
 })();
 
-/* ──────────────────────────────────────────────────
-   RUN SIMULATION BUTTON
-   ────────────────────────────────────────────────── */
-(function initRunBtn() {
-  const btn    = document.getElementById('run-btn');
-  const output = document.getElementById('term-output');
-  const fill   = document.getElementById('progress-fill');
-  const label  = document.getElementById('progress-label');
-  const splash = document.getElementById('access-splash');
-
-  function appendLine(cls, text) {
-    const d = document.createElement('div');
-    d.className = 'term-line ' + cls;
-    d.textContent = text;
-    output.appendChild(d);
-    output.scrollTop = output.scrollHeight;
+/* ═══════════════════════════════════════════════════════
+   CIPHER ENGINE (right panel)
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const cc=document.getElementById('cipherContent');
+  function render(){
+    cc.innerHTML=CIPHERS.map(c=>`
+      <div class="cipherRow">
+        <span class="cipherKey">${c.lbl}</span>
+        <span class="cipherVal">${c.val}</span>
+        <span class="cipherStatus">${c.st}</span>
+      </div>`).join('');
+    // animated rolling hex at bottom
+    const hex=Array.from({length:16},()=>Math.floor(Math.random()*256).toString(16).padStart(2,'0').toUpperCase()).join(' ');
+    const d=document.createElement('div');
+    d.style.cssText='font-size:9px;color:rgba(0,255,102,.25);margin-top:6px;letter-spacing:.05em;word-break:break-all;line-height:1.6';
+    d.textContent=hex;
+    cc.appendChild(d);
   }
-
-  btn.addEventListener('click', () => {
-    if (simRunning) return;
-    simRunning = true;
-    btn.disabled = true;
-
-    appendLine('cmd', '> RUNNING FULL SIMULATION...');
-
-    const steps = [
-      [300,  'res',  '  [01/05] INITIALIZING VIRTUAL ENVIRONMENT...'],
-      [900,  'res',  '  [02/05] MAPPING NODE TOPOLOGY...'],
-      [1600, 'res',  '  [03/05] VALIDATING SIGNAL PATHS...'],
-      [2400, 'warn', '  [04/05] MINOR VARIANCE DETECTED — COMPENSATING...'],
-      [3200, 'res',  '  [05/05] FINALIZING REPORT...'],
-      [4000, 'ok',   '  ✓ SIMULATION COMPLETE — ALL NODES VERIFIED'],
-    ];
-
-    const progSteps = [
-      [200,  10,  'STARTING...'],
-      [800,  35,  'MAPPING NODES...'],
-      [1400, 60,  'VALIDATING...'],
-      [2200, 80,  'COMPENSATING...'],
-      [3000, 95,  'FINALIZING...'],
-      [3800, 100, 'COMPLETE ✓'],
-    ];
-
-    steps.forEach(([delay, cls, text]) => {
-      setTimeout(() => appendLine(cls, text), delay);
-    });
-
-    progSteps.forEach(([delay, pct, txt]) => {
-      setTimeout(() => {
-        fill.style.width  = pct + '%';
-        label.textContent = pct + '% — ' + txt;
-      }, delay);
-    });
-
-    // Show ACCESS GRANTED splash
-    setTimeout(() => {
-      splash.classList.add('show');
-      setTimeout(() => {
-        splash.classList.remove('show');
-        simRunning = false;
-        btn.disabled = false;
-      }, 2600);
-    }, 4200);
-  });
+  render(); setInterval(render,1200);
 })();
 
-/* ──────────────────────────────────────────────────
-   TERMINAL INPUT (decorative — no real execution)
-   ────────────────────────────────────────────────── */
-(function initTermInput() {
-  const input  = document.getElementById('term-input');
-  const output = document.getElementById('term-output');
+/* ═══════════════════════════════════════════════════════
+   NODE DIRECTORY (right panel)
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const nd=document.getElementById('nodeDir');
+  function render(){
+    nd.innerHTML=NODES.map(n=>`
+      <div class="nodeRow">
+        <span class="nodeName">${n.id}</span>
+        <span class="nodePing">${n.ping}</span>
+        <span class="nodeState ${n.state}">${n.state.toUpperCase()}</span>
+      </div>`).join('');
+  }
+  render();
+  // randomly flicker a node
+  setInterval(()=>{
+    const i=Math.floor(Math.random()*NODES.length);
+    if(NODES[i].state==='active'){
+      NODES[i].ping=Math.floor(5+Math.random()*50)+'ms';
+    }
+    render();
+  },1500);
+})();
 
-  const FAKE_RESPONSES = {
-    'help':    '  Available: scan | status | ping | nodes | clear',
-    'scan':    '  > SCANNING... 4 nodes found. All nominal.',
-    'status':  '  > SYSTEM STATUS: ONLINE | UPTIME: 99.97% | HEALTH: OK',
-    'ping':    '  > ECHO node-001: 12ms | node-042: 24ms | gateway-9b: 8ms',
-    'nodes':   '  > node-001, node-042, node-alpha, gateway-9b, node-beta',
-    'clear':   '__CLEAR__',
+/* ═══════════════════════════════════════════════════════
+   TERMINAL
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const out=document.getElementById('termOut');
+  function app(cls,txt){
+    const d=document.createElement('div'); d.className='tline '+cls; d.textContent=txt;
+    out.appendChild(d); out.scrollTop=out.scrollHeight;
+  }
+  function type(cls,txt,delay,cb){
+    setTimeout(()=>{
+      const d=document.createElement('div'); d.className='tline '+cls; out.appendChild(d);
+      let i=0;
+      const iv=setInterval(()=>{
+        d.textContent=txt.slice(0,++i); out.scrollTop=out.scrollHeight;
+        if(i>=txt.length){clearInterval(iv);if(cb)cb();}
+      },22);
+    },delay);
+  }
+  app('res','  NEXUS COMMAND CENTER v4.2 — AUTHENTICATED');
+  app('res','  ─────────────────────────────────────────────────────');
+  app('ok', '  ALL SYSTEMS NOMINAL — 9/12 NODES ACTIVE');
+  app('res','  Type  help  for command list · Press T to focus');
+  let cum=1500;
+  TERM_SEQ.forEach(l=>{
+    type(l.c,l.t,cum,null);
+    cum+=l.t.length*22+350;
+  });
+
+  const FAKES={
+    'help':   '  Commands: scan | status | ping [node] | nodes | cipher | clear',
+    'scan':   '  SCANNING... 9 active nodes found | 1 standby | 2 offline',
+    'status': '  UPTIME: 99.97% | CPU: OK | MEM: OK | NET: OK | CIPHER: ACTIVE',
+    'ping':   '  node-001: 12ms | node-042: 24ms | gateway-9b: 8ms | node-007: 9ms',
+    'nodes':  '  ACTIVE: node-001 node-042 gateway-9b node-007 node-beta node-gamma node-delta mirror-01 node-epsilon',
+    'cipher': '  ALGORITHM: AES-256-GCM | KEY: 4096-BIT | STATUS: LOCKED | ENTROPY: 99.98%',
+    'clear':  '__CLEAR__',
   };
 
-  input.addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    const cmd = input.value.trim().toLowerCase();
-    input.value = '';
-
-    const d = document.createElement('div');
-    d.className = 'term-line cmd';
-    d.textContent = '> ' + (cmd || '');
-    output.appendChild(d);
-
-    if (FAKE_RESPONSES[cmd]) {
-      const r = FAKE_RESPONSES[cmd];
-      if (r === '__CLEAR__') {
-        output.innerHTML = '';
-      } else {
-        const rd = document.createElement('div');
-        rd.className = 'term-line res';
-        rd.textContent = r;
-        output.appendChild(rd);
-      }
-    } else if (cmd) {
-      const rd = document.createElement('div');
-      rd.className = 'term-line warn';
-      rd.textContent = `  > UNKNOWN COMMAND: "${cmd}" — type help`;
-      output.appendChild(rd);
-    }
-
-    output.scrollTop = output.scrollHeight;
+  document.getElementById('tinput').addEventListener('keydown',e=>{
+    if(e.key!=='Enter') return;
+    const cmd=e.target.value.trim().toLowerCase(); e.target.value='';
+    app('cmd','> '+cmd);
+    const r=FAKES[cmd];
+    if(r==='__CLEAR__') out.innerHTML='';
+    else if(r) app('res',r);
+    else if(cmd) app('warn','  UNKNOWN COMMAND: "'+cmd+'" — type help');
   });
 })();
 
+/* ═══════════════════════════════════════════════════════
+   RUN SIMULATION
+═══════════════════════════════════════════════════════ */
+(()=>{
+  const btn=document.getElementById('runBtn');
+  const out=document.getElementById('termOut');
+  const pf=document.getElementById('progFill');
+  const pl=document.getElementById('progLbl');
+  const splash=document.getElementById('splash');
+  const spf=document.getElementById('splashProgFill');
+
+  function app(cls,txt){
+    const d=document.createElement('div'); d.className='tline '+cls; d.textContent=txt;
+    out.appendChild(d); out.scrollTop=out.scrollHeight;
+  }
+
+  btn.onclick=()=>{
+    if(simRunning) return;
+    simRunning=true; btn.disabled=true;
+    app('cmd','> RUNNING FULL SIMULATION SEQUENCE...');
+
+    const steps=[
+      [300, 'res','  [01/06] INITIALIZING VIRTUAL ENVIRONMENT...'],
+      [900, 'res','  [02/06] ESTABLISHING SECURE CHANNEL...'],
+      [1600,'res','  [03/06] MAPPING NODE TOPOLOGY — 12 NODES...'],
+      [2300,'warn','  [04/06] VARIANCE DETECTED — node-delta (91%) — COMPENSATING...'],
+      [3100,'res','  [05/06] VALIDATING SIGNAL INTEGRITY...'],
+      [3900,'res','  [06/06] COMPILING FINAL REPORT...'],
+      [4700,'ok', '  ✓ SIMULATION COMPLETE — ALL PRIMARY NODES VERIFIED'],
+    ];
+    steps.forEach(([d,c,t])=>setTimeout(()=>app(c,t),d));
+
+    const prog=[[200,10,'STARTING'],[700,28,'SECURING CHANNEL'],[1400,52,'MAPPING'],[2200,74,'COMPENSATING'],[3000,88,'VALIDATING'],[3700,97,'FINALIZING'],[4600,100,'COMPLETE ✓']];
+    prog.forEach(([d,p,t])=>setTimeout(()=>{pf.style.width=p+'%';pl.textContent=p+'% — '+t;},d));
+
+    // splash
+    setTimeout(()=>{
+      splash.classList.add('show');
+      let sp=0;
+      const iv=setInterval(()=>{sp+=4;spf.style.width=sp+'%';if(sp>=100)clearInterval(iv);},60);
+      setTimeout(()=>{
+        splash.classList.remove('show');
+        spf.style.width='0%';
+        simRunning=false; btn.disabled=false;
+      },3000);
+    },5000);
+  };
+})();
 </script>
 </body>
 </html>
