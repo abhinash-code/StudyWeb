@@ -51,7 +51,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Header & Logo --- */
+        /* --- Header aur Logo ki Styling --- */
         .logo-container {
             display: flex;
             align-items: center;
@@ -94,7 +94,7 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        /* --- Main Container --- */
+        /* --- Main Form Container --- */
         .form-wrapper {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -124,7 +124,7 @@
             font-size: 0.95rem;
         }
 
-        /* --- Progress Bar --- */
+        /* --- Progress Bar (Step Indicator) --- */
         .progress-container {
             padding: 0 40px 20px;
         }
@@ -188,7 +188,7 @@
             color: white;
         }
 
-        /* --- Form Body & Sections --- */
+        /* --- Form Sections --- */
         .form-body {
             padding: 20px 40px 40px;
             position: relative;
@@ -225,7 +225,7 @@
             border-radius: 8px;
         }
 
-        /* --- Inputs & Grids --- */
+        /* --- Input Fields ki Styling --- */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -275,7 +275,7 @@
             background-size: 12px auto;
         }
 
-        /* Floating Label Setup */
+        /* Floating Label Effect */
         .floating-label {
             position: absolute;
             left: 45px;
@@ -314,18 +314,14 @@
         }
 
         .input-group input::placeholder {
-            color: transparent; /* Hide placeholder for floating label */
+            color: transparent; 
         }
 
-        /* Validation States */
+        /* Validation Colors */
         .input-group.success input,
-        .input-group.success select {
-            border-color: var(--success);
-        }
+        .input-group.success select { border-color: var(--success); }
         .input-group.error input,
-        .input-group.error select {
-            border-color: var(--error);
-        }
+        .input-group.error select { border-color: var(--error); }
         
         .status-icon {
             position: absolute;
@@ -344,7 +340,6 @@
             margin-top: 5px;
             display: none;
             padding-left: 5px;
-            display: flex;
             align-items: center;
             gap: 5px;
         }
@@ -426,7 +421,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-            margin-left: auto; /* Push to right if alone */
+            margin-left: auto;
         }
 
         .btn-next:hover, .btn-submit:hover {
@@ -434,7 +429,7 @@
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
         }
 
-        /* --- Modal --- */
+        /* --- Success Modal --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -471,7 +466,7 @@
             background: var(--primary); color: white; padding: 10px 25px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;
         }
 
-        /* --- Responsive Design --- */
+        /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 0; }
             .form-wrapper { border-radius: 16px; }
@@ -498,7 +493,7 @@
         <div class="form-wrapper">
             <div class="form-header">
                 <h1>College Admission Form</h1>
-                <p>Please fill out the steps below to complete your application.</p>
+                <p>Kripya apna admission form dhyan se bharein aur saare steps poore karein.</p>
             </div>
 
             <!-- Progress Tracker -->
@@ -514,9 +509,9 @@
             <div class="form-body">
                 <form id="admissionForm" novalidate>
                     
-                    <!-- STEP 1: Personal Info -->
+                    <!-- STEP 1: Vyaktigat Jankari -->
                     <div class="form-step active" id="step-1">
-                        <h2 class="section-title"><i class="fas fa-id-card"></i> Personal Information</h2>
+                        <h2 class="section-title"><i class="fas fa-id-card"></i> Vyaktigat Jankari (Personal Info)</h2>
                         
                         <div class="grid-3">
                             <div class="input-group">
@@ -560,7 +555,7 @@
                             <div class="input-group">
                                 <select id="birthDay" required>
                                     <option value="" disabled selected></option>
-                                    <!-- Populated via JS -->
+                                    <!-- JS se auto fill hoga -->
                                 </select>
                                 <i class="fas fa-calendar-day icon"></i>
                                 <label class="floating-label">Day *</label>
@@ -569,7 +564,7 @@
                             <div class="input-group">
                                 <select id="birthYear" required>
                                     <option value="" disabled selected></option>
-                                    <!-- Populated via JS -->
+                                    <!-- JS se auto fill hoga -->
                                 </select>
                                 <i class="fas fa-calendar-week icon"></i>
                                 <label class="floating-label">Year *</label>
@@ -578,7 +573,7 @@
                         </div>
 
                         <div class="radio-wrapper">
-                            <span class="radio-title">Gender *</span>
+                            <span class="radio-title">Gender (Ling) *</span>
                             <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="gender" value="male" required>
@@ -597,13 +592,13 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="button" class="btn btn-next" onclick="nextStep(1)">Next Step <i class="fas fa-arrow-right"></i></button>
+                            <button type="button" class="btn btn-next" onclick="nextStep(1)">Agla Step (Next) <i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
 
-                    <!-- STEP 2: Contact Info -->
+                    <!-- STEP 2: Sampark Jankari -->
                     <div class="form-step" id="step-2">
-                        <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Contact Details</h2>
+                        <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Sampark Jankari (Contact Details)</h2>
                         
                         <div class="grid-2">
                             <div class="input-group">
@@ -669,14 +664,14 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="button" class="btn btn-prev" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i> Previous</button>
-                            <button type="button" class="btn btn-next" onclick="nextStep(2)">Next Step <i class="fas fa-arrow-right"></i></button>
+                            <button type="button" class="btn btn-prev" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i> Piche (Prev)</button>
+                            <button type="button" class="btn btn-next" onclick="nextStep(2)">Agla Step (Next) <i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
 
                     <!-- STEP 3: Emergency & Submit -->
                     <div class="form-step" id="step-3">
-                        <h2 class="section-title"><i class="fas fa-briefcase-medical"></i> Emergency Contact</h2>
+                        <h2 class="section-title"><i class="fas fa-briefcase-medical"></i> Aapatkalin Sampark (Emergency)</h2>
                         
                         <div class="grid-2">
                             <div class="input-group">
@@ -697,7 +692,7 @@
                             <div class="input-group">
                                 <input type="text" id="relationship" placeholder=" " required>
                                 <i class="fas fa-users icon"></i>
-                                <label class="floating-label">Relationship *</label>
+                                <label class="floating-label">Relationship (Rishta) *</label>
                                 <div class="error-msg"></div>
                             </div>
                             <div class="input-group">
@@ -709,21 +704,21 @@
                         </div>
 
                         <div class="radio-wrapper mt-3">
-                            <span class="radio-title">Do you speak languages other than English? *</span>
+                            <span class="radio-title">Kya aap English ke alawa koi aur bhasha bolte hain? *</span>
                             <div class="radio-group">
                                 <label class="radio-label">
-                                    <input type="radio" name="language" value="yes" required> Yes
+                                    <input type="radio" name="language" value="yes" required> Haan (Yes)
                                 </label>
                                 <label class="radio-label">
-                                    <input type="radio" name="language" value="no"> No
+                                    <input type="radio" name="language" value="no"> Nahi (No)
                                 </label>
                             </div>
                             <div class="error-msg" id="lang-error"></div>
                         </div>
 
                         <div class="btn-group">
-                            <button type="button" class="btn btn-prev" onclick="prevStep(3)"><i class="fas fa-arrow-left"></i> Previous</button>
-                            <button type="submit" class="btn btn-submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                            <button type="button" class="btn btn-prev" onclick="prevStep(3)"><i class="fas fa-arrow-left"></i> Piche (Prev)</button>
+                            <button type="submit" class="btn btn-submit"><i class="fas fa-paper-plane"></i> Jama Karein (Submit)</button>
                         </div>
                     </div>
 
@@ -736,21 +731,21 @@
     <div class="modal-overlay" id="successModal">
         <div class="modal-content">
             <i class="fas fa-check-circle modal-icon"></i>
-            <h2 class="modal-title">Application Submitted!</h2>
-            <p class="modal-text">Thank you for applying. We have received your admission form and our team will get back to you shortly.</p>
-            <button class="btn-close" onclick="closeModal()">Done</button>
+            <h2 class="modal-title">Application Jama Ho Gayi!</h2>
+            <p class="modal-text">Aapka form safaltapurvak (successfully) submit ho gaya hai. Humari team jald hi aapse sampark karegi.</p>
+            <button class="btn-close" onclick="closeModal()">Theek hai (Done)</button>
         </div>
     </div>
 
     <script>
-        // DOM Elements
+        // Form ke elements ko pakad rahe hain
         const form = document.getElementById('admissionForm');
         const steps = document.querySelectorAll('.form-step');
         const indicators = document.querySelectorAll('.step-indicator');
         const progressLine = document.getElementById('progress-line');
         let currentStep = 1;
 
-        // Init Form Data
+        // Form load hone par functions call kar rahe hain
         document.addEventListener('DOMContentLoaded', () => {
             initDates();
             setupPhoneMasks();
@@ -758,30 +753,41 @@
             setupRadioStyling();
         });
 
-        // Setup Dropdowns
+        // Birthdate ke options bharna
         function initDates() {
             const daySelect = document.getElementById('birthDay');
             for(let i=1; i<=31; i++) {
-                daySelect.innerHTML += `<option value="${i}">${i}</option>`;
+                let opt = document.createElement('option');
+                opt.value = i < 10 ? '0'+i : i;
+                opt.innerHTML = i;
+                daySelect.appendChild(opt);
             }
             const yearSelect = document.getElementById('birthYear');
             const currentYear = new Date().getFullYear();
             for(let i=currentYear; i>=currentYear-60; i--) {
-                yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.innerHTML = i;
+                yearSelect.appendChild(opt);
             }
         }
 
-        // Phone Masking (123) 456-7890
+        // Phone Number ko format karna (123) 456-7890
         function setupPhoneMasks() {
             document.querySelectorAll('input[type="tel"]').forEach(input => {
                 input.addEventListener('input', function(e) {
-                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+                    let text = e.target.value.replace(/\D/g, '');
+                    let x = text.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+                    if (!x) {
+                        e.target.value = '';
+                        return;
+                    }
                     e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
                 });
             });
         }
 
-        // Radio Button Active State Styling
+        // Radio Button Select hone par highlight karna
         function setupRadioStyling() {
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', function() {
@@ -796,7 +802,7 @@
             });
         }
 
-        // Wizard Navigation
+        // Form ke steps aage peeche karne ka logic
         function updateProgress() {
             steps.forEach((step, index) => {
                 step.classList.toggle('active', index === currentStep - 1);
@@ -807,7 +813,7 @@
                 if (index < currentStep - 1) ind.classList.add('completed');
                 else ind.classList.remove('completed');
                 
-                // Change icon to checkmark if completed
+                // Tick mark lagana agar step poora ho jaye
                 if(index < currentStep - 1) ind.innerHTML = '<i class="fas fa-check"></i>';
                 else {
                     const icons = ['fa-user', 'fa-address-book', 'fa-heartbeat'];
@@ -815,11 +821,12 @@
                 }
             });
 
-            // Update Progress Line
+            // Progress bar ki line update karna
             progressLine.style.width = ((currentStep - 1) / (steps.length - 1)) * 100 + '%';
         }
 
         function nextStep(step) {
+            // Check karenge pehle ki data sahi bhara hai ya nahi
             if (validateStep(step)) {
                 currentStep++;
                 updateProgress();
@@ -831,26 +838,29 @@
             updateProgress();
         }
 
-        // Validation Logic
+        // Data Validation Logic (Yahan BUG tha jo fix kiya gaya)
         function validateStep(stepNum) {
             let isValid = true;
             const step = document.getElementById(`step-${stepNum}`);
-            const inputs = step.querySelectorAll('input[required], select[required]');
             
-            inputs.forEach(input => {
+            // BUG FIX: Hum sirf text/email/tel inputs ko select kar rahe hain jisme .input-group class hai. 
+            // Radio buttons ko ignore kar rahe hain kyunki unki div structure alag hai.
+            const textInputs = step.querySelectorAll('input:not([type="radio"])[required], select[required]');
+            
+            textInputs.forEach(input => {
                 if(!validateInput(input)) isValid = false;
             });
 
-            // Specific Radio Checks
+            // Radio buttons ko alag se manually check kar rahe hain
             if(stepNum === 1) {
                 if(!document.querySelector('input[name="gender"]:checked')) {
-                    showError(document.getElementById('gender-error'), 'Please select a gender');
+                    showError(document.getElementById('gender-error'), 'Kripya apna gender chunein');
                     isValid = false;
                 } else hideError(document.getElementById('gender-error'));
             }
             if(stepNum === 3) {
                 if(!document.querySelector('input[name="language"]:checked')) {
-                    showError(document.getElementById('lang-error'), 'Please select an option');
+                    showError(document.getElementById('lang-error'), 'Kripya ek vikalp (option) chunein');
                     isValid = false;
                 } else hideError(document.getElementById('lang-error'));
             }
@@ -858,21 +868,25 @@
             return isValid;
         }
 
+        // Har field ko validate karna
         function validateInput(input) {
             const group = input.closest('.input-group');
+            if(!group) return true; // Safety ke liye
+            
             const errorDiv = group.querySelector('.error-msg');
             let valid = true;
             let msg = '';
 
+            // Khali hai ya nahi check karna
             if(input.value.trim() === '') {
                 valid = false;
-                msg = 'This field is required';
+                msg = 'Ye field zaroori hai';
             } else if(input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
                 valid = false;
-                msg = 'Enter a valid email';
+                msg = 'Sahi email darj karein';
             } else if(input.type === 'tel' && input.value.length < 14) {
                 valid = false;
-                msg = 'Enter a valid 10-digit number';
+                msg = 'Sahi phone number darj karein';
             }
 
             if(!valid) {
@@ -890,37 +904,45 @@
             return valid;
         }
 
+        // Type karte waqt hi validation karna
         function setupRealTimeValidation() {
-            document.querySelectorAll('input[required], select[required]').forEach(input => {
+            // Radio buttons chhodkar baaki required inputs select karna
+            document.querySelectorAll('input:not([type="radio"])[required], select[required]').forEach(input => {
                 input.addEventListener('blur', () => validateInput(input));
                 input.addEventListener('input', () => {
-                    if(input.closest('.input-group').classList.contains('error')) {
+                    const group = input.closest('.input-group');
+                    // Agar pehle error aaya tha toh real-time mein check karna
+                    if(group && group.classList.contains('error')) {
                         validateInput(input);
                     }
                 });
             });
         }
 
+        // Error message dikhane ya chupane ka function
         function showError(element, msg) {
-            element.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-            element.style.display = 'flex';
+            if(element) {
+                element.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+                element.style.display = 'flex';
+            }
         }
         function hideError(element) {
-            element.style.display = 'none';
+            if(element) element.style.display = 'none';
         }
 
-        // Form Submission & Modal
+        // Form Submit hone par Success Modal dikhana
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Page refresh hone se roknna
             if(validateStep(3)) {
-                // Show Success Modal
+                // Success Popup Dikhana
                 document.getElementById('successModal').classList.add('show');
             }
         });
 
+        // Popup Band karke form reset karna
         function closeModal() {
             document.getElementById('successModal').classList.remove('show');
-            // Reset form and go back to step 1
+            // Form wapis Step 1 par le jana
             form.reset();
             document.querySelectorAll('.input-group').forEach(g => {
                 g.classList.remove('success', 'error');
