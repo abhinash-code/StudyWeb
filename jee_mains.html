@@ -3,294 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamHub — Physics • Chemistry • Maths (Pro)</title>
-    <meta name="description" content="Enhanced ExamHub landing page with modern aesthetics and professional vibe for JEE-style preparation." />
-    <!-- Load Tailwind CSS -->
+    <title>StudyWeb Pro — JEE 2026 Hub</title>
+    <meta name="description" content="Ultimate JEE 2026 Preparation Portal with modern UI/UX." />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Custom Tailwind Configuration (Variables from original code adapted) */
         :root {
-            /* Using deep slate-950 for background, but enhancing the glow */
-            --color-accent: #7c3aed; /* violet */
-            --color-accent-2: #06b6d4; /* cyan */
-            --radius: 12px;
+            --color-primary: #8b5cf6;
+            --color-secondary: #06b6d4;
+            --glass-bg: rgba(15, 23, 42, 0.7);
         }
 
-        /* Set Inter font and dark background */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        /* Animated Background Gradients */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, transparent 100%);
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* High-Tech Button Style */
+        .btn-hitech {
+            position: relative;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4);
+            padding: 2px;
+            border-radius: 12px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            width: 100%; 
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-hitech-inner {
+            background: #0f172a;
+            padding: 12px 24px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem 1rem;
-            /* Enhanced background gradient for a deep, professional look */
-            background: #020617; /* Slate-950 */
-            background-image: 
-                radial-gradient(circle 800px at 10% 20%, rgba(124, 58, 237, 0.15), transparent),
-                radial-gradient(circle 600px at 80% 90%, rgba(6, 182, 212, 0.1), transparent);
-            color: #e2e8f0; /* Slate-200 */
+            gap: 10px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Card Hover Effect */
+        .btn-hitech:hover {
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-hitech:hover .btn-hitech-inner {
+            background: transparent;
+        }
+
+        /* Subject Card Animations */
         .subject-card {
             position: relative;
-            background: rgba(15, 23, 42, 0.6); /* Slate-900 with transparency */
-            backdrop-filter: blur(8px);
-            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .subject-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.25);
-            border-color: rgba(124, 58, 237, 0.4);
-        }
-        
-        /* Specific Glow for Icons */
-        .icon-wrap {
-            position: relative;
-            z-index: 10;
-            transition: all 300ms ease;
-        }
-        
-        .icon-wrap svg {
-            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+        .icon-glow {
+            filter: drop-shadow(0 0 8px currentColor);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* CTA Button Styling */
-        .open-btn-gradient {
-            background-image: linear-gradient(to right, var(--color-accent), var(--color-accent-2));
-            transition: transform 150ms ease-in-out;
-        }
-        
-        .open-btn-gradient:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        .subject-card:hover .icon-glow {
+            transform: scale(1.1) rotate(10deg);
+            filter: drop-shadow(0 0 15px currentColor);
         }
 
-        /* Modal styling */
-        .modal-overlay {
-            z-index: 50;
-            background: rgba(0, 0, 0, 0.7);
-            transition: opacity 300ms ease;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .modal-content {
-            z-index: 60;
-            background: #0f172a;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            transform: scale(0.95);
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .pulse-soft {
+            animation: pulse-ring 3s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.3); }
+            70% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+
+        /* Modal Overlay */
+        #modalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.3s ease;
         }
 
-        .modal-open .modal-content {
-            transform: scale(1);
+        #modalOverlay.active {
+            display: flex;
             opacity: 1;
         }
 
+        .modal-content {
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #modalOverlay.active .modal-content {
+            transform: scale(1);
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased p-4 sm:p-10">
+    <div class="bg-glow"></div>
 
-    <div class="container max-w-5xl mx-auto" role="main">
-
-        <!-- Header and Branding -->
-        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8 p-4 bg-slate-800/20 backdrop-blur-sm rounded-xl border border-slate-700/50 shadow-xl" aria-label="ExamHub header">
-            <div class="flex items-center gap-4">
-                <div class="p-4 rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-500/30 shadow-inner" aria-hidden="true">
-                    <!-- Logo SVG: More abstract and vibrant -->
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-white">
-                        <path d="M12 2L2 7l10 5 10-5L12 2z" fill="url(#grad1)"/>
-                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#grad2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <defs>
-                            <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#7c3aed"/>
-                                <stop offset="100%" stop-color="#06b6d4"/>
-                            </linearGradient>
-                            <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#a78bfa"/>
-                                <stop offset="100%" stop-color="#67e8f9"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight leading-none text-white">
-                        StudyWeb
-                    </h1>
-                    <p class="text-sm mt-1 text-slate-400">
-                        High-Focus Landing Page for Competitive Exams
-                    </p>
-                </div>
+    <!-- Popup Modal -->
+    <div id="modalOverlay" onclick="closeModal()">
+        <div class="modal-content glass-card p-10 rounded-[2.5rem] max-w-sm w-full text-center space-y-6 border-cyan-500/30" onclick="event.stopPropagation()">
+            <div class="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4 pulse-soft">
+                <i data-lucide="rocket" class="text-cyan-400 w-10 h-10"></i>
             </div>
-            
-            <div class="flex flex-wrap gap-3 sm:gap-4 ml-auto sm:ml-0">
-                <button id="quickTipsBtn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-700/50 hover:bg-slate-700 transition duration-150 text-slate-300">
-                    <i data-lucide="book-open" class="w-4 h-4 inline-block mr-1"></i> Quick Tips
-                </button>
-                <button id="authBtn" class="px-4 py-2 text-sm font-semibold rounded-lg open-btn-gradient text-white shadow-lg shadow-violet-500/20">
-                    <i data-lucide="log-in" class="w-4 h-4 inline-block mr-1"></i> Sign In
-                </button>
-            </div>
-        </header>
-
-        <!-- Main Headline Card -->
-        <section class="p-6 bg-slate-900/50 border border-slate-700/50 rounded-xl shadow-2xl shadow-slate-900/60 mb-8" aria-labelledby="main-heading">
-            <h2 id="main-heading" class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-snug text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-300 mb-3">
-                Sharpen the fundamentals. Master the tricks. Ace the exam.
-            </h2>
-            <p class="text-lg text-slate-400">
-                Choose a subject below to open your dedicated hub for comprehensive study resources and practice materials.
-            </p>
-            <div class="mt-4 flex items-center gap-4 text-sm text-slate-500">
-                 <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
-                <span class="font-medium">JEE 2026 Competitive Focus</span>
-            </div>
-        </section>
-
-        <!-- Subject Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Subjects list">
-
-            <!-- Physics card -->
-            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="physics-title" tabindex="0">
-                <div class="icon-wrap p-4 rounded-xl bg-violet-600/20 text-violet-400">
-                    <i data-lucide="atom" class="w-8 h-8"></i>
-                </div>
-                <div class="flex-1">
-                    <h3 id="physics-title" class="text-xl font-bold mb-1 text-white">Physics</h3>
-                    <p class="text-sm text-slate-400 mb-4">Mechanics, Electricity, Optics — concept clarity and problem practice for JEE.</p>
-                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-violet-500/20 inline-flex items-center gap-2" 
-                       href="jee mains physics.html" aria-label="Open Physics page">
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Physics Hub
-                    </a>
-                </div>
-            </article>
-
-            <!-- Chemistry card -->
-            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="chem-title" tabindex="0">
-                <div class="icon-wrap p-4 rounded-xl bg-orange-500/20 text-orange-400">
-                    <i data-lucide="flask-conical" class="w-8 h-8"></i>
-                </div>
-                <div class="flex-1">
-                    <h3 id="chem-title" class="text-xl font-bold mb-1 text-white">Chemistry</h3>
-                    <p class="text-sm text-slate-400 mb-4">Physical, Organic, Inorganic — reaction logic and numerical mastery.</p>
-                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-orange-500/20 inline-flex items-center gap-2" 
-                       href="jee_chemistry.html" data-subject="Chemistry" aria-label="Open Chemistry page">
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Chemistry Hub
-                    </a>
-                </div>
-            </article>
-
-            <!-- Maths card -->
-            <article class="subject-card p-5 rounded-xl flex items-start gap-4" aria-labelledby="maths-title" tabindex="0">
-                <div class="icon-wrap p-4 rounded-xl bg-green-500/20 text-green-400">
-                    <!-- Changed from "square-root" to "sigma" for a more professional math symbol -->
-                    <i data-lucide="sigma" class="w-8 h-8"></i>
-                </div>
-                <div class="flex-1">
-                    <h3 id="maths-title" class="text-xl font-bold mb-1 text-white">Mathematics</h3>
-                    <p class="text-sm text-slate-400 mb-4">Algebra, Calculus, Coordinate Geometry — speed and precision drills for top scores.</p>
-                    <a class="open-btn-gradient px-4 py-2 text-sm font-semibold rounded-lg text-white shadow-md shadow-green-500/20 inline-flex items-center gap-2" 
-                       href="jee_maths.html" data-subject="Mathematics" aria-label="Open Maths page">
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i> Open Maths Hub
-                    </a>
-                </div>
-            </article>
-
-        </section>
-
-        <!-- Footer / Credits -->
-        <footer class="mt-12 pt-6 border-t border-slate-800 text-center text-sm text-slate-500">
-            © 2024 StudyWeb. Designed for maximum focus and minimal distraction. 
-            
-        </footer>
-
-    </div>
-
-    <!-- Custom Modal for Placeholder Alert (Hidden by default) -->
-    <div id="placeholderModal" class="modal-overlay fixed inset-0 flex items-center justify-center opacity-0 pointer-events-none" aria-modal="true" role="dialog" aria-hidden="true" tabindex="-1">
-        <div id="modalContent" class="modal-content w-full max-w-sm p-6 rounded-xl border border-violet-600/50">
-            <h3 class="text-xl font-semibold text-white mb-3 flex items-center">
-                <i data-lucide="alert-triangle" class="w-6 h-6 mr-2 text-yellow-400"></i> 
-                Link Not Set
-            </h3>
-            
+            <h2 class="text-3xl font-black text-white">Coming Soon...</h2>
+            <p class="text-slate-400 text-sm">We are working hard to bring the Session 2 roadmap to life. Registration will open shortly!</p>
+            <button onclick="closeModal()" class="btn-hitech" style="filter: hue-rotate(180deg);">
+                <div class="btn-hitech-inner">GOT IT</div>
+            </button>
         </div>
     </div>
 
-    <!-- JavaScript for Interactivity and Custom Modal -->
+    <div class="max-w-6xl mx-auto space-y-12">
+        
+        <!-- Navbar -->
+        <nav class="flex items-center justify-between p-4 glass-card rounded-3xl animate-fade-in" style="animation-delay: 0.1s">
+            <div class="flex items-center gap-4">
+                <div class="bg-gradient-to-tr from-violet-600 to-cyan-500 p-3 rounded-2xl shadow-lg">
+                    <i data-lucide="graduation-cap" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-tight text-white">StudyWeb</span>
+                    <span class="block text-[10px] uppercase tracking-[0.3em] text-cyan-400 font-extrabold">Gen-Next 2026</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm font-bold">SYLLABUS</a>
+                <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm font-bold">MOCK TESTS</a>
+                <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm font-bold">DOUBTS</a>
+            </div>
+            <button class="px-7 py-2.5 bg-white text-slate-950 rounded-2xl text-sm font-black hover:bg-cyan-400 transition-all shadow-xl active:scale-95">
+                PORTAL LOGIN
+            </button>
+        </nav>
+
+        <!-- JEE 2026 Dual Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in" style="animation-delay: 0.2s">
+            
+            <!-- Session 1: Already Released -->
+            <div class="glass-card rounded-[2.5rem] p-8 flex flex-col justify-between items-start space-y-6 relative overflow-hidden group">
+                <div class="absolute -right-12 -top-12 w-40 h-40 bg-violet-600/10 rounded-full blur-3xl group-hover:bg-violet-600/20 transition-all"></div>
+                
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-green-500/20 rounded-2xl text-green-400">
+                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-xs font-black uppercase tracking-widest text-green-400">Status: Active</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-4xl font-black text-white">Session 1 <span class="text-slate-500 text-2xl font-medium">Resources</span></h2>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-md">
+                        Access the complete archive for the first session of 2026. This includes solved question papers, real-time performance analytics, and specialized revision notes.
+                    </p>
+                </div>
+
+                <a href="#" class="btn-hitech w-auto">
+                    <div class="btn-hitech-inner">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        OPEN SESSION 1 HUB
+                    </div>
+                </a>
+            </div>
+
+            <!-- Session 2: Upcoming Exam -->
+            <div class="glass-card rounded-[2.5rem] p-8 flex flex-col justify-between items-start space-y-6 relative overflow-hidden group border-cyan-500/20 pulse-soft">
+                <div class="absolute -right-12 -top-12 w-40 h-40 bg-cyan-600/10 rounded-full blur-3xl group-hover:bg-cyan-600/20 transition-all"></div>
+                
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-cyan-500/20 rounded-2xl text-cyan-400">
+                        <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-xs font-black uppercase tracking-widest text-cyan-400">Upcoming Exam</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-4xl font-black text-white">Session 2 <span class="text-slate-500 text-2xl font-medium">Roadmap</span></h2>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-md">
+                        Get ready for the final battle. We are preparing advanced test series, strategy modules, and high-probability question banks for the Session 2 examination.
+                    </p>
+                </div>
+
+                <!-- Pre-Register Button with Modal Trigger -->
+                <div class="btn-hitech w-auto" style="filter: hue-rotate(180deg);" onclick="openModal()">
+                    <div class="btn-hitech-inner">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        PRE-REGISTER NOW
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Main Heading Area -->
+        <section class="text-center space-y-6 py-10 animate-fade-in" style="animation-delay: 0.3s">
+            <h1 class="text-5xl sm:text-7xl font-black tracking-tight leading-[1.1]">
+                Your Journey to <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-white to-cyan-400">IIT Excellence</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">
+                Deep dive into conceptual clarity and rigorous practice. Select your domain below to begin your training for JEE 2026.
+            </p>
+        </section>
+
+        <!-- Subject Grid with Proper Buttons -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in" style="animation-delay: 0.4s">
+            
+            <!-- Physics -->
+            <div class="subject-card glass-card rounded-[2.5rem] p-8 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 rounded-3xl bg-violet-600/10 flex items-center justify-center mb-8 border border-violet-500/20 group-hover:border-violet-500/60 transition-all">
+                        <i data-lucide="atom" class="text-violet-400 w-12 h-12 icon-glow"></i>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-white mb-4">Physics</h3>
+                    <p class="text-slate-500 text-sm mb-10 leading-relaxed">Master Mechanics, Waves, and Modern Physics with interactive visual concepts.</p>
+                </div>
+                <a href="jee mains physics.html" class="btn-hitech">
+                    <div class="btn-hitech-inner">
+                        LAUNCH MODULE <i data-lucide="zap" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Chemistry -->
+            <div class="subject-card glass-card rounded-[2.5rem] p-8 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 rounded-3xl bg-orange-600/10 flex items-center justify-center mb-8 border border-orange-500/20 group-hover:border-orange-500/60 transition-all">
+                        <i data-lucide="flask-conical" class="text-orange-400 w-12 h-12 icon-glow"></i>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-white mb-4">Chemistry</h3>
+                    <p class="text-slate-500 text-sm mb-10 leading-relaxed">Structural Organic formulas and Physical numericals simplified for speed.</p>
+                </div>
+                <a href="jee_chemistry.html" class="btn-hitech" style="filter: hue-rotate(290deg);">
+                    <div class="btn-hitech-inner">
+                        LAUNCH MODULE <i data-lucide="beaker" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Mathematics -->
+            <div class="subject-card glass-card rounded-[2.5rem] p-8 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 rounded-3xl bg-emerald-600/10 flex items-center justify-center mb-8 border border-emerald-500/20 group-hover:border-emerald-500/60 transition-all">
+                        <i data-lucide="sigma" class="text-emerald-400 w-12 h-12 icon-glow"></i>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-white mb-4">Mathematics</h3>
+                    <p class="text-slate-500 text-sm mb-10 leading-relaxed">Calculus, Algebra, and Trig. High-speed precision drills for the top rank.</p>
+                </div>
+                <a href="jee_maths.html" class="btn-hitech" style="filter: hue-rotate(110deg);">
+                    <div class="btn-hitech-inner">
+                        LAUNCH MODULE <i data-lucide="function-square" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Footer Area -->
+        <footer class="mt-24 pt-12 pb-10 border-t border-slate-800/60 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <p class="text-slate-400 font-bold">StudyWeb Evolution</p>
+                <p class="text-slate-600 text-xs mt-1 tracking-wider uppercase">Designed for high-focus JEE prep</p>
+            </div>
+            <div class="flex gap-10">
+                <a href="#" class="text-slate-500 hover:text-white transition-all"><i data-lucide="shield" class="w-5 h-5"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-all"><i data-lucide="database" class="w-5 h-5"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-all"><i data-lucide="zap" class="w-5 h-5"></i></a>
+            </div>
+            <p class="text-slate-600 text-[10px] font-black uppercase tracking-[0.4em]">
+                &copy; 2026 MISSION IIT • ALL SYSTEMS ONLINE
+            </p>
+        </footer>
+    </div>
+
     <script>
-        // Initialize Lucide Icons
+        // Initialize Icons
         lucide.createIcons();
 
-        const modal = document.getElementById('placeholderModal');
-        const modalContent = document.getElementById('modalContent');
-        const modalMessage = document.getElementById('modalMessage');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
-        /**
-         * Shows the custom modal with a message.
-         * @param {string} subjectName - The name of the subject.
-         */
-        function showPlaceholderModal(subjectName) {
-            modalMessage.textContent = `The link for "${subjectName}" is currently a placeholder (#). Please replace the 'href="#"' with the actual page URL to enable navigation.`;
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100', 'pointer-events-auto', 'modal-open');
-            modal.setAttribute('aria-hidden', 'false');
-            modalContent.focus();
+        // Modal Logic
+        function openModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
         }
 
-        /**
-         * Hides the custom modal.
-         */
-        function hidePlaceholderModal() {
-            modal.classList.remove('opacity-100', 'pointer-events-auto', 'modal-open');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.setAttribute('aria-hidden', 'true');
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
 
-        closeModalBtn.addEventListener('click', hidePlaceholderModal);
-
-        // Close modal when clicking outside of the content
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                hidePlaceholderModal();
-            }
-        });
-
-        // Close modal on Escape key press
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('modal-open')) {
-                hidePlaceholderModal();
-            }
-        });
-
-
-        // Handle Clicks on Subject Links
-        document.querySelectorAll('.open-btn-gradient').forEach(a => {
-            a.addEventListener('click', (e) => {
-                const href = a.getAttribute('href');
-                if (href === '#' || href === 'undefined' || !href) {
-                    e.preventDefault();
-                    const subject = a.getAttribute('data-subject') || a.textContent.replace('Open ', '').replace(' Hub', '').trim();
-                    showPlaceholderModal(subject);
+        // Reveal animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
                 }
             });
-        });
+        }, { threshold: 0.1 });
 
-        // Add keyboard accessibility to the entire card (Enter/Space on card clicks the link)
-        document.querySelectorAll('.subject-card').forEach(s => {
-            s.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    const link = s.querySelector('.open-btn-gradient');
-                    if (link) { link.click(); }
-                }
-            });
+        document.querySelectorAll('.glass-card').forEach(card => {
+            observer.observe(card);
         });
     </script>
 </body>
