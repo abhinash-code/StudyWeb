@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Periodic Table</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Color Palette based on provided image */
+            --bg-page: #f8fafc;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            
+            /* Category Colors */
+            --cat-hydrogen: #e3001b;
+            --cat-alkali: #2b509f;
+            --cat-alkaline: #f37021;
+            --cat-transition: #008a97;
+            --cat-other-metal: #49398b;
+            --cat-metalloid: #008b6b;
+            --cat-nonmetal: #72bf44;
+            --cat-halogen: #fdbb11;
+            --cat-noble: #b91c3f;
+            --cat-lanthanide: #f8b182;
+            --cat-actinide: #ed5527;
+            --cat-unknown: #94a3b8;
+
+            /* UI Elements */
+            --border-radius: 6px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 15px rgba(0,0,0,0.3);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Controls --- */
+        header {
+            background-color: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+            color: var(--cat-transition);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-light);
+        }
+
+        #searchInput {
+            padding: 0.5rem 1rem 0.5rem 2rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            outline: none;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        #searchInput:focus {
+            border-color: var(--cat-transition);
+            box-shadow: 0 0 0 3px rgba(0, 138, 151, 0.1);
+        }
+
+        select, button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            background: var(--white);
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        select:focus, button:hover {
+            border-color: var(--cat-transition);
+        }
+
+        button {
+            background: #f1f5f9;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #e2e8f0;
+        }
+
+        /* --- Legend --- */
+        .legend-container {
+            max-width: 1400px;
+            margin: 1.5rem auto 0;
+            padding: 0 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            opacity: 0.8;
+        }
+
+        .legend-item:hover {
+            opacity: 1;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        /* --- Main Layout & Grid --- */
+        main {
+            padding: 2rem 1rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            overflow-x: auto; /* For mobile */
+        }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: 20px repeat(18, minmax(60px, 1fr));
+            grid-template-rows: 20px repeat(7, minmax(70px, 1fr)) 20px repeat(2, minmax(70px, 1fr));
+            gap: 4px;
+            min-width: 1200px; /* Force minimum width to prevent squishing */
+        }
+
+        /* Grid Labels */
+        .grid-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .group-label {
+            grid-row: 1;
+        }
+
+        .period-label {
+            grid-column: 1;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        /* --- Element Box --- */
+        .element {
+            position: relative;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            color: var(--white); /* Default text color for colored boxes */
+            overflow: hidden;
+        }
+
+        .element::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .element.dimmed {
+            opacity: 0.15;
+            filter: grayscale(80%);
+            pointer-events: none;
+        }
+
+        .element:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .el-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .el-num {}
+        .el-mass { text-align: right; }
+
+        .el-symbol {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: auto 0;
+            line-height: 1;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .el-name {
+            font-size: 0.6rem;
+            text-align: center;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.9;
+        }
+
+        /* Placeholder boxes */
+        .placeholder {
+            background-color: transparent !important;
+            border: 2px dashed #cbd5e1;
+            color: var(--text-light) !important;
+            justify-content: center;
+            align-items: center;
+            box-shadow: none;
+            cursor: default;
+        }
+        .placeholder:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .placeholder .el-symbol {
+            font-size: 0.8rem;
+            text-shadow: none;
+        }
+
+        /* --- Category Colors --- */
+        .cat-hydrogen { background-color: var(--cat-hydrogen); }
+        .cat-alkali { background-color: var(--cat-alkali); }
+        .cat-alkaline { background-color: var(--cat-alkaline); }
+        .cat-transition { background-color: var(--cat-transition); }
+        .cat-other-metal { background-color: var(--cat-other-metal); }
+        .cat-metalloid { background-color: var(--cat-metalloid); }
+        .cat-nonmetal { background-color: var(--cat-nonmetal); }
+        .cat-halogen { background-color: var(--cat-halogen); color: var(--text-main); } /* Yellow background needs dark text */
+        .cat-noble { background-color: var(--cat-noble); }
+        .cat-lanthanide { background-color: var(--cat-lanthanide); color: var(--text-main); }
+        .cat-actinide { background-color: var(--cat-actinide); }
+        .cat-unknown { background-color: var(--cat-unknown); }
+
+        /* Fix text color for light backgrounds */
+        .cat-halogen .el-symbol, .cat-lanthanide .el-symbol { text-shadow: none; }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .modal-symbol-box {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .modal-title-area {
+            flex: 1;
+        }
+
+        .modal-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-category {
+            font-size: 1rem;
+            opacity: 0.9;
+            text-transform: capitalize;
+            font-weight: 500;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .data-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .data-value {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Decorative background graphics */
+        .bg-decor {
+            position: absolute;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .bg-dna { top: 20px; right: 20px; width: 300px; }
+        .bg-flask { bottom: 20px; left: 20px; width: 200px; }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem; }
+            .header-top { flex-direction: column; align-items: flex-start; }
+            .controls { width: 100%; }
+            #searchInput { width: 100%; flex: 1; }
+            select { flex: 1; }
+            
+            .legend-container { justify-content: flex-start; }
+            
+            main { padding: 1rem 0; }
+            .periodic-table { 
+                padding: 0 1rem; 
+            }
+            
+            .modal-header { padding: 1.5rem; gap: 1rem; flex-direction: column; text-align: center; }
+            .modal-name { font-size: 2rem; }
+            .modal-body { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Decoration SVG (Simplified representation) -->
+    <svg class="bg-decor bg-dna" viewBox="0 0 200 50" fill="currentColor">
+        <path d="M10,25 Q20,5 30,25 T50,25 T70,25 T90,25 T110,25 T130,25 T150,25 T170,25 T190,25" stroke="currentColor" stroke-width="2" fill="none"/>
+        <path d="M10,25 Q20,45 30,25 T50,25 T70,25 T90,25 T110,25 T130,25 T150,25 T170,25 T190,25" stroke="currentColor" stroke-width="2" fill="none"/>
+    </svg>
+    <svg class="bg-decor bg-flask" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M40,10 L60,10 L60,40 L90,90 A5,5 0 0,1 85,100 L15,100 A5,5 0 0,1 10,90 L40,40 Z" stroke="currentColor" stroke-width="4" fill="none"/>
+    </svg>
+
+    <header>
+        <div class="header-top">
+            <div class="logo-title">
+                <!-- Custom Hexagon Atom Logo -->
+                <svg class="logo-svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" stroke-dasharray="10 5" />
+                    <circle cx="50" cy="50" r="15" fill="currentColor" opacity="0.2"/>
+                    <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                    <ellipse cx="50" cy="50" rx="40" ry="12" transform="rotate(30 50 50)"/>
+                    <ellipse cx="50" cy="50" rx="40" ry="12" transform="rotate(150 50 50)"/>
+                </svg>
+                <h1>Periodic Table of Elements</h1>
+            </div>
+            <div class="controls">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search by name, symbol, or number...">
+                </div>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="cat-hydrogen">Hydrogen (Gas)</option>
+                    <option value="cat-alkali">Alkali Metals</option>
+                    <option value="cat-alkaline">Alkaline Earth Metals</option>
+                    <option value="cat-transition">Transition Metals</option>
+                    <option value="cat-other-metal">Other Metals</option>
+                    <option value="cat-metalloid">Metalloids</option>
+                    <option value="cat-nonmetal">Non-metals</option>
+                    <option value="cat-halogen">Halogens</option>
+                    <option value="cat-noble">Noble Gases</option>
+                    <option value="cat-lanthanide">Lanthanides</option>
+                    <option value="cat-actinide">Actinides</option>
+                </select>
+                <button id="resetBtn">Reset</button>
+            </div>
+        </div>
+        
+        <div class="legend-container" id="legend">
+            <!-- Legend items injected via JS -->
+        </div>
+    </header>
+
+    <main>
+        <div class="periodic-table" id="table">
+            <!-- Elements injected via JS -->
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="elementModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">
+                <button class="close-btn" id="closeModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+                <div class="modal-symbol-box" id="modalSymbol">H</div>
+                <div class="modal-title-area">
+                    <div class="modal-name" id="modalName">Hydrogen</div>
+                    <div class="modal-category" id="modalCategory">Diatomic Nonmetal</div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="data-group">
+                    <span class="data-label">Atomic Number</span>
+                    <span class="data-value" id="modalNum">1</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Atomic Mass</span>
+                    <span class="data-value" id="modalMass">1.008 u</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Group / Period</span>
+                    <span class="data-value" id="modalGroupPeriod">1 / 1</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Electron Configuration</span>
+                    <span class="data-value" id="modalConfig">1s¹</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Standard State</span>
+                    <span class="data-value" id="modalState">Gas</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Electronegativity</span>
+                    <span class="data-value" id="modalElectro">2.20</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Melting Point</span>
+                    <span class="data-value" id="modalMelt">13.99 K</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Boiling Point</span>
+                    <span class="data-value" id="modalBoil">20.271 K</span>
+                </div>
+                <div class="data-group">
+                    <span class="data-label">Discovery Year</span>
+                    <span class="data-value" id="modalDiscover">1766</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure mapping to image categories
+        const CAT_MAP = {
+            'hydrogen': 'cat-hydrogen',
+            'alkali metal': 'cat-alkali',
+            'alkaline earth metal': 'cat-alkaline',
+            'transition metal': 'cat-transition',
+            'post-transition metal': 'cat-other-metal',
+            'metalloid': 'cat-metalloid',
+            'reactive nonmetal': 'cat-nonmetal',
+            'polyatomic nonmetal': 'cat-nonmetal',
+            'diatomic nonmetal': 'cat-nonmetal',
+            'halogen': 'cat-halogen',
+            'noble gas': 'cat-noble',
+            'lanthanide': 'cat-lanthanide',
+            'actinide': 'cat-actinide',
+            'unknown': 'cat-unknown'
+        };
+
+        const categoriesList = [
+            { id: 'cat-hydrogen', label: 'Hydrogen (Gas)', color: 'var(--cat-hydrogen)' },
+            { id: 'cat-alkali', label: 'Alkali Metals', color: 'var(--cat-alkali)' },
+            { id: 'cat-alkaline', label: 'Alkaline Earth Metals', color: 'var(--cat-alkaline)' },
+            { id: 'cat-transition', label: 'Transition Metals', color: 'var(--cat-transition)' },
+            { id: 'cat-other-metal', label: 'Other Metals', color: 'var(--cat-other-metal)' },
+            { id: 'cat-metalloid', label: 'Metalloids', color: 'var(--cat-metalloid)' },
+            { id: 'cat-nonmetal', label: 'Non-metals', color: 'var(--cat-nonmetal)' },
+            { id: 'cat-halogen', label: 'Halogens', color: 'var(--cat-halogen)' },
+            { id: 'cat-noble', label: 'Noble Gases', color: 'var(--cat-noble)' },
+            { id: 'cat-lanthanide', label: 'Lanthanides', color: 'var(--cat-lanthanide)' },
+            { id: 'cat-actinide', label: 'Actinides', color: 'var(--cat-actinide)' }
+        ];
+
+        // Comprehensive Periodic Table Data (118 Elements)
+        const elementsData = [
+            { num: 1, sym: 'H', name: 'Hydrogen', mass: '1.008', group: 1, period: 1, cat: 'hydrogen', elec: '1s¹', state: 'Gas', electro: '2.20', melt: '13.99', boil: '20.271', year: '1766' },
+            { num: 2, sym: 'He', name: 'Helium', mass: '4.002', group: 18, period: 1, cat: 'noble gas', elec: '1s²', state: 'Gas', electro: 'N/A', melt: '0.95', boil: '4.22', year: '1868' },
+            { num: 3, sym: 'Li', name: 'Lithium', mass: '6.94', group: 1, period: 2, cat: 'alkali metal', elec: '[He] 2s¹', state: 'Solid', electro: '0.98', melt: '453.65', boil: '1603', year: '1817' },
+            { num: 4, sym: 'Be', name: 'Beryllium', mass: '9.012', group: 2, period: 2, cat: 'alkaline earth metal', elec: '[He] 2s²', state: 'Solid', electro: '1.57', melt: '1560', boil: '2742', year: '1798' },
+            { num: 5, sym: 'B', name: 'Boron', mass: '10.81', group: 13, period: 2, cat: 'metalloid', elec: '[He] 2s² 2p¹', state: 'Solid', electro: '2.04', melt: '2349', boil: '4200', year: '1808' },
+            { num: 6, sym: 'C', name: 'Carbon', mass: '12.011', group: 14, period: 2, cat: 'polyatomic nonmetal', elec: '[He] 2s² 2p²', state: 'Solid', electro: '2.55', melt: '3823', boil: '4300', year: 'Ancient' },
+            { num: 7, sym: 'N', name: 'Nitrogen', mass: '14.007', group: 15, period: 2, cat: 'diatomic nonmetal', elec: '[He] 2s² 2p³', state: 'Gas', electro: '3.04', melt: '63.15', boil: '77.36', year: '1772' },
+            { num: 8, sym: 'O', name: 'Oxygen', mass: '15.999', group: 16, period: 2, cat: 'diatomic nonmetal', elec: '[He] 2s² 2p⁴', state: 'Gas', electro: '3.44', melt: '54.36', boil: '90.18', year: '1774' },
+            { num: 9, sym: 'F', name: 'Fluorine', mass: '18.998', group: 17, period: 2, cat: 'halogen', elec: '[He] 2s² 2p⁵', state: 'Gas', electro: '3.98', melt: '53.48', boil: '85.03', year: '1886' },
+            { num: 10, sym: 'Ne', name: 'Neon', mass: '20.180', group: 18, period: 2, cat: 'noble gas', elec: '[He] 2s² 2p⁶', state: 'Gas', electro: 'N/A', melt: '24.56', boil: '27.104', year: '1898' },
+            { num: 11, sym: 'Na', name: 'Sodium', mass: '22.990', group: 1, period: 3, cat: 'alkali metal', elec: '[Ne] 3s¹', state: 'Solid', electro: '0.93', melt: '370.944', boil: '1156', year: '1807' },
+            { num: 12, sym: 'Mg', name: 'Magnesium', mass: '24.305', group: 2, period: 3, cat: 'alkaline earth metal', elec: '[Ne] 3s²', state: 'Solid', electro: '1.31', melt: '923', boil: '1363', year: '1755' },
+            { num: 13, sym: 'Al', name: 'Aluminium', mass: '26.982', group: 13, period: 3, cat: 'post-transition metal', elec: '[Ne] 3s² 3p¹', state: 'Solid', electro: '1.61', melt: '933.47', boil: '2743', year: '1825' },
+            { num: 14, sym: 'Si', name: 'Silicon', mass: '28.085', group: 14, period: 3, cat: 'metalloid', elec: '[Ne] 3s² 3p²', state: 'Solid', electro: '1.90', melt: '1687', boil: '3538', year: '1824' },
+            { num: 15, sym: 'P', name: 'Phosphorus', mass: '30.974', group: 15, period: 3, cat: 'polyatomic nonmetal', elec: '[Ne] 3s² 3p³', state: 'Solid', electro: '2.19', melt: '317.3', boil: '553.7', year: '1669' },
+            { num: 16, sym: 'S', name: 'Sulfur', mass: '32.06', group: 16, period: 3, cat: 'polyatomic nonmetal', elec: '[Ne] 3s² 3p⁴', state: 'Solid', electro: '2.58', melt: '388.36', boil: '717.8', year: 'Ancient' },
+            { num: 17, sym: 'Cl', name: 'Chlorine', mass: '35.45', group: 17, period: 3, cat: 'halogen', elec: '[Ne] 3s² 3p⁵', state: 'Gas', electro: '3.16', melt: '171.6', boil: '239.11', year: '1774' },
+            { num: 18, sym: 'Ar', name: 'Argon', mass: '39.95', group: 18, period: 3, cat: 'noble gas', elec: '[Ne] 3s² 3p⁶', state: 'Gas', electro: 'N/A', melt: '83.81', boil: '87.30', year: '1894' },
+            { num: 19, sym: 'K', name: 'Potassium', mass: '39.098', group: 1, period: 4, cat: 'alkali metal', elec: '[Ar] 4s¹', state: 'Solid', electro: '0.82', melt: '336.7', boil: '1032', year: '1807' },
+            { num: 20, sym: 'Ca', name: 'Calcium', mass: '40.078', group: 2, period: 4, cat: 'alkaline earth metal', elec: '[Ar] 4s²', state: 'Solid', electro: '1.00', melt: '1115', boil: '1757', year: '1808' },
+            { num: 21, sym: 'Sc', name: 'Scandium', mass: '44.956', group: 3, period: 4, cat: 'transition metal', elec: '[Ar] 3d¹ 4s²', state: 'Solid', electro: '1.36', melt: '1814', boil: '3109', year: '1879' },
+            { num: 22, sym: 'Ti', name: 'Titanium', mass: '47.867', group: 4, period: 4, cat: 'transition metal', elec: '[Ar] 3d² 4s²', state: 'Solid', electro: '1.54', melt: '1941', boil: '3560', year: '1791' },
+            { num: 23, sym: 'V', name: 'Vanadium', mass: '50.942', group: 5, period: 4, cat: 'transition metal', elec: '[Ar] 3d³ 4s²', state: 'Solid', electro: '1.63', melt: '2183', boil: '3680', year: '1801' },
+            { num: 24, sym: 'Cr', name: 'Chromium', mass: '51.996', group: 6, period: 4, cat: 'transition metal', elec: '[Ar] 3d⁵ 4s¹', state: 'Solid', electro: '1.66', melt: '2180', boil: '2944', year: '1797' },
+            { num: 25, sym: 'Mn', name: 'Manganese', mass: '54.938', group: 7, period: 4, cat: 'transition metal', elec: '[Ar] 3d⁵ 4s²', state: 'Solid', electro: '1.55', melt: '1519', boil: '2334', year: '1774' },
+            { num: 26, sym: 'Fe', name: 'Iron', mass: '55.845', group: 8, period: 4, cat: 'transition metal', elec: '[Ar] 3d⁶ 4s²', state: 'Solid', electro: '1.83', melt: '1811', boil: '3134', year: 'Ancient' },
+            { num: 27, sym: 'Co', name: 'Cobalt', mass: '58.933', group: 9, period: 4, cat: 'transition metal', elec: '[Ar] 3d⁷ 4s²', state: 'Solid', electro: '1.88', melt: '1768', boil: '3200', year: '1735' },
+            { num: 28, sym: 'Ni', name: 'Nickel', mass: '58.693', group: 10, period: 4, cat: 'transition metal', elec: '[Ar] 3d⁸ 4s²', state: 'Solid', electro: '1.91', melt: '1728', boil: '3003', year: '1751' },
+            { num: 29, sym: 'Cu', name: 'Copper', mass: '63.546', group: 11, period: 4, cat: 'transition metal', elec: '[Ar] 3d¹⁰ 4s¹', state: 'Solid', electro: '1.90', melt: '1357.77', boil: '2835', year: 'Ancient' },
+            { num: 30, sym: 'Zn', name: 'Zinc', mass: '65.38', group: 12, period: 4, cat: 'transition metal', elec: '[Ar] 3d¹⁰ 4s²', state: 'Solid', electro: '1.65', melt: '692.68', boil: '1180', year: 'Ancient' },
+            { num: 31, sym: 'Ga', name: 'Gallium', mass: '69.723', group: 13, period: 4, cat: 'post-transition metal', elec: '[Ar] 3d¹⁰ 4s² 4p¹', state: 'Solid', electro: '1.81', melt: '302.91', boil: '2477', year: '1875' },
+            { num: 32, sym: 'Ge', name: 'Germanium', mass: '72.630', group: 14, period: 4, cat: 'metalloid', elec: '[Ar] 3d¹⁰ 4s² 4p²', state: 'Solid', electro: '2.01', melt: '1211.40', boil: '3106', year: '1886' },
+            { num: 33, sym: 'As', name: 'Arsenic', mass: '74.922', group: 15, period: 4, cat: 'metalloid', elec: '[Ar] 3d¹⁰ 4s² 4p³', state: 'Solid', electro: '2.18', melt: '1090', boil: '887', year: 'Ancient' },
+            { num: 34, sym: 'Se', name: 'Selenium', mass: '78.971', group: 16, period: 4, cat: 'polyatomic nonmetal', elec: '[Ar] 3d¹⁰ 4s² 4p⁴', state: 'Solid', electro: '2.55', melt: '494', boil: '958', year: '1817' },
+            { num: 35, sym: 'Br', name: 'Bromine', mass: '79.904', group: 17, period: 4, cat: 'halogen', elec: '[Ar] 3d¹⁰ 4s² 4p⁵', state: 'Liquid', electro: '2.96', melt: '265.8', boil: '332.0', year: '1826' },
+            { num: 36, sym: 'Kr', name: 'Krypton', mass: '83.798', group: 18, period: 4, cat: 'noble gas', elec: '[Ar] 3d¹⁰ 4s² 4p⁶', state: 'Gas', electro: '3.00', melt: '115.79', boil: '119.93', year: '1898' },
+            { num: 37, sym: 'Rb', name: 'Rubidium', mass: '85.468', group: 1, period: 5, cat: 'alkali metal', elec: '[Kr] 5s¹', state: 'Solid', electro: '0.82', melt: '312.46', boil: '961', year: '1861' },
+            { num: 38, sym: 'Sr', name: 'Strontium', mass: '87.62', group: 2, period: 5, cat: 'alkaline earth metal', elec: '[Kr] 5s²', state: 'Solid', electro: '0.95', melt: '1050', boil: '1650', year: '1790' },
+            { num: 39, sym: 'Y', name: 'Yttrium', mass: '88.906', group: 3, period: 5, cat: 'transition metal', elec: '[Kr] 4d¹ 5s²', state: 'Solid', electro: '1.22', melt: '1799', boil: '3203', year: '1794' },
+            { num: 40, sym: 'Zr', name: 'Zirconium', mass: '91.224', group: 4, period: 5, cat: 'transition metal', elec: '[Kr] 4d² 5s²', state: 'Solid', electro: '1.33', melt: '2128', boil: '4682', year: '1789' },
+            { num: 41, sym: 'Nb', name: 'Niobium', mass: '92.906', group: 5, period: 5, cat: 'transition metal', elec: '[Kr] 4d⁴ 5s¹', state: 'Solid', electro: '1.6', melt: '2750', boil: '5017', year: '1801' },
+            { num: 42, sym: 'Mo', name: 'Molybdenum', mass: '95.95', group: 6, period: 5, cat: 'transition metal', elec: '[Kr] 4d⁵ 5s¹', state: 'Solid', electro: '2.16', melt: '2896', boil: '4912', year: '1778' },
+            { num: 43, sym: 'Tc', name: 'Technetium', mass: '(98)', group: 7, period: 5, cat: 'transition metal', elec: '[Kr] 4d⁵ 5s²', state: 'Solid', electro: '1.9', melt: '2430', boil: '4538', year: '1937' },
+            { num: 44, sym: 'Ru', name: 'Ruthenium', mass: '101.07', group: 8, period: 5, cat: 'transition metal', elec: '[Kr] 4d⁷ 5s¹', state: 'Solid', electro: '2.2', melt: '2607', boil: '4423', year: '1844' },
+            { num: 45, sym: 'Rh', name: 'Rhodium', mass: '102.91', group: 9, period: 5, cat: 'transition metal', elec: '[Kr] 4d⁸ 5s¹', state: 'Solid', electro: '2.28', melt: '2237', boil: '3968', year: '1803' },
+            { num: 46, sym: 'Pd', name: 'Palladium', mass: '106.42', group: 10, period: 5, cat: 'transition metal', elec: '[Kr] 4d¹⁰', state: 'Solid', electro: '2.20', melt: '1828.05', boil: '3236', year: '1803' },
+            { num: 47, sym: 'Ag', name: 'Silver', mass: '107.87', group: 11, period: 5, cat: 'transition metal', elec: '[Kr] 4d¹⁰ 5s¹', state: 'Solid', electro: '1.93', melt: '1234.93', boil: '2435', year: 'Ancient' },
+            { num: 48, sym: 'Cd', name: 'Cadmium', mass: '112.41', group: 12, period: 5, cat: 'transition metal', elec: '[Kr] 4d¹⁰ 5s²', state: 'Solid', electro: '1.69', melt: '594.22', boil: '1040', year: '1817' },
+            { num: 49, sym: 'In', name: 'Indium', mass: '114.82', group: 13, period: 5, cat: 'post-transition metal', elec: '[Kr] 4d¹⁰ 5s² 5p¹', state: 'Solid', electro: '1.78', melt: '429.74', boil: '2345', year: '1863' },
+            { num: 50, sym: 'Sn', name: 'Tin', mass: '118.71', group: 14, period: 5, cat: 'post-transition metal', elec: '[Kr] 4d¹⁰ 5s² 5p²', state: 'Solid', electro: '1.96', melt: '505.08', boil: '2875', year: 'Ancient' },
+            { num: 51, sym: 'Sb', name: 'Antimony', mass: '121.76', group: 15, period: 5, cat: 'metalloid', elec: '[Kr] 4d¹⁰ 5s² 5p³', state: 'Solid', electro: '2.05', melt: '903.78', boil: '1860', year: 'Ancient' },
+            { num: 52, sym: 'Te', name: 'Tellurium', mass: '127.60', group: 16, period: 5, cat: 'metalloid', elec: '[Kr] 4d¹⁰ 5s² 5p⁴', state: 'Solid', electro: '2.1', melt: '722.66', boil: '1261', year: '1782' },
+            { num: 53, sym: 'I', name: 'Iodine', mass: '126.90', group: 17, period: 5, cat: 'halogen', elec: '[Kr] 4d¹⁰ 5s² 5p⁵', state: 'Solid', electro: '2.66', melt: '386.85', boil: '457.4', year: '1811' },
+            { num: 54, sym: 'Xe', name: 'Xenon', mass: '131.29', group: 18, period: 5, cat: 'noble gas', elec: '[Kr] 4d¹⁰ 5s² 5p⁶', state: 'Gas', electro: '2.6', melt: '161.4', boil: '165.051', year: '1898' },
+            { num: 55, sym: 'Cs', name: 'Caesium', mass: '132.91', group: 1, period: 6, cat: 'alkali metal', elec: '[Xe] 6s¹', state: 'Solid', electro: '0.79', melt: '301.7', boil: '944', year: '1860' },
+            { num: 56, sym: 'Ba', name: 'Barium', mass: '137.33', group: 2, period: 6, cat: 'alkaline earth metal', elec: '[Xe] 6s²', state: 'Solid', electro: '0.89', melt: '1000', boil: '2118', year: '1808' },
+            // Lanthanides (57-71)
+            { num: 57, sym: 'La', name: 'Lanthanum', mass: '138.91', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 5d¹ 6s²', state: 'Solid', electro: '1.1', melt: '1193', boil: '3737', year: '1839' },
+            { num: 58, sym: 'Ce', name: 'Cerium', mass: '140.12', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹ 5d¹ 6s²', state: 'Solid', electro: '1.12', melt: '1068', boil: '3716', year: '1803' },
+            { num: 59, sym: 'Pr', name: 'Praseodymium', mass: '140.91', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f³ 6s²', state: 'Solid', electro: '1.13', melt: '1208', boil: '3403', year: '1885' },
+            { num: 60, sym: 'Nd', name: 'Neodymium', mass: '144.24', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁴ 6s²', state: 'Solid', electro: '1.14', melt: '1297', boil: '3347', year: '1885' },
+            { num: 61, sym: 'Pm', name: 'Promethium', mass: '(145)', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁵ 6s²', state: 'Solid', electro: '1.13', melt: '1315', boil: '3273', year: '1945' },
+            { num: 62, sym: 'Sm', name: 'Samarium', mass: '150.36', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁶ 6s²', state: 'Solid', electro: '1.17', melt: '1345', boil: '2067', year: '1879' },
+            { num: 63, sym: 'Eu', name: 'Europium', mass: '151.96', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁷ 6s²', state: 'Solid', electro: '1.2', melt: '1099', boil: '1802', year: '1901' },
+            { num: 64, sym: 'Gd', name: 'Gadolinium', mass: '157.25', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁷ 5d¹ 6s²', state: 'Solid', electro: '1.2', melt: '1585', boil: '3273', year: '1880' },
+            { num: 65, sym: 'Tb', name: 'Terbium', mass: '158.93', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f⁹ 6s²', state: 'Solid', electro: '1.1', melt: '1629', boil: '3503', year: '1843' },
+            { num: 66, sym: 'Dy', name: 'Dysprosium', mass: '162.50', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹⁰ 6s²', state: 'Solid', electro: '1.22', melt: '1680', boil: '2840', year: '1886' },
+            { num: 67, sym: 'Ho', name: 'Holmium', mass: '164.93', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹¹ 6s²', state: 'Solid', electro: '1.23', melt: '1734', boil: '2993', year: '1878' },
+            { num: 68, sym: 'Er', name: 'Erbium', mass: '167.26', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹² 6s²', state: 'Solid', electro: '1.24', melt: '1802', boil: '3141', year: '1842' },
+            { num: 69, sym: 'Tm', name: 'Thulium', mass: '168.93', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹³ 6s²', state: 'Solid', electro: '1.25', melt: '1818', boil: '2223', year: '1879' },
+            { num: 70, sym: 'Yb', name: 'Ytterbium', mass: '173.05', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹⁴ 6s²', state: 'Solid', electro: '1.1', melt: '1097', boil: '1469', year: '1878' },
+            { num: 71, sym: 'Lu', name: 'Lutetium', mass: '174.97', group: 3, period: 6, cat: 'lanthanide', elec: '[Xe] 4f¹⁴ 5d¹ 6s²', state: 'Solid', electro: '1.27', melt: '1925', boil: '3675', year: '1907' },
+            // Continue Period 6 (72-86)
+            { num: 72, sym: 'Hf', name: 'Hafnium', mass: '178.49', group: 4, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d² 6s²', state: 'Solid', electro: '1.3', melt: '2506', boil: '4876', year: '1923' },
+            { num: 73, sym: 'Ta', name: 'Tantalum', mass: '180.95', group: 5, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d³ 6s²', state: 'Solid', electro: '1.5', melt: '3290', boil: '5731', year: '1802' },
+            { num: 74, sym: 'W', name: 'Tungsten', mass: '183.84', group: 6, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d⁴ 6s²', state: 'Solid', electro: '2.36', melt: '3695', boil: '6203', year: '1783' },
+            { num: 75, sym: 'Re', name: 'Rhenium', mass: '186.21', group: 7, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d⁵ 6s²', state: 'Solid', electro: '1.9', melt: '3459', boil: '5903', year: '1925' },
+            { num: 76, sym: 'Os', name: 'Osmium', mass: '190.23', group: 8, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d⁶ 6s²', state: 'Solid', electro: '2.2', melt: '3306', boil: '5285', year: '1803' },
+            { num: 77, sym: 'Ir', name: 'Iridium', mass: '192.22', group: 9, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d⁷ 6s²', state: 'Solid', electro: '2.20', melt: '2719', boil: '4701', year: '1803' },
+            { num: 78, sym: 'Pt', name: 'Platinum', mass: '195.08', group: 10, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d⁹ 6s¹', state: 'Solid', electro: '2.28', melt: '2041.4', boil: '4098', year: '1735' },
+            { num: 79, sym: 'Au', name: 'Gold', mass: '196.97', group: 11, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s¹', state: 'Solid', electro: '2.54', melt: '1337.33', boil: '3129', year: 'Ancient' },
+            { num: 80, sym: 'Hg', name: 'Mercury', mass: '200.59', group: 12, period: 6, cat: 'transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s²', state: 'Liquid', electro: '2.00', melt: '234.3210', boil: '629.88', year: 'Ancient' },
+            { num: 81, sym: 'Tl', name: 'Thallium', mass: '204.38', group: 13, period: 6, cat: 'post-transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹', state: 'Solid', electro: '1.62', melt: '577', boil: '1746', year: '1861' },
+            { num: 82, sym: 'Pb', name: 'Lead', mass: '207.2', group: 14, period: 6, cat: 'post-transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²', state: 'Solid', electro: '2.33', melt: '600.61', boil: '2022', year: 'Ancient' },
+            { num: 83, sym: 'Bi', name: 'Bismuth', mass: '208.98', group: 15, period: 6, cat: 'post-transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³', state: 'Solid', electro: '2.02', melt: '544.7', boil: '1837', year: 'Ancient' },
+            { num: 84, sym: 'Po', name: 'Polonium', mass: '(209)', group: 16, period: 6, cat: 'post-transition metal', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴', state: 'Solid', electro: '2.0', melt: '527', boil: '1235', year: '1898' },
+            { num: 85, sym: 'At', name: 'Astatine', mass: '(210)', group: 17, period: 6, cat: 'metalloid', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵', state: 'Solid', electro: '2.2', melt: '575', boil: '610', year: '1940' },
+            { num: 86, sym: 'Rn', name: 'Radon', mass: '(222)', group: 18, period: 6, cat: 'noble gas', elec: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶', state: 'Gas', electro: '2.2', melt: '202', boil: '211.5', year: '1899' },
+            { num: 87, sym: 'Fr', name: 'Francium', mass: '(223)', group: 1, period: 7, cat: 'alkali metal', elec: '[Rn] 7s¹', state: 'Solid', electro: '0.7', melt: '300', boil: '950', year: '1939' },
+            { num: 88, sym: 'Ra', name: 'Radium', mass: '(226)', group: 2, period: 7, cat: 'alkaline earth metal', elec: '[Rn] 7s²', state: 'Solid', electro: '0.9', melt: '973', boil: '2010', year: '1898' },
+            // Actinides (89-103)
+            { num: 89, sym: 'Ac', name: 'Actinium', mass: '(227)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 6d¹ 7s²', state: 'Solid', electro: '1.1', melt: '1323', boil: '3471', year: '1899' },
+            { num: 90, sym: 'Th', name: 'Thorium', mass: '232.04', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 6d² 7s²', state: 'Solid', electro: '1.3', melt: '2023', boil: '5061', year: '1829' },
+            { num: 91, sym: 'Pa', name: 'Protactinium', mass: '231.04', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f² 6d¹ 7s²', state: 'Solid', electro: '1.5', melt: '1841', boil: '4300', year: '1913' },
+            { num: 92, sym: 'U', name: 'Uranium', mass: '238.03', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f³ 6d¹ 7s²', state: 'Solid', electro: '1.38', melt: '1405.3', boil: '4404', year: '1789' },
+            { num: 93, sym: 'Np', name: 'Neptunium', mass: '(237)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f⁴ 6d¹ 7s²', state: 'Solid', electro: '1.36', melt: '912', boil: '4174', year: '1940' },
+            { num: 94, sym: 'Pu', name: 'Plutonium', mass: '(244)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f⁶ 7s²', state: 'Solid', electro: '1.28', melt: '912.5', boil: '3505', year: '1940' },
+            { num: 95, sym: 'Am', name: 'Americium', mass: '(243)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f⁷ 7s²', state: 'Solid', electro: '1.13', melt: '1449', boil: '2880', year: '1944' },
+            { num: 96, sym: 'Cm', name: 'Curium', mass: '(247)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f⁷ 6d¹ 7s²', state: 'Solid', electro: '1.28', melt: '1613', boil: '3383', year: '1944' },
+            { num: 97, sym: 'Bk', name: 'Berkelium', mass: '(247)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f⁹ 7s²', state: 'Solid', electro: '1.3', melt: '1259', boil: '2900', year: '1949' },
+            { num: 98, sym: 'Cf', name: 'Californium', mass: '(251)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹⁰ 7s²', state: 'Solid', electro: '1.3', melt: '1173', boil: '1743', year: '1950' },
+            { num: 99, sym: 'Es', name: 'Einsteinium', mass: '(252)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹¹ 7s²', state: 'Solid', electro: '1.3', melt: '1133', boil: '1269', year: '1952' },
+            { num: 100, sym: 'Fm', name: 'Fermium', mass: '(257)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹² 7s²', state: 'Solid', electro: '1.3', melt: '1800', boil: 'Unknown', year: '1952' },
+            { num: 101, sym: 'Md', name: 'Mendelevium', mass: '(258)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹³ 7s²', state: 'Solid', electro: '1.3', melt: '1100', boil: 'Unknown', year: '1955' },
+            { num: 102, sym: 'No', name: 'Nobelium', mass: '(259)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹⁴ 7s²', state: 'Solid', electro: '1.3', melt: '1100', boil: 'Unknown', year: '1958' },
+            { num: 103, sym: 'Lr', name: 'Lawrencium', mass: '(266)', group: 3, period: 7, cat: 'actinide', elec: '[Rn] 5f¹⁴ 6d¹ 7s²', state: 'Solid', electro: '1.3', melt: '1900', boil: 'Unknown', year: '1961' },
+            // Continue Period 7 (104-118)
+            { num: 104, sym: 'Rf', name: 'Rutherfordium', mass: '(267)', group: 4, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d² 7s²', state: 'Solid', electro: 'Unknown', melt: '2400', boil: '5800', year: '1969' },
+            { num: 105, sym: 'Db', name: 'Dubnium', mass: '(268)', group: 5, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d³ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1970' },
+            { num: 106, sym: 'Sg', name: 'Seaborgium', mass: '(269)', group: 6, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d⁴ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1974' },
+            { num: 107, sym: 'Bh', name: 'Bohrium', mass: '(270)', group: 7, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d⁵ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1981' },
+            { num: 108, sym: 'Hs', name: 'Hassium', mass: '(277)', group: 8, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d⁶ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1984' },
+            { num: 109, sym: 'Mt', name: 'Meitnerium', mass: '(278)', group: 9, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d⁷ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1982' },
+            { num: 110, sym: 'Ds', name: 'Darmstadtium', mass: '(281)', group: 10, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d⁸ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1994' },
+            { num: 111, sym: 'Rg', name: 'Roentgenium', mass: '(282)', group: 11, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d⁹ 7s²', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: 'Unknown', year: '1994' },
+            { num: 112, sym: 'Cn', name: 'Copernicium', mass: '(285)', group: 12, period: 7, cat: 'transition metal', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s²', state: 'Gas', electro: 'Unknown', melt: 'Unknown', boil: '340', year: '1996' },
+            { num: 113, sym: 'Nh', name: 'Nihonium', mass: '(286)', group: 13, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹', state: 'Solid', electro: 'Unknown', melt: '700', boil: '1400', year: '2004' },
+            { num: 114, sym: 'Fl', name: 'Flerovium', mass: '(289)', group: 14, period: 7, cat: 'post-transition metal', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²', state: 'Solid', electro: 'Unknown', melt: '340', boil: '420', year: '1998' },
+            { num: 115, sym: 'Mc', name: 'Moscovium', mass: '(290)', group: 15, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³', state: 'Solid', electro: 'Unknown', melt: '670', boil: 'Unknown', year: '2003' },
+            { num: 116, sym: 'Lv', name: 'Livermorium', mass: '(293)', group: 16, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴', state: 'Solid', electro: 'Unknown', melt: '709', boil: '1085', year: '2000' },
+            { num: 117, sym: 'Ts', name: 'Tennessine', mass: '(294)', group: 17, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵', state: 'Solid', electro: 'Unknown', melt: '723', boil: '883', year: '2010' },
+            { num: 118, sym: 'Og', name: 'Oganesson', mass: '(294)', group: 18, period: 7, cat: 'unknown', elec: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶', state: 'Solid', electro: 'Unknown', melt: 'Unknown', boil: '350', year: '2002' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableContainer = document.getElementById('table');
+            const legendContainer = document.getElementById('legend');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const resetBtn = document.getElementById('resetBtn');
+            const modal = document.getElementById('elementModal');
+            const closeModalBtn = document.getElementById('closeModal');
+
+            // 1. Build Legend
+            categoriesList.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'legend-item';
+                div.innerHTML = `<div class="legend-color" style="background-color: ${cat.color}"></div>${cat.label}`;
+                div.addEventListener('click', () => {
+                    categoryFilter.value = cat.id;
+                    filterElements();
+                });
+                legendContainer.appendChild(div);
+            });
+
+            // 2. Build Grid Labels (Groups 1-18, Periods 1-7)
+            for (let i = 1; i <= 18; i++) {
+                const label = document.createElement('div');
+                label.className = 'grid-label group-label';
+                label.style.gridColumn = i + 1;
+                label.textContent = i;
+                tableContainer.appendChild(label);
+            }
+            for (let i = 1; i <= 7; i++) {
+                const label = document.createElement('div');
+                label.className = 'grid-label period-label';
+                label.style.gridRow = i + 1;
+                label.textContent = `PERIOD ${i}`;
+                tableContainer.appendChild(label);
+            }
+
+            // Add Placeholders for Lanthanides and Actinides in main grid
+            const laPlaceholder = document.createElement('div');
+            laPlaceholder.className = 'element placeholder';
+            laPlaceholder.style.gridColumn = '4'; // Group 3
+            laPlaceholder.style.gridRow = '7';    // Period 6
+            laPlaceholder.innerHTML = '<div class="el-symbol">57-71</div><div class="el-name">Lanthanides</div>';
+            tableContainer.appendChild(laPlaceholder);
+
+            const acPlaceholder = document.createElement('div');
+            acPlaceholder.className = 'element placeholder';
+            acPlaceholder.style.gridColumn = '4'; // Group 3
+            acPlaceholder.style.gridRow = '8';    // Period 7
+            acPlaceholder.innerHTML = '<div class="el-symbol">89-103</div><div class="el-name">Actinides</div>';
+            tableContainer.appendChild(acPlaceholder);
+
+            // 3. Render Elements
+            elementsData.forEach(el => {
+                const box = document.createElement('div');
+                const cssClass = CAT_MAP[el.cat] || 'cat-unknown';
+                box.className = `element ${cssClass}`;
+                box.dataset.num = el.num;
+                box.dataset.sym = el.sym.toLowerCase();
+                box.dataset.name = el.name.toLowerCase();
+                box.dataset.cat = cssClass;
+
+                // Position Logic
+                let col, row;
+                if (el.num >= 57 && el.num <= 71) {
+                    // Lanthanides row 9
+                    col = (el.num - 57) + 4; // Start at col 4
+                    row = 10; // 1 for group labels, 7 for periods, 1 for gap = 9 + 1
+                } else if (el.num >= 89 && el.num <= 103) {
+                    // Actinides row 10
+                    col = (el.num - 89) + 4;
+                    row = 11;
+                } else {
+                    col = el.group + 1; // +1 for period label column
+                    row = el.period + 1; // +1 for group label row
+                }
+
+                box.style.gridColumn = col;
+                box.style.gridRow = row;
+
+                box.innerHTML = `
+                    <div class="el-top">
+                        <span class="el-num">${el.num}</span>
+                        <span class="el-mass">${el.mass}</span>
+                    </div>
+                    <div class="el-symbol">${el.sym}</div>
+                    <div class="el-name">${el.name}</div>
+                `;
+
+                box.addEventListener('click', () => openModal(el, cssClass));
+                tableContainer.appendChild(box);
+            });
+
+            // 4. Search and Filter Logic
+            function filterElements() {
+                const term = searchInput.value.toLowerCase();
+                const cat = categoryFilter.value;
+                const elements = document.querySelectorAll('.element:not(.placeholder)');
+
+                elements.forEach(el => {
+                    const matchSearch = el.dataset.name.includes(term) || el.dataset.sym.includes(term) || el.dataset.num === term;
+                    const matchCat = cat === 'all' || el.dataset.cat === cat;
+
+                    if (matchSearch && matchCat) {
+                        el.classList.remove('dimmed');
+                    } else {
+                        el.classList.add('dimmed');
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', filterElements);
+            categoryFilter.addEventListener('change', filterElements);
+            
+            resetBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                categoryFilter.value = 'all';
+                filterElements();
+            });
+
+            // 5. Modal Logic
+            function openModal(el, cssClass) {
+                // Update Modal Colors based on category
+                const header = document.getElementById('modalHeader');
+                const bgColor = getComputedStyle(document.documentElement).getPropertyValue(`--${cssClass}`).trim();
+                header.style.backgroundColor = bgColor;
+
+                // Special case for light text on light backgrounds
+                if (cssClass === 'cat-halogen' || cssClass === 'cat-lanthanide') {
+                    header.style.color = 'var(--text-main)';
+                    document.getElementById('closeModal').style.color = 'var(--text-main)';
+                    document.getElementById('modalSymbol').style.textShadow = 'none';
+                } else {
+                    header.style.color = 'var(--white)';
+                    document.getElementById('closeModal').style.color = 'white';
+                    document.getElementById('modalSymbol').style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
+                }
+
+                document.getElementById('modalSymbol').textContent = el.sym;
+                document.getElementById('modalName').textContent = el.name;
+                document.getElementById('modalCategory').textContent = el.cat;
+                
+                document.getElementById('modalNum').textContent = el.num;
+                document.getElementById('modalMass').textContent = el.mass + ' u';
+                document.getElementById('modalGroupPeriod').textContent = (el.group || 'N/A') + ' / ' + el.period;
+                document.getElementById('modalConfig').textContent = el.elec;
+                document.getElementById('modalState').textContent = el.state;
+                document.getElementById('modalElectro').textContent = el.electro;
+                document.getElementById('modalMelt').textContent = el.melt !== 'Unknown' ? el.melt + ' K' : 'Unknown';
+                document.getElementById('modalBoil').textContent = el.boil !== 'Unknown' ? el.boil + ' K' : 'Unknown';
+                document.getElementById('modalDiscover').textContent = el.year;
+
+                modal.classList.add('active');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+        });
+    </script>
+</body>
+</html>
