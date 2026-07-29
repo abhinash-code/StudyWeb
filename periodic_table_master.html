@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Periodic Table Master</title>
+    <meta name="description" content="Master the Periodic Table for JEE, NEET & Board Exams through Interactive Learning and Unlimited Practice.">
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            /* Colors - Dark Theme (Premium Slate/Neon) */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-primary: #3b82f6;
+            --accent-secondary: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            
+            /* Periodic Table Element Categories */
+            --cat-alkali: #ff595e;
+            --cat-alkaline: #ff924c;
+            --cat-transition: #ffca3a;
+            --cat-post-transition: #8ac926;
+            --cat-metalloid: #52a675;
+            --cat-nonmetal: #1982c4;
+            --cat-halogen: #4267ac;
+            --cat-noble: #6a4c93;
+            --cat-lanthanide: #b56576;
+            --cat-actinide: #e56b6f;
+            --cat-unknown: #475569;
+
+            /* UI Elements */
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            
+            /* Typography */
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Spacing & Layout */
+            --navbar-height: 70px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            /* Transitions */
+            --trans-fast: 0.2s ease;
+            --trans-med: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --card-border: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==========================================================================
+           RESET & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--trans-med), color var(--trans-med);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.2;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        button, input, select {
+            font-family: inherit;
+            outline: none;
+            border: none;
+        }
+
+        button {
+            cursor: pointer;
+            transition: all var(--trans-fast);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           UTILITIES & ANIMATIONS
+           ========================================================================== */
+        .hidden { display: none !important; }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-fade { animation: fadeIn 0.4s ease forwards; }
+
+        /* ==========================================================================
+           LAYOUT & COMPONENTS
+           ========================================================================== */
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .logo-area svg {
+            width: 32px;
+            height: 32px;
+            fill: url(#gradientPrimary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .icon-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            margin-top: var(--navbar-height);
+            padding: 2rem;
+            width: 100%;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Home Section */
+        #home-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 3rem;
+            padding-top: 4rem;
+        }
+        
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .action-card {
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--trans-med), box-shadow var(--trans-med);
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+        }
+
+        .action-card.learn-card::before { background: var(--accent-primary); }
+        .action-card.practice-card::before { background: var(--success); }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .learn-card .card-icon { background: rgba(59, 130, 246, 0.2); color: var(--accent-primary); }
+        .practice-card .card-icon { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .card-icon svg { width: 32px; height: 32px; }
+
+        .action-card h3 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .action-card p { color: var(--text-secondary); font-size: 1rem; }
+
+        /* ==========================================================================
+           PERIODIC TABLE (LEARN & PRACTICE)
+           ========================================================================== */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-primary);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem;
+            flex: 1;
+            max-width: 400px;
+        }
+        .search-box input {
+            background: transparent;
+            color: var(--text-primary);
+            width: 100%;
+            padding-left: 8px;
+            font-size: 1rem;
+        }
+        
+        .filter-select {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* The Grid Container */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 2rem;
+            /* Allow touch pan/zoom */
+            touch-action: pan-x pan-y pinch-zoom;
+        }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, minmax(60px, 1fr));
+            grid-template-rows: repeat(10, minmax(65px, auto));
+            gap: 6px;
+            min-width: 1100px; /* Force minimum width for correct layout */
+            margin: 0 auto;
+        }
+
+        .element-cell {
+            border-radius: 6px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s, opacity 0.3s;
+            background-color: var(--bg-tertiary); /* Default */
+            border: 1px solid rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        .element-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .el-num {
+            font-size: 0.7rem;
+            align-self: flex-start;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .el-sym {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: -2px 0;
+        }
+
+        .el-name {
+            font-size: 0.55rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        
+        .el-mass {
+            font-size: 0.5rem;
+            opacity: 0.6;
+        }
+
+        /* Color Categories */
+        .cat-0 { background: linear-gradient(135deg, rgba(255,89,94,0.2), rgba(255,89,94,0.8)); color: #fff; }
+        .cat-1 { background: linear-gradient(135deg, rgba(255,146,76,0.2), rgba(255,146,76,0.8)); color: #fff; }
+        .cat-2 { background: linear-gradient(135deg, rgba(255,202,58,0.2), rgba(255,202,58,0.8)); color: #000; }
+        .cat-3 { background: linear-gradient(135deg, rgba(138,201,38,0.2), rgba(138,201,38,0.8)); color: #fff; }
+        .cat-4 { background: linear-gradient(135deg, rgba(82,166,117,0.2), rgba(82,166,117,0.8)); color: #fff; }
+        .cat-5 { background: linear-gradient(135deg, rgba(25,130,196,0.2), rgba(25,130,196,0.8)); color: #fff; }
+        .cat-6 { background: linear-gradient(135deg, rgba(66,103,172,0.2), rgba(66,103,172,0.8)); color: #fff; }
+        .cat-7 { background: linear-gradient(135deg, rgba(106,76,147,0.2), rgba(106,76,147,0.8)); color: #fff; }
+        .cat-8 { background: linear-gradient(135deg, rgba(181,101,118,0.2), rgba(181,101,118,0.8)); color: #fff; }
+        .cat-9 { background: linear-gradient(135deg, rgba(229,107,111,0.2), rgba(229,107,111,0.8)); color: #fff; }
+
+        .faded { opacity: 0.1; pointer-events: none; }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--glass-bg);
+            border-radius: var(--radius-md);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Practice Inputs inside grid */
+        .practice-cell {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--card-border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            position: relative;
+        }
+        
+        .practice-input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: var(--text-primary);
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        .practice-input:focus {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Input states */
+        .cell-correct { border-color: var(--success); background: rgba(16, 185, 129, 0.2); }
+        .cell-wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.2); }
+        .cell-skipped { border-color: var(--warning); background: rgba(245, 158, 11, 0.2); }
+        .cell-hidden { opacity: 0; pointer-events: none; }
+        .cell-disabled { background: var(--bg-tertiary); opacity: 0.5; }
+
+        /* ==========================================================================
+           MODALS & POPUPS
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--trans-med);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .element-modal {
+            background: var(--bg-secondary);
+            width: 90%;
+            max-width: 450px;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform var(--trans-med);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .modal-overlay.active .element-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            font-size: 1.5rem;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .modal-symbol-box {
+            width: 80px; height: 80px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+        .modal-symbol-box .m-num { font-size: 1rem; opacity: 0.8; }
+        .modal-symbol-box .m-sym { font-size: 2.5rem; line-height: 1; }
+
+        .modal-title h2 { font-size: 1.8rem; margin-bottom: 4px; }
+        .modal-title p { color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-box {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+        }
+        .stat-box label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-box div { font-size: 1rem; font-weight: 600; }
+
+        .modal-note {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           PRACTICE SETUP & RESULTS UI
+           ========================================================================== */
+        .practice-setup {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .mode-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--trans-fast);
+        }
+        .mode-card:hover, .mode-card.selected {
+            border-color: var(--accent-primary);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-3px);
+        }
+        .mode-card h4 { margin-bottom: 0.5rem; }
+        .mode-card p { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+        }
+        .btn-secondary:hover { background: var(--text-muted); }
+
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--glass-bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            position: sticky;
+            top: var(--navbar-height);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .timer-box { font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+        .progress-box { display: flex; align-items: center; gap: 1rem; flex: 1; margin: 0 2rem; }
+        .progress-bar { height: 8px; flex: 1; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s; }
+
+        /* Results Screen */
+        .results-container { text-align: center; max-width: 800px; margin: 0 auto; }
+        .score-circle {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 10px solid var(--bg-tertiary);
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .score-circle span { font-size: 2.5rem; font-weight: 800; line-height: 1; }
+        .score-circle label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+        }
+        .stat-card.c-correct { border-bottom: 4px solid var(--success); }
+        .stat-card.c-wrong { border-bottom: 4px solid var(--danger); }
+        .stat-card.c-skipped { border-bottom: 4px solid var(--warning); }
+        .stat-card.c-time { border-bottom: 4px solid var(--accent-primary); }
+
+        .stat-card h3 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-card p { font-size: 0.9rem; color: var(--text-secondary); }
+
+        /* ==========================================================================
+           ANALYTICS SECTION
+           ========================================================================== */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .a-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+        }
+        
+        .a-card h3 {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;
+            font-size: 1.25rem; color: var(--accent-primary);
+        }
+
+        .weak-list { list-style: none; }
+        .weak-list li {
+            display: flex; justify-content: space-between;
+            padding: 0.75rem 0; border-bottom: 1px solid var(--card-border);
+        }
+        .weak-list li:last-child { border: none; }
+        
+        /* ==========================================================================
+           TOAST NOTIFICATIONS
+           ========================================================================== */
+        #toast-container {
+            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            background: var(--bg-secondary); border-left: 4px solid var(--accent-primary);
+            color: var(--text-primary); padding: 1rem 1.5rem; border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s forwards;
+        }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(20px); } }
+
+        /* ==========================================================================
+           MOBILE RESPONSIVENESS
+           ========================================================================== */
+        .mobile-menu-btn { display: none; }
+
+        @media (max-width: 768px) {
+            header { padding: 0 1rem; }
+            .nav-links {
+                position: fixed; top: var(--navbar-height); left: 0; right: 0;
+                background: var(--bg-secondary); flex-direction: column; padding: 2rem;
+                gap: 1.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                transform: translateY(-150%); transition: transform 0.3s ease;
+                border-bottom: 1px solid var(--card-border);
+            }
+            .nav-links.show { transform: translateY(0); }
+            .mobile-menu-btn { display: block; }
+            
+            main { padding: 1rem; margin-top: calc(var(--navbar-height) - 10px); }
+            .hero-text h1 { font-size: 2.5rem; }
+            .action-cards { grid-template-columns: 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: 100%; }
+            .practice-header { flex-direction: column; gap: 1rem; position: static; }
+            .progress-box { margin: 0; width: 100%; }
+            
+            /* Periodic table scaling for extremely small screens */
+            .element-cell { min-width: 50px; min-height: 55px; padding: 2px; }
+            .el-sym { font-size: 1rem; }
+            .el-name { display: none; } /* Hide names on mobile table view to save space */
+        }
+        
+        /* Loading Screen */
+        #loader {
+            position: fixed; inset: 0; background: var(--bg-primary); z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--bg-tertiary); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions for Gradients -->
+    <svg width="0" height="0" class="hidden">
+        <defs>
+            <linearGradient id="gradientPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="100%" stop-color="#6366f1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <h2 style="margin-top: 20px; background: linear-gradient(135deg, #3b82f6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Loading Elements...</h2>
+    </div>
+
+    <!-- HEADER -->
+    <header class="glass-panel">
+        <div class="logo-area" onclick="App.navigate('home')">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg>
+            Periodic Master
+        </div>
+        
+        <button class="icon-btn mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+
+        <div class="nav-links">
+            <button class="nav-btn active" data-nav="home" onclick="App.navigate('home')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </button>
+            <button class="nav-btn" data-nav="learn" onclick="App.navigate('learn')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Learn Table
+            </button>
+            <button class="nav-btn" data-nav="practice" onclick="App.navigate('practice')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Practice
+            </button>
+            <button class="nav-btn" data-nav="analytics" onclick="App.navigate('analytics')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                Analytics
+            </button>
+            <button class="icon-btn" onclick="App.toggleTheme()" title="Toggle Theme" id="theme-toggle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HOME SECTION -->
+        <section id="home-section" class="animate-fade">
+            <div class="hero-text">
+                <h1>Master the Elements</h1>
+                <p>The ultimate offline platform for JEE, NEET & Board Exam students to learn and memorize the periodic table through interactive practice.</p>
+            </div>
+            
+            <div class="action-cards">
+                <div class="action-card learn-card glass-panel" onclick="App.navigate('learn')">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h3>Learn Table</h3>
+                    <p>Explore all 118 elements with detailed information, scientifically accurate positions, and intelligent filtering.</p>
+                </div>
+                
+                <div class="action-card practice-card glass-panel" onclick="App.navigate('practice')">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h3>Practice Tests</h3>
+                    <p>Test your memory with 13 different modes including block-wise, random elements, and full table challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARN SECTION -->
+        <section id="learn-section" class="hidden">
+            <div class="toolbar glass-panel">
+                <div class="search-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="learn-search" placeholder="Search by name, symbol, or atomic number..." onkeyup="App.Learn.handleSearch()">
+                </div>
+                <select id="learn-filter" class="filter-select" onchange="App.Learn.handleFilter()">
+                    <option value="all">All Elements</option>
+                    <option value="0">Alkali Metals</option>
+                    <option value="1">Alkaline Earth Metals</option>
+                    <option value="2">Transition Metals</option>
+                    <option value="3">Post-Transition Metals</option>
+                    <option value="4">Metalloids</option>
+                    <option value="5">Nonmetals</option>
+                    <option value="6">Halogens</option>
+                    <option value="7">Noble Gases</option>
+                    <option value="8">Lanthanides</option>
+                    <option value="9">Actinides</option>
+                </select>
+            </div>
+            
+            <div class="table-wrapper">
+                <div id="learn-table" class="periodic-table">
+                    <!-- Elements dynamically injected here -->
+                </div>
+            </div>
+            
+            <div class="legend" id="learn-legend">
+                <!-- Legend dynamically injected -->
+            </div>
+        </section>
+
+        <!-- PRACTICE SECTION -->
+        <section id="practice-section" class="hidden">
+            
+            <!-- Setup View -->
+            <div id="practice-setup-view" class="practice-setup animate-fade">
+                <h2 style="text-align:center; font-size:2rem; margin-bottom:1rem;">Configure Your Test</h2>
+                <p style="text-align:center; color:var(--text-secondary);">Select a mode to begin practicing. Answers accept either Symbol or Element Name.</p>
+                
+                <div class="mode-grid" id="mode-grid">
+                    <!-- Modes generated by JS -->
+                </div>
+                
+                <div style="text-align:center; margin-top:2rem;">
+                    <button class="btn-primary" onclick="App.Practice.start()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Start Practice
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Test View -->
+            <div id="practice-active-view" class="hidden">
+                <div class="practice-header">
+                    <div>
+                        <span style="font-size:0.9rem; color:var(--text-secondary); display:block;" id="practice-mode-title">Mode: Full Table</span>
+                        <span style="font-weight:700;"><span id="filled-count">0</span> / <span id="total-target-count">118</span></span>
+                    </div>
+                    <div class="progress-box">
+                        <div class="progress-bar"><div class="progress-fill" id="test-progress"></div></div>
+                    </div>
+                    <div class="timer-box" id="test-timer">00:00</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <div id="practice-table" class="periodic-table">
+                        <!-- Grid injected here -->
+                    </div>
+                </div>
+                
+                <div style="display:flex; justify-content:center; gap:1rem; margin-top:2rem;">
+                    <button class="btn-secondary" onclick="App.Practice.confirmReset()">Reset</button>
+                    <button class="btn-primary" onclick="App.Practice.submitTest()">Submit Test</button>
+                </div>
+            </div>
+
+            <!-- Results View -->
+            <div id="practice-result-view" class="results-container hidden animate-fade">
+                <h2 style="font-size:2.5rem; margin-bottom: 2rem;" id="result-title">Great Job!</h2>
+                
+                <div class="score-circle">
+                    <span id="res-accuracy">0%</span>
+                    <label>Accuracy</label>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card c-time">
+                        <h3 id="res-time">00:00</h3>
+                        <p>Time Taken</p>
+                    </div>
+                    <div class="stat-card c-correct">
+                        <h3 id="res-correct">0</h3>
+                        <p>Correct</p>
+                    </div>
+                    <div class="stat-card c-wrong">
+                        <h3 id="res-wrong">0</h3>
+                        <p>Wrong</p>
+                    </div>
+                    <div class="stat-card c-skipped">
+                        <h3 id="res-skipped">0</h3>
+                        <p>Skipped</p>
+                    </div>
+                </div>
+                
+                <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2rem;">
+                    <button class="btn-secondary" onclick="App.Practice.viewBoard()">Review Board</button>
+                    <button class="btn-primary" onclick="App.Practice.restartSame()">Retry Same Mode</button>
+                    <button class="btn-secondary" onclick="App.Practice.backToSetup()">Change Mode</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ANALYTICS SECTION -->
+        <section id="analytics-section" class="hidden">
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Your Performance Dashboard</h2>
+            
+            <div class="analytics-grid">
+                <div class="a-card glass-panel">
+                    <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M5 17l4-5 4 3 6-8"/></svg> Overall Stats</h3>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                        <div>
+                            <div style="font-size:0.8rem; color:var(--text-secondary);">Total Tests</div>
+                            <div style="font-size:1.5rem; font-weight:bold;" id="stat-total-tests">0</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.8rem; color:var(--text-secondary);">Avg Accuracy</div>
+                            <div style="font-size:1.5rem; font-weight:bold;" id="stat-avg-acc">0%</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.8rem; color:var(--text-secondary);">Best Score</div>
+                            <div style="font-size:1.5rem; font-weight:bold;" id="stat-best-score">0/0</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.8rem; color:var(--text-secondary);">Elements Mastered</div>
+                            <div style="font-size:1.5rem; font-weight:bold;" id="stat-mastered">0/118</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="a-card glass-panel">
+                    <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Needs Improvement</h3>
+                    <p style="font-size: 0.9rem; color:var(--text-secondary); margin-bottom: 1rem;">Frequently answered incorrectly.</p>
+                    <ul class="weak-list" id="weak-elements-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL OVERLAY -->
+    <div class="modal-overlay" id="modal-overlay" onclick="App.UI.closeModal(event)">
+        <div class="element-modal" id="element-modal">
+            <button class="close-modal" onclick="App.UI.closeModal(event, true)">&times;</button>
+            <div class="modal-header">
+                <div class="modal-symbol-box cat-0" id="m-box">
+                    <span class="m-num" id="m-num">1</span>
+                    <span class="m-sym" id="m-sym">H</span>
+                </div>
+                <div class="modal-title">
+                    <h2 id="m-name">Hydrogen</h2>
+                    <p id="m-cat">Nonmetal</p>
+                </div>
+            </div>
+            <div class="modal-grid">
+                <div class="stat-box"><label>Atomic Number</label><div id="m-atomic-num">1</div></div>
+                <div class="stat-box"><label>Atomic Mass</label><div id="m-mass">1.008 u</div></div>
+                <div class="stat-box"><label>Group | Period</label><div id="m-pos">1 | 1</div></div>
+                <div class="stat-box"><label>Block</label><div id="m-block">s-block</div></div>
+                <div class="stat-box"><label>Electron Config</label><div id="m-config" style="font-family:monospace;">1s¹</div></div>
+                <div class="stat-box"><label>State at 20°C</label><div id="m-state">Gas</div></div>
+            </div>
+            <div class="modal-note" id="m-note">
+                Lightest and most abundant element in the universe.
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <script>
+        /**
+         * ==========================================================================
+         * PERIODIC TABLE DATA
+         * Contains scientifically accurate properties for all 118 elements.
+         * Categories: 0=Alkali, 1=Alkaline, 2=Transition, 3=Post-Transition, 4=Metalloid, 
+         * 5=Nonmetal, 6=Halogen, 7=Noble Gas, 8=Lanthanide, 9=Actinide, 10=Unknown
+         * Rows & Cols map to standard 18-col grid + 2 rows below.
+         * ==========================================================================
+         */
+        const E_DATA = [
+            {n:1, s:'H', nm:'Hydrogen', c:5, g:1, p:1, b:'s', m:'1.008', cf:'1s¹', st:'Gas', r:1, cl:1, nt:'Lightest and most abundant element.'},
+            {n:2, s:'He', nm:'Helium', c:7, g:18, p:1, b:'s', m:'4.0026', cf:'1s²', st:'Gas', r:1, cl:18, nt:'Second lightest element, noble gas.'},
+            {n:3, s:'Li', nm:'Lithium', c:0, g:1, p:2, b:'s', m:'6.94', cf:'[He] 2s¹', st:'Solid', r:2, cl:1, nt:'Lightest metal, used in batteries.'},
+            {n:4, s:'Be', nm:'Beryllium', c:1, g:2, p:2, b:'s', m:'9.0122', cf:'[He] 2s²', st:'Solid', r:2, cl:2, nt:'Strong, lightweight, toxic.'},
+            {n:5, s:'B', nm:'Boron', c:4, g:13, p:2, b:'p', m:'10.81', cf:'[He] 2s² 2p¹', st:'Solid', r:2, cl:13, nt:'Used in heat-resistant glass.'},
+            {n:6, s:'C', nm:'Carbon', c:5, g:14, p:2, b:'p', m:'12.011', cf:'[He] 2s² 2p²', st:'Solid', r:2, cl:14, nt:'Basis of all known life.'},
+            {n:7, s:'N', nm:'Nitrogen', c:5, g:15, p:2, b:'p', m:'14.007', cf:'[He] 2s² 2p³', st:'Gas', r:2, cl:15, nt:'Makes up 78% of Earth\'s atmosphere.'},
+            {n:8, s:'O', nm:'Oxygen', c:5, g:16, p:2, b:'p', m:'15.999', cf:'[He] 2s² 2p⁴', st:'Gas', r:2, cl:16, nt:'Essential for respiration.'},
+            {n:9, s:'F', nm:'Fluorine', c:6, g:17, p:2, b:'p', m:'18.998', cf:'[He] 2s² 2p⁵', st:'Gas', r:2, cl:17, nt:'Most electronegative element.'},
+            {n:10, s:'Ne', nm:'Neon', c:7, g:18, p:2, b:'p', m:'20.180', cf:'[He] 2s² 2p⁶', st:'Gas', r:2, cl:18, nt:'Used in glowing signs.'},
+            {n:11, s:'Na', nm:'Sodium', c:0, g:1, p:3, b:'s', m:'22.990', cf:'[Ne] 3s¹', st:'Solid', r:3, cl:1, nt:'Highly reactive metal.'},
+            {n:12, s:'Mg', nm:'Magnesium', c:1, g:2, p:3, b:'s', m:'24.305', cf:'[Ne] 3s²', st:'Solid', r:3, cl:2, nt:'Burns with a bright white light.'},
+            {n:13, s:'Al', nm:'Aluminum', c:3, g:13, p:3, b:'p', m:'26.982', cf:'[Ne] 3s² 3p¹', st:'Solid', r:3, cl:13, nt:'Most abundant metal in Earth\'s crust.'},
+            {n:14, s:'Si', nm:'Silicon', c:4, g:14, p:3, b:'p', m:'28.085', cf:'[Ne] 3s² 3p²', st:'Solid', r:3, cl:14, nt:'Crucial for semiconductors.'},
+            {n:15, s:'P', nm:'Phosphorus', c:5, g:15, p:3, b:'p', m:'30.974', cf:'[Ne] 3s² 3p³', st:'Solid', r:3, cl:15, nt:'Essential for DNA and ATP.'},
+            {n:16, s:'S', nm:'Sulfur', c:5, g:16, p:3, b:'p', m:'32.06', cf:'[Ne] 3s² 3p⁴', st:'Solid', r:3, cl:16, nt:'Known since antiquity as brimstone.'},
+            {n:17, s:'Cl', nm:'Chlorine', c:6, g:17, p:3, b:'p', m:'35.45', cf:'[Ne] 3s² 3p⁵', st:'Gas', r:3, cl:17, nt:'Used in water purification.'},
+            {n:18, s:'Ar', nm:'Argon', c:7, g:18, p:3, b:'p', m:'39.95', cf:'[Ne] 3s² 3p⁶', st:'Gas', r:3, cl:18, nt:'Most abundant noble gas on Earth.'},
+            {n:19, s:'K', nm:'Potassium', c:0, g:1, p:4, b:'s', m:'39.098', cf:'[Ar] 4s¹', st:'Solid', r:4, cl:1, nt:'Essential mineral for nerve function.'},
+            {n:20, s:'Ca', nm:'Calcium', c:1, g:2, p:4, b:'s', m:'40.078', cf:'[Ar] 4s²', st:'Solid', r:4, cl:2, nt:'Crucial for bones and teeth.'},
+            {n:21, s:'Sc', nm:'Scandium', c:2, g:3, p:4, b:'d', m:'44.956', cf:'[Ar] 3d¹ 4s²', st:'Solid', r:4, cl:3, nt:'Used in aerospace components.'},
+            {n:22, s:'Ti', nm:'Titanium', c:2, g:4, p:4, b:'d', m:'47.867', cf:'[Ar] 3d² 4s²', st:'Solid', r:4, cl:4, nt:'High strength-to-weight ratio.'},
+            {n:23, s:'V', nm:'Vanadium', c:2, g:5, p:4, b:'d', m:'50.942', cf:'[Ar] 3d³ 4s²', st:'Solid', r:4, cl:5, nt:'Used to strengthen steel.'},
+            {n:24, s:'Cr', nm:'Chromium', c:2, g:6, p:4, b:'d', m:'51.996', cf:'[Ar] 3d⁵ 4s¹', st:'Solid', r:4, cl:6, nt:'Provides corrosion resistance.'},
+            {n:25, s:'Mn', nm:'Manganese', c:2, g:7, p:4, b:'d', m:'54.938', cf:'[Ar] 3d⁵ 4s²', st:'Solid', r:4, cl:7, nt:'Essential for steel production.'},
+            {n:26, s:'Fe', nm:'Iron', c:2, g:8, p:4, b:'d', m:'55.845', cf:'[Ar] 3d⁶ 4s²', st:'Solid', r:4, cl:8, nt:'Core component of Earth.'},
+            {n:27, s:'Co', nm:'Cobalt', c:2, g:9, p:4, b:'d', m:'58.933', cf:'[Ar] 3d⁷ 4s²', st:'Solid', r:4, cl:9, nt:'Used in magnetic alloys.'},
+            {n:28, s:'Ni', nm:'Nickel', c:2, g:10, p:4, b:'d', m:'58.693', cf:'[Ar] 3d⁸ 4s²', st:'Solid', r:4, cl:10, nt:'Used in stainless steel.'},
+            {n:29, s:'Cu', nm:'Copper', c:2, g:11, p:4, b:'d', m:'63.546', cf:'[Ar] 3d¹⁰ 4s¹', st:'Solid', r:4, cl:11, nt:'Excellent electrical conductor.'},
+            {n:30, s:'Zn', nm:'Zinc', c:2, g:12, p:4, b:'d', m:'65.38', cf:'[Ar] 3d¹⁰ 4s²', st:'Solid', r:4, cl:12, nt:'Used for galvanizing iron.'},
+            {n:31, s:'Ga', nm:'Gallium', c:3, g:13, p:4, b:'p', m:'69.723', cf:'[Ar] 3d¹⁰ 4s² 4p¹', st:'Solid', r:4, cl:13, nt:'Melts in your hand.'},
+            {n:32, s:'Ge', nm:'Germanium', c:4, g:14, p:4, b:'p', m:'72.630', cf:'[Ar] 3d¹⁰ 4s² 4p²', st:'Solid', r:4, cl:14, nt:'Important semiconductor.'},
+            {n:33, s:'As', nm:'Arsenic', c:4, g:15, p:4, b:'p', m:'74.922', cf:'[Ar] 3d¹⁰ 4s² 4p³', st:'Solid', r:4, cl:15, nt:'Well known toxic element.'},
+            {n:34, s:'Se', nm:'Selenium', c:5, g:16, p:4, b:'p', m:'78.971', cf:'[Ar] 3d¹⁰ 4s² 4p⁴', st:'Solid', r:4, cl:16, nt:'Used in photoelectric cells.'},
+            {n:35, s:'Br', nm:'Bromine', c:6, g:17, p:4, b:'p', m:'79.904', cf:'[Ar] 3d¹⁰ 4s² 4p⁵', st:'Liquid', r:4, cl:17, nt:'Only nonmetal liquid at room temp.'},
+            {n:36, s:'Kr', nm:'Krypton', c:7, g:18, p:4, b:'p', m:'83.798', cf:'[Ar] 3d¹⁰ 4s² 4p⁶', st:'Gas', r:4, cl:18, nt:'Used in fluorescent lamps.'},
+            {n:37, s:'Rb', nm:'Rubidium', c:0, g:1, p:5, b:'s', m:'85.468', cf:'[Kr] 5s¹', st:'Solid', r:5, cl:1, nt:'Highly reactive, soft metal.'},
+            {n:38, s:'Sr', nm:'Strontium', c:1, g:2, p:5, b:'s', m:'87.62', cf:'[Kr] 5s²', st:'Solid', r:5, cl:2, nt:'Used in red fireworks.'},
+            {n:39, s:'Y', nm:'Yttrium', c:2, g:3, p:5, b:'d', m:'88.906', cf:'[Kr] 4d¹ 5s²', st:'Solid', r:5, cl:3, nt:'Used in LEDs and phosphors.'},
+            {n:40, s:'Zr', nm:'Zirconium', c:2, g:4, p:5, b:'d', m:'91.224', cf:'[Kr] 4d² 5s²', st:'Solid', r:5, cl:4, nt:'Highly resistant to corrosion.'},
+            {n:41, s:'Nb', nm:'Niobium', c:2, g:5, p:5, b:'d', m:'92.906', cf:'[Kr] 4d⁴ 5s¹', st:'Solid', r:5, cl:5, nt:'Used in superconducting alloys.'},
+            {n:42, s:'Mo', nm:'Molybdenum', c:2, g:6, p:5, b:'d', m:'95.95', cf:'[Kr] 4d⁵ 5s¹', st:'Solid', r:5, cl:6, nt:'Essential trace mineral.'},
+            {n:43, s:'Tc', nm:'Technetium', c:2, g:7, p:5, b:'d', m:'(98)', cf:'[Kr] 4d⁵ 5s²', st:'Solid', r:5, cl:7, nt:'First artificially produced element.'},
+            {n:44, s:'Ru', nm:'Ruthenium', c:2, g:8, p:5, b:'d', m:'101.07', cf:'[Kr] 4d⁷ 5s¹', st:'Solid', r:5, cl:8, nt:'Used in electrical contacts.'},
+            {n:45, s:'Rh', nm:'Rhodium', c:2, g:9, p:5, b:'d', m:'102.91', cf:'[Kr] 4d⁸ 5s¹', st:'Solid', r:5, cl:9, nt:'One of the rarest, most valuable metals.'},
+            {n:46, s:'Pd', nm:'Palladium', c:2, g:10, p:5, b:'d', m:'106.42', cf:'[Kr] 4d¹⁰', st:'Solid', r:5, cl:10, nt:'Used in catalytic converters.'},
+            {n:47, s:'Ag', nm:'Silver', c:2, g:11, p:5, b:'d', m:'107.87', cf:'[Kr] 4d¹⁰ 5s¹', st:'Solid', r:5, cl:11, nt:'Highest electrical conductivity.'},
+            {n:48, s:'Cd', nm:'Cadmium', c:2, g:12, p:5, b:'d', m:'112.41', cf:'[Kr] 4d¹⁰ 5s²', st:'Solid', r:5, cl:12, nt:'Toxic metal used in batteries.'},
+            {n:49, s:'In', nm:'Indium', c:3, g:13, p:5, b:'p', m:'114.82', cf:'[Kr] 4d¹⁰ 5s² 5p¹', st:'Solid', r:5, cl:13, nt:'Used in touch screens (ITO).'},
+            {n:50, s:'Sn', nm:'Tin', c:3, g:14, p:5, b:'p', m:'118.71', cf:'[Kr] 4d¹⁰ 5s² 5p²', st:'Solid', r:5, cl:14, nt:'Alloyed with copper to make bronze.'},
+            {n:51, s:'Sb', nm:'Antimony', c:4, g:15, p:5, b:'p', m:'121.76', cf:'[Kr] 4d¹⁰ 5s² 5p³', st:'Solid', r:5, cl:15, nt:'Used in flame retardants.'},
+            {n:52, s:'Te', nm:'Tellurium', c:4, g:16, p:5, b:'p', m:'127.60', cf:'[Kr] 4d¹⁰ 5s² 5p⁴', st:'Solid', r:5, cl:16, nt:'Used in solar panels.'},
+            {n:53, s:'I', nm:'Iodine', c:6, g:17, p:5, b:'p', m:'126.90', cf:'[Kr] 4d¹⁰ 5s² 5p⁵', st:'Solid', r:5, cl:17, nt:'Essential for thyroid function.'},
+            {n:54, s:'Xe', nm:'Xenon', c:7, g:18, p:5, b:'p', m:'131.29', cf:'[Kr] 4d¹⁰ 5s² 5p⁶', st:'Gas', r:5, cl:18, nt:'Used in high-intensity lamps.'},
+            {n:55, s:'Cs', nm:'Cesium', c:0, g:1, p:6, b:'s', m:'132.91', cf:'[Xe] 6s¹', st:'Solid', r:6, cl:1, nt:'Used in highly accurate atomic clocks.'},
+            {n:56, s:'Ba', nm:'Barium', c:1, g:2, p:6, b:'s', m:'137.33', cf:'[Xe] 6s²', st:'Solid', r:6, cl:2, nt:'Used as an X-ray radiocontrast agent.'},
+            /* Lanthanide Marker - Placeholder logically, but data mapped to rows below */
+            {n:57, s:'La', nm:'Lanthanum', c:8, g:3, p:6, b:'f', m:'138.91', cf:'[Xe] 5d¹ 6s²', st:'Solid', r:9, cl:4, nt:'First element of the lanthanide series.'},
+            {n:58, s:'Ce', nm:'Cerium', c:8, g:null, p:6, b:'f', m:'140.12', cf:'[Xe] 4f¹ 5d¹ 6s²', st:'Solid', r:9, cl:5, nt:'Most abundant of rare earth metals.'},
+            {n:59, s:'Pr', nm:'Praseodymium', c:8, g:null, p:6, b:'f', m:'140.91', cf:'[Xe] 4f³ 6s²', st:'Solid', r:9, cl:6, nt:'Used in aircraft engines.'},
+            {n:60, s:'Nd', nm:'Neodymium', c:8, g:null, p:6, b:'f', m:'144.24', cf:'[Xe] 4f⁴ 6s²', st:'Solid', r:9, cl:7, nt:'Creates very strong permanent magnets.'},
+            {n:61, s:'Pm', nm:'Promethium', c:8, g:null, p:6, b:'f', m:'(145)', cf:'[Xe] 4f⁵ 6s²', st:'Solid', r:9, cl:8, nt:'All isotopes are radioactive.'},
+            {n:62, s:'Sm', nm:'Samarium', c:8, g:null, p:6, b:'f', m:'150.36', cf:'[Xe] 4f⁶ 6s²', st:'Solid', r:9, cl:9, nt:'Used in cancer treatment.'},
+            {n:63, s:'Eu', nm:'Europium', c:8, g:null, p:6, b:'f', m:'151.96', cf:'[Xe] 4f⁷ 6s²', st:'Solid', r:9, cl:10, nt:'Used as a red phosphor in displays.'},
+            {n:64, s:'Gd', nm:'Gadolinium', c:8, g:null, p:6, b:'f', m:'157.25', cf:'[Xe] 4f⁷ 5d¹ 6s²', st:'Solid', r:9, cl:11, nt:'Used in MRI contrast agents.'},
+            {n:65, s:'Tb', nm:'Terbium', c:8, g:null, p:6, b:'f', m:'158.93', cf:'[Xe] 4f⁹ 6s²', st:'Solid', r:9, cl:12, nt:'Used in green phosphors.'},
+            {n:66, s:'Dy', nm:'Dysprosium', c:8, g:null, p:6, b:'f', m:'162.50', cf:'[Xe] 4f¹⁰ 6s²', st:'Solid', r:9, cl:13, nt:'Used in nuclear reactor control rods.'},
+            {n:67, s:'Ho', nm:'Holmium', c:8, g:null, p:6, b:'f', m:'164.93', cf:'[Xe] 4f¹¹ 6s²', st:'Solid', r:9, cl:14, nt:'Has the highest magnetic strength.'},
+            {n:68, s:'Er', nm:'Erbium', c:8, g:null, p:6, b:'f', m:'167.26', cf:'[Xe] 4f¹² 6s²', st:'Solid', r:9, cl:15, nt:'Used in fiber optic amplifiers.'},
+            {n:69, s:'Tm', nm:'Thulium', c:8, g:null, p:6, b:'f', m:'168.93', cf:'[Xe] 4f¹³ 6s²', st:'Solid', r:9, cl:16, nt:'Used in portable X-ray devices.'},
+            {n:70, s:'Yb', nm:'Ytterbium', c:8, g:null, p:6, b:'f', m:'173.05', cf:'[Xe] 4f¹⁴ 6s²', st:'Solid', r:9, cl:17, nt:'Used in atomic clocks.'},
+            {n:71, s:'Lu', nm:'Lutetium', c:2, g:3, p:6, b:'d', m:'174.97', cf:'[Xe] 4f¹⁴ 5d¹ 6s²', st:'Solid', r:6, cl:3, nt:'Most expensive rare earth metal.'},
+            /* Back to Main Block */
+            {n:72, s:'Hf', nm:'Hafnium', c:2, g:4, p:6, b:'d', m:'178.49', cf:'[Xe] 4f¹⁴ 5d² 6s²', st:'Solid', r:6, cl:4, nt:'Used in nuclear submarine control rods.'},
+            {n:73, s:'Ta', nm:'Tantalum', c:2, g:5, p:6, b:'d', m:'180.95', cf:'[Xe] 4f¹⁴ 5d³ 6s²', st:'Solid', r:6, cl:5, nt:'Used in electronics capacitors.'},
+            {n:74, s:'W', nm:'Tungsten', c:2, g:6, p:6, b:'d', m:'183.84', cf:'[Xe] 4f¹⁴ 5d⁴ 6s²', st:'Solid', r:6, cl:6, nt:'Highest melting point of all metals.'},
+            {n:75, s:'Re', nm:'Rhenium', c:2, g:7, p:6, b:'d', m:'186.21', cf:'[Xe] 4f¹⁴ 5d⁵ 6s²', st:'Solid', r:6, cl:7, nt:'Added to superalloys.'},
+            {n:76, s:'Os', nm:'Osmium', c:2, g:8, p:6, b:'d', m:'190.23', cf:'[Xe] 4f¹⁴ 5d⁶ 6s²', st:'Solid', r:6, cl:8, nt:'Densest naturally occurring element.'},
+            {n:77, s:'Ir', nm:'Iridium', c:2, g:9, p:6, b:'d', m:'192.22', cf:'[Xe] 4f¹⁴ 5d⁷ 6s²', st:'Solid', r:6, cl:9, nt:'Most corrosion-resistant metal.'},
+            {n:78, s:'Pt', nm:'Platinum', c:2, g:10, p:6, b:'d', m:'195.08', cf:'[Xe] 4f¹⁴ 5d⁹ 6s¹', st:'Solid', r:6, cl:10, nt:'Valuable precious metal.'},
+            {n:79, s:'Au', nm:'Gold', c:2, g:11, p:6, b:'d', m:'196.97', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s¹', st:'Solid', r:6, cl:11, nt:'Highly unreactive, valuable metal.'},
+            {n:80, s:'Hg', nm:'Mercury', c:2, g:12, p:6, b:'d', m:'200.59', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s²', st:'Liquid', r:6, cl:12, nt:'Only metal liquid at room temp.'},
+            {n:81, s:'Tl', nm:'Thallium', c:3, g:13, p:6, b:'p', m:'204.38', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹', st:'Solid', r:6, cl:13, nt:'Highly toxic.'},
+            {n:82, s:'Pb', nm:'Lead', c:3, g:14, p:6, b:'p', m:'207.2', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²', st:'Solid', r:6, cl:14, nt:'Heavy, toxic metal.'},
+            {n:83, s:'Bi', nm:'Bismuth', c:3, g:15, p:6, b:'p', m:'208.98', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³', st:'Solid', r:6, cl:15, nt:'Used in medicine (Pepto-Bismol).'},
+            {n:84, s:'Po', nm:'Polonium', c:4, g:16, p:6, b:'p', m:'(209)', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴', st:'Solid', r:6, cl:16, nt:'Highly radioactive, discovered by Marie Curie.'},
+            {n:85, s:'At', nm:'Astatine', c:6, g:17, p:6, b:'p', m:'(210)', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵', st:'Solid', r:6, cl:17, nt:'Rarest naturally occurring element.'},
+            {n:86, s:'Rn', nm:'Radon', c:7, g:18, p:6, b:'p', m:'(222)', cf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶', st:'Gas', r:6, cl:18, nt:'Radioactive noble gas.'},
+            {n:87, s:'Fr', nm:'Francium', c:0, g:1, p:7, b:'s', m:'(223)', cf:'[Rn] 7s¹', st:'Solid', r:7, cl:1, nt:'Extremely radioactive and rare.'},
+            {n:88, s:'Ra', nm:'Radium', c:1, g:2, p:7, b:'s', m:'(226)', cf:'[Rn] 7s²', st:'Solid', r:7, cl:2, nt:'Used historically in luminescent paint.'},
+            
+            /* Actinides */
+            {n:89, s:'Ac', nm:'Actinium', c:9, g:3, p:7, b:'f', m:'(227)', cf:'[Rn] 6d¹ 7s²', st:'Solid', r:10, cl:4, nt:'Glows pale blue due to radioactivity.'},
+            {n:90, s:'Th', nm:'Thorium', c:9, g:null, p:7, b:'f', m:'232.04', cf:'[Rn] 6d² 7s²', st:'Solid', r:10, cl:5, nt:'Potential nuclear fuel.'},
+            {n:91, s:'Pa', nm:'Protactinium', c:9, g:null, p:7, b:'f', m:'231.04', cf:'[Rn] 5f² 6d¹ 7s²', st:'Solid', r:10, cl:6, nt:'Highly toxic and radioactive.'},
+            {n:92, s:'U', nm:'Uranium', c:9, g:null, p:7, b:'f', m:'238.03', cf:'[Rn] 5f³ 6d¹ 7s²', st:'Solid', r:10, cl:7, nt:'Primary fuel for nuclear reactors.'},
+            {n:93, s:'Np', nm:'Neptunium', c:9, g:null, p:7, b:'f', m:'(237)', cf:'[Rn] 5f⁴ 6d¹ 7s²', st:'Solid', r:10, cl:8, nt:'Byproduct in nuclear reactors.'},
+            {n:94, s:'Pu', nm:'Plutonium', c:9, g:null, p:7, b:'f', m:'(244)', cf:'[Rn] 5f⁶ 7s²', st:'Solid', r:10, cl:9, nt:'Used in nuclear weapons.'},
+            {n:95, s:'Am', nm:'Americium', c:9, g:null, p:7, b:'f', m:'(243)', cf:'[Rn] 5f⁷ 7s²', st:'Solid', r:10, cl:10, nt:'Used in smoke detectors.'},
+            {n:96, s:'Cm', nm:'Curium', c:9, g:null, p:7, b:'f', m:'(247)', cf:'[Rn] 5f⁷ 6d¹ 7s²', st:'Solid', r:10, cl:11, nt:'Glows purple in the dark.'},
+            {n:97, s:'Bk', nm:'Berkelium', c:9, g:null, p:7, b:'f', m:'(247)', cf:'[Rn] 5f⁹ 7s²', st:'Solid', r:10, cl:12, nt:'Synthetic, highly radioactive.'},
+            {n:98, s:'Cf', nm:'Californium', c:9, g:null, p:7, b:'f', m:'(251)', cf:'[Rn] 5f¹⁰ 7s²', st:'Solid', r:10, cl:13, nt:'Very strong neutron emitter.'},
+            {n:99, s:'Es', nm:'Einsteinium', c:9, g:null, p:7, b:'f', m:'(252)', cf:'[Rn] 5f¹¹ 7s²', st:'Solid', r:10, cl:14, nt:'First discovered in H-bomb debris.'},
+            {n:100, s:'Fm', nm:'Fermium', c:9, g:null, p:7, b:'f', m:'(257)', cf:'[Rn] 5f¹² 7s²', st:'Solid', r:10, cl:15, nt:'Synthetic element.'},
+            {n:101, s:'Md', nm:'Mendelevium', c:9, g:null, p:7, b:'f', m:'(258)', cf:'[Rn] 5f¹³ 7s²', st:'Solid', r:10, cl:16, nt:'Named after Dmitri Mendeleev.'},
+            {n:102, s:'No', nm:'Nobelium', c:9, g:null, p:7, b:'f', m:'(259)', cf:'[Rn] 5f¹⁴ 7s²', st:'Solid', r:10, cl:17, nt:'Named after Alfred Nobel.'},
+            {n:103, s:'Lr', nm:'Lawrencium', c:2, g:3, p:7, b:'d', m:'(266)', cf:'[Rn] 5f¹⁴ 7s² 7p¹', st:'Solid', r:7, cl:3, nt:'Last of the actinides.'},
+            
+            /* Rest of Period 7 (Superheavy) */
+            {n:104, s:'Rf', nm:'Rutherfordium', c:2, g:4, p:7, b:'d', m:'(267)', cf:'[Rn] 5f¹⁴ 6d² 7s²', st:'Unknown', r:7, cl:4, nt:'Highly radioactive synthetic element.'},
+            {n:105, s:'Db', nm:'Dubnium', c:2, g:5, p:7, b:'d', m:'(268)', cf:'[Rn] 5f¹⁴ 6d³ 7s²', st:'Unknown', r:7, cl:5, nt:'Synthesized in Dubna, Russia.'},
+            {n:106, s:'Sg', nm:'Seaborgium', c:2, g:6, p:7, b:'d', m:'(269)', cf:'[Rn] 5f¹⁴ 6d⁴ 7s²', st:'Unknown', r:7, cl:6, nt:'Named after Glenn T. Seaborg.'},
+            {n:107, s:'Bh', nm:'Bohrium', c:2, g:7, p:7, b:'d', m:'(270)', cf:'[Rn] 5f¹⁴ 6d⁵ 7s²', st:'Unknown', r:7, cl:7, nt:'Named after Niels Bohr.'},
+            {n:108, s:'Hs', nm:'Hassium', c:2, g:8, p:7, b:'d', m:'(270)', cf:'[Rn] 5f¹⁴ 6d⁶ 7s²', st:'Unknown', r:7, cl:8, nt:'Named after Hesse, Germany.'},
+            {n:109, s:'Mt', nm:'Meitnerium', c:10, g:9, p:7, b:'d', m:'(278)', cf:'[Rn] 5f¹⁴ 6d⁷ 7s²', st:'Unknown', r:7, cl:9, nt:'Named after Lise Meitner.'},
+            {n:110, s:'Ds', nm:'Darmstadtium', c:10, g:10, p:7, b:'d', m:'(281)', cf:'[Rn] 5f¹⁴ 6d⁸ 7s²', st:'Unknown', r:7, cl:10, nt:'Synthesized in Darmstadt, Germany.'},
+            {n:111, s:'Rg', nm:'Roentgenium', c:10, g:11, p:7, b:'d', m:'(282)', cf:'[Rn] 5f¹⁴ 6d⁹ 7s²', st:'Unknown', r:7, cl:11, nt:'Named after Wilhelm Röntgen.'},
+            {n:112, s:'Cn', nm:'Copernicium', c:2, g:12, p:7, b:'d', m:'(285)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s²', st:'Unknown', r:7, cl:12, nt:'Named after Nicolaus Copernicus.'},
+            {n:113, s:'Nh', nm:'Nihonium', c:10, g:13, p:7, b:'p', m:'(286)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹', st:'Unknown', r:7, cl:13, nt:'Discovered in Japan.'},
+            {n:114, s:'Fl', nm:'Flerovium', c:3, g:14, p:7, b:'p', m:'(289)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²', st:'Unknown', r:7, cl:14, nt:'Named after Flerov Laboratory.'},
+            {n:115, s:'Mc', nm:'Moscovium', c:10, g:15, p:7, b:'p', m:'(290)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³', st:'Unknown', r:7, cl:15, nt:'Named after Moscow.'},
+            {n:116, s:'Lv', nm:'Livermorium', c:10, g:16, p:7, b:'p', m:'(293)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴', st:'Unknown', r:7, cl:16, nt:'Named after Lawrence Livermore Nat. Lab.'},
+            {n:117, s:'Ts', nm:'Tennessine', c:10, g:17, p:7, b:'p', m:'(294)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵', st:'Unknown', r:7, cl:17, nt:'Named after Tennessee.'},
+            {n:118, s:'Og', nm:'Oganesson', c:10, g:18, p:7, b:'p', m:'(294)', cf:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶', st:'Unknown', r:7, cl:18, nt:'Heaviest known element.'}
+        ];
+
+        const CATEGORIES = [
+            "Alkali Metal", "Alkaline Earth", "Transition Metal", "Post-Transition",
+            "Metalloid", "Nonmetal", "Halogen", "Noble Gas", "Lanthanide", "Actinide", "Unknown"
+        ];
+
+        // System state
+        const App = {
+            state: {
+                page: 'home',
+                theme: localStorage.getItem('theme') || 'dark',
+                data: JSON.parse(localStorage.getItem('periodicStats')) || {
+                    tests: 0, totalCorrect: 0, totalAttempted: 0, bestScore: 0,
+                    history: [], weakElements: {} // { elementNum: wrongCount }
+                }
+            },
+            
+            init() {
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                this.Learn.renderGrid();
+                this.Learn.renderLegend();
+                this.Practice.renderModes();
+                this.Analytics.update();
+                
+                // Remove loader
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+
+                window.addEventListener('hashchange', () => this.navigate(window.location.hash.slice(1) || 'home'));
+                if(window.location.hash) this.navigate(window.location.hash.slice(1));
+            },
+
+            navigate(page) {
+                if(!['home', 'learn', 'practice', 'analytics'].includes(page)) return;
+                this.state.page = page;
+                window.location.hash = page;
+                
+                // UI Toggle
+                document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+                document.getElementById(`${page}-section`).classList.remove('hidden');
+                
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('active');
+                    if(b.dataset.nav === page) b.classList.add('active');
+                });
+                
+                // Mobile menu close
+                document.querySelector('.nav-links').classList.remove('show');
+                
+                // Specific page init
+                if (page === 'practice') {
+                    document.getElementById('practice-setup-view').classList.remove('hidden');
+                    document.getElementById('practice-active-view').classList.add('hidden');
+                    document.getElementById('practice-result-view').classList.add('hidden');
+                } else if (page === 'analytics') {
+                    this.Analytics.update();
+                }
+            },
+
+            toggleTheme() {
+                this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                localStorage.setItem('theme', this.state.theme);
+            },
+
+            saveData() {
+                localStorage.setItem('periodicStats', JSON.stringify(this.state.data));
+            },
+
+            // --- Sub-modules ---
+            UI: {
+                showToast(msg) {
+                    const cont = document.getElementById('toast-container');
+                    const t = document.createElement('div');
+                    t.className = 'toast';
+                    t.innerText = msg;
+                    cont.appendChild(t);
+                    setTimeout(() => t.remove(), 3000);
+                },
+                closeModal(e, force = false) {
+                    if (force || e.target.id === 'modal-overlay') {
+                        document.getElementById('modal-overlay').classList.remove('active');
+                    }
+                }
+            },
+
+            Learn: {
+                renderGrid() {
+                    const c = document.getElementById('learn-table');
+                    c.innerHTML = '';
+                    E_DATA.forEach(el => {
+                        const d = document.createElement('div');
+                        d.className = `element-cell cat-${el.c}`;
+                        d.style.gridColumn = el.cl;
+                        d.style.gridRow = el.r;
+                        d.dataset.n = el.n;
+                        d.dataset.sym = el.s.toLowerCase();
+                        d.dataset.name = el.nm.toLowerCase();
+                        
+                        d.innerHTML = `
+                            <span class="el-num">${el.n}</span>
+                            <span class="el-sym">${el.s}</span>
+                            <span class="el-name">${el.nm}</span>
+                        `;
+                        
+                        // Hover for desktop, click for mobile modal
+                        d.addEventListener('click', () => App.Learn.showDetails(el));
+                        c.appendChild(d);
+                    });
+                },
+                
+                renderLegend() {
+                    const c = document.getElementById('learn-legend');
+                    c.innerHTML = CATEGORIES.map((cat, i) => `
+                        <div class="legend-item">
+                            <div class="legend-color cat-${i}"></div>
+                            <span>${cat}</span>
+                        </div>
+                    `).join('');
+                },
+                
+                handleSearch() {
+                    const q = document.getElementById('learn-search').value.toLowerCase().trim();
+                    this.applyFilters(q, document.getElementById('learn-filter').value);
+                },
+                
+                handleFilter() {
+                    const f = document.getElementById('learn-filter').value;
+                    this.applyFilters(document.getElementById('learn-search').value.toLowerCase().trim(), f);
+                },
+                
+                applyFilters(query, catFilter) {
+                    const cells = document.querySelectorAll('#learn-table .element-cell');
+                    cells.forEach(cell => {
+                        const n = cell.dataset.n;
+                        const s = cell.dataset.sym;
+                        const nm = cell.dataset.name;
+                        const el = E_DATA[n - 1];
+                        
+                        const matchesQ = !query || n === query || s.includes(query) || nm.includes(query);
+                        const matchesC = catFilter === 'all' || el.c.toString() === catFilter;
+                        
+                        if (matchesQ && matchesC) {
+                            cell.classList.remove('faded');
+                        } else {
+                            cell.classList.add('faded');
+                        }
+                    });
+                },
+                
+                showDetails(el) {
+                    document.getElementById('m-num').innerText = el.n;
+                    document.getElementById('m-sym').innerText = el.s;
+                    document.getElementById('m-name').innerText = el.nm;
+                    document.getElementById('m-cat').innerText = CATEGORIES[el.c];
+                    document.getElementById('m-atomic-num').innerText = el.n;
+                    document.getElementById('m-mass').innerText = el.m;
+                    document.getElementById('m-pos').innerText = el.g ? `${el.g} | ${el.p}` : `- | ${el.p}`;
+                    document.getElementById('m-block').innerText = `${el.b}-block`;
+                    document.getElementById('m-config').innerText = el.cf;
+                    document.getElementById('m-state').innerText = el.st;
+                    document.getElementById('m-note').innerText = el.nt || '';
+                    
+                    const box = document.getElementById('m-box');
+                    box.className = `modal-symbol-box cat-${el.c}`;
+                    
+                    document.getElementById('modal-overlay').classList.add('active');
+                }
+            },
+
+            Practice: {
+                modes: [
+                    { id: 'full', title: 'Entire Periodic Table', desc: 'Fill all 118 elements', filter: () => true },
+                    { id: 'symbols', title: 'Symbols Only', desc: 'Type only the chemical symbols', filter: () => true, modeType: 'sym' },
+                    { id: 'names', title: 'Names Only', desc: 'Type only the full element names', filter: () => true, modeType: 'name' },
+                    { id: 'r20', title: 'Random 20', desc: '20 random elements', filter: () => false, randomCount: 20 },
+                    { id: 'r50', title: 'Random 50', desc: '50 random elements', filter: () => false, randomCount: 50 },
+                    { id: 's_block', title: 's-Block', desc: 'Groups 1 & 2 + He', filter: e => e.b === 's' },
+                    { id: 'p_block', title: 'p-Block', desc: 'Groups 13 to 18', filter: e => e.b === 'p' },
+                    { id: 'd_block', title: 'd-Block', desc: 'Transition Metals', filter: e => e.b === 'd' },
+                    { id: 'f_block', title: 'f-Block', desc: 'Lanthanides & Actinides', filter: e => e.b === 'f' },
+                    { id: 'period_2_3', title: 'Periods 2 & 3', desc: 'Essential early elements', filter: e => e.p === 2 || e.p === 3 }
+                ],
+                activeMode: null,
+                activeSet: [], // array of element numbers to test
+                timer: 0,
+                interval: null,
+                
+                renderModes() {
+                    const c = document.getElementById('mode-grid');
+                    c.innerHTML = this.modes.map((m, i) => `
+                        <div class="mode-card ${i===0?'selected':''}" data-id="${m.id}" onclick="App.Practice.selectMode('${m.id}')">
+                            <h4>${m.title}</h4>
+                            <p>${m.desc}</p>
+                        </div>
+                    `).join('');
+                    this.activeMode = this.modes[0];
+                },
+                
+                selectMode(id) {
+                    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+                    document.querySelector(`.mode-card[data-id="${id}"]`).classList.add('selected');
+                    this.activeMode = this.modes.find(m => m.id === id);
+                },
+                
+                start() {
+                    // Generate active set
+                    if (this.activeMode.randomCount) {
+                        let shuffled = [...E_DATA].sort(() => 0.5 - Math.random());
+                        this.activeSet = shuffled.slice(0, this.activeMode.randomCount).map(e => e.n);
+                    } else {
+                        this.activeSet = E_DATA.filter(this.activeMode.filter).map(e => e.n);
+                    }
+                    
+                    document.getElementById('practice-mode-title').innerText = `Mode: ${this.activeMode.title}`;
+                    document.getElementById('total-target-count').innerText = this.activeSet.length;
+                    document.getElementById('filled-count').innerText = '0';
+                    document.getElementById('test-progress').style.width = '0%';
+                    
+                    this.renderGrid();
+                    
+                    document.getElementById('practice-setup-view').classList.add('hidden');
+                    document.getElementById('practice-result-view').classList.add('hidden');
+                    document.getElementById('practice-active-view').classList.remove('hidden');
+                    
+                    this.timer = 0;
+                    this.updateTimerUI();
+                    clearInterval(this.interval);
+                    this.interval = setInterval(() => {
+                        this.timer++;
+                        this.updateTimerUI();
+                    }, 1000);
+                },
+                
+                renderGrid() {
+                    const c = document.getElementById('practice-table');
+                    c.innerHTML = '';
+                    
+                    let placeholder = "Sym/Name";
+                    if (this.activeMode.modeType === 'sym') placeholder = "Sym";
+                    if (this.activeMode.modeType === 'name') placeholder = "Name";
+
+                    E_DATA.forEach(el => {
+                        const isTarget = this.activeSet.includes(el.n);
+                        
+                        const d = document.createElement('div');
+                        d.className = `practice-cell ${isTarget ? '' : 'cell-disabled'}`;
+                        d.style.gridColumn = el.cl;
+                        d.style.gridRow = el.r;
+                        
+                        if (isTarget) {
+                            d.innerHTML = `
+                                <div style="position:absolute; top:2px; left:4px; font-size:0.6rem; opacity:0.5;">${el.n}</div>
+                                <input type="text" class="practice-input" data-n="${el.n}" placeholder="${placeholder}" oninput="App.Practice.onInput(this)">
+                            `;
+                        } else {
+                            // Show element for context if not in set
+                            d.innerHTML = `<span style="font-weight:bold; opacity:0.3;">${el.s}</span>`;
+                        }
+                        c.appendChild(d);
+                    });
+                    
+                    // Focus first input
+                    setTimeout(() => {
+                        const first = document.querySelector('.practice-input');
+                        if (first) first.focus();
+                    }, 100);
+                },
+
+                onInput(inp) {
+                    const filled = Array.from(document.querySelectorAll('.practice-input')).filter(i => i.value.trim() !== '').length;
+                    document.getElementById('filled-count').innerText = filled;
+                    const pct = (filled / this.activeSet.length) * 100;
+                    document.getElementById('test-progress').style.width = `${pct}%`;
+                },
+                
+                updateTimerUI() {
+                    const m = Math.floor(this.timer / 60).toString().padStart(2, '0');
+                    const s = (this.timer % 60).toString().padStart(2, '0');
+                    document.getElementById('test-timer').innerText = `${m}:${s}`;
+                },
+                
+                confirmReset() {
+                    if(confirm("Are you sure you want to reset all answers?")) {
+                        document.querySelectorAll('.practice-input').forEach(i => i.value = '');
+                        this.onInput();
+                        this.timer = 0;
+                        this.updateTimerUI();
+                    }
+                },
+                
+                submitTest() {
+                    clearInterval(this.interval);
+                    
+                    let correct = 0;
+                    let wrong = 0;
+                    let skipped = 0;
+                    
+                    document.querySelectorAll('.practice-input').forEach(inp => {
+                        const n = parseInt(inp.dataset.n);
+                        const el = E_DATA[n - 1];
+                        const val = inp.value.trim().toLowerCase();
+                        
+                        const isSym = val === el.s.toLowerCase();
+                        const isName = val === el.nm.toLowerCase();
+                        
+                        const parent = inp.parentElement;
+                        inp.disabled = true; // Lock it
+                        
+                        if (val === '') {
+                            skipped++;
+                            parent.classList.add('cell-skipped');
+                            inp.value = el.s; // Show answer
+                            inp.style.opacity = '0.5';
+                        } else if ((this.activeMode.modeType === 'sym' && isSym) || 
+                                   (this.activeMode.modeType === 'name' && isName) || 
+                                   (!this.activeMode.modeType && (isSym || isName))) {
+                            correct++;
+                            parent.classList.add('cell-correct');
+                        } else {
+                            wrong++;
+                            parent.classList.add('cell-wrong');
+                            // Save wrong element stat
+                            App.state.data.weakElements[n] = (App.state.data.weakElements[n] || 0) + 1;
+                            
+                            // Let user click to see mistake
+                            parent.style.cursor = 'pointer';
+                            parent.title = `Your answer: ${val} | Correct: ${el.nm} (${el.s})`;
+                            inp.value = el.s;
+                        }
+                    });
+                    
+                    // Calculations
+                    const total = this.activeSet.length;
+                    const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+                    
+                    // Update global stats
+                    App.state.data.tests++;
+                    App.state.data.totalCorrect += correct;
+                    App.state.data.totalAttempted += total;
+                    if (correct > App.state.data.bestScore) App.state.data.bestScore = correct;
+                    App.saveData();
+                    App.Analytics.update();
+
+                    // Render results
+                    document.getElementById('res-accuracy').innerText = `${accuracy}%`;
+                    document.getElementById('res-accuracy').style.color = accuracy > 80 ? 'var(--success)' : (accuracy > 50 ? 'var(--warning)' : 'var(--danger)');
+                    
+                    const m = Math.floor(this.timer / 60).toString().padStart(2, '0');
+                    const s = (this.timer % 60).toString().padStart(2, '0');
+                    document.getElementById('res-time').innerText = `${m}:${s}`;
+                    
+                    document.getElementById('res-correct').innerText = correct;
+                    document.getElementById('res-wrong').innerText = wrong;
+                    document.getElementById('res-skipped').innerText = skipped;
+                    
+                    let title = "Needs Work!";
+                    if (accuracy === 100) title = "Perfect Score!";
+                    else if (accuracy >= 80) title = "Excellent Job!";
+                    else if (accuracy >= 60) title = "Good Effort!";
+                    document.getElementById('result-title').innerText = title;
+                    
+                    document.getElementById('practice-active-view').classList.add('hidden');
+                    document.getElementById('practice-result-view').classList.remove('hidden');
+                    
+                    window.scrollTo(0,0);
+                },
+                
+                viewBoard() {
+                    document.getElementById('practice-result-view').classList.add('hidden');
+                    document.getElementById('practice-active-view').classList.remove('hidden');
+                    // Hide buttons in active view since it's just review now
+                    const btns = document.querySelector('#practice-active-view > div:last-child');
+                    btns.innerHTML = `<button class="btn-primary" onclick="App.Practice.backToResults()">Back to Results</button>`;
+                },
+                
+                backToResults() {
+                    document.getElementById('practice-active-view').classList.add('hidden');
+                    document.getElementById('practice-result-view').classList.remove('hidden');
+                },
+                
+                restartSame() {
+                    this.start();
+                },
+                
+                backToSetup() {
+                    document.getElementById('practice-result-view').classList.add('hidden');
+                    document.getElementById('practice-active-view').classList.add('hidden');
+                    document.getElementById('practice-setup-view').classList.remove('hidden');
+                }
+            },
+
+            Analytics: {
+                update() {
+                    const data = App.state.data;
+                    document.getElementById('stat-total-tests').innerText = data.tests;
+                    
+                    const avg = data.totalAttempted > 0 ? Math.round((data.totalCorrect / data.totalAttempted) * 100) : 0;
+                    document.getElementById('stat-avg-acc').innerText = `${avg}%`;
+                    document.getElementById('stat-best-score').innerText = data.bestScore;
+                    
+                    // Calculate "Mastered" (Elements never/rarely wrong, but attempted)
+                    // Simplified: just show best score over 118 for now
+                    document.getElementById('stat-mastered').innerText = `${data.bestScore}/118`;
+
+                    // Weak Elements List
+                    const weakList = document.getElementById('weak-elements-list');
+                    weakList.innerHTML = '';
+                    
+                    const weakSorted = Object.entries(data.weakElements)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 5); // top 5
+                        
+                    if (weakSorted.length === 0) {
+                        weakList.innerHTML = '<li style="color:var(--text-muted);">No data yet. Keep practicing!</li>';
+                    } else {
+                        weakSorted.forEach(([n, count]) => {
+                            const el = E_DATA[n - 1];
+                            weakList.innerHTML += `
+                                <li>
+                                    <span><strong>${el.s}</strong> (${el.nm})</span>
+                                    <span style="color:var(--danger); font-weight:bold;">Mistakes: ${count}</span>
+                                </li>
+                            `;
+                        });
+                    }
+                }
+            }
+        };
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => App.init());
+
+    </script>
+</body>
+</html>
